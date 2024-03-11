@@ -1,3 +1,7 @@
+# 컨트랙트 명세서
+![main](/Contract/Contract_Rec.PNG)
+### https://www.notion.so/841039ea27404843bbbdf95d97095957
+
 ![1](/Contract/1.jpg)
 
 # 1
