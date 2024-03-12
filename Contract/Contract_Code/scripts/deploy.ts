@@ -7,7 +7,7 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const ArtchainERC20Factory = await ethers.getContractFactory("ArtchainERC20MintBurnable");
+  const ArtchainERC20Factory = await ethers.getContractFactory("FundRaising");
   const initialSupply = ethers.utils.parseUnits("1000000", "ether");
   const contract = await ArtchainERC20Factory.deploy(initialSupply);
 
