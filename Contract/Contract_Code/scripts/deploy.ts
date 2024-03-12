@@ -1,3 +1,4 @@
+// scripts/deploy.js
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -6,9 +7,9 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const ArtchainERC20Factory = await ethers.getContractFactory("ArtcoinContract");
-  // const initialSupply = ethers.utils.parseUnits("100000", "ether");
-  const contract = await ArtchainERC20Factory.deploy();
+  const ArtchainERC20Factory = await ethers.getContractFactory("FundRaising");
+  const initialSupply = ethers.utils.parseUnits("1000000", "ether");
+  const contract = await ArtchainERC20Factory.deploy(initialSupply);
 
   console.log("NewContractAddress address:", contract.address);
 }
