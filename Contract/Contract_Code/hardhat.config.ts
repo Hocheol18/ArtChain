@@ -106,7 +106,12 @@ task("check", "Check contract amounts", async () => {
     },
   ];
   const fundrasing = new ethers.Contract(contract, abi, deployer);
-  console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.donations("0x34A7fc33AC49c2De81cfEcB2df95112221AadaE3"));
+  console.log(
+    await fundrasing.targetAmount(),
+    await fundrasing.raisedAmount(),
+    await fundrasing.donations("0x34A7fc33AC49c2De81cfEcB2df95112221AadaE3")
+  );
+  
 });
 
 const privateKey =
