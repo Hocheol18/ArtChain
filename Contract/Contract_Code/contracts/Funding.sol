@@ -3,78 +3,72 @@
 
 pragma solidity ^0.8.20;
 
-contract FundRaising {
-    uint256 public targetAmount;
-    address public owner;
-    mapping(address => uint256) public fundings;
-    mapping(address => uint256) public fundingArts;
-    uint256 public raisedAmount;
-    uint256 public finishTime;
-    address[] private listOfContributors;
-    uint256 public totalApply;
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-    constructor(uint256 _targetAmount, uint256 _time, uint256 _totalApply) {
-        targetAmount = _targetAmount;
+contract FundRaising {
+    mapping(address => uint256) public refunds; // 환불 address 1:1로 맵핑
+    mapping(address => uint256) public newCoins; // 새로운 소각 1:1로 맵핑
+
+    uint256 public totalApply; // 총 발행량
+    address public owner; // 컨트랙트 호출자
+    uint256 public raisedAmount; // 총 모금 발행량 갯수
+    uint256 public finishTime;
+    address[] private listOfContributors; // ArtCoin 넣은 사람 address
+    IERC20 public fundingToken; // 새로운 컨트랙트 설정
+
+    constructor(uint256 _time, uint256 _totalApply, address _tokenContract) {
         owner = msg.sender;
         raisedAmount = 0;
         finishTime = block.timestamp + (_time * 1 minutes);
-        totalApply = _totalApply;
+        totalApply = _totalApply * 10 ** 18;
+        fundingToken = IERC20(_tokenContract);
     }
 
-    receive() external payable {
-        if (fundings[msg.sender] == 0) {
+    function ArtCoinFunding(uint256 _amount) external {
+        require(block.timestamp < finishTime, "Fundraising period over");
+        require(_amount + raisedAmount <= totalApply);
+        require(
+            fundingToken.transferFrom(msg.sender, address(this), _amount),
+            "Token transfer failed"
+        );
+
+        if (refunds[msg.sender] == 0) {
             listOfContributors.push(msg.sender);
         }
-        require(block.timestamp < finishTime, "Over");
-        fundings[msg.sender] += msg.value;
+
+        
+        refunds[msg.sender] += msg.value;
         raisedAmount += msg.value;
     }
 
     function distributeFunds() external {
         require(msg.sender == owner, "must be owner");
         require(block.timestamp > finishTime, "Not time OVER");
-        require(raisedAmount >= (targetAmount * 4) / 5, "not goal");
+        require(raisedAmount >= (totalApply * 4) / 5, "not goal");
 
         for (uint i = 0; i < listOfContributors.length; i++) {
             address contributor = listOfContributors[i];
-            uint256 amount = fundings[contributor];
+            uint256 amount = newCoins[contributor];
 
             if (amount > 0) {
-                fundings[contributor] = 0;
+                newCoins[contributor] = 0;
                 payable(contributor).transfer(amount);
             }
         }
     }
 
     function refundDistribute() external {
-        require(raisedAmount < (targetAmount * 4) / 5, "80% is not over");
+        require(raisedAmount < (totalApply * 4) / 5, "80% is not over");
         require(block.timestamp > finishTime, "Not over");
 
         for (uint i = 0; i < listOfContributors.length; i++) {
             address contributor = listOfContributors[i];
-            uint256 amount = fundings[contributor];
+            uint256 amount = refunds[contributor];
 
             if (amount > 0) {
-                fundings[contributor] = 0;
+                refunds[contributor] = 0;
                 payable(contributor).transfer(amount);
             }
         }
     }
-
-    // function withdrawDonations() external {
-    //     require(msg.sender == owner, "Not fund participate");
-    //     require(raisedAmount >= (targetAmount * 4) / 5, "80% is over");
-    //     require(block.timestamp > finishTime, "Not over");
-    //     payable(owner).transfer(raisedAmount);
-    // }
-
-    // function refund() external {
-    //     require(donations[msg.sender] > 0, "Not Refund");
-    //     require(raisedAmount < (targetAmount * 4) / 5, "80% is not over");
-    //     require(block.timestamp > finishTime, "Not over");
-    //     payable(owner).transfer(raisedAmount);
-    //     uint256 toRefund = donations[msg.sender];
-    //     donations[msg.sender] = 0;
-    //     payable(msg.sender).transfer(toRefund);
-    // }
 }
