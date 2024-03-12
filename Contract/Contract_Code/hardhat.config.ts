@@ -1,10 +1,20 @@
 require("@nomiclabs/hardhat-waffle");
-require("hardhat")
 
-tasks("check", "Check contract amounts", async () => {
-  const [deployer] = await ethers.getSingers();
+task("check", "Check contract amounts", async () => {
+  const [deployer] = await ethers.getSigners();
   const contract = "0x36a90556F14b099A06767f0a0Ce1f1f47164Cf45";
   const abi = [
+    {
+      inputs: [
+        {
+          internalType: "uint256",
+          name: "_targetAmount",
+          type: "uint256",
+        },
+      ],
+      stateMutability: "nonpayable",
+      type: "constructor",
+    },
     {
       inputs: [
         {
@@ -14,6 +24,19 @@ tasks("check", "Check contract amounts", async () => {
         },
       ],
       name: "donations",
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "finishTime",
       outputs: [
         {
           internalType: "uint256",
@@ -39,6 +62,26 @@ tasks("check", "Check contract amounts", async () => {
     },
     {
       inputs: [],
+      name: "raisedAmount",
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "refund",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [],
       name: "targetAmount",
       outputs: [
         {
@@ -50,9 +93,20 @@ tasks("check", "Check contract amounts", async () => {
       stateMutability: "view",
       type: "function",
     },
+    {
+      inputs: [],
+      name: "withdrawDonations",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      stateMutability: "payable",
+      type: "receive",
+    },
   ];
   const fundrasing = new ethers.Contract(contract, abi, deployer);
-  console.log(fundrasing.targetAmount(), fundrasing.raisedAmount());
+  console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.donations("0x34A7fc33AC49c2De81cfEcB2df95112221AadaE3"));
 });
 
 const privateKey =
@@ -76,6 +130,3 @@ module.exports = {
     },
   },
 };
-function tasks(arg0: string, arg1: string, arg2: () => Promise<void>) {
-  throw new Error("Function not implemented.");
-}
