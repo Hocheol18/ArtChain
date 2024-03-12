@@ -2,111 +2,158 @@ require("@nomiclabs/hardhat-waffle");
 
 task("check", "Check contract amounts", async () => {
   const [deployer] = await ethers.getSigners();
-  const contract = "0x36a90556F14b099A06767f0a0Ce1f1f47164Cf45";
+  const contract = "0x2DBB09E5A2e3b527449aac94740752e82CabDaCD";
   const abi = [
     {
       inputs: [
         {
           internalType: "uint256",
-          name: "_targetAmount",
+          name: "_Supply",
           type: "uint256",
         },
       ],
+      name: "mintTokens",
+      outputs: [],
       stateMutability: "nonpayable",
-      type: "constructor",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
+          internalType: "uint256",
+          name: "burnAmount",
+          type: "uint256",
+        },
+      ],
+      name: "burnTokens",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "address",
-          name: "",
+          name: "to",
           type: "address",
         },
-      ],
-      name: "donations",
-      outputs: [
         {
           internalType: "uint256",
-          name: "",
+          name: "amount",
           type: "uint256",
         },
       ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "finishTime",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "owner",
-      outputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "raisedAmount",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "refund",
+      name: "transferToken",
       outputs: [],
       stateMutability: "nonpayable",
       type: "function",
-    },
-    {
-      inputs: [],
-      name: "targetAmount",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "withdrawDonations",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      stateMutability: "payable",
-      type: "receive",
     },
   ];
+
+  // const abi = [
+  //   {
+  //     "inputs": [
+  //       {
+  //         "internalType": "uint256",
+  //         "name": "_targetAmount",
+  //         "type": "uint256"
+  //       },
+  //       {
+  //         "internalType": "uint256",
+  //         "name": "_time",
+  //         "type": "uint256"
+  //       }
+  //     ],
+  //     "stateMutability": "nonpayable",
+  //     "type": "constructor"
+  //   },
+  //   {
+  //     "inputs": [],
+  //     "name": "distributeFunds",
+  //     "outputs": [],
+  //     "stateMutability": "payable",
+  //     "type": "function"
+  //   },
+  //   {
+  //     "inputs": [
+  //       {
+  //         "internalType": "address",
+  //         "name": "",
+  //         "type": "address"
+  //       }
+  //     ],
+  //     "name": "donations",
+  //     "outputs": [
+  //       {
+  //         "internalType": "uint256",
+  //         "name": "",
+  //         "type": "uint256"
+  //       }
+  //     ],
+  //     "stateMutability": "view",
+  //     "type": "function"
+  //   },
+  //   {
+  //     "inputs": [],
+  //     "name": "finishTime",
+  //     "outputs": [
+  //       {
+  //         "internalType": "uint256",
+  //         "name": "",
+  //         "type": "uint256"
+  //       }
+  //     ],
+  //     "stateMutability": "view",
+  //     "type": "function"
+  //   },
+  //   {
+  //     "inputs": [],
+  //     "name": "owner",
+  //     "outputs": [
+  //       {
+  //         "internalType": "address",
+  //         "name": "",
+  //         "type": "address"
+  //       }
+  //     ],
+  //     "stateMutability": "view",
+  //     "type": "function"
+  //   },
+  //   {
+  //     "inputs": [],
+  //     "name": "raisedAmount",
+  //     "outputs": [
+  //       {
+  //         "internalType": "uint256",
+  //         "name": "",
+  //         "type": "uint256"
+  //       }
+  //     ],
+  //     "stateMutability": "view",
+  //     "type": "function"
+  //   },
+  //   {
+  //     "inputs": [],
+  //     "name": "targetAmount",
+  //     "outputs": [
+  //       {
+  //         "internalType": "uint256",
+  //         "name": "",
+  //         "type": "uint256"
+  //       }
+  //     ],
+  //     "stateMutability": "view",
+  //     "type": "function"
+  //   },
+  //   {
+  //     "stateMutability": "payable",
+  //     "type": "receive"
+  //   }
+  // ];
   const fundrasing = new ethers.Contract(contract, abi, deployer);
-  console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.donations("0x34A7fc33AC49c2De81cfEcB2df95112221AadaE3"));
+  await fundrasing.burnTokens(100);
+  // await fundrasing.distributeFunds().then((datass : any) => console.log(datass) ).catch((err : any) => console.log(err))
+  // console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.finishTime());
 });
 
 const privateKey =
