@@ -44,8 +44,8 @@ public class Market {
   private LocalDateTime transactionTime;
 
   @Column(name = "SELLER_ID", nullable = false)
-  private String sellerId;
+  private Long sellerId;
 
   @Column(name = "BUYER_ID")
-  private String buyerId;
+  private Long buyerId;
 }
