@@ -5,8 +5,8 @@ pragma solidity ^0.8.20;
 import "./Funding.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-// FundRaising 상속
-contract ReceiveArtCoin is FundRaising {
+// FundRaisingContract 상속
+contract ReceiveArtCoinContract is FundRaisingContract {
     IERC20 public fundingToken;
     address public contractAddress;
 

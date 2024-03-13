@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract FundRaising {
+contract FundRaisingContract {
     mapping(address => uint256) public refunds; // 환불 address 1:1로 맵핑
     mapping(address => uint256) public newCoins; // 새로운 소각 1:1로 맵핑
 
