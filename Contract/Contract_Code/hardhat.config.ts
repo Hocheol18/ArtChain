@@ -2,7 +2,7 @@ require("@nomiclabs/hardhat-waffle");
 
 task("check", "Check contract amounts", async () => {
   const [deployer] = await ethers.getSigners();
-  const contract = "0x2DBB09E5A2e3b527449aac94740752e82CabDaCD";
+  const contract = "0x0559e2e7bd3210098e4ff68Ec263E7e47486D7d9";
   const abi = [
     {
       inputs: [
@@ -47,6 +47,13 @@ task("check", "Check contract amounts", async () => {
       outputs: [],
       stateMutability: "nonpayable",
       type: "function",
+    },
+    {
+      inputs: [],
+      name: "distributeFunds",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function"
     },
   ];
 
@@ -151,7 +158,12 @@ task("check", "Check contract amounts", async () => {
   //   }
   // ];
   const fundrasing = new ethers.Contract(contract, abi, deployer);
-  await fundrasing.burnTokens(100);
+  await fundrasing.distributeFunds()
+  // await fundrasing.mintTokens(100);
+  // await fundrasing.transferToken(
+  //   "0xfB4CDcfb555459a886C1987E3Da3a4e7F7474CD3",
+  //   100
+  // );
   // await fundrasing.distributeFunds().then((datass : any) => console.log(datass) ).catch((err : any) => console.log(err))
   // console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.finishTime());
 });

@@ -18,12 +18,12 @@ contract ArtcoinContract is ERC20 {
 
     // 토큰 소각
     function burnTokens(uint256 burnAmount) public {
-        _burn(msg.sender, burnAmount);
+        _burn(msg.sender, burnAmount * 10 ** 18);
     }
 
     // 토큰 전송
     function transferToken(address to, uint256 amount) public {
-        _transfer(msg.sender, to, amount);
+        _transfer(msg.sender, to, amount * 10 ** 18);
     }
 }
 

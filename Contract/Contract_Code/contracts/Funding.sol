@@ -14,31 +14,12 @@ contract FundRaising {
     uint256 public raisedAmount; // 총 모금 발행량 갯수
     uint256 public finishTime;
     address[] private listOfContributors; // ArtCoin 넣은 사람 address
-    IERC20 public fundingToken; // 새로운 컨트랙트 설정
 
-    constructor(uint256 _time, uint256 _totalApply, address _tokenContract) {
+    constructor(uint256 _time, uint256 _totalApply) {
         owner = msg.sender;
         raisedAmount = 0;
         finishTime = block.timestamp + (_time * 1 minutes);
         totalApply = _totalApply * 10 ** 18;
-        fundingToken = IERC20(_tokenContract);
-    }
-
-    function ArtCoinFunding(uint256 _amount) external {
-        require(block.timestamp < finishTime, "Fundraising period over");
-        require(_amount + raisedAmount <= totalApply);
-        require(
-            fundingToken.transferFrom(msg.sender, address(this), _amount),
-            "Token transfer failed"
-        );
-
-        if (refunds[msg.sender] == 0) {
-            listOfContributors.push(msg.sender);
-        }
-
-        
-        refunds[msg.sender] += msg.value;
-        raisedAmount += msg.value;
     }
 
     function distributeFunds() external {
