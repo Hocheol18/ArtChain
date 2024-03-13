@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 // 
 contract ArtcoinContract is ERC20 {
+    // 컨트랙트 생성 > 1개 만들고 이후에 1개 소각
     constructor() ERC20("ArtCoin", "ART") {
         _mint(msg.sender, 1 * 10**18); 
     }

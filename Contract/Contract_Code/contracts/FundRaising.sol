@@ -12,7 +12,7 @@ contract FundRaisingContract {
     uint256 public totalApply; // 총 발행량
     address public owner; // 컨트랙트 호출자
     uint256 public raisedAmount; // 총 모금 발행량 갯수
-    uint256 public finishTime;
+    uint256 public finishTime; // 마감 시간
     address[] private listOfContributors; // ArtCoin 넣은 사람 address
 
     constructor(uint256 _time, uint256 _totalApply) {
@@ -22,7 +22,11 @@ contract FundRaisingContract {
         totalApply = _totalApply * 10 ** 18;
     }
 
-    function distributeFunds() external {
+    // 나중에 컨트랙트 상에서 전송해야 하므로 이더 받는 함수
+    receive() external payable {}
+
+    // 분배 함수
+    function distributeFund() external {
         require(msg.sender == owner, "must be owner");
         require(block.timestamp > finishTime, "Not time OVER");
         require(raisedAmount >= (totalApply * 4) / 5, "not goal");
@@ -37,7 +41,8 @@ contract FundRaisingContract {
             }
         }
     }
-
+ 
+    // 함수
     function refundDistribute() external {
         require(raisedAmount < (totalApply * 4) / 5, "80% is not over");
         require(block.timestamp > finishTime, "Not over");
