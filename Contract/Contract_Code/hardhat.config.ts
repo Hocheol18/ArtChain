@@ -2,7 +2,7 @@ require("@nomiclabs/hardhat-waffle");
 
 task("check", "Check contract amounts", async () => {
   const [deployer] = await ethers.getSigners();
-  const contract = "0x0559e2e7bd3210098e4ff68Ec263E7e47486D7d9";
+  const contract = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
   const abi = [
     {
       inputs: [
@@ -56,114 +56,13 @@ task("check", "Check contract amounts", async () => {
       type: "function"
     },
   ];
-
-  // const abi = [
-  //   {
-  //     "inputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "_targetAmount",
-  //         "type": "uint256"
-  //       },
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "_time",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "nonpayable",
-  //     "type": "constructor"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "distributeFunds",
-  //     "outputs": [],
-  //     "stateMutability": "payable",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [
-  //       {
-  //         "internalType": "address",
-  //         "name": "",
-  //         "type": "address"
-  //       }
-  //     ],
-  //     "name": "donations",
-  //     "outputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "finishTime",
-  //     "outputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "owner",
-  //     "outputs": [
-  //       {
-  //         "internalType": "address",
-  //         "name": "",
-  //         "type": "address"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "raisedAmount",
-  //     "outputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "targetAmount",
-  //     "outputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "stateMutability": "payable",
-  //     "type": "receive"
-  //   }
-  // ];
   const fundrasing = new ethers.Contract(contract, abi, deployer);
-  await fundrasing.distributeFunds()
-  // await fundrasing.mintTokens(100);
-  // await fundrasing.transferToken(
-  //   "0xfB4CDcfb555459a886C1987E3Da3a4e7F7474CD3",
-  //   100
-  // );
+  // await fundrasing.distributeFunds()
+  await fundrasing.mintTokens(100);
+  await fundrasing.transferToken(
+    "0x67F07AFaD0f1528391a0CF8C5058370114B262d6",
+    100
+  );
   // await fundrasing.distributeFunds().then((datass : any) => console.log(datass) ).catch((err : any) => console.log(err))
   // console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.finishTime());
 });

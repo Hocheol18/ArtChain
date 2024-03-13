@@ -12,14 +12,14 @@ contract ERC20MintBurnTransferContract is ERC20 {
         string memory ticker, // 토큰 이름 줄여서 (ex. "ART")
         uint256 initialSupply // 총 발행량
     ) ERC20(coinName, ticker) {
-        _mint(msg.sender, initialSupply);
+        _mint(msg.sender, initialSupply * 10 ** 18);
     }
 
     function burnTokens(uint256 burnAmount) public {
-        _burn(msg.sender, burnAmount);
+        _burn(msg.sender, burnAmount * 10 ** 18);
     }
 
     function transferToken(address to, uint256 amount) public {
-        transfer(to, amount);
+        transfer(to, amount * 10 ** 18);
     }
 }

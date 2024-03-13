@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-// 
+// 아트코인 민팅
 contract ArtcoinContract is ERC20 {
     // 컨트랙트 생성 > 1개 만들고 이후에 1개 소각
     constructor() ERC20("ArtCoin", "ART") {
