@@ -1,5 +1,11 @@
 # Wrap up
 
+## 20240314
+
+- docker compose 설치
+- nginx 설치
+- FreeSSL로 ssl받아서 https 연결 성공
+
 ## 20240313
 
 - 피그마 제작 완료
