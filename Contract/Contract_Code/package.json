@@ -5,13 +5,6 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.2",
-    "@types/node": "^20.11.26",
-    "@types/react": "^18.2.65",
-    "@types/react-dom": "^18.2.21",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^5.4.2",
-    "web3": "^4.6.0"
+    "@openzeppelin/contracts": "^5.0.2"
   }
 }
