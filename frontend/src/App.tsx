@@ -31,8 +31,10 @@ function App() {
         </div>
       </Desktop>
       <Mobile>
-        <div>ArtChain</div>
-        <div>Mobile</div>
+        <div style={{ backgroundColor: "white", height: "100dvh" }}>
+          <div>ArtChain</div>
+          <div>Mobile</div>
+        </div>
       </Mobile>
     </>
   );
