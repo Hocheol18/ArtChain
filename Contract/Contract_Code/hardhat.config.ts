@@ -1,66 +1,15 @@
 require("@nomiclabs/hardhat-waffle");
+import ArtcoinAbi from "./artifacts/contracts/ArtCoin.sol/ArtcoinContract.json"
 
 task("check", "Check contract amounts", async () => {
   const [deployer] = await ethers.getSigners();
-  const contract = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
-  const abi = [
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "_Supply",
-          type: "uint256",
-        },
-      ],
-      name: "mintTokens",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "burnAmount",
-          type: "uint256",
-        },
-      ],
-      name: "burnTokens",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "to",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "amount",
-          type: "uint256",
-        },
-      ],
-      name: "transferToken",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "distributeFunds",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function"
-    },
-  ];
-  const fundrasing = new ethers.Contract(contract, abi, deployer);
+  const contract = "0xB80a551604E49a912590bBd1fb79Bb1dE27A263E";
+  const ArtcoinABI = ArtcoinAbi.abi
+  const fundrasing = new ethers.Contract(contract, ArtcoinABI, deployer);
   // await fundrasing.distributeFunds()
   await fundrasing.mintTokens(100);
   await fundrasing.transferToken(
-    "0x67F07AFaD0f1528391a0CF8C5058370114B262d6",
+    "0xa98152DE411B3C2ecBccAA199A7f1F855e7c8E90",
     100
   );
   // await fundrasing.distributeFunds().then((datass : any) => console.log(datass) ).catch((err : any) => console.log(err))
