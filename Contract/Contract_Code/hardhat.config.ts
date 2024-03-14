@@ -1,112 +1,19 @@
 require("@nomiclabs/hardhat-waffle");
+import ArtcoinAbi from "./artifacts/contracts/ArtCoin.sol/ArtcoinContract.json"
 
 task("check", "Check contract amounts", async () => {
   const [deployer] = await ethers.getSigners();
-  const contract = "0x36a90556F14b099A06767f0a0Ce1f1f47164Cf45";
-  const abi = [
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "_targetAmount",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "nonpayable",
-      type: "constructor",
-    },
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      name: "donations",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "finishTime",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "owner",
-      outputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "raisedAmount",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "refund",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "targetAmount",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "withdrawDonations",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      stateMutability: "payable",
-      type: "receive",
-    },
-  ];
-  const fundrasing = new ethers.Contract(contract, abi, deployer);
-  console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.donations("0x34A7fc33AC49c2De81cfEcB2df95112221AadaE3"));
+  const contract = "0xB80a551604E49a912590bBd1fb79Bb1dE27A263E";
+  const ArtcoinABI = ArtcoinAbi.abi
+  const fundrasing = new ethers.Contract(contract, ArtcoinABI, deployer);
+  // await fundrasing.distributeFunds()
+  await fundrasing.mintTokens(100);
+  await fundrasing.transferToken(
+    "0xa98152DE411B3C2ecBccAA199A7f1F855e7c8E90",
+    100
+  );
+  // await fundrasing.distributeFunds().then((datass : any) => console.log(datass) ).catch((err : any) => console.log(err))
+  // console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.finishTime());
 });
 
 const privateKey =
