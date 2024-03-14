@@ -1,9 +1,18 @@
 package com.ssafy.artchain.market.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -11,41 +20,44 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "MARKET")
+@Table(name = "market")
 public class Market {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-  @Column(name = "TITLE", nullable = false)
-  private String title;
+    @Column(name = "funding_id", nullable = false)
+    private Long fundingId;
 
-  @Column(name = "CONTENT")
-  private String content;
+    @Column(name = "contract_address", nullable = false)
+    private String contractAddress;
 
-  @Column(name = "CONTRACT_ADDRESS", nullable = false)
-  private String contractAddress;
+    @Column(name = "piece_name", nullable = false)
+    private String pieceName;
 
-  @Column(name = "COIN_NAME", nullable = false)
-  private String coinName;
+    @Column(name = "piece_count", nullable = false)
+    private Long pieceCount;
 
-  @Column(name = "COIN_COUNT", nullable = false)
-  private Long coinCount;
+    @Column(name = "total_coin", nullable = false)
+    private Long totalCoin;
 
-  @Column(name = "STATUS", nullable = false)
-  private String status;
+    @Column(name = "coin_per_piece", precision = 19, scale = 2, nullable = false)
+    private BigDecimal coinPerPiece;
 
-  @Column(name = "TRANSACTION_HASH")
-  private String transactionHash;
+    @Column(name = "status", nullable = false)
+    private String status;
 
-  @Column(name = "TRANSACTION_TIME")
-  private LocalDateTime transactionTime;
+    @Column(name = "transaction_hash")
+    private String transactionHash;
 
-  @Column(name = "SELLER_ID", nullable = false)
-  private Long sellerId;
+    @Column(name = "transaction_time")
+    private LocalDateTime transactionTime;
 
-  @Column(name = "BUYER_ID")
-  private Long buyerId;
+    @Column(name = "seller_id", nullable = false)
+    private Long sellerId;
+
+    @Column(name = "buyer_id")
+    private Long buyerId;
 }
