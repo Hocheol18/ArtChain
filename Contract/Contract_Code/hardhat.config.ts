@@ -1,17 +1,23 @@
 require("@nomiclabs/hardhat-waffle");
-import ArtcoinAbi from "./artifacts/contracts/ArtCoin.sol/ArtcoinContract.json"
+import ArtcoinAbi from "./artifacts/contracts/ReceiveArtCoin.sol/ReceiveArtCoinContract.json"
 
 task("check", "Check contract amounts", async () => {
   const [deployer] = await ethers.getSigners();
-  const contract = "0xB80a551604E49a912590bBd1fb79Bb1dE27A263E";
+  const contract = "0xf7A5a1dea44be4f13CE4DBD6E2B27A5E9A66B5A0";
   const ArtcoinABI = ArtcoinAbi.abi
-  const fundrasing = new ethers.Contract(contract, ArtcoinABI, deployer);
+  const fundraising = new ethers.Contract(contract, ArtcoinABI, deployer)
+  await fundraising.initialSupply().then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  await fundraising.raisedAmount().then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  await fundraising.newCoins("0xf7A5a1dea44be4f13CE4DBD6E2B27A5E9A66B5A0").then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  await fundraising.refunds("0xf7A5a1dea44be4f13CE4DBD6E2B27A5E9A66B5A0").then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  // await fundraising.listOfContributors(10).then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  
   // await fundrasing.distributeFunds()
-  await fundrasing.mintTokens(100);
-  await fundrasing.transferToken(
-    "0xa98152DE411B3C2ecBccAA199A7f1F855e7c8E90",
-    100
-  );
+  // await fundrasing.mintTokens(100);
+  // await fundrasing.transferToken(
+  //   "0xa98152DE411B3C2ecBccAA199A7f1F855e7c8E90",
+  //   100
+  // );
   // await fundrasing.distributeFunds().then((datass : any) => console.log(datass) ).catch((err : any) => console.log(err))
   // console.log(await fundrasing.targetAmount(), await fundrasing.raisedAmount(), await fundrasing.finishTime());
 });

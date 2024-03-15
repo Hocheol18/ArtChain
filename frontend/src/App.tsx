@@ -7,9 +7,9 @@ import Web3 from 'web3';
 const web3 = new Web3((window as any).ethereum);
 
 // Artcoin address
-const ArtCoincontractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
+const ArtCoincontractAddress = "0xB80a551604E49a912590bBd1fb79Bb1dE27A263E";
 // Contract address
-const ContractAddress = "0x727C2468012CD7F1CE6A6851E11cE27B4b296094"
+const ContractAddress = "0xf7A5a1dea44be4f13CE4DBD6E2B27A5E9A66B5A0"
 
 const App: React.FC = () => {
   const [account, setAccount] = useState<string>("");
@@ -53,15 +53,13 @@ const App: React.FC = () => {
   
     const ArtCoincontract = new web3.eth.Contract(ArtCoinABI.abi, ArtCoincontractAddress);
     const ReceiveArtCoincontract = new web3.eth.Contract(ReceiveArtCoinABI.abi, ContractAddress);
-
-    const recipient = ContractAddress; 
     const amount = web3.utils.toWei("10", "ether"); 
 
-    await ArtCoincontract.methods.approve(account, amount).send({from: account});
+    await ArtCoincontract.methods.approve(ContractAddress, amount).send({from: account});
   
     try {
       await ReceiveArtCoincontract.methods
-        .fundToken(account , recipient , 10)
+        .fundToken(account , amount)
         .send({ from: account})
         
       console.log("Transfer successful");

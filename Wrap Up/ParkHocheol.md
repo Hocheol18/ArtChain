@@ -52,3 +52,11 @@
 
 event은 객체는 선언하고
 emit은 이벤트를 발생한다.
+
+## 20240314
+-  // indexed :: event 객체 내에서 사용할 수 있는 키워드, event를 검색 또는 필터링하는 데 사용할 수 있게 만든다.
+// 동시성 문제 해결, 이로 인해 동시에 컨트랙트에 접근한 사람이 같은 데이터를 볼 수 있음.
+event TokenReceived(address indexed funder, uint256 amount);
+
+- // Event execute
+        emit TokenReceived(msg.sender, _amount);
