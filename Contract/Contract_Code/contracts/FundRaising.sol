@@ -3,23 +3,27 @@
 
 pragma solidity ^0.8.20;
 
+import "./ERC20MintBurnTransfer.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract FundRaisingContract {
+contract FundRaisingContract is ERC20MintBurnTransferContract {
     mapping(address => uint256) public refunds; // 환불 address 1:1로 맵핑
     mapping(address => uint256) public newCoins; // 새로운 소각 1:1로 맵핑
 
-    uint256 public totalApply; // 총 발행량
     address public owner; // 컨트랙트 호출자
     uint256 public raisedAmount; // 총 모금 발행량 갯수
     uint256 public finishTime; // 마감 시간
-    address[] private listOfContributors; // ArtCoin 넣은 사람 address
+    address[] public listOfContributors; // ArtCoin 넣은 사람 address
 
-    constructor(uint256 _time, uint256 _totalApply) {
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint256 initialSupply,
+        uint256 _time
+    ) ERC20MintBurnTransferContract(name, symbol, initialSupply) {
         owner = msg.sender;
         raisedAmount = 0;
         finishTime = block.timestamp + (_time * 1 minutes);
-        totalApply = _totalApply * 10 ** 18;
     }
 
     // 나중에 컨트랙트 상에서 전송해야 하므로 이더 받는 함수
@@ -29,7 +33,7 @@ contract FundRaisingContract {
     function distributeFund() external {
         require(msg.sender == owner, "must be owner");
         require(block.timestamp > finishTime, "Not time OVER");
-        require(raisedAmount >= (totalApply * 4) / 5, "not goal");
+        require(raisedAmount >= (initialSupply * 4) / 5, "not goal");
 
         for (uint i = 0; i < listOfContributors.length; i++) {
             address contributor = listOfContributors[i];
@@ -37,14 +41,14 @@ contract FundRaisingContract {
 
             if (amount > 0) {
                 newCoins[contributor] = 0;
-                payable(contributor).transfer(amount);
+                _transfer(owner, contributor, amount);
             }
         }
     }
- 
-    // 함수
+
+    // 환불 함수
     function refundDistribute() external {
-        require(raisedAmount < (totalApply * 4) / 5, "80% is not over");
+        require(raisedAmount < (initialSupply * 4) / 5, "80% is not over");
         require(block.timestamp > finishTime, "Not over");
 
         for (uint i = 0; i < listOfContributors.length; i++) {

@@ -1,167 +1,21 @@
 require("@nomiclabs/hardhat-waffle");
+import ArtcoinAbi from "./artifacts/contracts/ReceiveArtCoin.sol/ReceiveArtCoinContract.json"
 
 task("check", "Check contract amounts", async () => {
   const [deployer] = await ethers.getSigners();
-  const contract = "0x0559e2e7bd3210098e4ff68Ec263E7e47486D7d9";
-  const abi = [
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "_Supply",
-          type: "uint256",
-        },
-      ],
-      name: "mintTokens",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "burnAmount",
-          type: "uint256",
-        },
-      ],
-      name: "burnTokens",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "to",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "amount",
-          type: "uint256",
-        },
-      ],
-      name: "transferToken",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "distributeFunds",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function"
-    },
-  ];
-
-  // const abi = [
-  //   {
-  //     "inputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "_targetAmount",
-  //         "type": "uint256"
-  //       },
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "_time",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "nonpayable",
-  //     "type": "constructor"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "distributeFunds",
-  //     "outputs": [],
-  //     "stateMutability": "payable",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [
-  //       {
-  //         "internalType": "address",
-  //         "name": "",
-  //         "type": "address"
-  //       }
-  //     ],
-  //     "name": "donations",
-  //     "outputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "finishTime",
-  //     "outputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "owner",
-  //     "outputs": [
-  //       {
-  //         "internalType": "address",
-  //         "name": "",
-  //         "type": "address"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "raisedAmount",
-  //     "outputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "inputs": [],
-  //     "name": "targetAmount",
-  //     "outputs": [
-  //       {
-  //         "internalType": "uint256",
-  //         "name": "",
-  //         "type": "uint256"
-  //       }
-  //     ],
-  //     "stateMutability": "view",
-  //     "type": "function"
-  //   },
-  //   {
-  //     "stateMutability": "payable",
-  //     "type": "receive"
-  //   }
-  // ];
-  const fundrasing = new ethers.Contract(contract, abi, deployer);
-  await fundrasing.distributeFunds()
+  const contract = "0xf7A5a1dea44be4f13CE4DBD6E2B27A5E9A66B5A0";
+  const ArtcoinABI = ArtcoinAbi.abi
+  const fundraising = new ethers.Contract(contract, ArtcoinABI, deployer)
+  await fundraising.initialSupply().then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  await fundraising.raisedAmount().then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  await fundraising.newCoins("0xf7A5a1dea44be4f13CE4DBD6E2B27A5E9A66B5A0").then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  await fundraising.refunds("0xf7A5a1dea44be4f13CE4DBD6E2B27A5E9A66B5A0").then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  // await fundraising.listOfContributors(10).then((res : any) => console.log(res)).catch((err : any) => console.log(err))
+  
+  // await fundrasing.distributeFunds()
   // await fundrasing.mintTokens(100);
   // await fundrasing.transferToken(
-  //   "0xfB4CDcfb555459a886C1987E3Da3a4e7F7474CD3",
+  //   "0xa98152DE411B3C2ecBccAA199A7f1F855e7c8E90",
   //   100
   // );
   // await fundrasing.distributeFunds().then((datass : any) => console.log(datass) ).catch((err : any) => console.log(err))

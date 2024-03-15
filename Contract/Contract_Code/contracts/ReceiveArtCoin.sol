@@ -10,32 +10,38 @@ contract ReceiveArtCoinContract is FundRaisingContract {
     IERC20 public fundingToken;
     address public contractAddress;
 
-    // indexed의 의미 :: query에 저장할 때 인덱스 하기 쉬움
-    event TokenReceived(address indexed donor, uint256 amount);
+    event NewCoinsUpdated(address indexed _from, uint256 _amount);
 
     constructor(
+        string memory name,
+        string memory symbol,
+        uint256 _initialSupply, // 초기 조각 총발행량
         uint256 _time, // 시간 상속
-        uint256 _totalApply, // 총발행량 상속
-        address _tokenAddress, // 토큰 컨트랙트
-        address _contractAddress // 토큰 컨트랙트 주소
-    ) FundRaisingContract(_time, _totalApply) {
+        address _tokenAddress // 토큰 컨트랙트
+    )
+        // address _contractAddress // 생성된 컨트랙트 주소
+        FundRaisingContract(name, symbol, _initialSupply, _time)
+    {
         fundingToken = IERC20(_tokenAddress);
-        contractAddress = _contractAddress;
     }
 
-    // fundingToken.approve(contractAddress, fundAmount);
-    // receiveArtCoin.fundToken(fundAmount);
-
-    function fundToken(uint256 _amount) external {
+    // ts에서 실행, button 이벤트를 주어야 실행가능함.
+    function fundToken(address _from, uint256 _amount) external {
+        require(block.timestamp < finishTime, "Time Over");
         require(_amount > 0, "You need to donate a positive amount of tokens");
-        require(_amount + raisedAmount <= totalApply);
         require(
-            fundingToken.transferFrom(msg.sender, address(this), _amount),
-            "Failed to transfer tokens"
+            _amount + raisedAmount <= initialSupply,
+            "Exceeds initial supply"
         );
+        bool success = fundingToken.transferFrom(_from, address(this), _amount);
+        require(success, "Token transfer failed");
+        raisedAmount += _amount;
+        newCoins[_from] += _amount;
+        
+        if (newCoins[_from] == 0) {
+            listOfContributors.push(_from);
+        }
 
-        // Donation Save
-        emit TokenReceived(msg.sender, _amount);
-        newCoins[msg.sender] += _amount;
+        emit NewCoinsUpdated(_from, _amount); 
     }
 }
