@@ -1,0 +1,27 @@
+/* 전역 스타일을 재설정하여 기본 마진과 패딩을 제거 */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  /* 높이를 100%로 설정하여 전체 화면을 채우도록 합니다. */
+  height: 100%;
+}
+
+/* 추가적으로, box-sizing을 border-box로 설정하여 패딩과 테두리가 요소의 전체 너비에 포함되도록 합니다. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: "Pretendard-Regular";
+}
