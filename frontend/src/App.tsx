@@ -1,6 +1,9 @@
-import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { ReactNode } from "react";
+import { TopNavBar } from "./components/Common/Navigation/TopNavBar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { MainPage } from "./pages/MainPage";
+import { InvestList } from "./pages/InvestList";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -30,10 +33,22 @@ function App() {
           </div>
         </div>
       </Desktop>
+      {/* 모바일 */}
       <Mobile>
         <div style={{ backgroundColor: "white", height: "100dvh" }}>
-          <div>ArtChain</div>
-          <div>Mobile</div>
+          {/* NavBar
+          <TopNavBar /> */}
+          <BrowserRouter>
+            <Routes>
+              {/* 메인페이지 */}
+              <Route path="/" element={<MainPage />} />
+
+              {/* 투자리스트 */}
+              <Route path="/invest-list" element={<InvestList />} />
+
+              {/* 투자  */}
+            </Routes>
+          </BrowserRouter>
         </div>
       </Mobile>
     </>
