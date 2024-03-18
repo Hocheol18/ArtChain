@@ -3,7 +3,7 @@ import { Box, Flex, Button, Image, Text } from "@chakra-ui/react";
 import Logo from "../../../assets/logo.svg";
 import BackIcon from "../../../assets/back-icon.svg";
 import { LoginTrueNavBar } from "./LoginTrueNavBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface NavProp {
   navType: string;
@@ -17,7 +17,13 @@ export const TopNavBar = ({ navType }: NavProp) => {
   //   로그인 유무
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
+  //유저의 코인 보유 수량
   const userCoin = 9999999;
+
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1); //뒤로가기
+  };
 
   useEffect(() => {
     if (navType === "coinBack") {
@@ -65,7 +71,7 @@ export const TopNavBar = ({ navType }: NavProp) => {
         {/* 네비바 타입이 "coinBack"일 때 (뒤로가기 + (코인+프로필) or 로그인 버튼)*/}
         {navType === "coinBack" ? (
           <>
-            <Button variant="unstyled">
+            <Button variant="unstyled" onClick={handleBack}>
               <Image src={BackIcon} />
             </Button>
             {/* 로그인 유무에 따라 바뀜 */}
@@ -83,7 +89,7 @@ export const TopNavBar = ({ navType }: NavProp) => {
         {/* 네비바 타입이 "back"일 때 */}
         {navType === "back" ? (
           <>
-            <Button variant="unstyled">
+            <Button variant="unstyled" onClick={handleBack}>
               <Image src={BackIcon} />
             </Button>
           </>
