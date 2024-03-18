@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
 import { ChakraProvider } from "@chakra-ui/react";
+import { LoginPage } from "./pages/LoginPage";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -46,6 +47,9 @@ function App() {
               <Routes>
                 {/* 메인페이지 */}
                 <Route path="/" element={<MainPage />} />
+
+                {/* 로그인 페이지 */}
+                <Route path="/login" element={<LoginPage />}></Route>
 
                 {/* 투자리스트 */}
                 <Route path="/invest-list" element={<InvestList />} />
