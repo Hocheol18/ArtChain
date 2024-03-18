@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex, Button, Image, Text } from "@chakra-ui/react";
 import Logo from "../../../assets/logo.svg";
-import AddCoinIcon from "../../../assets/add-coin-icon.svg";
-import ProfileIcon from "../../../assets/profile-icon.svg";
+import BackIcon from "../../../assets/back-icon.svg";
+import { LoginTrueNavBar } from "./LoginTrueNavBar";
+import { Link, useNavigate } from "react-router-dom";
 
 interface NavProp {
   navType: string;
@@ -15,6 +16,14 @@ export const TopNavBar = ({ navType }: NavProp) => {
 
   //   로그인 유무
   const [isLogin, setIsLogin] = useState<boolean>(true);
+
+  //유저의 코인 보유 수량
+  const userCoin = 9999999;
+
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1); //뒤로가기
+  };
 
   useEffect(() => {
     if (navType === "coinBack") {
@@ -30,37 +39,59 @@ export const TopNavBar = ({ navType }: NavProp) => {
         height={50}
         pl={leftPadding}
         pr={rightPadding}
-        py="10"
+        py=""
         display="flex"
+        alignItems={"center"}
         justifyContent={justifyCon}
-        border="1px black solid"
+        borderBottom={"1px"}
+        borderBottomColor="#EFF0F3"
       >
+        {/* 네비바 타입이 "logo"일 때 */}
         {navType === "logo" ? (
           <>
-            <Box>
-              <Button>
-                <img src={Logo} alt="" />
+            <Link to="/">
+              <Button variant="unstyled">
+                <Image src={Logo} />
               </Button>
-            </Box>
+            </Link>
+
+            {/* 로그인 유무에 따라 바뀜 */}
             {isLogin ? (
-              <Box>
-                <img src={AddCoinIcon} alt="" />
-                <img src={ProfileIcon} alt="" />
-              </Box>
+              <LoginTrueNavBar userCoin={userCoin} />
             ) : (
-              <Box>로그인</Box>
+              <Link to="/login">
+                <Button variant={"ghost"}>
+                  <Box>로그인</Box>
+                </Button>
+              </Link>
             )}
           </>
         ) : null}
+
+        {/* 네비바 타입이 "coinBack"일 때 (뒤로가기 + (코인+프로필) or 로그인 버튼)*/}
         {navType === "coinBack" ? (
           <>
-            <Box>로고</Box>
-            {isLogin ? <Box>로그인2222</Box> : <Box>로그인</Box>}
+            <Button variant="unstyled" onClick={handleBack}>
+              <Image src={BackIcon} />
+            </Button>
+            {/* 로그인 유무에 따라 바뀜 */}
+            {isLogin ? (
+              <LoginTrueNavBar userCoin={userCoin} />
+            ) : (
+              <Link to="/login">
+                <Button variant={"ghost"}>
+                  <Box>로그인</Box>
+                </Button>
+              </Link>
+            )}
           </>
         ) : null}
+        {/* 네비바 타입이 "back"일 때 */}
         {navType === "back" ? (
           <>
-            <Box>로고</Box>
+            <Button variant="unstyled" onClick={handleBack}>
+              <Image src={BackIcon} />
+            </Button>
           </>
         ) : null}
       </Box>
