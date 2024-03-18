@@ -55,7 +55,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //  }
     String username = oAuth2ResponseDto.getProvider()+" "+oAuth2ResponseDto.getProviderId();
 
-    
+
     return null;
   }
 }
