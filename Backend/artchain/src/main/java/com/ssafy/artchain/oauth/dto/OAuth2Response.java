@@ -1,6 +1,6 @@
 package com.ssafy.artchain.oauth.dto;
 
-public interface OAuth2ResponseDto {
+public interface OAuth2Response {
 
   //제공자 (Ex. naver, google, ...)
   String getProvider();

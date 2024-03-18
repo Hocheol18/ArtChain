@@ -3,8 +3,9 @@ package com.ssafy.artchain.oauth.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import com.ssafy.artchain.oauth.dto.CustomOAuth2User;
-import com.ssafy.artchain.oauth.dto.KakaoResponseDto;
-import com.ssafy.artchain.oauth.dto.OAuth2ResponseDto;
+import com.ssafy.artchain.oauth.dto.KakaoResponse;
+import com.ssafy.artchain.oauth.dto.MemberDto;
+import com.ssafy.artchain.oauth.dto.OAuth2Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -30,32 +31,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 //    Member member = null;
 //    String memberId = null;
-    OAuth2ResponseDto oAuth2ResponseDto = null;
+    OAuth2Response oAuth2Response = null;
     if(oauthClientName.equals("kakao")) {
-//      memberId = "kakao_" + oAuth2User.getAttributes().get("id");
-//      member = new Member(memberId, "이름", "0x1234", "12345", "일반 회원", false, LocalDateTime.now());
-      oAuth2ResponseDto = new KakaoResponseDto(oAuth2User.getAttributes());
+      oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
     } else {
       return null;
     }
+//    oAuth2Response 완료
+    String kakaoId = oAuth2Response.getProvider()+" "+ oAuth2Response.getProviderId();
+    MemberDto memberDto = new MemberDto();
+    memberDto.setId(kakaoId);
+    memberDto.setNickName(oAuth2Response.getName());
+    memberDto.setRole("ROLE_USER");
 
 
-//    String registrationId = userRequest.getClientRegistration().getRegistrationId();
-//
-//    if(registrationId.equals("kakao")){
-////      oAuth2Response = new KakaoResponseDto(oAuth2User.getAttributes());
-//    } else {
-//      return null;
-//    }
-//
-//    String userNameAttributeName = userRequest.getClientRegistration()
-//            .getProviderDetails()
-//            .getUserInfoEndpoint()
-//            .getUserNameAttributeName();
-//  }
-    String username = oAuth2ResponseDto.getProvider()+" "+oAuth2ResponseDto.getProviderId();
-
-
-    return null;
+    return new CustomOAuth2User(memberDto);
   }
 }

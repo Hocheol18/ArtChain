@@ -25,15 +25,15 @@ public class SecurityConfig {
     http.csrf((auth) -> auth.disable());
 
 //    oauth2
-//    http.oauth2Login(oauth2 -> oauth2
-//            .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-//            .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-//
-//    );
+    http.oauth2Login(oauth2 -> oauth2
+            .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+            .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
 
-    http.oauth2Login((oauth2) -> oauth2
-                    .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-                            .userService(oAuth2UserService)));
+    );
+
+//    http.oauth2Login((oauth2) -> oauth2
+//                    .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+//                            .userService(oAuth2UserService)));
 
 //    경로별 인가 작업
     http.authorizeHttpRequests((auth) -> auth
