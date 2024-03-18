@@ -2,8 +2,8 @@
 pragma solidity ^0.8.20;
 
 import "./ArtCoin.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-// TODO: 
 
 contract Marketplace {
     struct Trade {
@@ -19,8 +19,9 @@ contract Marketplace {
     event TradeCreated(uint256 indexed tradeIndex, address seller);
 
     function createTrade(address _tokenSell, uint256 _amountSell, address _tokenBuy, uint256 _amountBuy) public {
+        
         trades.push(Trade({
-            tokenSell: _tokenSell, // 팔고자 하는 토큰, 조각
+            tokenSell: _tokenSell, // 팔고자 하는 토큰, 조각 컨트랙트
             amountSell: _amountSell, // 팔고자 하는 토큰의 양, 조각의 양
             tokenBuy: _tokenBuy, // 구매할 때 사용하는 토큰, 아트 코인
             amountBuy: _amountBuy, // 구매할 때 사용하는 토큰의 양, 아트 코인의 양

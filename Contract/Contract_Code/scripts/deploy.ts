@@ -6,7 +6,7 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const ArtchainERC20Factory = await ethers.getContractFactory("ArtcoinContract");
+  const ArtchainERC20Factory = await ethers.getContractFactory("Marketplace");
   // const ArtchainERC20Factory = await ethers.getContractFactory("ReceiveArtCoinContract"); // 코인 수령
   const contract = await ArtchainERC20Factory.deploy();
   // const initialSupply = ethers.utils.parseUnits("100000", "ether");
