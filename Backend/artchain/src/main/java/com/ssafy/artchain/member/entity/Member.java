@@ -67,4 +67,15 @@ public class Member {
 
   @Column(name = "UPDATED_AT")
   private LocalDateTime updatedAt;
+
+  public Member(String memberId, String name, String walletAddress, String walletPassword, String authority, Boolean isDeleted, LocalDateTime createAt) {
+    this.memberId = memberId;
+    this.password = "artchain123!";
+    this.name = name;
+    this.walletAddress = walletAddress;
+    this.walletPassword = walletPassword;
+    this.authority = authority;
+    this.isDeleted = isDeleted;
+    this.createAt = createAt;
+  }
 }
