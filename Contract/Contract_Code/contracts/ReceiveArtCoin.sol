@@ -8,9 +8,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 // FundRaisingContract 상속
 contract ReceiveArtCoinContract is FundRaisingContract {
     IERC20 public fundingToken;
-    address public contractAddress;
-
-    event NewCoinsUpdated(address indexed _from, uint256 _amount);
+    address public mainWalletaddress; // 메인 지갑 주소
+    mapping(address => bool) private hasContributed;
 
     constructor(
         string memory name,
@@ -18,12 +17,12 @@ contract ReceiveArtCoinContract is FundRaisingContract {
         uint256 _initialSupply, // 초기 조각 총발행량
         uint256 _time, // 시간 상속
         address _tokenAddress // 토큰 컨트랙트
-    )
-        // address _contractAddress // 생성된 컨트랙트 주소
-        FundRaisingContract(name, symbol, _initialSupply, _time)
-    {
+    ) FundRaisingContract(name, symbol, _initialSupply, _time) {
+        mainWalletaddress = 0x67F07AFaD0f1528391a0CF8C5058370114B262d6;
         fundingToken = IERC20(_tokenAddress);
     }
+
+    event NewCoinsUpdated(address indexed _from, uint256 _amount);
 
     // ts에서 실행, button 이벤트를 주어야 실행가능함.
     function fundToken(address _from, uint256 _amount) external {
@@ -33,15 +32,20 @@ contract ReceiveArtCoinContract is FundRaisingContract {
             _amount + raisedAmount <= initialSupply,
             "Exceeds initial supply"
         );
-        bool success = fundingToken.transferFrom(_from, address(this), _amount);
+        bool success = fundingToken.transferFrom(
+            _from,
+            mainWalletaddress,
+            _amount
+        );
         require(success, "Token transfer failed");
         raisedAmount += _amount;
         newCoins[_from] += _amount;
-        
-        if (newCoins[_from] == 0) {
+
+        if (!hasContributed[_from]) {
             listOfContributors.push(_from);
+            hasContributed[_from] = true;
         }
 
-        emit NewCoinsUpdated(_from, _amount); 
+        emit NewCoinsUpdated(_from, _amount);
     }
 }
