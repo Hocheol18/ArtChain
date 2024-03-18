@@ -42,7 +42,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     MemberDto memberDto = new MemberDto();
     memberDto.setId(kakaoId);
     memberDto.setNickName(oAuth2Response.getName());
-    memberDto.setRole("ROLE_USER");
+    memberDto.setAuthority("ROLE_USER");
 
 
     return new CustomOAuth2User(memberDto);
