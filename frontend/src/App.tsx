@@ -4,6 +4,7 @@ import { TopNavBar } from "./components/Common/Navigation/TopNavBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -18,39 +19,43 @@ function App() {
   return (
     <>
       {/* 데스크탑 버전 */}
-      <Desktop>
-        <div style={{ backgroundColor: "#001a38", height: "100dvh" }}>
-          <div
-            style={{
-              width: "390px",
-              margin: "0 auto",
-              backgroundColor: "white",
-              height: "100dvh",
-            }}
-          >
-            <div>ArtChain</div>
-            <div>Desktop</div>
+      <ChakraProvider>
+        <Desktop>
+          <div style={{ backgroundColor: "#001a38", height: "100dvh" }}>
+            <div
+              style={{
+                width: "390px",
+                margin: "0 auto",
+                backgroundColor: "white",
+                height: "100dvh",
+              }}
+            >
+              <div>ArtChain</div>
+              <div>Desktop</div>
+            </div>
           </div>
-        </div>
-      </Desktop>
+        </Desktop>
+      </ChakraProvider>
       {/* 모바일 */}
-      <Mobile>
-        <div style={{ backgroundColor: "white", height: "100dvh" }}>
-          {/* NavBar
+      <ChakraProvider>
+        <Mobile>
+          <div style={{ backgroundColor: "white", height: "100dvh" }}>
+            {/* NavBar
           <TopNavBar /> */}
-          <BrowserRouter>
-            <Routes>
-              {/* 메인페이지 */}
-              <Route path="/" element={<MainPage />} />
+            <BrowserRouter>
+              <Routes>
+                {/* 메인페이지 */}
+                <Route path="/" element={<MainPage />} />
 
-              {/* 투자리스트 */}
-              <Route path="/invest-list" element={<InvestList />} />
+                {/* 투자리스트 */}
+                <Route path="/invest-list" element={<InvestList />} />
 
-              {/* 투자  */}
-            </Routes>
-          </BrowserRouter>
-        </div>
-      </Mobile>
+                {/* 투자  */}
+              </Routes>
+            </BrowserRouter>
+          </div>
+        </Mobile>
+      </ChakraProvider>
     </>
   );
 }
