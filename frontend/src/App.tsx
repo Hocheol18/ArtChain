@@ -6,6 +6,8 @@ import { MainPage } from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
 import { ChakraProvider } from "@chakra-ui/react";
 import { LoginPage } from "./pages/LoginPage";
+import { MyPage } from "./pages/MyPage";
+import { CoinCharge } from "./pages/CoinCharge";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -50,6 +52,12 @@ function App() {
 
                 {/* 로그인 페이지 */}
                 <Route path="/login" element={<LoginPage />}></Route>
+
+                {/* 마이페이지 */}
+                <Route path="/mypage" element={<MyPage />}></Route>
+
+                {/* 코인 충전 */}
+                <Route path="/coin-charge" element={<CoinCharge />}></Route>
 
                 {/* 투자리스트 */}
                 <Route path="/invest-list" element={<InvestList />} />

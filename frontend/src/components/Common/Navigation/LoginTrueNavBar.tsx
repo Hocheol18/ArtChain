@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Image, Text } from "@chakra-ui/react";
 import AddCoinIcon from "../../../assets/add-coin-icon.svg";
 import ProfileIcon from "../../../assets/profile-icon.svg";
+import { Link } from "react-router-dom";
 
 interface Prop {
   userCoin: number;
@@ -16,13 +17,15 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
       justifyContent={"space-between"}
     >
       <Box position={"relative"}>
-        <Image
-          boxSize={9}
-          src={AddCoinIcon}
-          position="absolute"
-          top="-9px"
-          left="-5px"
-        />
+        <Link to="/coin-charge">
+          <Image
+            boxSize={9}
+            src={AddCoinIcon}
+            position="absolute"
+            top="-9px"
+            left="-5px"
+          />
+        </Link>
         <Text
           textAlign={"center"}
           ml={4}
@@ -37,7 +40,9 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
         </Text>
       </Box>
 
-      <Image boxSize={8} src={ProfileIcon} />
+      <Link to="/mypage">
+        <Image boxSize={8} src={ProfileIcon} />
+      </Link>
     </Box>
   );
 };

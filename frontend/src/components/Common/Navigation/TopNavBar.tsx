@@ -15,7 +15,7 @@ export const TopNavBar = ({ navType }: NavProp) => {
   const [justifyCon, setJustifyCon] = useState<string>("space-between");
 
   //   로그인 유무
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
 
   //유저의 코인 보유 수량
   const userCoin = 9999999;
