@@ -9,7 +9,7 @@ const web3 = new Web3((window as any).ethereum);
 // Artcoin address
 const ArtCoincontractAddress = "0xB80a551604E49a912590bBd1fb79Bb1dE27A263E";
 // Contract address
-const ContractAddress = "0xf7A5a1dea44be4f13CE4DBD6E2B27A5E9A66B5A0"
+const ContractAddress = "0xB1EE6a825c7c555D37ce5877763ad540947e1983"
 
 const App: React.FC = () => {
   const [account, setAccount] = useState<string>("");
@@ -50,7 +50,7 @@ const App: React.FC = () => {
       alert("지갑을 연결해주세요");
       return;
     }
-  
+    
     const ArtCoincontract = new web3.eth.Contract(ArtCoinABI.abi, ArtCoincontractAddress);
     const ReceiveArtCoincontract = new web3.eth.Contract(ReceiveArtCoinABI.abi, ContractAddress);
     const amount = web3.utils.toWei("10", "ether"); 

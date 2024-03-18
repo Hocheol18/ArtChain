@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract ReceiveArtCoinContract is FundRaisingContract {
     IERC20 public fundingToken;
     address public contractAddress;
+    mapping(address => bool) private hasContributed;
 
     event NewCoinsUpdated(address indexed _from, uint256 _amount);
 
@@ -19,7 +20,7 @@ contract ReceiveArtCoinContract is FundRaisingContract {
         uint256 _time, // 시간 상속
         address _tokenAddress // 토큰 컨트랙트
     )
-        // address _contractAddress // 생성된 컨트랙트 주소
+        // address _contractAddress 생성된 컨트랙트 주소
         FundRaisingContract(name, symbol, _initialSupply, _time)
     {
         fundingToken = IERC20(_tokenAddress);
@@ -37,11 +38,12 @@ contract ReceiveArtCoinContract is FundRaisingContract {
         require(success, "Token transfer failed");
         raisedAmount += _amount;
         newCoins[_from] += _amount;
-        
-        if (newCoins[_from] == 0) {
+
+        if (!hasContributed[_from]) {
             listOfContributors.push(_from);
+            hasContributed[_from] = true; // Mark this address as having contributed
         }
 
-        emit NewCoinsUpdated(_from, _amount); 
+        emit NewCoinsUpdated(_from, _amount);
     }
-}
+}   
