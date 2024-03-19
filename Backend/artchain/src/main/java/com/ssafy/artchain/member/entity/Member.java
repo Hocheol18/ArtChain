@@ -1,7 +1,11 @@
 package com.ssafy.artchain.member.entity;
 
+import com.ssafy.artchain.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,9 +15,9 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "MEMBER")
-public class Member {
+public class Member extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +36,10 @@ public class Member {
   @Column(name = "NAME", nullable = false)
   private String name;
 
-  @Column(name = "WALLET_ADDRESS", nullable = false)
+  @Column(name = "WALLET_ADDRESS")
   private String walletAddress;
 
-  @Column(name = "WALLET_PASSWORD", nullable = false)
+  @Column(name = "WALLET_PASSWORD")
   private String walletPassword;
 
   @Column(name = "WALLET_BALANCE", precision = 19, scale = 2)
@@ -62,9 +66,4 @@ public class Member {
   @Column(name = "IS_DELETED", nullable = false)
   private Boolean isDeleted;
 
-  @Column(name = "CREATED_AT", nullable = false)
-  private LocalDateTime createAt;
-
-  @Column(name = "UPDATED_AT")
-  private LocalDateTime updatedAt;
 }
