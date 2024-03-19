@@ -12,6 +12,8 @@ import { CommonPage } from "./pages/CommonPage";
 import { Theme } from "./theme/theme";
 import Market from "./pages/Market";
 
+import MarketDetail from "./pages/MarketDetail";
+
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
     const isDesktop = useMediaQuery({ minWidth: 501 });
@@ -93,6 +95,15 @@ function App() {
                   element={
                     <CommonPage topNavType="logo" bottomNavType="market">
                       <Market />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                <Route
+                  path="/market/:id"
+                  element={
+                    <CommonPage topNavType="coinBack" bottomNavType="market">
+                      <MarketDetail />
                     </CommonPage>
                   }
                 ></Route>

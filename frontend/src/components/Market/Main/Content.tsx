@@ -7,7 +7,7 @@ export default function Content() {
     <>
       <SimpleGrid
         spacing="10"
-        p="9"
+        p="6"
         textAlign="center"
         rounded="lg"
         color="gray.400"
