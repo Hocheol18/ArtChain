@@ -2,6 +2,8 @@ package com.ssafy.artchain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,10 +34,10 @@ public class Member {
   @Column(name = "NAME", nullable = false)
   private String name;
 
-  @Column(name = "WALLET_ADDRESS", nullable = false)
+  @Column(name = "WALLET_ADDRESS")
   private String walletAddress;
 
-  @Column(name = "WALLET_PASSWORD", nullable = false)
+  @Column(name = "WALLET_PASSWORD")
   private String walletPassword;
 
   @Column(name = "WALLET_BALANCE", precision = 19, scale = 2)
@@ -62,15 +64,17 @@ public class Member {
   @Column(name = "IS_DELETED", nullable = false)
   private Boolean isDeleted;
 
-  @Column(name = "CREATED_AT", nullable = false)
+  @Column(name = "CREATED_AT")
+  @CreatedDate
   private LocalDateTime createAt;
 
   @Column(name = "UPDATED_AT")
+  @LastModifiedDate
   private LocalDateTime updatedAt;
 
   public Member(String memberId, String name, String walletAddress, String walletPassword, String authority, Boolean isDeleted, LocalDateTime createAt) {
     this.memberId = memberId;
-    this.password = "artchain123!";
+    this.password = "ssafy123";
     this.name = name;
     this.walletAddress = walletAddress;
     this.walletPassword = walletPassword;
