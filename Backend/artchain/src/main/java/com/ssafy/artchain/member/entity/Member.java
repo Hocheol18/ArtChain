@@ -63,7 +63,7 @@ public class Member extends BaseTimeEntity {
   @Column(name = "BUSINESS_REGISTRATION_NUMBER")
   private String businessRegistrationNumber;
 
-  @Column(name = "IS_DELETED", nullable = false)
+  @Column(name = "IS_DELETED")
   private Boolean isDeleted;
 
 }

@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -35,6 +36,10 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //    csrf disable
     http.csrf((auth) -> auth.disable());
+//    form로그인 방식 disable
+    http.formLogin((auth) -> auth.disable());
+//    httpBasic disable
+    http.httpBasic((auth) -> auth.disable());
 
 //    oauth2
 //    http.oauth2Login(oauth2 -> oauth2
@@ -66,10 +71,11 @@ public class SecurityConfig {
             }));
 
     http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+    http.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
 //    oauth2
     http.oauth2Login((oauth2) -> oauth2
-                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+//                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(oAuth2UserService))
                         .successHandler(customSuccessHandler)
@@ -77,8 +83,8 @@ public class SecurityConfig {
 
 //    경로별 인가 작업
     http.authorizeHttpRequests((auth) -> auth
-//            .requestMatchers("/").permitAll().anyRequest().authenticated());
-                    .anyRequest().permitAll());
+            .requestMatchers("/").permitAll().anyRequest().authenticated());
+//                    .anyRequest().permitAll());
 
     // 세션을 사용하지 않기 때문에 STATELESS로 설정
     http.sessionManagement(sessionManagement ->

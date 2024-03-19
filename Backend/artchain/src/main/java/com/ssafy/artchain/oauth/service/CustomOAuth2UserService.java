@@ -42,7 +42,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       return null;
     }
 //    oAuth2Response 완료
-    String kakaoId = oAuth2Response.getProvider()+" "+ oAuth2Response.getProviderId();
+    String kakaoId = oAuth2Response.getProvider()+"_"+ oAuth2Response.getProviderId();
     boolean existMember = memberRepository.existsByMemberId(kakaoId);
 //    DB에 저 멤버 정보가 없다면
     if (!existMember) {
