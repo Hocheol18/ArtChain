@@ -1,6 +1,7 @@
 package com.ssafy.artchain.config;
 
 import com.ssafy.artchain.jwt.CustomSuccessHandler;
+import com.ssafy.artchain.jwt.JwtFilter;
 import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.oauth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @Configurable
@@ -34,7 +36,12 @@ public class SecurityConfig {
 //            .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
 //
 //    );
+
+    http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+//    oauth2
     http.oauth2Login((oauth2) -> oauth2
+                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(oAuth2UserService))
                         .successHandler(customSuccessHandler)
