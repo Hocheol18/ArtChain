@@ -1,5 +1,6 @@
 package com.ssafy.artchain.member.entity;
 
+import com.ssafy.artchain.connectentity.InvestmentLog;
 import com.ssafy.artchain.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -66,4 +68,6 @@ public class Member extends BaseTimeEntity {
   @Column(name = "IS_DELETED", nullable = false)
   private Boolean isDeleted;
 
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  private List<InvestmentLog> investmentLogs;
 }
