@@ -1,5 +1,7 @@
 package com.ssafy.artchain.funding.service;
 
-public interface FundingService {
+import com.ssafy.artchain.funding.dto.FundingCreateRequestDto;
 
+public interface FundingService {
+    public int createFunding(FundingCreateRequestDto data);
 }
