@@ -10,6 +10,7 @@ import { MyPage } from "./pages/MyPage";
 import { CoinCharge } from "./pages/CoinCharge";
 import { CommonPage } from "./pages/CommonPage";
 import { Theme } from "./theme/theme";
+import Market from "./pages/Market";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -85,6 +86,16 @@ function App() {
                 />
 
                 {/* 투자  */}
+
+                {/* 마켓 */}
+                <Route
+                  path="/market"
+                  element={
+                    <CommonPage topNavType="logo" bottomNavType="market">
+                      <Market />
+                    </CommonPage>
+                  }
+                ></Route>
               </Routes>
             </BrowserRouter>
           </div>
