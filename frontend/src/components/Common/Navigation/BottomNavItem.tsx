@@ -45,6 +45,7 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
         break;
       case "마이":
         setImgIcon(MyIcon);
+        setToLink("/mypage");
         break;
     }
   }, []);

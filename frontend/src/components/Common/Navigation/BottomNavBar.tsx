@@ -33,7 +33,7 @@ export const BottomNavBar = ({ navType }: Props) => {
         setMyActive(true);
         break;
     }
-  }, [navType]);
+  }, []);
 
   return (
     <div>
