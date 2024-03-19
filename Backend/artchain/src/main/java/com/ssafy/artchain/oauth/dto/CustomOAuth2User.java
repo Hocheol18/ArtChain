@@ -37,8 +37,11 @@ public class CustomOAuth2User implements OAuth2User {
     return collection;
   }
 
+//  memberId값입니다
   @Override
   public String getName() {
-    return this.memberDto.getNickName();
+    return this.memberDto.getId();
   }
+
+  public String getNickName() { return this.memberDto.getNickName(); }
 }

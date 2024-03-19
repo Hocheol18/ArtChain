@@ -1,5 +1,7 @@
 package com.ssafy.artchain.config;
 
+import com.ssafy.artchain.jwt.CustomSuccessHandler;
+import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.oauth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -18,6 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
   private final CustomOAuth2UserService oAuth2UserService;
+  private final CustomSuccessHandler customSuccessHandler;
+  private final JwtUtil jwtUtil;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -31,9 +35,12 @@ public class SecurityConfig {
 
     );
 
-//    http.oauth2Login((oauth2) -> oauth2
-//                    .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-//                            .userService(oAuth2UserService)));
+//    http
+//                .oauth2Login((oauth2) -> oauth2
+//                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+//                                .userService(customOAuth2UserService))
+//                        .successHandler(customSuccessHandler)
+//                );
 
 //    경로별 인가 작업
     http.authorizeHttpRequests((auth) -> auth
