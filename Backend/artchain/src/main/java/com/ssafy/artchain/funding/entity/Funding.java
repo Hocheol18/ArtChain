@@ -1,8 +1,11 @@
 package com.ssafy.artchain.funding.entity;
 
+import com.ssafy.artchain.connectentity.InvestmentLog;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import lombok.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -63,4 +66,6 @@ public class Funding {
     @Column(name = "category", nullable = false)
     private String category;
 
+    @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
+    private List<InvestmentLog> investmentLogs;
 }
