@@ -9,6 +9,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { MyPage } from "./pages/MyPage";
 import { CoinCharge } from "./pages/CoinCharge";
 import { CommonPage } from "./pages/CommonPage";
+import { Theme } from "./theme/theme";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -23,7 +24,7 @@ function App() {
   return (
     <>
       {/* 데스크탑 버전 */}
-      <ChakraProvider>
+      <ChakraProvider theme={Theme}>
         <Desktop>
           <div style={{ backgroundColor: "#001a38", height: "100dvh" }}>
             <div
@@ -40,7 +41,7 @@ function App() {
         </Desktop>
       </ChakraProvider>
       {/* 모바일 */}
-      <ChakraProvider>
+      <ChakraProvider theme={Theme}>
         <Mobile>
           <div style={{ backgroundColor: "white", height: "100dvh" }}>
             {/* NavBar
