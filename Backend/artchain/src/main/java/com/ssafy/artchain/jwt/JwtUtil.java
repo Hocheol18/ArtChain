@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtUtil {
   private SecretKey secretKey;
 
-  public JwtUtil (@Value("${jwt.secret-key}")String secret) {
+  public JwtUtil (@Value("${spring.jwt.secret-key}")String secret) {
     secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
   }
   public String getMemberId(String token) {
