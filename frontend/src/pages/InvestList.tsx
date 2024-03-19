@@ -8,15 +8,5 @@ export const InvestList = () => {
   const isDesktop = useMediaQuery({ minWidth: 501 });
 
   console.log(isDesktop);
-  return (
-    <div>
-      <Box>
-        <TopNavBar navType="logo" />
-      </Box>
-      <div>투자리스트 페이지</div>
-      <Box position={"fixed"} bottom={0} width={isDesktop ? "390px" : "100%"}>
-        <BottomNavBar navType="invest" />
-      </Box>
-    </div>
-  );
+  return <div>투자리스트 페이지</div>;
 };

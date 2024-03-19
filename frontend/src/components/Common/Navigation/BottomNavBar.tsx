@@ -22,18 +22,33 @@ export const BottomNavBar = ({ navType }: Props) => {
     switch (navType) {
       case "home":
         setHomeActive(true);
+        setInvestActive(false);
+        setMarketActive(false);
+        setMyActive(false);
         break;
       case "invest":
+        setHomeActive(false);
         setInvestActive(true);
+        setMarketActive(false);
+        setMyActive(false);
         break;
       case "market":
+        setHomeActive(false);
+        setInvestActive(false);
         setMarketActive(true);
+        setMyActive(false);
         break;
       case "my":
+        setHomeActive(false);
+        setInvestActive(false);
+        setMarketActive(false);
         setMyActive(true);
         break;
     }
-  }, []);
+  }, [navType]);
+
+  console.log("invest: " + investActive);
+  console.log("home: " + homeActive);
 
   return (
     <div>

@@ -27,6 +27,9 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
       setImgColor(
         "invert(19%) sepia(100%) saturate(1891%) hue-rotate(201deg) brightness(90%) contrast(99%)"
       );
+    } else {
+      setBorderColor("white");
+      setImgColor("");
     }
   }, [active]);
 
@@ -49,7 +52,7 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
         setToLink("/mypage");
         break;
     }
-  }, []);
+  }, [text]);
 
   return (
     <Box

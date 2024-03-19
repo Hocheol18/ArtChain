@@ -6,15 +6,6 @@ import { useMediaQuery } from "react-responsive";
 
 export const MainPage = () => {
   const isDesktop = useMediaQuery({ minWidth: 501 });
-  return (
-    <div>
-      <Box>
-        <TopNavBar navType="logo" />
-      </Box>
-      <div>메인페이지</div>
-      <Box position={"fixed"} bottom={0} width={isDesktop ? "390px" : "100%"}>
-        <BottomNavBar navType="home" />
-      </Box>
-    </div>
-  );
+
+  return <div>메인페이지</div>;
 };

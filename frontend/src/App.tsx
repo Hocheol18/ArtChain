@@ -8,6 +8,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { LoginPage } from "./pages/LoginPage";
 import { MyPage } from "./pages/MyPage";
 import { CoinCharge } from "./pages/CoinCharge";
+import { CommonPage } from "./pages/CommonPage";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -33,26 +34,7 @@ function App() {
                 height: "100dvh",
               }}
             >
-              <BrowserRouter>
-                <Routes>
-                  {/* 메인페이지 */}
-                  <Route path="/" element={<MainPage />} />
-
-                  {/* 로그인 페이지 */}
-                  <Route path="/login" element={<LoginPage />}></Route>
-
-                  {/* 마이페이지 */}
-                  <Route path="/mypage" element={<MyPage />}></Route>
-
-                  {/* 코인 충전 */}
-                  <Route path="/coin-charge" element={<CoinCharge />}></Route>
-
-                  {/* 투자리스트 */}
-                  <Route path="/invest-list" element={<InvestList />} />
-
-                  {/* 투자  */}
-                </Routes>
-              </BrowserRouter>
+              데스크탑
             </div>
           </div>
         </Desktop>
@@ -66,19 +48,40 @@ function App() {
             <BrowserRouter>
               <Routes>
                 {/* 메인페이지 */}
-                <Route path="/" element={<MainPage />} />
+                <Route
+                  path="/"
+                  element={
+                    <CommonPage topNavType="logo" bottomNavType="home">
+                      <MainPage />
+                    </CommonPage>
+                  }
+                />
 
                 {/* 로그인 페이지 */}
                 <Route path="/login" element={<LoginPage />}></Route>
 
                 {/* 마이페이지 */}
-                <Route path="/mypage" element={<MyPage />}></Route>
+                <Route
+                  path="/mypage"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="my">
+                      <MyPage />
+                    </CommonPage>
+                  }
+                ></Route>
 
                 {/* 코인 충전 */}
                 <Route path="/coin-charge" element={<CoinCharge />}></Route>
 
                 {/* 투자리스트 */}
-                <Route path="/invest-list" element={<InvestList />} />
+                <Route
+                  path="/invest-list"
+                  element={
+                    <CommonPage topNavType="logo" bottomNavType="invest">
+                      <InvestList />
+                    </CommonPage>
+                  }
+                />
 
                 {/* 투자  */}
               </Routes>
