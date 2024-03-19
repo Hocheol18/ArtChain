@@ -7,24 +7,25 @@ import lombok.Getter;
 @Getter
 public enum StatusCode {
 
-	// 200 OK : 성공
-	SUCCESS_LIBRARY_VIEW(200, "서재 조회 성공"),
+    // 200 OK : 성공
+    SUCCESS_FUNDING_VIEW(200, "펀딩 조회 성공"),
+    SUCCESS_FUNDING_LIST_VIEW(200, "펀딩 목록 조회 성공"),
 
-	// 201 CREATED : 새로운 리소스 생성
-	SUCCESS_CREATE_USER_BOOK(201, "사용자 도서 생성 성공"),
-	SUCCESS_CREATE_FUNDING(201, "새로운 펀딩 생성 성공"),
+    // 201 CREATED : 새로운 리소스 생성
+    SUCCESS_CREATE_FUNDING(201, "새로운 펀딩 생성 성공"),
 
-	// 204 NO CONTENT : 성공하였으나, 반환할 값이 없음
-	NO_CONTENT_IN_LIBRARY_VIEW(204, "서재에 도서가 없음"),
+    // 204 NO CONTENT : 성공하였으나, 반환할 값이 없음
+    NO_CONTENT_IN_FUNDING_LIST_VIEW(204, "해당 작품 분야에 해당 상태값을 가지는 펀딩이 없음"),
+    SUCCESS_ALLOW_FUNDING(204, "펀딩 승인 완료"),
 
-	// 400 BAD REQUEST : 잘못된 요청 - 요청 구문이 잘못되었음
-	FAIL_USER_BOOK_DELETE(400, "잘못된 요청으로 인한 사용자 도서 삭제 실패"),
-	FAIL_CREATE_FUNDING(400, "잘못된 요청으로 펀딩이 생성되지 않음"),
+    // 400 BAD REQUEST : 잘못된 요청 - 요청 구문이 잘못되었음
+    FAIL_CREATE_FUNDING(400, "잘못된 요청으로 펀딩이 생성되지 않음"),
+    ALREADY_ALLOWED_FUNDING(400, "이미 승인된 펀딩"),
 
-	// 404 NOT FOUND
-	FAIL_USER_BOOK_VIEW(404, "사용자 도서 조회 실패");
+    // 404 NOT FOUND
+    FAIL_FUNDING_VIEW(404, "펀딩 조회 실패");
 
 
-	private final int status;
-	private final String message;
+    private final int status;
+    private final String message;
 }
