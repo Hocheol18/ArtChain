@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Spacer } from "@chakra-ui/react";
+import { Box, SimpleGrid, Spacer } from "@chakra-ui/react";
 import { TopNavBar } from "../components/Common/Navigation/TopNavBar";
 import { BottomNavBar } from "../components/Common/Navigation/BottomNavBar";
 import { useMediaQuery } from "react-responsive";
@@ -11,7 +11,12 @@ export const InvestList = () => {
   console.log(isDesktop);
   return (
     <div>
-      <InvestListItem />
+      <SimpleGrid spacing={10} padding={7}>
+        <InvestListItem />
+        <InvestListItem />
+        <InvestListItem />
+        <InvestListItem />
+      </SimpleGrid>
     </div>
   );
 };
