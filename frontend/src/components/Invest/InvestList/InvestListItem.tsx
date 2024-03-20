@@ -1,8 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Image, Text, Progress } from "@chakra-ui/react";
 import tmpImg from "../../../assets/invest-poster-tmp-img.jpg";
 
 export const InvestListItem = () => {
+  // ing, end, complete
+  const [statusBadge, setStatusBadge] = useState("ing");
+  const [statusColor, setStatusColor] = useState("blue.300");
+  const [brightness, setBrightness] = useState("brightness(100%)");
+
+  useEffect(() => {
+    switch (statusBadge) {
+      case "ing":
+        setStatusColor("blue.300");
+        setBrightness("brightness(100%)");
+        break;
+      case "end":
+        setStatusColor("gray.500");
+        setBrightness("brightness(70%)");
+        break;
+      case "complete":
+        setStatusColor("blue.200");
+        setBrightness("brightness(50%)");
+        break;
+    }
+  }, [statusBadge]);
+
   return (
     <div>
       <Box
@@ -20,6 +42,7 @@ export const InvestListItem = () => {
           objectFit="cover"
           borderTopLeftRadius="15"
           borderBottomLeftRadius="15"
+          filter={brightness}
         />
         <Box
           flex={1}
@@ -45,7 +68,7 @@ export const InvestListItem = () => {
               <Text fontSize={12}>전시</Text>
             </Box>
             <Box
-              backgroundColor="blue.300"
+              backgroundColor={statusColor}
               borderRadius={17}
               px={3}
               py={1}
@@ -70,7 +93,7 @@ export const InvestListItem = () => {
               sx={{
                 width: "100%", // 너비를 100%로 설정하여 부모 컨테이너를 꽉 채우도록 함
                 "& > div": {
-                  backgroundColor: "#014BA0", // 진행 막대의 색상을 직접 지정
+                  backgroundColor: `${statusColor}`, // 진행 막대의 색상을 직접 지정
                 },
               }}
             />
