@@ -3,8 +3,6 @@ import {
   Flex,
   Text,
   Image,
-  Divider,
-  AbsoluteCenter,
   Center,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -71,7 +69,7 @@ export default function LoginBusiness() {
             로그인
           </Center>
         </Box>
-        <Flex justifyContent={"center"} mt={"0.5rem"}>
+        <Flex justifyContent={"center"} mt={"0.5rem"} onClick={() => {navigate("../signup")}}>
           <Text>회원가입</Text>
         </Flex>
       </Flex>

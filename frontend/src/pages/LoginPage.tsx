@@ -25,7 +25,7 @@ export const LoginPage = () => {
           새로운 투자를 시작해보세요
         </Text>
         <Image minW={"340px"} src={LoginUser} />
-        <Box p={"1rem"}>
+        <Box p={"1rem"} onClick={() => navigate("../signupoauth")}>
           <Image w={"340px"} src={kakao} />
         </Box>
         <Box position="relative" mt={"0.5rem"} mb={"1rem"}>
@@ -78,7 +78,7 @@ export const LoginPage = () => {
           </Center>
         </Box>
         <Flex justifyContent={"center"} mt={"0.5rem"}>
-          <Text>회원가입</Text>
+          <Text onClick={() => {navigate("../signupnormal")}}>회원가입</Text>
           <Text ml={"1rem"} color={"blue.300"} onClick={() => {navigate("../loginbusiness")}}>
             기업회원이신가요?
           </Text>

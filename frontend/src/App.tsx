@@ -16,6 +16,9 @@ import MarketTradeConfirm from "./pages/MarketTradeConfrim";
 import MarketTradeNow from "./pages/MarketTradeNow";
 import MarketEnroll from "./pages/MarketEnroll";
 import LoginBusiness from "./pages/LoginBusiness";
+import Signup from "./pages/Signup";
+import UserEnrollWithOauth from "./pages/UserEnrollWithOauth";
+import UserENrollWIthNormal from "./pages/UserEnrollWithNormal";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -89,6 +92,33 @@ function App() {
                       buttonText=""
                     >
                       <LoginBusiness />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                {/* 회원 가입 페이지 */}
+                <Route
+                  path="/signupoauth"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <UserEnrollWithOauth />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                <Route
+                  path="/signupnormal"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <UserENrollWIthNormal />
                     </CommonPage>
                   }
                 ></Route>
