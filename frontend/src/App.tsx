@@ -14,6 +14,7 @@ import Market from "./pages/Market";
 import MarketDetail from "./pages/MarketDetail";
 import MarketTradeConfirm from "./pages/MarketTradeConfrim";
 import MarketTradeNow from "./pages/MarketTradeNow";
+import MarketEnroll from "./pages/MarketEnroll";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -160,10 +161,23 @@ function App() {
                   element={
                     <CommonPage
                       topNavType="back"
-                      bottomNavType=""
+                      bottomNavType="market"
                       buttonText=""
                     >
                       <MarketTradeConfirm />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                <Route
+                  path="/market/enroll"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType="button"
+                      buttonText="등록"
+                    >
+                      <MarketEnroll />
                     </CommonPage>
                   }
                 ></Route>

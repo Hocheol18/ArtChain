@@ -19,7 +19,7 @@ export default function MarketTradeConfirm() {
           {" "}
           거래 ID
         </Text>
-        <Text as={"b"} fontSize={"1rem"}>
+        <Text fontSize={"1rem"}>
           {" "}
           #1314
         </Text>
@@ -35,7 +35,7 @@ export default function MarketTradeConfirm() {
             fontSize={"sm"}
             bg={"blue.300"}
           >
-            <Text as={"b"} color={"white.100"}>
+            <Text color={"white.100"}>
               판매완료
             </Text>
           </Box>
@@ -45,15 +45,15 @@ export default function MarketTradeConfirm() {
           {" "}
           조각수
         </Text>
-        <Text as={"b"} fontSize={"1rem"}>
+        <Text fontSize={"1rem"}>
           {" "}
-          8295조각
+          8295 조각
         </Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
           총 가격
         </Text>
-        <Text as={"b"} fontSize={"1rem"}>
+        <Text fontSize={"1rem"}>
           {" "}
           10,850 아트
         </Text>
@@ -61,7 +61,7 @@ export default function MarketTradeConfirm() {
           {" "}
           조각 당 가격
         </Text>
-        <Text as={"b"} fontSize={"1rem"}>
+        <Text fontSize={"1rem"}>
           {" "}
           1.31 아트
         </Text>
@@ -69,7 +69,7 @@ export default function MarketTradeConfirm() {
           {" "}
           판매자 지갑
         </Text>
-        <Text as={"b"} fontSize={"1rem"}>
+        <Text fontSize={"1rem"}>
           {" "}
           0xF48eDbbD8b15aE1025865bb95056b8C97f3852F8
         </Text>
@@ -77,7 +77,7 @@ export default function MarketTradeConfirm() {
           {" "}
           구매자 지갑
         </Text>
-        <Text as={"b"} fontSize={"1rem"}>
+        <Text fontSize={"1rem"}>
           {" "}
           0xF48eDbbD8b15aE1025865bb95056b8C97f3852F8
         </Text>
@@ -85,7 +85,7 @@ export default function MarketTradeConfirm() {
           {" "}
           시간
         </Text>
-        <Text as={"b"} fontSize={"1rem"}>
+        <Text fontSize={"1rem"}>
           {" "}
           2024.03.13 14:43:45
         </Text>
@@ -93,7 +93,7 @@ export default function MarketTradeConfirm() {
           {" "}
           상세 링크
         </Text>
-        <Text as={"b"} fontSize={"1rem"}>
+        <Text fontSize={"1rem"}>
           {" "}
           0x0cbd1756693df7874030ab7b92419e0f3953f153d754c49d1f731fc320bd0469
         </Text>        

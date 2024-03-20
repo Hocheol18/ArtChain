@@ -1,11 +1,13 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import SellHistoryChart from "./SellHistoryChart";
+import { useNavigate } from "react-router-dom";
 
 export default function SellHistory() {
+  const navigate = useNavigate();
   return (
     <>
       <Box position={"sticky"} left={"1px"}>
-        <Box ml={"1rem"} maxW={"360px"} >
+        <Box ml={"1rem"} maxW={"360px"}>
           <SellHistoryChart />
         </Box>
         <Box ml={"1rem"} mt={"1rem"}>
@@ -55,7 +57,7 @@ export default function SellHistory() {
             fontSize={"sm"}
             bg={"blue.300"}
           >
-            <Text as={"b"} color={"white.100"}>
+            <Text as={"b"} color={"white.100"} onClick={() => {navigate("../market/tradeconfirm/1")}}>
               보기
             </Text>
           </Box>
@@ -90,7 +92,7 @@ export default function SellHistory() {
             fontSize={"sm"}
             bg={"blue.300"}
           >
-            <Text as={"b"} color={"white.100"}>
+            <Text as={"b"} color={"white.100"} onClick={() => {navigate("../market/tradenow/1")}}>
               보기
             </Text>
           </Box>

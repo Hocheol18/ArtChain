@@ -60,14 +60,17 @@ export default function SellList() {
               borderRadius={"0.5rem"}
               textAlign={"center"}
               bgColor={"blue.300"}
+              
             >
               <Text as={"b"} fontSize={"0.8rem"} color={"white"}>
                 구매
               </Text>
             </Box>
           </Flex>
+          
         </Box>
       </Box>
+      
       
     </>
   );
