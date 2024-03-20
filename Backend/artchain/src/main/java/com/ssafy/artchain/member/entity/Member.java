@@ -66,4 +66,8 @@ public class Member extends BaseTimeEntity {
   @Column(name = "IS_DELETED")
   private Boolean isDeleted;
 
+  public void updateName(String name) {
+    this.name = name;
+  }
+
 }

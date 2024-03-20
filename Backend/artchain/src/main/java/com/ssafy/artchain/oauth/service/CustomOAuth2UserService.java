@@ -25,6 +25,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+    System.out.println("OAuth2UserService");
     OAuth2User oAuth2User = super.loadUser(userRequest);
     String oauthClientName = userRequest.getClientRegistration().getClientName();
     try {
@@ -46,6 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     boolean existMember = memberRepository.existsByMemberId(kakaoId);
 //    DB에 저 멤버 정보가 없다면
     if (!existMember) {
+      System.out.println("DB에 멤버 정보가 없습니다");
       BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
       String pw = "ssafy123";
       String hashedPw = bCryptPasswordEncoder.encode(pw);
@@ -68,12 +70,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     else {
+      System.out.println("DB에 멤버 정보가 있습니다");
       Member member = memberRepository.findByMemberId(kakaoId)
               .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
 
-      member = Member.builder()
-              .name(oAuth2Response.getName())
-              .build();
+      System.out.println(member);
+
+      member.updateName(oAuth2Response.getName());
+
+      System.out.println("다시 만든 member" + member);
 
       memberRepository.save(member);
 

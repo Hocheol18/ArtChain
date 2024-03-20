@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -24,9 +25,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
+    System.out.println("SuccessHandler active");
     CustomOAuth2User customMemberDetail = (CustomOAuth2User) authentication.getPrincipal();
 
     String memberId = customMemberDetail.getName();
+    System.out.println();
 
     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -37,7 +40,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     response.addCookie(createCookie("Authorization", token));
 //    프론트 URL에 넣어주면 됩니다
-    response.sendRedirect("http://localhost:8080/");
+    System.out.println("SuccessHandler 끝 리다이렉트 갑니다잉");
+//    response.sendRedirect("https://j10a708.p.ssafy.io/");
+    response.sendRedirect("http://localhost:3000");
   }
 
   private Cookie createCookie(String key, String value) {
