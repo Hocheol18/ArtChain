@@ -82,7 +82,14 @@ public class Funding {
     @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;
 
+    @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
+    private List<FundingNotice> noticeList;
+
     public void allowFunding(Boolean isAllow) {
         this.isAllow = isAllow;
+    }
+
+    public void renewNowCoinCount(Long nowCoinCount) {
+        this.nowCoinCount = nowCoinCount;
     }
 }
