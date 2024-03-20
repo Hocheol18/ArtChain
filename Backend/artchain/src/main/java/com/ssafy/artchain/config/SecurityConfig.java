@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -73,6 +74,12 @@ public class SecurityConfig {
 
     http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
     http.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+//    http
+//            .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+//    http
+//            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
+//    http
+//            .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
 
 //    oauth2
     http.oauth2Login((oauth2) -> oauth2
@@ -84,7 +91,12 @@ public class SecurityConfig {
 
 //    경로별 인가 작업
     http.authorizeHttpRequests((auth) -> auth
-            .requestMatchers("/").permitAll().anyRequest().authenticated());
+            .requestMatchers("/",
+                    "/api/member/login",
+                    "api/member/join",
+                    "/api/member/refresh"
+            ).permitAll()
+            .anyRequest().authenticated());
 //                    .anyRequest().permitAll());
 
     // 세션을 사용하지 않기 때문에 STATELESS로 설정
