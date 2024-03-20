@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Select, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Input, Select, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function Oauth() {
@@ -14,7 +14,7 @@ export default function Oauth() {
           <Text as={"b"} fontSize={"1rem"}>
             이름*
           </Text>
-          <Box
+          <Input
             px={"1rem"}
             py={"0.4rem"}
             rounded={"0.7rem"}
@@ -22,17 +22,14 @@ export default function Oauth() {
             fontSize={"sm"}
             border={"1px"}
             borderColor={"gray.300"}
-          >
-            <Text as={"b"} color={"gray.400"}>
-              이름을 입력하세요
-            </Text>
-          </Box>
+            placeholder="이름을 입력하세요"
+          />
         </Box>
         <Box ml={"0.2rem"} mt={"1rem"}>
           <Text as={"b"} fontSize={"1rem"}>
             이메일
           </Text>
-          <Box
+          <Input
             px={"1rem"}
             py={"0.4rem"}
             rounded={"0.7rem"}
@@ -40,11 +37,8 @@ export default function Oauth() {
             fontSize={"sm"}
             border={"1px"}
             borderColor={"gray.300"}
-          >
-            <Text as={"b"} color={"gray.400"}>
-              이메일을 입력하세요
-            </Text>
-          </Box>
+            placeholder="이메일을 입력하세요"
+          />
         </Box>
         <Box ml={"0.2rem"} mt={"1.5rem"}>
           <Text as={"b"} fontSize={"1rem"}>
@@ -61,7 +55,7 @@ export default function Oauth() {
               <option value="option2">하나은행</option>
               <option value="option3">기업은행</option>
             </Select>
-            <Box
+            <Input
               minW={"200px"}
               px={"1rem"}
               py={"0.4rem"}
@@ -70,11 +64,8 @@ export default function Oauth() {
               fontSize={"sm"}
               border={"1px"}
               borderColor={"gray.300"}
-            >
-              <Text as={"b"} color={"gray.400"}>
-                계좌번호를 입력하세요
-              </Text>
-            </Box>
+              placeholder="계좌번호를 입력하세요"
+            />
           </Flex>
         </Box>
         {isFilled ? (
