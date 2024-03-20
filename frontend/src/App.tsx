@@ -15,6 +15,7 @@ import MarketDetail from "./pages/MarketDetail";
 import MarketTradeConfirm from "./pages/MarketTradeConfrim";
 import MarketTradeNow from "./pages/MarketTradeNow";
 import MarketEnroll from "./pages/MarketEnroll";
+import LoginBusiness from "./pages/LoginBusiness";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -66,9 +67,31 @@ function App() {
                     </CommonPage>
                   }
                 />
-
                 {/* 로그인 페이지 */}
-                <Route path="/login" element={<LoginPage />}></Route>
+                <Route
+                  path="/login"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <LoginPage />
+                    </CommonPage>
+                  }
+                ></Route>
+                <Route
+                  path="/loginbusiness"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <LoginBusiness />
+                    </CommonPage>
+                  }
+                ></Route>
 
                 {/* 마이페이지 */}
                 <Route
@@ -83,10 +106,8 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-
                 {/* 코인 충전 */}
                 <Route path="/coin-charge" element={<CoinCharge />}></Route>
-
                 {/* 투자리스트 */}
                 <Route
                   path="/invest-list"
@@ -100,9 +121,7 @@ function App() {
                     </CommonPage>
                   }
                 />
-
                 {/* 투자  */}
-
                 {/* 마켓 */}
                 <Route
                   path="/market"
@@ -116,7 +135,6 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-
                 <Route
                   path="/market/:id"
                   element={
@@ -126,19 +144,6 @@ function App() {
                       buttonText=""
                     >
                       <MarketDetail />
-                    </CommonPage>
-                  }
-                ></Route>
-
-                <Route
-                  path="/market/tradedone/:id"
-                  element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType=""
-                      buttonText=""
-                    >
-                      <MarketTradeConfirm />
                     </CommonPage>
                   }
                 ></Route>
@@ -155,7 +160,6 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-
                 <Route
                   path="/market/tradeconfirm/:id"
                   element={
@@ -168,7 +172,6 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-
                 <Route
                   path="/market/enroll"
                   element={
