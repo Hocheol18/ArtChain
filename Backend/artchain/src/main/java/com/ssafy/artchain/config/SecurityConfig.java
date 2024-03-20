@@ -3,12 +3,15 @@ package com.ssafy.artchain.config;
 import com.ssafy.artchain.jwt.CustomSuccessHandler;
 import com.ssafy.artchain.jwt.JwtFilter;
 import com.ssafy.artchain.jwt.JwtUtil;
+import com.ssafy.artchain.jwt.LoginFilter;
 import com.ssafy.artchain.oauth.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,7 +31,8 @@ import java.util.Collections;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
+  //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
+  private final AuthenticationConfiguration authenticationConfiguration;
   private final CustomOAuth2UserService oAuth2UserService;
   private final CustomSuccessHandler customSuccessHandler;
   private final JwtUtil jwtUtil;
@@ -72,10 +76,14 @@ public class SecurityConfig {
               }
             }));
 
-    http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-    http.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
-//    http
-//            .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+//    http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+//    http.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+    http
+            .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
+    //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
+    http
+            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+
 //    http
 //            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
 //    http
@@ -111,6 +119,11 @@ public class SecurityConfig {
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
     return new BCryptPasswordEncoder();
+  }
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+
+    return configuration.getAuthenticationManager();
   }
 }
 
