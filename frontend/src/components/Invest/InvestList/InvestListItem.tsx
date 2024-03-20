@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Image, Text, Progress } from "@chakra-ui/react";
-import tmpImg from "../../assets/invest-poster-tmp-img.jpg";
+import tmpImg from "../../../assets/invest-poster-tmp-img.jpg";
 
 export const InvestListItem = () => {
   return (
