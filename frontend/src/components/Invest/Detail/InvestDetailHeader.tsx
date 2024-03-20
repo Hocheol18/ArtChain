@@ -65,7 +65,7 @@ export const InvestDetailHeader = () => {
             </Center>
           </Center>
           <Center display="flex" flexDirection={"column"}>
-            <Center fontSize={14}>남은시간</Center>
+            <Center fontSize={14}>남은 시간</Center>
             <Center fontSize={22}>D-3</Center>
           </Center>
         </Center>
