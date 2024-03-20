@@ -182,7 +182,7 @@ public class FundingServiceImpl implements FundingService {
     @Override
     @Transactional
     public Long createInvestmentLog(Long fundingId, InvestmentRequestDto dto) {
-        // member 관련은 추후 수정해야 함.
+        // TODO: member 관련은 추후 수정해야 함.
         Member member = memberRepository.findById(17L)
             .orElse(null);
         if (member == null) {
