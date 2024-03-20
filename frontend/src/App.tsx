@@ -13,6 +13,7 @@ import { Theme } from "./theme/theme";
 import Market from "./pages/Market";
 
 import MarketDetail from "./pages/MarketDetail";
+import { InvestDetail } from "./pages/InvestDetail";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -88,6 +89,14 @@ function App() {
                 />
 
                 {/* 투자  */}
+                <Route
+                  path="/invest/:id"
+                  element={
+                    <CommonPage topNavType="coinBack" bottomNavType="invest">
+                      <InvestDetail />
+                    </CommonPage>
+                  }
+                />
 
                 {/* 마켓 */}
                 <Route
