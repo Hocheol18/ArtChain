@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Flex, Image, Spacer, border } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import HomeIcon from "../../../assets/home-icon.svg";
-import InvestIcon from "../../../assets/invest-icon.svg";
-import MarketIcon from "../../../assets/market-icon.svg";
-import MyIcon from "../../../assets/my-icon.svg";
+import { Flex } from "@chakra-ui/react";
+
 import { BottomNavItem } from "./BottomNavItem";
 
 interface Props {
