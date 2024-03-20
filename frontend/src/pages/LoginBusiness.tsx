@@ -7,13 +7,11 @@ import {
   AbsoluteCenter,
   Center,
 } from "@chakra-ui/react";
-import LoginUser from "../assets/loginuser.png";
-import kakao from "../assets/kakaologin.png";
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import Business from "../assets/business.png";
 
-export const LoginPage = () => {
-  const navigate = useNavigate()
+export default function LoginBusiness() {
+  const navigate = useNavigate();
   return (
     <Box p={"1rem"}>
       <Flex direction={"column"}>
@@ -22,18 +20,14 @@ export const LoginPage = () => {
         </Text>
         <Text as={"b"} fontSize={"1.7rem"}>
           {" "}
-          새로운 투자를 시작해보세요
+          작품을 완성해보세요
         </Text>
-        <Image minW={"340px"} src={LoginUser} />
-        <Box p={"1rem"}>
-          <Image w={"340px"} src={kakao} />
-        </Box>
-        <Box position="relative" mt={"0.5rem"} mb={"1rem"}>
-          <Divider borderColor={"gray.400"} />
-          <AbsoluteCenter bg="white" px="5">
-            OR
-          </AbsoluteCenter>
-        </Box>
+        <Flex justifyContent={"center"} mt={"1rem"} mb={"1rem"}>
+          <Box w={"246px"} h={"266px"}>
+            <Image src={Business} />
+          </Box>
+        </Flex>
+
         <Box
           px={"1rem"}
           py={"0.7rem"}
@@ -79,11 +73,8 @@ export const LoginPage = () => {
         </Box>
         <Flex justifyContent={"center"} mt={"0.5rem"}>
           <Text>회원가입</Text>
-          <Text ml={"1rem"} color={"blue.300"} onClick={() => {navigate("../loginbusiness")}}>
-            기업회원이신가요?
-          </Text>
         </Flex>
       </Flex>
     </Box>
   );
-};
+}
