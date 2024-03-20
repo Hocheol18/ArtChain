@@ -43,9 +43,6 @@ export const BottomNavBar = ({ navType }: Props) => {
     }
   }, [navType]);
 
-  console.log("invest: " + investActive);
-  console.log("home: " + homeActive);
-
   return (
     <div>
       <Flex height="70" borderTop={"1px"} borderTopColor="#EFF0F3">

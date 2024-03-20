@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Image, Text, Progress } from "@chakra-ui/react";
 import tmpImg from "../../../assets/invest-poster-tmp-img.jpg";
+import { Link } from "react-router-dom";
 
 export const InvestListItem = () => {
   // ing, end, complete
@@ -28,6 +29,8 @@ export const InvestListItem = () => {
   return (
     <div>
       <Box
+        as={Link}
+        to="/invest/1"
         border={"1px solid"}
         borderColor={"gray.100"}
         borderRadius="15"

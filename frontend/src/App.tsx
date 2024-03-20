@@ -12,6 +12,7 @@ import { Theme } from "./theme/theme";
 import Market from "./pages/Market";
 
 import MarketDetail from "./pages/MarketDetail";
+import { InvestDetail } from "./pages/InvestDetail";
 import MarketTradeConfirm from "./pages/MarketTradeConfrim";
 import MarketTradeNow from "./pages/MarketTradeNow";
 import MarketEnroll from "./pages/MarketEnroll";
@@ -122,6 +123,15 @@ function App() {
                   }
                 />
                 {/* 투자  */}
+                <Route
+                  path="/invest/:id"
+                  element={
+                    <CommonPage topNavType="coinBack" bottomNavType="invest">
+                      <InvestDetail />
+                    </CommonPage>
+                  }
+                />
+
                 {/* 마켓 */}
                 <Route
                   path="/market"
