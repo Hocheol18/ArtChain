@@ -65,8 +65,12 @@ public class Member extends BaseTimeEntity {
   @Column(name = "BUSINESS_REGISTRATION_NUMBER")
   private String businessRegistrationNumber;
 
-  @Column(name = "IS_DELETED", nullable = false)
+  @Column(name = "IS_DELETED")
   private Boolean isDeleted;
+
+  public void updateName(String name) {
+    this.name = name;
+  }
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<InvestmentLog> investmentLogs;
