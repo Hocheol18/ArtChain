@@ -1,8 +1,23 @@
 package com.ssafy.artchain.funding.entity;
 
-import jakarta.persistence.*;
+import com.ssafy.artchain.connectentity.InvestmentLog;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import lombok.*;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -39,8 +54,9 @@ public class Funding {
     @Column(name = "risk_notice", nullable = false)
     private String riskNotice;
 
-    @Column(name = "progress_status", nullable = false)
-    private String progressStatus;
+    @Column(name = "progress_status", nullable = false, columnDefinition = "varchar(255)")
+    @Enumerated(EnumType.STRING)
+    private FundingProgressStatus progressStatus = FundingProgressStatus.RECRUITMENT_STATUS;
 
     @Column(name = "goal_coin_count", nullable = false)
     private Long goalCoinCount;
@@ -63,4 +79,10 @@ public class Funding {
     @Column(name = "category", nullable = false)
     private String category;
 
+    @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
+    private List<InvestmentLog> investmentLogs;
+
+    public void allowFunding(Boolean isAllow) {
+        this.isAllow = isAllow;
+    }
 }
