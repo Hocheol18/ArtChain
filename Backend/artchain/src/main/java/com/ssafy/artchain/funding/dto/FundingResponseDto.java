@@ -3,6 +3,8 @@ package com.ssafy.artchain.funding.dto;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
@@ -22,6 +24,7 @@ public class FundingResponseDto {
     private String category;
     private Boolean isAllow;
     private FundingProgressStatus progressStatus;
+    private List<FundingNoticeResponseDto> noticeList;
 
     public FundingResponseDto(Funding funding) {
         this.id = funding.getId();
@@ -38,5 +41,8 @@ public class FundingResponseDto {
         this.category = funding.getCategory();
         this.isAllow = funding.getIsAllow();
         this.progressStatus = funding.getProgressStatus();
+        this.noticeList = funding.getNoticeList().stream().map(FundingNoticeResponseDto::new)
+            .collect(
+                Collectors.toList());
     }
 }

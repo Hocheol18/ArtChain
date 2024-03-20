@@ -2,7 +2,11 @@ package com.ssafy.artchain.funding.controller;
 
 import com.ssafy.artchain.funding.dto.FundingCreateRequestDto;
 import com.ssafy.artchain.funding.dto.FundingListResponseDto;
+import com.ssafy.artchain.funding.dto.FundingNoticeRequestDto;
+import com.ssafy.artchain.funding.dto.FundingNoticeResponseDto;
 import com.ssafy.artchain.funding.dto.FundingResponseDto;
+import com.ssafy.artchain.funding.dto.InvestmentIdResponseDto;
+import com.ssafy.artchain.funding.dto.InvestmentRequestDto;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.response.DefaultResponse;
 import com.ssafy.artchain.funding.response.StatusCode;
@@ -13,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -104,6 +109,12 @@ public class FundingController {
         }
     }
 
+    /**
+     * 펀딩 승인.
+     *
+     * @param fundingId
+     * @return
+     */
     @PutMapping("/{fundingId}")
     public ResponseEntity<DefaultResponse<Void>> allowFunding(@PathVariable Long fundingId) {
         // -1: 해당하는 펀딩 없음, 0: 이미 승인된 펀딩, 1: 펀딩 승인.
@@ -125,5 +136,152 @@ public class FundingController {
                 StatusCode.SUCCESS_ALLOW_FUNDING
             );
         }
+    }
+
+    /**
+     * 펀딩 작품별 공지사항 작성
+     *
+     * @param fundingId
+     * @param dto
+     * @return
+     */
+    @PostMapping("/{fundingId}/notice")
+    public ResponseEntity<DefaultResponse<Void>> createNotice(@PathVariable Long fundingId,
+        @RequestBody
+        FundingNoticeRequestDto dto) {
+        // -1: 해당 펀딩 없음, 0: 작성 실패, 1: 작성 성공
+        int result = fundingService.createNotice(fundingId, dto);
+
+        if (result == -1) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.FAIL_FUNDING_VIEW
+            );
+        } else if (result == 0) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.FAIL_CREATE_FUNDING_NOTICE
+            );
+        }
+
+        return DefaultResponse.emptyResponse(
+            HttpStatus.OK,
+            StatusCode.SUCCESS_CREATE_FUNDING_NOTICE
+        );
+    }
+
+    /**
+     * 공지사항 상세보기
+     *
+     * @param fundingId
+     * @param fundingNoticeId
+     * @return
+     */
+    @GetMapping("/{fundingId}/notice/{fundingNoticeId}")
+    public ResponseEntity<DefaultResponse<FundingNoticeResponseDto>> getFundingNotice(
+        @PathVariable Long fundingId, @PathVariable Long fundingNoticeId) {
+        FundingNoticeResponseDto fundingNoticeResponseDto = fundingService.getFundingNotice(
+            fundingId,
+            fundingNoticeId);
+
+        if (fundingNoticeResponseDto == null) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.FAIL_FUNDING_NOTICE_VIEW
+            );
+        }
+
+        return DefaultResponse.toResponseEntity(
+            HttpStatus.OK,
+            StatusCode.SUCCESS_FUNDING_NOTICE_VIEW,
+            fundingNoticeResponseDto
+        );
+    }
+
+    /**
+     * 공지사항 수정 (제목, 내용)
+     *
+     * @param fundingId
+     * @param fundingNoticeId
+     * @param dto
+     * @return
+     */
+    @PutMapping("/{fundingId}/notice/{fundingNoticeId}")
+    public ResponseEntity<DefaultResponse<Void>> updateFundingNotice(@PathVariable Long fundingId,
+        @PathVariable Long fundingNoticeId, @RequestBody FundingNoticeRequestDto dto) {
+        // -1: 해당하는 펀딩 공지사항 없거나 해당 펀딩의 공지사항이 아님, 1: 펀딩 공지사항 수정 완료
+        int result = fundingService.updateFundingNotice(fundingId, fundingNoticeId, dto);
+
+        if (result == -1) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.FAIL_FUNDING_NOTICE_VIEW
+            );
+        }
+
+        return DefaultResponse.emptyResponse(
+            HttpStatus.OK,
+            StatusCode.SUCCESS_MODIFY_FUNDING_NOTICE
+        );
+    }
+
+    /**
+     * 공지사항 삭제
+     *
+     * @param fundingId
+     * @param fundingNoticeId
+     * @return
+     */
+    @DeleteMapping("/{fundingId}/notice/{fundingNoticeId}")
+    public ResponseEntity<DefaultResponse<Void>> deleteFundingNotice(@PathVariable Long fundingId,
+        @PathVariable Long fundingNoticeId) {
+        // -1: 해당하는 펀딩 공지사항 없거나 해당 펀딩의 공지사항이 아님, 1: 펀딩 공지사항 삭제 완료
+        int result = fundingService.deleteFundingNotice(fundingId, fundingNoticeId);
+
+        if (result == -1) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.FAIL_FUNDING_NOTICE_VIEW
+            );
+        }
+
+        return DefaultResponse.emptyResponse(
+            HttpStatus.OK,
+            StatusCode.SUCCESS_DELETE_FUNDING_NOTICE
+        );
+    }
+
+
+    /**
+     * 투자 내역 생성
+     *
+     * @param fundingId
+     * @param dto
+     * @return
+     */
+    @PostMapping("/{fundingId}/invest")
+    public ResponseEntity<DefaultResponse<InvestmentIdResponseDto>> createInvestmentLog(
+        @PathVariable Long fundingId, @RequestBody
+    InvestmentRequestDto dto) {
+        // -2: 일치하는 회원 정보 없음, -1: 일치하는 펀딩 정보 없음, 1 이상: 생성된 로그의 식별자 값
+        Long result = fundingService.createInvestmentLog(fundingId, dto);
+
+        if (result.equals(-2L)) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.NOT_FOUND_MEMBER_INFO
+            );
+        } else if (result.equals(-1L)) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.FAIL_FUNDING_VIEW
+            );
+        }
+
+        return DefaultResponse.toResponseEntity(
+            HttpStatus.OK,
+            StatusCode.SUCCESS_CREATE_INVESTMENT_LOG,
+            new InvestmentIdResponseDto(result)
+        );
     }
 }
