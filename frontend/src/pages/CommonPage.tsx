@@ -3,18 +3,20 @@ import { Box } from "@chakra-ui/react";
 import { TopNavBar } from "../components/Common/Navigation/TopNavBar";
 import { BottomNavBar } from "../components/Common/Navigation/BottomNavBar";
 import { useMediaQuery } from "react-responsive";
-import { MainPage } from "./MainPage";
+import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 
 interface CommonProps {
   topNavType: string;
   bottomNavType: string;
   children: React.ReactNode;
+  buttonText: string;
 }
 
 export const CommonPage = ({
   topNavType,
   bottomNavType,
   children,
+  buttonText,
 }: CommonProps) => {
   const isDesktop = useMediaQuery({ minWidth: 501 });
 
@@ -34,7 +36,7 @@ export const CommonPage = ({
       {/* 하단 네비바가 없으면 없게 */}
       {bottomNavType === "" ? null : (
         <Box position={"fixed"} bottom={0} width={isDesktop ? "390px" : "100%"}>
-          <BottomNavBar navType={bottomNavType} />
+          {bottomNavType === "button" ? <BottomButtonNavbar Props={buttonText} /> : <BottomNavBar navType={bottomNavType} />}
         </Box>
       )}
     </Box>
