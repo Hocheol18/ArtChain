@@ -46,11 +46,6 @@ public class SecurityConfig {
 //    httpBasic disable
     http.httpBasic((auth) -> auth.disable());
 
-//    oauth2
-//    http.oauth2Login(oauth2 -> oauth2
-//            .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-//            .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-//
 //    );
 //    cors 설정
 //    로그인의 경우 시큐리티 필터만 통과 후 응답이 되기 때문에 SecurityConfig에 설정한 CORS 값으로 진행됨
@@ -101,7 +96,8 @@ public class SecurityConfig {
     http.authorizeHttpRequests((auth) -> auth
             .requestMatchers("/",
                     "/api/member/login",
-                    "api/member/join",
+                    "api/member/companyJoin",
+                    "api/member/memberJoin",
                     "/api/member/refresh"
             ).permitAll()
             .anyRequest().authenticated());
