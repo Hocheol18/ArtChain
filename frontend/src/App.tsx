@@ -1,6 +1,5 @@
 import { useMediaQuery } from "react-responsive";
 import { ReactNode } from "react";
-import { TopNavBar } from "./components/Common/Navigation/TopNavBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
@@ -13,6 +12,8 @@ import { Theme } from "./theme/theme";
 import Market from "./pages/Market";
 
 import MarketDetail from "./pages/MarketDetail";
+import MarketTradeConfirm from "./pages/MarketTradeConfrim";
+import MarketTradeNow from "./pages/MarketTradeNow";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -55,7 +56,11 @@ function App() {
                 <Route
                   path="/"
                   element={
-                    <CommonPage topNavType="logo" bottomNavType="home">
+                    <CommonPage
+                      topNavType="logo"
+                      bottomNavType="home"
+                      buttonText=""
+                    >
                       <MainPage />
                     </CommonPage>
                   }
@@ -68,7 +73,11 @@ function App() {
                 <Route
                   path="/mypage"
                   element={
-                    <CommonPage topNavType="back" bottomNavType="my">
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType="my"
+                      buttonText=""
+                    >
                       <MyPage />
                     </CommonPage>
                   }
@@ -81,7 +90,11 @@ function App() {
                 <Route
                   path="/invest-list"
                   element={
-                    <CommonPage topNavType="logo" bottomNavType="invest">
+                    <CommonPage
+                      topNavType="logo"
+                      bottomNavType="invest"
+                      buttonText=""
+                    >
                       <InvestList />
                     </CommonPage>
                   }
@@ -93,7 +106,11 @@ function App() {
                 <Route
                   path="/market"
                   element={
-                    <CommonPage topNavType="logo" bottomNavType="market">
+                    <CommonPage
+                      topNavType="logo"
+                      bottomNavType="market"
+                      buttonText=""
+                    >
                       <Market />
                     </CommonPage>
                   }
@@ -102,8 +119,51 @@ function App() {
                 <Route
                   path="/market/:id"
                   element={
-                    <CommonPage topNavType="coinBack" bottomNavType="market">
+                    <CommonPage
+                      topNavType="coinBack"
+                      bottomNavType="market"
+                      buttonText=""
+                    >
                       <MarketDetail />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                <Route
+                  path="/market/tradedone/:id"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <MarketTradeConfirm />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                <Route
+                  path="/market/tradenow/:id"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType="button"
+                      buttonText="구입하기"
+                    >
+                      <MarketTradeNow />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                <Route
+                  path="/market/tradeconfirm/:id"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <MarketTradeConfirm />
                     </CommonPage>
                   }
                 ></Route>

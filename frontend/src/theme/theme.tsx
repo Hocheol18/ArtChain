@@ -6,6 +6,9 @@ extendTheme
 const { primary } = colors
 
 const Theme = extendTheme({
+    fonts: {
+        body: "'Pretendard-Regular', sans-serif",
+      },
     colors: {
         white : {
             100 : primary.white
