@@ -6,7 +6,7 @@ export default function TopNav() {
 
   return (
     <>
-      <Flex minW={"360px"} justifyContent={"center"} mt={"1rem"} ml={"1rem"}>
+      <Flex justifyContent={"center"} mt={"1rem"} wrap={"wrap"}>
         {check === "Total" ? (
           <Box
             borderBottom={"2px"}

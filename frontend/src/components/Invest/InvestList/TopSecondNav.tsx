@@ -7,10 +7,10 @@ export default function TopSecondNav() {
   return (
     <>
       <Flex
-        minW={"360px"}
-        justifyContent={"space-around"}
+        justifyContent={"center"}
         alignContent={"center"}
         mt={"0.5rem"}
+        wrap={"wrap"}
       >
         {check === "total" ? (
           <Box
