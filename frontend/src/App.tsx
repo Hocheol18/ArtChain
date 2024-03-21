@@ -22,6 +22,7 @@ import UserEnrollWithOauth from "./pages/UserEnrollWithOauth";
 import UserENrollWIthNormal from "./pages/UserEnrollWithNormal";
 import BusinessEnroll from "./pages/BusinessEnroll";
 import UserMyPage from "./pages/UserMyPage";
+import { InvestNoticeDetail } from "./pages/InvestNoticeDetail";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -125,10 +126,20 @@ function App() {
                 />
                 {/* 투자  */}
                 <Route
-                  path="/invest/:id"
+                  path="/invest/:investId"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="">
                       <InvestDetail />
+                    </CommonPage>
+                  }
+                />
+
+                {/* 작품 공지사항 */}
+                <Route
+                  path="/invest/:investId/notice/:noticeId"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="">
+                      <InvestNoticeDetail />
                     </CommonPage>
                   }
                 />

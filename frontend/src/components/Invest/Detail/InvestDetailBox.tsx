@@ -19,7 +19,7 @@ type State = {
 
 export const InvestDetailBox = () => {
   const [state, setState] = useState<State>({
-    descActive: true,
+    descActive: false,
     structureActive: false,
     expectRateActive: false,
     noticeActive: false,
@@ -27,9 +27,7 @@ export const InvestDetailBox = () => {
     warningActive: false,
   });
 
-  const [showComponent, setShowComponent] = useState<JSX.Element>(
-    <DescriptionInvest />
-  );
+  const [showComponent, setShowComponent] = useState<JSX.Element>();
 
   // 탭 클릭하면 해당 Active만 true, 나머지 다 false로
   const handleTapClick = (key: keyof State) => {
@@ -59,6 +57,10 @@ export const InvestDetailBox = () => {
         break;
     }
   };
+
+  useEffect(() => {
+    handleTapClick("descActive");
+  }, []);
 
   return (
     <>
