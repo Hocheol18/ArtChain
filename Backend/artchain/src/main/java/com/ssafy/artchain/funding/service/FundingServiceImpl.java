@@ -87,16 +87,16 @@ public class FundingServiceImpl implements FundingService {
         String UPPER_ALL = "ALL";
         String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
 
-        FundingProgressStatus[] statuses;
+        List<FundingProgressStatus> statuses;
         if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
-            statuses = new FundingProgressStatus[]{FundingProgressStatus.RECRUITMENT_STATUS,
+            statuses = List.of(new FundingProgressStatus[]{FundingProgressStatus.RECRUITMENT_STATUS,
                 FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
-                FundingProgressStatus.RECRUITMENT_FAILED};
+                FundingProgressStatus.RECRUITMENT_FAILED});
         } else if (status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END)) {
-            statuses = new FundingProgressStatus[]{FundingProgressStatus.PENDING_SETTLEMENT,
-                FundingProgressStatus.RECRUITMENT_FAILED};
+            statuses = List.of(new FundingProgressStatus[]{FundingProgressStatus.PENDING_SETTLEMENT,
+                FundingProgressStatus.RECRUITMENT_FAILED});
         } else {
-            statuses = new FundingProgressStatus[]{FundingProgressStatus.valueOf(status)};
+            statuses = List.of(new FundingProgressStatus[]{FundingProgressStatus.valueOf(status)});
         }
 
         if (category.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
