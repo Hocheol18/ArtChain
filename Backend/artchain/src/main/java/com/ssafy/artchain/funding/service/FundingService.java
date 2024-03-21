@@ -27,4 +27,6 @@ public interface FundingService {
     int deleteFundingNotice(Long fundingId, Long fundingNoticeId);
 
     Long createInvestmentLog(Long fundingId, InvestmentRequestDto dto);
+
+    int updateFundingProgressStatus(Long fundingId, String progressStatus);
 }

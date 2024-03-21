@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -84,17 +85,24 @@ public class FundingServiceImpl implements FundingService {
     @Transactional
     public List<Funding> getFundingListByCategoryAndStatus(String category, String status) {
         String UPPER_ALL = "ALL";
-        if (category.toUpperCase(Locale.ROOT).equals(UPPER_ALL) && status.toUpperCase(Locale.ROOT)
-            .equals(UPPER_ALL)) {
-            return fundingRepository.findAll();
-        } else if (category.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
-            return fundingRepository.findAllByProgressStatus(
-                FundingProgressStatus.valueOf(status));
-        } else if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
-            return fundingRepository.findAllByCategory(category);
+        String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
+
+        List<FundingProgressStatus> statuses;
+        if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
+            statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
+                FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
+                FundingProgressStatus.RECRUITMENT_FAILED);
+        } else if (status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END)) {
+            statuses = List.of(FundingProgressStatus.PENDING_SETTLEMENT,
+                FundingProgressStatus.RECRUITMENT_FAILED);
         } else {
-            return fundingRepository.findAllByCategoryAndProgressStatus(category,
-                FundingProgressStatus.valueOf(status));
+            statuses = List.of(FundingProgressStatus.valueOf(status));
+        }
+
+        if (category.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
+            return fundingRepository.findAllByProgressStatusIn(statuses);
+        } else {
+            return fundingRepository.findAllByCategoryAndProgressStatusIn(category, statuses);
         }
     }
 
@@ -112,6 +120,25 @@ public class FundingServiceImpl implements FundingService {
             funding.allowFunding(true);
             return 1;
         }
+    }
+
+    @Override
+    @Transactional
+    public int updateFundingProgressStatus(Long fundingId, String progressStatus) {
+        Funding funding = fundingRepository.findById(fundingId)
+            .orElse(null);
+
+        if (funding == null) {
+            return -1;
+        }
+
+        if (Stream.of(FundingProgressStatus.values())
+            .noneMatch(ps -> ps.name().equals(progressStatus))) {
+            return 0;
+        }
+
+        funding.updateProgressStatus(FundingProgressStatus.valueOf(progressStatus));
+        return 1;
     }
 
     @Override

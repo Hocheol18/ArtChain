@@ -20,12 +20,14 @@ public enum StatusCode {
     // 204 NO CONTENT : 성공하였으나, 반환할 값이 없음
     NO_CONTENT_IN_FUNDING_LIST_VIEW(204, "해당 작품 분야에 해당 상태값을 가지는 펀딩이 없음"),
     SUCCESS_ALLOW_FUNDING(204, "펀딩 승인 완료"),
+    SUCCESS_UPDATE_FUNDING_PROGRESS_STATUS(204, "펀딩 진행 상태 수정 완료"),
     SUCCESS_MODIFY_FUNDING_NOTICE(204, "펀딩 공지사항 수정 완료"),
     SUCCESS_DELETE_FUNDING_NOTICE(204, "펀딩 공지사항 삭제 완료"),
 
     // 400 BAD REQUEST : 잘못된 요청 - 요청 구문이 잘못되었음
     FAIL_CREATE_FUNDING(400, "잘못된 요청으로 펀딩이 생성되지 않음"),
     ALREADY_ALLOWED_FUNDING(400, "이미 승인된 펀딩"),
+    NOT_EXIST_PROGRESS_STATUS(400, "해당하는 진행 상태 값이 없음"),
     FAIL_CREATE_FUNDING_NOTICE(400, "잘못된 요청으로 펀딩 공지사항이 생성되지 않음"),
 
     // 404 NOT FOUND

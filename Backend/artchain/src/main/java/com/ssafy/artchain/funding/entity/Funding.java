@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,6 +80,9 @@ public class Funding {
     @Column(name = "category", nullable = false)
     private String category;
 
+    @Column(name = "recruit_end", nullable = false)
+    private LocalDate recruitEnd;
+
     @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;
 
@@ -91,5 +95,9 @@ public class Funding {
 
     public void renewNowCoinCount(Long nowCoinCount) {
         this.nowCoinCount = nowCoinCount;
+    }
+
+    public void updateProgressStatus(FundingProgressStatus progressStatus) {
+        this.progressStatus = progressStatus;
     }
 }
