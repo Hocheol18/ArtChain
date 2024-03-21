@@ -1,5 +1,220 @@
 # Wrap up
 
+## 20240321
+
+### 오늘 한 것
+
+- 어제 에러 해결
+- 프론트엔드 수동 배포 완료
+
+### 어려웠던 점
+
+- ## Pipeline script를 작성하는 부분에서 docker hub에 push하기와 service health check에서 계속 에러가 났었다.
+- vite 프로젝트용 Dockerfile을 작성했는데, 배포와 build는 잘 되는게 구현이 안됐다.
+
+  - 이유
+    - vite는 127.0.0.1:5173 환경으로 디폴트로 세팅하기 때문
+  - 해결 방법
+    - host를 0.0.0.0으로 설정
+  - 최종 `vite.config.ts` 파일
+
+    ```bash
+    import { defineConfig } from "vite";
+    import react from "@vitejs/plugin-react";
+
+    // https://vitejs.dev/config/
+    export default defineConfig({
+      plugins: [react()],
+      server: {
+        port: 3000,
+        host: "0.0.0.0",
+      },
+    });
+
+    ```
+
+### 새로 알게 된 점
+
+- 어제 났던 `[ERROR] module not found: error: you attempted to import /app/node_modules/react-refresh/runtime.js which falls outside of the project src/ directory. relative imports outside of src/ are not supported.` 에러 해결
+
+  - 에러 발생 이유 : 위에서 성공한 방법은 `npm dedupe` 를 밑처럼 두개 버전에 같아졌기 때문임. 근데 `.dockerignore` 를 올리면 `node_modules` 가 제외되고 새롭게 npm install을 하는데, 이때는 수정하기 전 버전으로 버전이 다르게 나와서 에러가 뜨는 것임
+
+    ```
+    ├─┬ @storybook/preset-create-react-app@4.1.2
+    │ └─┬ @pmmmwh/react-refresh-webpack-plugin@0.5.7
+    │   └── react-refresh@0.11.0 deduped
+    ├─┬ @storybook/react@6.5.7
+    │ └── react-refresh@0.11.0
+    └─┬ react-scripts@5.0.1
+      └── react-refresh@0.11.0 deduped
+
+    ```
+
+- https://github.com/storybookjs/storybook/issues/17049 여기 필수 참고
+- **처음에 성공을 한 방법**
+
+  1. Ran `npm ls react-refresh` and it shows a different of `react-refresh` package versions
+
+  ```
+  ├─┬ @storybook/preset-create-react-app@4.1.2
+  │ └─┬ @pmmmwh/react-refresh-webpack-plugin@0.5.7
+  │   └── react-refresh@0.14.0
+  ├─┬ @storybook/react@6.5.7
+  │ └── react-refresh@0.11.0
+  └─┬ react-scripts@5.0.1
+
+  ```
+
+  2. `cd node_modules/react-scripts` and ran `npm dedupe` to de-duplicate multiple versions
+  3. https://github.com/facebook/create-react-app/issues/11810
+  4. Ran `npm ls react-refresh` to check existing versions for `react-refresh`
+
+  ```
+  ├─┬ @storybook/preset-create-react-app@4.1.2
+  │ └─┬ @pmmmwh/react-refresh-webpack-plugin@0.5.7
+  │   └── react-refresh@0.11.0 deduped
+  ├─┬ @storybook/react@6.5.7
+  │ └── react-refresh@0.11.0
+  └─┬ react-scripts@5.0.1
+    └── react-refresh@0.11.0 deduped
+
+  ```
+
+  5. `npm start` compiles & runs successfully
+
+- 그리고 `.dockerignore` 을 만드니까 다시 같은 에러 발생
+
+  - 에러 발생 이유 : 위에서 성공한 방법은 `npm dedupe` 를 밑처럼 두개 버전에 같아졌기 때문임. 근데 `.dockerignore` 를 올리면 `node_modules` 가 제외되고 새롭게 npm install을 하는데, 이때는 수정하기 전 버전으로 버전이 다르게 나와서 에러가 뜨는 것임
+
+    ```
+    ├─┬ @storybook/preset-create-react-app@4.1.2
+    │ └─┬ @pmmmwh/react-refresh-webpack-plugin@0.5.7
+    │   └── react-refresh@0.11.0 deduped
+    ├─┬ @storybook/react@6.5.7
+    │ └── react-refresh@0.11.0
+    └─┬ react-scripts@5.0.1
+      └── react-refresh@0.11.0 deduped
+
+    ```
+
+- **해결 방법**(https://github.com/facebook/create-react-app/issues/11810 필수 참고)
+  - 여기서 `package.json` 에 버전을 아예 `0.11.0` 으로 만들어버리는 코드를 넣으면 된다고 함
+    ```bash
+    "overrides": {
+      "react-refresh": "0.11.0"
+    }
+    ```
+- 근데 지금까지 했던 게 전부 react 프로젝트 설정값이어서 우리는 vite로 프로젝트 만들어서 다시 함
+- 이 Dockerfile로 변경
+
+```bash
+FROM node:21-alpine
+WORKDIR /app
+COPY package*.json .
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD [ "npm", "run", "dev" ]
+```
+
+- `docker buildx build`
+  - `buildx` 는 여러 플랫폼 용으로 빌드할 수 있는 기능같은 여러 기능을 포함한 CLI 확장 플러그인이다.
+  - `docker buildx build` 는 그래서 buildx로 build를 할 때 쓰는 커맨드이다. 그리고 이걸 할 때는 `Moby/BuildKit` 를 자동으로 사용함
+    - 도커 컨테이너에 자동으로 이미지가 있는 것을 확인
+  - https://80000coding.oopy.io/54dc871d-30c9-46cb-b609-2e8831541b5e
+
+### 내일 할 것
+
+- docker-compose.yml 작성
+- 무중단 배포
+
+## 20240320
+
+### 오늘 한 것
+
+- Jenkins 초기화 성공
+- Docker hub repo 생성
+- Dockerfile 작성
+
+### 어려웠던 점
+
+- Dockerfile을 작성하고 돌릴 때 `npm start`을 하면 `npm ERR! Missing script: "start"`이 떴고, 그 이후에는 `sh: react-scripts: not found`이 뜨고 처리한 다음에 컨테이너를 돌리니까 밑의 에러가 계속 뜸
+  ```
+  module not found: error: you attempted to import /app/node_modules/react-refresh/runtime.js which falls outside of the project src/ directory. relative imports outside of src/ are not supported. you can either move it inside src/, or add a symlink to it from project's node_modules/.
+  ```
+- 한번 성공했는데 `.dockerignore`생성 후 다시 에러 발생
+
+### 새로 알게 된 점
+
+- 위에서 마지막 에러를 제외하고 오류가 났던 이유는, create-react-app으로 프로젝트를 만들면 필요한 react-scripts가 없어서 연결이 안됐음.
+
+1. `npm ERR! Missing script: "start"` 에러 발생
+
+   1. `package.json` 에 start script가 없어서 그런거임
+
+      1. 추가해줌
+
+      ```bash
+        "scripts": {
+          "start": "react-scripts start",
+          "dev": "vite",
+          "build": "tsc && vite build",
+          "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+          "preview": "vite preview"
+        },
+      ```
+
+      2. 그리고 `node_modules`랑 `package-lock.json` 삭제 후 `npm install` , `npm install react-scripts` 함
+
+2. `sh: react-scripts: not found`
+   1. 찾아보니 타입스크립트 버전 5.x이상이면 뜨는 듯
+   2. 그래서 `"typescript": "^4.9.5",` 로 변경 후 `npm install react-scripts` 하고 다시 이미지 생성 후 컨테이너 돌림
+   3. https://github.com/remix-run/react-router/issues/10233
+3. 이번에는 `index.html`이 `public` 폴더에 없다고 뜨고 `index.js`가 `src` 폴더에 없다고 뜸
+   1. `index.html`은 복사해서 넣어주고 `index.js`는 `main.tsx를 index.tsx`로 이름 바꿔서 돌리니까 됨
+
+### 내일 할 것
+
+- 에러 해결
+- 프론트엔드 배포
+
+## 20240319
+
+### 오늘 한 것
+
+- Jenkins 설치 후 오류났던 nginx 해결
+- Jenkins 재설치
+  - Plugin 설치, Credintial 추가, GitLab Webhook 걸기
+
+### 어려웠던 점
+
+- Jenkins 컨테이너 내리고 재실행해도 화면은 뜨는데 자꾸 403이 떴다. 그리고 컨테이너와 이미지를 내리고 돌려도 초기화가 되지 않음
+
+### 새로 알게 된 점
+
+- Nginx-Jenkins 연결
+  1. 처음에는 잘 몰라서 EC2내의 nginx의 기본 링크를 젠킨스페이지(8081포트)로 연결시키고, Docker내의 nginx에서는 기본 링크를 3000포트로 연결시켜서 충돌이 났던 것임.
+     1. EC2내의 nginx설정을 지우고, nginx 기본 링크를 젠킨스 페이지로 연결하니 무한로딩되던 페이지가 빠르게 에러페이지 나오는 걸로 발전함
+  2. 에러페이지는 `no resolver defined to resolve` 가 났음
+     1. 찾아보니 `proxy_pass` 를 변수로 받으면 nginx의 기본 built-in resolver로 연결을 하는데, 여기서 문제가 생긴 것임.
+     2. `resolver 1.1.1.1;` 를 추가하니 해결
+     3. https://stackoverflow.com/questions/57937222/502-bad-gateway-nginx-no-resolver-defined-to-resolve
+- Jenkins 로그인 없이 대시보드 들어가기
+  1. `config.xml`에 들어간다
+  ```bash
+  docker exec -it jenkins /bin/bash
+  ```
+  ```bash
+  vim /var/jenkins_home/config.xml
+  ```
+  2. ***<useSecurity> true </useSecurity>를*  *<useSecurity> false </useSecurity>로* 변경**
+  3. 그리고 재시작
+
+### 내일 할 것
+
+- Jenkins 초기화
+- FE pipeline 연결하기
+
 ## 20240318
 
 ### 오늘 한 것
