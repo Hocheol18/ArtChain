@@ -9,14 +9,12 @@ interface CommonProps {
   topNavType: string;
   bottomNavType: string;
   children: React.ReactNode;
-  buttonText: string;
 }
 
 export const CommonPage = ({
   topNavType,
   bottomNavType,
   children,
-  buttonText,
 }: CommonProps) => {
   const isDesktop = useMediaQuery({ minWidth: 501 });
 
@@ -30,14 +28,25 @@ export const CommonPage = ({
           <TopNavBar navType={topNavType} />
         </Box>
       )}
-      <Box flex={1} overflowY="auto" mb="70px">
-        {children}
-      </Box>
+
       {/* 하단 네비바가 없으면 없게 */}
-      {bottomNavType === "" ? null : (
-        <Box position={"fixed"} bottom={0} width={isDesktop ? "390px" : "100%"}>
-          {bottomNavType === "button" ? <BottomButtonNavbar Props={buttonText} /> : <BottomNavBar navType={bottomNavType} />}
+      {bottomNavType === "" ? (
+        <Box flex={1} overflowY={"auto"}>
+          {children}
         </Box>
+      ) : (
+        <>
+          <Box flex={1} overflowY="auto" mb="70px">
+            {children}
+          </Box>
+          <Box
+            position={"fixed"}
+            bottom={0}
+            width={isDesktop ? "390px" : "100%"}
+          >
+            <BottomNavBar navType={bottomNavType} />
+          </Box>
+        </>
       )}
     </Box>
   );
