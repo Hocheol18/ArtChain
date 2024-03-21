@@ -1,14 +1,16 @@
 package com.ssafy.artchain.config;
 
-import com.ssafy.artchain.jwt.CustomSuccessHandler;
-import com.ssafy.artchain.jwt.JwtFilter;
-import com.ssafy.artchain.jwt.JwtUtil;
+import com.ssafy.artchain.jwt.*;
+import com.ssafy.artchain.jwt.repository.RefreshRepository;
+import com.ssafy.artchain.member.repository.MemberRepository;
 import com.ssafy.artchain.oauth.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +19,7 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -27,13 +30,26 @@ import java.util.Collections;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
+  //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
+  private final AuthenticationConfiguration authenticationConfiguration;
   private final CustomOAuth2UserService oAuth2UserService;
   private final CustomSuccessHandler customSuccessHandler;
   private final JwtUtil jwtUtil;
+  private final MemberRepository memberRepository;
+  private final RefreshRepository refreshRepository;
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+
+    return configuration.getAuthenticationManager();
+  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    LoginFilter loginFilter = new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil,refreshRepository);
+    loginFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+    loginFilter.setFilterProcessesUrl("/api/member/login");
+
 //    csrf disable
     http.csrf((auth) -> auth.disable());
 //    form로그인 방식 disable
@@ -41,11 +57,6 @@ public class SecurityConfig {
 //    httpBasic disable
     http.httpBasic((auth) -> auth.disable());
 
-//    oauth2
-//    http.oauth2Login(oauth2 -> oauth2
-//            .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-//            .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-//
 //    );
 //    cors 설정
 //    로그인의 경우 시큐리티 필터만 통과 후 응답이 되기 때문에 SecurityConfig에 설정한 CORS 값으로 진행됨
@@ -57,7 +68,7 @@ public class SecurityConfig {
 
                 CorsConfiguration configuration = new CorsConfiguration();
 
-                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080/"));
 //                configuration.setAllowedOrigins(Collections.singletonList("https://j10a708.p.ssafy.io/"));
                 configuration.setAllowedMethods(Collections.singletonList("*"));
                 configuration.setAllowCredentials(true);
@@ -71,20 +82,40 @@ public class SecurityConfig {
               }
             }));
 
-    http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-    http.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+//    http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+//    http.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+    http
+            .addFilterBefore(new JwtFilter(jwtUtil, memberRepository), LoginFilter.class);
+    //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
+//    http
+//            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
+    http
+            .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
+    http
+            .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
+
+    http.logout(logout -> logout.logoutUrl("/api/member/logout")
+    );
 //    oauth2
-    http.oauth2Login((oauth2) -> oauth2
-//                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-                                .userService(oAuth2UserService))
-                        .successHandler(customSuccessHandler)
-                );
+//    http.oauth2Login((oauth2) -> oauth2
+////                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+//                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+//                                .userService(oAuth2UserService))
+//                        .successHandler(customSuccessHandler)
+//                );
 
 //    경로별 인가 작업
     http.authorizeHttpRequests((auth) -> auth
-            .requestMatchers("/").permitAll().anyRequest().authenticated());
+            .requestMatchers("/",
+                    "/login",
+                    "/join",
+                    "/api/member/login",
+                    "/api/member/companyJoin",
+                    "/api/member/memberJoin",
+                    "/api/member/refresh"
+            ).permitAll()
+            .anyRequest().authenticated());
 //                    .anyRequest().permitAll());
 
     // 세션을 사용하지 않기 때문에 STATELESS로 설정
