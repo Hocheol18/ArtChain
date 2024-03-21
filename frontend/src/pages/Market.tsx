@@ -7,7 +7,7 @@ export default function Martet() {
   return (
     <>
       <TopNav />
-      <TopSecondNav />
+      <TopSecondNav first="전체" second="정산이전" third="정산완료" />
       <MarketSell />
       <Content />
     </>
