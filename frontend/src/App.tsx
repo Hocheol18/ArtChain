@@ -17,7 +17,7 @@ import MarketTradeConfirm from "./pages/MarketTradeConfrim";
 import MarketTradeNow from "./pages/MarketTradeNow";
 import MarketEnroll from "./pages/MarketEnroll";
 import LoginBusiness from "./pages/LoginBusiness";
-import Signup from "./pages/Signup";
+
 import UserEnrollWithOauth from "./pages/UserEnrollWithOauth";
 import UserENrollWIthNormal from "./pages/UserEnrollWithNormal";
 import BusinessEnroll from "./pages/BusinessEnroll";

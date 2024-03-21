@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import SellList from "../components/Market/Detail/SellList";
 import { useState } from "react";
 import SellHistory from "../components/Market/Detail/SellHistory";
+import TopSecondNav from "../components/Market/Main/TopSecondNav";
 
 export default function MarketDeatil() {
   const id = useParams() as { id: string };
@@ -46,6 +47,9 @@ export default function MarketDeatil() {
           </Text>
         </Box>
       )}
+      <Flex mb={"1rem"} ml={"3rem"}>
+        <TopSecondNav first="최신순" second="높은 가격 순" third="낮은 가격 순" />
+      </Flex>
 
       {check === "SellList" ? (
         <Flex p={"0.5rem"}>
