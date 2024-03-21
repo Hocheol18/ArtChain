@@ -115,7 +115,7 @@ public class FundingController {
      * @param fundingId
      * @return
      */
-    @PutMapping("/{fundingId}")
+    @PutMapping("/{fundingId}/allow")
     public ResponseEntity<DefaultResponse<Void>> allowFunding(@PathVariable Long fundingId) {
         // -1: 해당하는 펀딩 없음, 0: 이미 승인된 펀딩, 1: 펀딩 승인.
         int result = fundingService.allowFunding(fundingId);
@@ -136,6 +136,31 @@ public class FundingController {
                 StatusCode.SUCCESS_ALLOW_FUNDING
             );
         }
+    }
+
+    @PutMapping("/{fundingId}/progress-status/{progressStatus}")
+    public ResponseEntity<DefaultResponse<Void>> updateFundingProgressStatus(
+        @PathVariable Long fundingId, @PathVariable String progressStatus) {
+        // -1: 해당하는 펀딩 없음, 1: 펀딩 진행 상태 수정 완료.
+        int result = fundingService.updateFundingProgressStatus(fundingId, progressStatus);
+
+        if (result == -1) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.FAIL_FUNDING_VIEW
+            );
+        } else if (result == 0) {
+            return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.NOT_EXIST_PROGRESS_STATUS
+            );
+        }
+
+        return DefaultResponse.emptyResponse(
+            HttpStatus.OK,
+            StatusCode.SUCCESS_UPDATE_FUNDING_PROGRESS_STATUS
+        );
+
     }
 
     /**

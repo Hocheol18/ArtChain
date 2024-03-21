@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FundingRepository extends JpaRepository<Funding, Long> {
 
-    List<Funding> findAllByProgressStatus(FundingProgressStatus status);
+    List<Funding> findAllByProgressStatusIn(FundingProgressStatus[] statuses);
 
-    List<Funding> findAllByCategory(String category);
+    List<Funding> findAllByCategoryAndProgressStatusIn(String category,
+        FundingProgressStatus[] statuses);
 
-    List<Funding> findAllByCategoryAndProgressStatus(String category, FundingProgressStatus status);
 }
