@@ -22,6 +22,7 @@ import UserEnrollWithOauth from "./pages/UserEnrollWithOauth";
 import UserENrollWIthNormal from "./pages/UserEnrollWithNormal";
 import BusinessEnroll from "./pages/BusinessEnroll";
 import UserMyPage from "./pages/UserMyPage";
+import BusinessMyPage from "./pages/BusinessMyPage";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -181,6 +182,16 @@ function App() {
                   element={
                     <CommonPage topNavType="" bottomNavType="my">
                       <UserMyPage />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                {/* 기업 마이페이지 */}
+                <Route
+                  path="/businesspage/:id"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="my">
+                      <BusinessMyPage />
                     </CommonPage>
                   }
                 ></Route>

@@ -152,10 +152,9 @@ export default function UserMyPage() {
           </Flex>
         </Flex>
       </Box>
-      <Box p={"4rem"}>
-      <DoughnutChart />
-      </Box>
-      
+      <Flex justifyContent={"center"} p={"4rem"}>
+        <DoughnutChart />
+      </Flex>
     </>
   );
 }
