@@ -1,7 +1,13 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-export default function TopSecondNav() {
+interface Props {
+first : string;
+second : string;
+third: string;
+}
+
+export default function TopSecondNav({ first, second, third } : Props) {
   const [check, checkFounder] = useState("total");
 
   return (
@@ -19,7 +25,7 @@ export default function TopSecondNav() {
             ml={"0.5rem"}
           >
             <Text as={"b"} color={"black.100"}>
-              전체
+              {first}
             </Text>
           </Box>
         ) : (
@@ -40,7 +46,7 @@ export default function TopSecondNav() {
                 checkFounder("total");
               }}
             >
-              전체
+              {first}
             </Text>
           </Box>
         )}
@@ -56,7 +62,7 @@ export default function TopSecondNav() {
             ml={"0.5rem"}
           >
             <Text as={"b"} color={"black.100"}>
-              정산이전
+              {second}
             </Text>
           </Box>
         ) : (
@@ -75,7 +81,7 @@ export default function TopSecondNav() {
               color={"gray.400"}
               onClick={() => checkFounder("past")}
             >
-              정산이전
+              {second}
             </Text>
           </Box>
         )}
@@ -92,7 +98,7 @@ export default function TopSecondNav() {
             ml={"0.5rem"}
           >
             <Text as={"b"} color={"black.100"}>
-              정산완료
+              {third}
             </Text>
           </Box>
         ) : (
@@ -111,7 +117,7 @@ export default function TopSecondNav() {
               color={"gray.400"}
               onClick={() => checkFounder("confirm")}
             >
-              정산완료
+              {third}
             </Text>
           </Box>
         )}

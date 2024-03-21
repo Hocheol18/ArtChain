@@ -18,6 +18,10 @@ import MarketTradeNow from "./pages/MarketTradeNow";
 import MarketEnroll from "./pages/MarketEnroll";
 import LoginBusiness from "./pages/LoginBusiness";
 
+import UserEnrollWithOauth from "./pages/UserEnrollWithOauth";
+import UserENrollWIthNormal from "./pages/UserEnrollWithNormal";
+import BusinessEnroll from "./pages/BusinessEnroll";
+
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
     const isDesktop = useMediaQuery({ minWidth: 501 });
@@ -81,7 +85,44 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-
+                {/* 회원 가입 페이지 */}
+                <Route
+                  path="/signupoauth"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <UserEnrollWithOauth />
+                    </CommonPage>
+                  }
+                ></Route>
+                <Route
+                  path="/signupnormal"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <UserENrollWIthNormal />
+                    </CommonPage>
+                  }
+                ></Route>
+                <Route
+                  path="/businessenroll"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType=""
+                      buttonText=""
+                    >
+                      <BusinessEnroll />
+                    </CommonPage>
+                  }
+                ></Route>
+                
                 {/* 마이페이지 */}
                 <Route
                   path="/mypage"
@@ -129,7 +170,6 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-
                 <Route
                   path="/market/tradenow/:id"
                   element={
