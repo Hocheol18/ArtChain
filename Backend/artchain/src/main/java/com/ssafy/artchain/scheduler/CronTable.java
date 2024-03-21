@@ -36,7 +36,9 @@ public class CronTable {
                 List<Funding> fundingList = fundingRepository
                     .findAllByProgressStatusIn(targetProgressStatus)
                     .stream()
-                    .filter(funding -> funding.getRecruitEnd().isEqual(LocalDate.now()))
+                    .filter(
+                        funding -> funding.getRecruitEnd().isEqual(LocalDate.now().minusDays(1L))
+                    )
                     .toList();
 
                 for (Funding funding : fundingList) {
