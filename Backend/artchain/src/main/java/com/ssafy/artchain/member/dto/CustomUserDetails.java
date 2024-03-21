@@ -38,6 +38,8 @@ public class CustomUserDetails implements UserDetails {
         return member.getMemberId();
     }
 
+    public String getNickname(){ return member.getName(); }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

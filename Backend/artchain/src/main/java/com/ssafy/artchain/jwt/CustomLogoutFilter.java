@@ -28,7 +28,6 @@ public class CustomLogoutFilter extends GenericFilterBean {
     }
     private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-        System.out.println("로그아웃 실행");
         //path and method verify
         String requestUri = request.getRequestURI();
         if (!requestUri.matches("^/api/member/logout$")) {
@@ -42,6 +41,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
             filterChain.doFilter(request, response);
             return;
         }
+        System.out.println("로그아웃 실행");
 
         //get refresh token
         String refresh = null;
