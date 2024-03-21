@@ -9,6 +9,8 @@ public enum StatusCode {
 
 	// 200 OK : 성공
 	SUCCESS_NEW_ACCESS_TOKEN(200, "Access 토큰 재발급 성공"),
+	SUCCESS_NEW_NORMAL_USER(200, "일반 유저 등록 성공"),
+	SUCCESS_NEW_COMPANY_USER(200, "회사 유저 등록 성공"),
 	SUCCESS_LIBRARY_VIEW(200, "서재 조회 성공"),
 	SUCCESS_USER_BOOK_VIEW(200, "사용자 도서 조회 성공"),
 	SUCCESS_USER_BOOK_UPDATE(200, "사용자 도서 업데이트 성공"),

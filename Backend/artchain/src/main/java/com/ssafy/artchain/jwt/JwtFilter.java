@@ -1,5 +1,8 @@
 package com.ssafy.artchain.jwt;
 
+import com.ssafy.artchain.member.dto.CustomUserDetails;
+import com.ssafy.artchain.member.entity.Member;
+import com.ssafy.artchain.member.repository.MemberRepository;
 import com.ssafy.artchain.oauth.dto.CustomOAuth2User;
 import com.ssafy.artchain.oauth.dto.MemberDto;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,6 +24,7 @@ import java.io.PrintWriter;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -69,21 +73,29 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println("memberId : " + memberId);
         System.out.println("authority : " + authority);
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new RuntimeException("NOT FOUND MEMBER"));
 
-        //userDTO를 생성하여 값 set
-        MemberDto memberDto = new MemberDto();
-        memberDto.setId(memberId);
-        memberDto.setAuthority(authority);
+        CustomUserDetails customUserDetails = new CustomUserDetails(member);
 
-        //UserDetails에 회원 정보 객체 담기
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(memberDto);
-
-        //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
-        //세션에 사용자 등록
+        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        System.out.println("JwtFilter 끝");
+//        OAuth2 JWTFilter
+        //userDTO를 생성하여 값 set
+//        MemberDto memberDto = new MemberDto();
+//        memberDto.setId(memberId);
+//        memberDto.setAuthority(authority);
+//
+//        //UserDetails에 회원 정보 객체 담기
+//        CustomOAuth2User customOAuth2User = new CustomOAuth2User(memberDto);
+//
+//        //스프링 시큐리티 인증 토큰 생성
+//        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
+//        //세션에 사용자 등록
+//        SecurityContextHolder.getContext().setAuthentication(authToken);
+//
+//        System.out.println("JwtFilter 끝");
 
         filterChain.doFilter(request, response);
     }

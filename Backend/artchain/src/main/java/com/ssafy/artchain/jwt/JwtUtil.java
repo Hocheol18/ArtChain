@@ -36,7 +36,7 @@ public class JwtUtil {
   }
 
   public String createJwt(String category, String memberId, String authority, Long expiredMs) {
-    System.out.println("token made");
+    System.out.println(memberId + "token made");
     return Jwts.builder()
             .claim("category", category)
             .claim("memberId", memberId)

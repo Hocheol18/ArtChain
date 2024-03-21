@@ -1,9 +1,8 @@
 package com.ssafy.artchain.config;
 
-import com.ssafy.artchain.jwt.CustomSuccessHandler;
-import com.ssafy.artchain.jwt.JwtFilter;
-import com.ssafy.artchain.jwt.JwtUtil;
-import com.ssafy.artchain.jwt.LoginFilter;
+import com.ssafy.artchain.jwt.*;
+import com.ssafy.artchain.jwt.repository.RefreshRepository;
+import com.ssafy.artchain.member.repository.MemberRepository;
 import com.ssafy.artchain.oauth.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +35,21 @@ public class SecurityConfig {
   private final CustomOAuth2UserService oAuth2UserService;
   private final CustomSuccessHandler customSuccessHandler;
   private final JwtUtil jwtUtil;
+  private final MemberRepository memberRepository;
+  private final RefreshRepository refreshRepository;
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+
+    return configuration.getAuthenticationManager();
+  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    LoginFilter loginFilter = new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil,refreshRepository);
+    loginFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+    loginFilter.setFilterProcessesUrl("/api/member/login");
+
 //    csrf disable
     http.csrf((auth) -> auth.disable());
 //    form로그인 방식 disable
@@ -57,7 +68,7 @@ public class SecurityConfig {
 
                 CorsConfiguration configuration = new CorsConfiguration();
 
-                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080/"));
 //                configuration.setAllowedOrigins(Collections.singletonList("https://j10a708.p.ssafy.io/"));
                 configuration.setAllowedMethods(Collections.singletonList("*"));
                 configuration.setAllowCredentials(true);
@@ -74,30 +85,34 @@ public class SecurityConfig {
 //    http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 //    http.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
     http
-            .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
+            .addFilterBefore(new JwtFilter(jwtUtil, memberRepository), LoginFilter.class);
     //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
-    http
-            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
-
 //    http
 //            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
-//    http
-//            .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
+    http
+            .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
+    http
+            .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
+
+    http.logout(logout -> logout.logoutUrl("/api/member/logout")
+    );
 //    oauth2
-    http.oauth2Login((oauth2) -> oauth2
-//                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-                                .userService(oAuth2UserService))
-                        .successHandler(customSuccessHandler)
-                );
+//    http.oauth2Login((oauth2) -> oauth2
+////                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+//                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+//                                .userService(oAuth2UserService))
+//                        .successHandler(customSuccessHandler)
+//                );
 
 //    경로별 인가 작업
     http.authorizeHttpRequests((auth) -> auth
             .requestMatchers("/",
+                    "/login",
+                    "/join",
                     "/api/member/login",
-                    "api/member/companyJoin",
-                    "api/member/memberJoin",
+                    "/api/member/companyJoin",
+                    "/api/member/memberJoin",
                     "/api/member/refresh"
             ).permitAll()
             .anyRequest().authenticated());
@@ -115,11 +130,6 @@ public class SecurityConfig {
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
     return new BCryptPasswordEncoder();
-  }
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-
-    return configuration.getAuthenticationManager();
   }
 }
 

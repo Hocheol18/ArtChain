@@ -1,6 +1,8 @@
 package com.ssafy.artchain.member.service;
 
 import com.ssafy.artchain.jwt.JwtUtil;
+import com.ssafy.artchain.jwt.entity.RefreshToken;
+import com.ssafy.artchain.jwt.repository.RefreshRepository;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
 import com.ssafy.artchain.member.entity.Member;
@@ -15,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -24,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
+    private final RefreshRepository refreshRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -55,6 +60,13 @@ public class MemberServiceImpl implements MemberService {
         if (!category.equals("refresh")) {
             return "invalid";
         }
+        //DB에 저장되어 있는지 확인
+        Boolean isExist = refreshRepository.existsByRefresh(refresh);
+        if (!isExist) {
+
+            //response body
+            return "not in DB";
+        }
 
         String memberId = jwtUtil.getMemberId(refresh);
         String authority = jwtUtil.getAuthority(refresh);
@@ -63,12 +75,17 @@ public class MemberServiceImpl implements MemberService {
         String newAccess = jwtUtil.createJwt("access", memberId, authority, 600000L);
         String newRefresh = jwtUtil.createJwt("refresh", memberId, authority, 86400000L);
 
+        //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+        refreshRepository.deleteByRefresh(refresh);
+        addRefreshEntity(memberId, newRefresh, 86400000L);
+
         //response
         httpServletResponse.setHeader("access", newAccess);
         httpServletResponse.addCookie(createCookie("refresh", newRefresh));
         return "access";
     }
 
+    @Transactional
     @Override
     public void companyJoin(CompanyMemberRegistRequestDto companyDto) {
         Member member = Member.builder()
@@ -87,6 +104,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
+    @Transactional
     @Override
     public void memberJoin(MemberRegistRequestDto memberDto) {
         Member member = Member.builder()
@@ -102,6 +120,18 @@ public class MemberServiceImpl implements MemberService {
 
         memberRepository.save(member);
 
+    }
+
+    private void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
+
+        Date date = new Date(System.currentTimeMillis() + expiredMs);
+
+        RefreshToken refreshEntity = RefreshToken.builder()
+                .memberId(memberId)
+                .refresh(refresh)
+                .expiration(date.toString())
+                .build();
+        refreshRepository.save(refreshEntity);
     }
 
     private Cookie createCookie(String key, String value) {

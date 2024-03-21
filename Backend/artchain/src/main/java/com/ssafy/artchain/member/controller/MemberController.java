@@ -11,12 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.ssafy.polaris.book.response.StatusCode.FAIL_NEW_ACCESS_TOKEN;
-import static com.ssafy.polaris.book.response.StatusCode.SUCCESS_NEW_ACCESS_TOKEN;
+import static com.ssafy.polaris.book.response.StatusCode.*;
 
 @RestController
 @RequestMapping("/api/member")
@@ -26,16 +26,17 @@ public class MemberController {
     private final JwtUtil jwtUtil;
     private final MemberServiceImpl memberService;
 
+
     @PostMapping("/companyJoin")
     public ResponseEntity<?> companyJoin(CompanyMemberRegistRequestDto companyDto) {
         memberService.companyJoin(companyDto);
-        return null;
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_NEW_COMPANY_USER, 200);
     }
 
     @PostMapping("/memberJoin")
     public ResponseEntity<?> memberJoin(MemberRegistRequestDto memberDto) {
         memberService.memberJoin(memberDto);
-        return null;
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_NEW_NORMAL_USER, 200);
     }
 
     @PostMapping("/refresh")
