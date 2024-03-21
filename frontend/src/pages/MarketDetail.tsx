@@ -47,12 +47,12 @@ export default function MarketDeatil() {
           </Text>
         </Box>
       )}
-      <Flex mb={"1rem"} ml={"3rem"}>
+      <Flex justifyContent={"end"}>
         <TopSecondNav first="최신순" second="높은 가격 순" third="낮은 가격 순" />
       </Flex>
 
       {check === "SellList" ? (
-        <Flex p={"0.5rem"}>
+        <Flex ml={"1rem"} wrap={"wrap"} justifyContent={"flex-start"} maxW={"390px"} mt={"1rem"}>
           <SellList />
         </Flex>
       ) : (

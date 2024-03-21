@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Button, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Image } from "@chakra-ui/react";
 import Logo from "../../../assets/logo.svg";
 import BackIcon from "../../../assets/back-icon.svg";
 import { LoginTrueNavBar } from "./LoginTrueNavBar";
