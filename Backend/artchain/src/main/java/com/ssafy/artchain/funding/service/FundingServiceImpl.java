@@ -89,14 +89,14 @@ public class FundingServiceImpl implements FundingService {
 
         List<FundingProgressStatus> statuses;
         if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
-            statuses = List.of(new FundingProgressStatus[]{FundingProgressStatus.RECRUITMENT_STATUS,
+            statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
                 FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
-                FundingProgressStatus.RECRUITMENT_FAILED});
+                FundingProgressStatus.RECRUITMENT_FAILED);
         } else if (status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END)) {
-            statuses = List.of(new FundingProgressStatus[]{FundingProgressStatus.PENDING_SETTLEMENT,
-                FundingProgressStatus.RECRUITMENT_FAILED});
+            statuses = List.of(FundingProgressStatus.PENDING_SETTLEMENT,
+                FundingProgressStatus.RECRUITMENT_FAILED);
         } else {
-            statuses = List.of(new FundingProgressStatus[]{FundingProgressStatus.valueOf(status)});
+            statuses = List.of(FundingProgressStatus.valueOf(status));
         }
 
         if (category.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
