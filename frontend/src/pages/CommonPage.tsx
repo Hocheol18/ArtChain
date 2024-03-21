@@ -3,7 +3,6 @@ import { Box } from "@chakra-ui/react";
 import { TopNavBar } from "../components/Common/Navigation/TopNavBar";
 import { BottomNavBar } from "../components/Common/Navigation/BottomNavBar";
 import { useMediaQuery } from "react-responsive";
-import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 
 interface CommonProps {
   topNavType: string;
