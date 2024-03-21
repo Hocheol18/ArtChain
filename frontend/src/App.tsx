@@ -64,11 +64,7 @@ function App() {
                 <Route
                   path="/"
                   element={
-                    <CommonPage
-                      topNavType="logo"
-                      bottomNavType="home"
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="logo" bottomNavType="home">
                       <MainPage />
                     </CommonPage>
                   }
@@ -77,11 +73,7 @@ function App() {
                 <Route
                   path="/login"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType=""
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="back" bottomNavType="">
                       <LoginPage />
                     </CommonPage>
                   }
@@ -89,11 +81,7 @@ function App() {
                 <Route
                   path="/loginbusiness"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType=""
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="back" bottomNavType="">
                       <LoginBusiness />
                     </CommonPage>
                   }
@@ -140,11 +128,7 @@ function App() {
                 <Route
                   path="/mypage"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType="my"
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="back" bottomNavType="my">
                       <MyPage />
                     </CommonPage>
                   }
@@ -155,11 +139,7 @@ function App() {
                 <Route
                   path="/invest-list"
                   element={
-                    <CommonPage
-                      topNavType="logo"
-                      bottomNavType="invest"
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="logo" bottomNavType="invest">
                       <InvestList />
                     </CommonPage>
                   }
@@ -168,7 +148,7 @@ function App() {
                 <Route
                   path="/invest/:id"
                   element={
-                    <CommonPage topNavType="coinBack" bottomNavType="invest">
+                    <CommonPage topNavType="coinBack" bottomNavType="">
                       <InvestDetail />
                     </CommonPage>
                   }
@@ -178,11 +158,7 @@ function App() {
                 <Route
                   path="/market"
                   element={
-                    <CommonPage
-                      topNavType="logo"
-                      bottomNavType="market"
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="logo" bottomNavType="market">
                       <Market />
                     </CommonPage>
                   }
@@ -190,11 +166,7 @@ function App() {
                 <Route
                   path="/market/:id"
                   element={
-                    <CommonPage
-                      topNavType="coinBack"
-                      bottomNavType="market"
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="coinBack" bottomNavType="market">
                       <MarketDetail />
                     </CommonPage>
                   }
@@ -202,11 +174,7 @@ function App() {
                 <Route
                   path="/market/tradenow/:id"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType="button"
-                      buttonText="구입하기"
-                    >
+                    <CommonPage topNavType="back" bottomNavType="button">
                       <MarketTradeNow />
                     </CommonPage>
                   }
@@ -214,11 +182,7 @@ function App() {
                 <Route
                   path="/market/tradeconfirm/:id"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType="market"
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="back" bottomNavType="market">
                       <MarketTradeConfirm />
                     </CommonPage>
                   }
@@ -226,11 +190,7 @@ function App() {
                 <Route
                   path="/market/enroll"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType="button"
-                      buttonText="등록"
-                    >
+                    <CommonPage topNavType="back" bottomNavType="button">
                       <MarketEnroll />
                     </CommonPage>
                   }
