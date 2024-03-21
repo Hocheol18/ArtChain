@@ -1,15 +1,16 @@
 package com.ssafy.artchain.funding.dto;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class FundingCreateRequestDto {
+
     private Long entId;
 
     private String name;
@@ -32,4 +33,6 @@ public class FundingCreateRequestDto {
     private String attachment;
 
     private String category;
+
+    private LocalDate recruitEnd;
 }
