@@ -5,7 +5,7 @@ import { MainPage } from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
 import { ChakraProvider } from "@chakra-ui/react";
 import { LoginPage } from "./pages/LoginPage";
-import { MyPage } from "./pages/MyPage";
+
 import { CoinCharge } from "./pages/CoinCharge";
 import { CommonPage } from "./pages/CommonPage";
 import { Theme } from "./theme/theme";
@@ -90,11 +90,7 @@ function App() {
                 <Route
                   path="/signupoauth"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType=""
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="back" bottomNavType="">
                       <UserEnrollWithOauth />
                     </CommonPage>
                   }
@@ -102,11 +98,7 @@ function App() {
                 <Route
                   path="/signupnormal"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType=""
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="back" bottomNavType="">
                       <UserENrollWIthNormal />
                     </CommonPage>
                   }
@@ -114,25 +106,12 @@ function App() {
                 <Route
                   path="/businessenroll"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType=""
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="back" bottomNavType="">
                       <BusinessEnroll />
                     </CommonPage>
                   }
                 ></Route>
 
-                {/* 마이페이지 */}
-                <Route
-                  path="/mypage"
-                  element={
-                    <CommonPage topNavType="back" bottomNavType="my">
-                      <MyPage />
-                    </CommonPage>
-                  }
-                ></Route>
                 {/* 코인 충전 */}
                 <Route path="/coin-charge" element={<CoinCharge />}></Route>
                 {/* 투자리스트 */}
@@ -198,13 +177,9 @@ function App() {
 
                 {/* 마이페이지 */}
                 <Route
-                  path="/user/:id"
+                  path="/mypage/:id"
                   element={
-                    <CommonPage
-                      topNavType="back"
-                      bottomNavType="market"
-                      buttonText=""
-                    >
+                    <CommonPage topNavType="" bottomNavType="my">
                       <UserMyPage />
                     </CommonPage>
                   }

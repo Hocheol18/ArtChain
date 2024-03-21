@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Flex, Image, Spacer, border } from "@chakra-ui/react";
+import { Box, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import HomeIcon from "../../../assets/home-icon.svg";
 import InvestIcon from "../../../assets/invest-icon.svg";
@@ -49,7 +49,7 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
         break;
       case "마이":
         setImgIcon(MyIcon);
-        setToLink("/mypage");
+        setToLink("/mypage/1");
         break;
     }
   }, [text]);
