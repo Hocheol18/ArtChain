@@ -12,7 +12,7 @@ export default function TopSecondNav({ first, second, third } : Props) {
 
   return (
     <>
-      <Flex minW={"360px"} justifyContent={"center"} mt={"0.5rem"}>
+      <Flex justifyContent={"center"} mt={"0.5rem"} mr={"0.5rem"}>
         {check === "total" ? (
           <Box
             px={"0.8rem"}
