@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import SellList from "../components/Market/Detail/SellList";
 import { useState } from "react";
@@ -48,13 +48,26 @@ export default function MarketDeatil() {
         </Box>
       )}
       <Flex justifyContent={"end"}>
-        <TopSecondNav first="최신순" second="높은 가격 순" third="낮은 가격 순" />
+        <TopSecondNav
+          first="최신순"
+          second="높은 가격 순"
+          third="낮은 가격 순"
+        />
       </Flex>
 
       {check === "SellList" ? (
-        <Flex ml={"1rem"} wrap={"wrap"} justifyContent={"flex-start"} maxW={"390px"} mt={"1rem"}>
-          <SellList />
-        </Flex>
+        
+        <Center>
+          <Flex
+            wrap={"wrap"}
+            justifyContent={"flex-start"}
+            ml={"0.5rem"}
+            mt={"1rem"}
+            w={"370px"}
+          >
+            <SellList />
+          </Flex>
+        </Center>
       ) : (
         <SellHistory />
       )}

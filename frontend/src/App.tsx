@@ -22,7 +22,13 @@ import UserEnrollWithOauth from "./pages/UserEnrollWithOauth";
 import UserENrollWIthNormal from "./pages/UserEnrollWithNormal";
 import BusinessEnroll from "./pages/BusinessEnroll";
 import UserMyPage from "./pages/UserMyPage";
+<<<<<<< HEAD
 import { InvestNoticeDetail } from "./pages/InvestNoticeDetail";
+=======
+import BusinessMyPage from "./pages/BusinessMyPage";
+import FundConfirm from "./pages/FundConfirm";
+import BusinessProjectEnroll from "./pages/BusinessProjectEnroll";
+>>>>>>> b461ad494f7a00e10e66e70189438c86c92b925a
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -112,7 +118,6 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-
                 {/* 코인 충전 */}
                 <Route path="/coin-charge" element={<CoinCharge />}></Route>
                 {/* 투자리스트 */}
@@ -185,13 +190,38 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-
                 {/* 마이페이지 */}
                 <Route
                   path="/mypage/:id"
                   element={
                     <CommonPage topNavType="" bottomNavType="my">
                       <UserMyPage />
+                    </CommonPage>
+                  }
+                ></Route>
+                {/* 기업 마이페이지 */}
+                <Route
+                  path="/businesspage/:id"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="my">
+                      <BusinessMyPage />
+                    </CommonPage>
+                  }
+                ></Route>
+                <Route
+                  path="/businessconfirm/:id"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="">
+                      <FundConfirm />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                <Route
+                  path="/businessproject"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="">
+                      <BusinessProjectEnroll />
                     </CommonPage>
                   }
                 ></Route>
