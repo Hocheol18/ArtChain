@@ -1,12 +1,19 @@
 package com.ssafy.artchain.scheduler;
 
+import com.ssafy.artchain.connectentity.InvestmentLog;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
+import com.ssafy.artchain.funding.repository.InvestmentLogRepository;
+import com.ssafy.artchain.member.entity.Member;
+import com.ssafy.artchain.pieceowner.entity.PieceOwner;
+import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CronTable {
 
     private final FundingRepository fundingRepository;
+    private final InvestmentLogRepository investmentLogRepository;
+    private final PieceOwnerRepository pieceOwnerRepository;
 
     @Value("${schedule.funding.progress-status.active}")
     private boolean fundingProgressStatusCronActive;
@@ -50,6 +59,26 @@ public class CronTable {
 
                     if (recruitPercentage.compareTo(minSuccessPercentage) >= 0) { // 모집 성공
                         funding.updateProgressStatus(FundingProgressStatus.PENDING_SETTLEMENT);
+
+                        List<InvestmentLog> investmentLogList = investmentLogRepository.findAllByFunding(
+                            funding);
+
+                        // 멤버별 조각의 합
+                        Map<Member, Long> investmentLogSummaryMap = investmentLogList.stream()
+                            .collect(Collectors.groupingBy(
+                                InvestmentLog::getMember,
+                                Collectors.summingLong(InvestmentLog::getPieceCount)
+                            ));
+
+                        investmentLogSummaryMap.forEach((member, pieceCount) -> {
+                            pieceOwnerRepository.save(PieceOwner.builder()
+                                .fundingId(funding.getId())
+                                .memberId(member.getId())
+                                .pieceCount(pieceCount)
+                                .build()
+                            );
+                        });
+
                     } else { // 모집 실패
                         funding.updateProgressStatus(FundingProgressStatus.RECRUITMENT_FAILED);
                     }
