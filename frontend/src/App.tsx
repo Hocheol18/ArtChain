@@ -21,6 +21,7 @@ import LoginBusiness from "./pages/LoginBusiness";
 import UserEnrollWithOauth from "./pages/UserEnrollWithOauth";
 import UserENrollWIthNormal from "./pages/UserEnrollWithNormal";
 import BusinessEnroll from "./pages/BusinessEnroll";
+import UserMyPage from "./pages/UserMyPage";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -134,7 +135,7 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-                
+
                 {/* 마이페이지 */}
                 <Route
                   path="/mypage"
@@ -231,6 +232,20 @@ function App() {
                       buttonText="등록"
                     >
                       <MarketEnroll />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                {/* 마이페이지 */}
+                <Route
+                  path="/user/:id"
+                  element={
+                    <CommonPage
+                      topNavType="back"
+                      bottomNavType="market"
+                      buttonText=""
+                    >
+                      <UserMyPage />
                     </CommonPage>
                   }
                 ></Route>
