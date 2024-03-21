@@ -69,7 +69,7 @@ export default function LoginBusiness() {
             로그인
           </Center>
         </Box>
-        <Flex justifyContent={"center"} mt={"0.5rem"} onClick={() => {navigate("../signup")}}>
+        <Flex justifyContent={"center"} mt={"0.5rem"} onClick={() => {navigate("../businessenroll")}}>
           <Text>회원가입</Text>
         </Flex>
       </Flex>
