@@ -29,11 +29,11 @@ import BusinessProjectEnroll from "./pages/BusinessProjectEnroll";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
-    const isDesktop = useMediaQuery({ minWidth: 501 });
+    const isDesktop = useMediaQuery({ minWidth: 701 });
     return isDesktop ? children : null;
   };
   const Mobile = ({ children }: { children: ReactNode }) => {
-    const isMobile = useMediaQuery({ maxWidth: 500 });
+    const isMobile = useMediaQuery({ maxWidth: 700 });
     return isMobile ? children : null;
   };
 

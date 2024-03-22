@@ -45,7 +45,12 @@ export const BottomNavBar = ({ navType }: Props) => {
 
   return (
     <div>
-      <Flex height="70" borderTop={"1px"} borderTopColor="#EFF0F3">
+      <Flex
+        height="70"
+        borderTop={"1px"}
+        borderTopColor="#EFF0F3"
+        backgroundColor={"white"}
+      >
         <BottomNavItem text="홈" active={homeActive} />
         <BottomNavItem text="투자" active={investActive} />
         <BottomNavItem text="마켓" active={marketActive} />
