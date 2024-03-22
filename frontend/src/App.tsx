@@ -26,6 +26,7 @@ import { InvestNoticeDetail } from "./pages/InvestNoticeDetail";
 import BusinessMyPage from "./pages/BusinessMyPage";
 import FundConfirm from "./pages/FundConfirm";
 import BusinessProjectEnroll from "./pages/BusinessProjectEnroll";
+import { MyPiece } from "./pages/MyPiece";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -136,7 +137,7 @@ function App() {
                   }
                 />
 
-                {/* 작품 공지사항 */}
+                {/* 작품 공지사항 상세보기 */}
                 <Route
                   path="/invest/:investId/notice/:noticeId"
                   element={
@@ -196,6 +197,17 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
+
+                {/* 나의 조각 */}
+                <Route
+                  path="/mypiece/:id"
+                  element={
+                    <CommonPage topNavType="coinBack" bottomNavType="my">
+                      <MyPiece />
+                    </CommonPage>
+                  }
+                ></Route>
+
                 {/* 기업 마이페이지 */}
                 <Route
                   path="/businesspage/:id"
