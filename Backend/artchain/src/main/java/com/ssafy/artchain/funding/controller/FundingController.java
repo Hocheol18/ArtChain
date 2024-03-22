@@ -1,31 +1,19 @@
 package com.ssafy.artchain.funding.controller;
 
-import com.ssafy.artchain.funding.dto.FundingCreateRequestDto;
-import com.ssafy.artchain.funding.dto.FundingListResponseDto;
-import com.ssafy.artchain.funding.dto.FundingNoticeRequestDto;
-import com.ssafy.artchain.funding.dto.FundingNoticeResponseDto;
-import com.ssafy.artchain.funding.dto.FundingResponseDto;
-import com.ssafy.artchain.funding.dto.InvestmentIdResponseDto;
-import com.ssafy.artchain.funding.dto.InvestmentRequestDto;
-import com.ssafy.artchain.funding.entity.Funding;
+import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.funding.response.DefaultResponse;
 import com.ssafy.artchain.funding.response.StatusCode;
 import com.ssafy.artchain.funding.service.FundingService;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/funding")
@@ -43,7 +31,7 @@ public class FundingController {
      */
     @PostMapping
     public ResponseEntity<DefaultResponse<Void>> createFunding(
-        @RequestBody FundingCreateRequestDto dto) {
+            @RequestBody FundingCreateRequestDto dto) {
         int result = fundingService.createFunding(dto);
         if (result == -1) {
             return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.FAIL_CREATE_FUNDING);
@@ -60,19 +48,19 @@ public class FundingController {
      */
     @GetMapping("/{fundingId}")
     public ResponseEntity<DefaultResponse<FundingResponseDto>> getFunding(
-        @PathVariable Long fundingId) {
+            @PathVariable Long fundingId) {
         FundingResponseDto fundingResponseDto = fundingService.getFunding(fundingId);
 
         if (fundingResponseDto == null) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_FUNDING_VIEW
+                    HttpStatus.OK,
+                    StatusCode.FAIL_FUNDING_VIEW
             );
         } else {
             return DefaultResponse.toResponseEntity(
-                HttpStatus.OK,
-                StatusCode.SUCCESS_FUNDING_VIEW,
-                fundingResponseDto
+                    HttpStatus.OK,
+                    StatusCode.SUCCESS_FUNDING_VIEW,
+                    fundingResponseDto
             );
         }
     }
@@ -85,26 +73,23 @@ public class FundingController {
      */
     @GetMapping("/list")
     public ResponseEntity<DefaultResponse<FundingListResponseDto>> getFundingByStatus(
-        @RequestParam String category, @RequestParam String status
+            @RequestParam String category, @RequestParam String status, @RequestParam String allowStat, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        List<Funding> fundingList = fundingService.getFundingListByCategoryAndStatus(category,
-            status);
+        List<FundingResponseDto> fundingList = fundingService.getFundingListByCategoryAndStatus(category,
+                status, allowStat, pageable);
 
         if (fundingList.isEmpty()) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.NO_CONTENT_IN_FUNDING_LIST_VIEW
+                    HttpStatus.OK,
+                    StatusCode.NO_CONTENT_IN_FUNDING_LIST_VIEW
             );
         } else {
             return DefaultResponse.toResponseEntity(
-                HttpStatus.OK,
-                StatusCode.SUCCESS_FUNDING_LIST_VIEW,
-                new FundingListResponseDto(
-                    fundingList
-                        .stream()
-                        .map(FundingResponseDto::new)
-                        .collect(Collectors.toList())
-                )
+                    HttpStatus.OK,
+                    StatusCode.SUCCESS_FUNDING_LIST_VIEW,
+                    new FundingListResponseDto(
+                            fundingList
+                    )
             );
         }
     }
@@ -122,43 +107,43 @@ public class FundingController {
 
         if (result == -1) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_FUNDING_VIEW
+                    HttpStatus.OK,
+                    StatusCode.FAIL_FUNDING_VIEW
             );
         } else if (result == 0) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.ALREADY_ALLOWED_FUNDING
+                    HttpStatus.OK,
+                    StatusCode.ALREADY_ALLOWED_FUNDING
             );
         } else {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.SUCCESS_ALLOW_FUNDING
+                    HttpStatus.OK,
+                    StatusCode.SUCCESS_ALLOW_FUNDING
             );
         }
     }
 
     @PutMapping("/{fundingId}/progress-status/{progressStatus}")
     public ResponseEntity<DefaultResponse<Void>> updateFundingProgressStatus(
-        @PathVariable Long fundingId, @PathVariable String progressStatus) {
+            @PathVariable Long fundingId, @PathVariable String progressStatus) {
         // -1: 해당하는 펀딩 없음, 1: 펀딩 진행 상태 수정 완료.
         int result = fundingService.updateFundingProgressStatus(fundingId, progressStatus);
 
         if (result == -1) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_FUNDING_VIEW
+                    HttpStatus.OK,
+                    StatusCode.FAIL_FUNDING_VIEW
             );
         } else if (result == 0) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.NOT_EXIST_PROGRESS_STATUS
+                    HttpStatus.OK,
+                    StatusCode.NOT_EXIST_PROGRESS_STATUS
             );
         }
 
         return DefaultResponse.emptyResponse(
-            HttpStatus.OK,
-            StatusCode.SUCCESS_UPDATE_FUNDING_PROGRESS_STATUS
+                HttpStatus.OK,
+                StatusCode.SUCCESS_UPDATE_FUNDING_PROGRESS_STATUS
         );
 
     }
@@ -172,26 +157,26 @@ public class FundingController {
      */
     @PostMapping("/{fundingId}/notice")
     public ResponseEntity<DefaultResponse<Void>> createNotice(@PathVariable Long fundingId,
-        @RequestBody
-        FundingNoticeRequestDto dto) {
+                                                              @RequestBody
+                                                              FundingNoticeRequestDto dto) {
         // -1: 해당 펀딩 없음, 0: 작성 실패, 1: 작성 성공
         int result = fundingService.createNotice(fundingId, dto);
 
         if (result == -1) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_FUNDING_VIEW
+                    HttpStatus.OK,
+                    StatusCode.FAIL_FUNDING_VIEW
             );
         } else if (result == 0) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_CREATE_FUNDING_NOTICE
+                    HttpStatus.OK,
+                    StatusCode.FAIL_CREATE_FUNDING_NOTICE
             );
         }
 
         return DefaultResponse.emptyResponse(
-            HttpStatus.OK,
-            StatusCode.SUCCESS_CREATE_FUNDING_NOTICE
+                HttpStatus.OK,
+                StatusCode.SUCCESS_CREATE_FUNDING_NOTICE
         );
     }
 
@@ -204,22 +189,22 @@ public class FundingController {
      */
     @GetMapping("/{fundingId}/notice/{fundingNoticeId}")
     public ResponseEntity<DefaultResponse<FundingNoticeResponseDto>> getFundingNotice(
-        @PathVariable Long fundingId, @PathVariable Long fundingNoticeId) {
+            @PathVariable Long fundingId, @PathVariable Long fundingNoticeId) {
         FundingNoticeResponseDto fundingNoticeResponseDto = fundingService.getFundingNotice(
-            fundingId,
-            fundingNoticeId);
+                fundingId,
+                fundingNoticeId);
 
         if (fundingNoticeResponseDto == null) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_FUNDING_NOTICE_VIEW
+                    HttpStatus.OK,
+                    StatusCode.FAIL_FUNDING_NOTICE_VIEW
             );
         }
 
         return DefaultResponse.toResponseEntity(
-            HttpStatus.OK,
-            StatusCode.SUCCESS_FUNDING_NOTICE_VIEW,
-            fundingNoticeResponseDto
+                HttpStatus.OK,
+                StatusCode.SUCCESS_FUNDING_NOTICE_VIEW,
+                fundingNoticeResponseDto
         );
     }
 
@@ -233,20 +218,20 @@ public class FundingController {
      */
     @PutMapping("/{fundingId}/notice/{fundingNoticeId}")
     public ResponseEntity<DefaultResponse<Void>> updateFundingNotice(@PathVariable Long fundingId,
-        @PathVariable Long fundingNoticeId, @RequestBody FundingNoticeRequestDto dto) {
+                                                                     @PathVariable Long fundingNoticeId, @RequestBody FundingNoticeRequestDto dto) {
         // -1: 해당하는 펀딩 공지사항 없거나 해당 펀딩의 공지사항이 아님, 1: 펀딩 공지사항 수정 완료
         int result = fundingService.updateFundingNotice(fundingId, fundingNoticeId, dto);
 
         if (result == -1) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_FUNDING_NOTICE_VIEW
+                    HttpStatus.OK,
+                    StatusCode.FAIL_FUNDING_NOTICE_VIEW
             );
         }
 
         return DefaultResponse.emptyResponse(
-            HttpStatus.OK,
-            StatusCode.SUCCESS_MODIFY_FUNDING_NOTICE
+                HttpStatus.OK,
+                StatusCode.SUCCESS_MODIFY_FUNDING_NOTICE
         );
     }
 
@@ -259,20 +244,20 @@ public class FundingController {
      */
     @DeleteMapping("/{fundingId}/notice/{fundingNoticeId}")
     public ResponseEntity<DefaultResponse<Void>> deleteFundingNotice(@PathVariable Long fundingId,
-        @PathVariable Long fundingNoticeId) {
+                                                                     @PathVariable Long fundingNoticeId) {
         // -1: 해당하는 펀딩 공지사항 없거나 해당 펀딩의 공지사항이 아님, 1: 펀딩 공지사항 삭제 완료
         int result = fundingService.deleteFundingNotice(fundingId, fundingNoticeId);
 
         if (result == -1) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_FUNDING_NOTICE_VIEW
+                    HttpStatus.OK,
+                    StatusCode.FAIL_FUNDING_NOTICE_VIEW
             );
         }
 
         return DefaultResponse.emptyResponse(
-            HttpStatus.OK,
-            StatusCode.SUCCESS_DELETE_FUNDING_NOTICE
+                HttpStatus.OK,
+                StatusCode.SUCCESS_DELETE_FUNDING_NOTICE
         );
     }
 
@@ -286,27 +271,27 @@ public class FundingController {
      */
     @PostMapping("/{fundingId}/invest")
     public ResponseEntity<DefaultResponse<InvestmentIdResponseDto>> createInvestmentLog(
-        @PathVariable Long fundingId, @RequestBody
+            @PathVariable Long fundingId, @RequestBody
     InvestmentRequestDto dto) {
         // -2: 일치하는 회원 정보 없음, -1: 일치하는 펀딩 정보 없음, 1 이상: 생성된 로그의 식별자 값
         Long result = fundingService.createInvestmentLog(fundingId, dto);
 
         if (result.equals(-2L)) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.NOT_FOUND_MEMBER_INFO
+                    HttpStatus.OK,
+                    StatusCode.NOT_FOUND_MEMBER_INFO
             );
         } else if (result.equals(-1L)) {
             return DefaultResponse.emptyResponse(
-                HttpStatus.OK,
-                StatusCode.FAIL_FUNDING_VIEW
+                    HttpStatus.OK,
+                    StatusCode.FAIL_FUNDING_VIEW
             );
         }
 
         return DefaultResponse.toResponseEntity(
-            HttpStatus.OK,
-            StatusCode.SUCCESS_CREATE_INVESTMENT_LOG,
-            new InvestmentIdResponseDto(result)
+                HttpStatus.OK,
+                StatusCode.SUCCESS_CREATE_INVESTMENT_LOG,
+                new InvestmentIdResponseDto(result)
         );
     }
 }
