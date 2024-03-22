@@ -47,6 +47,7 @@ export const DescriptionInvest = () => {
             height="13px"
             bg="blue.100"
             boxShadow={"lg"}
+            zIndex={0}
           />
         </Center>
         <Stepper

@@ -1,15 +1,42 @@
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text, Image } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import MarketIcon from "../../../assets/market-icon.svg";
+import { Link } from "react-router-dom";
 
 interface Props {
   text: string;
+  category: string;
   hanldeButton: () => void;
 }
 
-export const BottomButtonNavbar = ({ text, hanldeButton }: Props) => {
+export const BottomButtonNavbar = ({ text, category, hanldeButton }: Props) => {
   const isDesktop = useMediaQuery({ minWidth: 701 });
+
+  const [color, setColor] = useState("blue.300");
+
+  useEffect(() => {
+    switch (category) {
+      case "endSuccess":
+        setColor("gray.400");
+        break;
+      case "endFail":
+        setColor("gray.400");
+        break;
+      case "complete":
+        setColor("gray.500");
+        break;
+    }
+  }, [category]);
+
   return (
-    <Box position={"fixed"} bottom={0} width={isDesktop ? "390px" : "100%"}>
+    <Box
+      position={"fixed"}
+      bottom={0}
+      width={isDesktop ? "390px" : "100%"}
+      backgroundColor={"white"}
+      zIndex={1}
+    >
       <Flex
         height="70"
         borderTop={"1px"}
@@ -23,13 +50,27 @@ export const BottomButtonNavbar = ({ text, hanldeButton }: Props) => {
           py={"0.1rem"}
           rounded={"5"}
           fontSize={"lg"}
-          bg={"blue.300"}
+          backgroundColor={color}
           onClick={hanldeButton}
         >
-          <Text as={"b"} color={"white.100"}>
-            {text}
-          </Text>
+          <Text color={"white.100"}>{text}</Text>
         </Center>
+        {category === "endSuccess" ? (
+          <Center
+            display={"flex"}
+            flexDirection={"column"}
+            ml={2}
+            px={3}
+            border={"1px solid"}
+            borderColor={"gray.200"}
+            borderRadius={"lg"}
+            as={Link}
+            to={"/market/1"}
+          >
+            <Image src={MarketIcon} w={"20px"} />
+            <Center fontSize={"15px"}>구입</Center>
+          </Center>
+        ) : null}
       </Flex>
     </Box>
   );
