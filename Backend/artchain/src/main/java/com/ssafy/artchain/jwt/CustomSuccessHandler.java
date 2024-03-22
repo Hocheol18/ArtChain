@@ -43,14 +43,14 @@ private final JwtUtil jwtUtil;
     String refresh = jwtUtil.createJwt("refresh", memberId, authority, 86400000L);
 
     //응답 설정
-    response.setHeader("access", access);
+    response.setHeader("Authorization", access);
     response.addCookie(createCookie("refresh", refresh));
     response.setStatus(HttpStatus.OK.value());
 
 //    프론트 URL에 넣어주면 됩니다
     System.out.println("SuccessHandler 끝 리다이렉트 갑니다잉");
-//    response.sendRedirect("https://j10a708.p.ssafy.io/");
-    response.sendRedirect("http://localhost:8080/");
+    response.sendRedirect("https://j10a708.p.ssafy.io/");
+//    response.sendRedirect("http://localhost:8080/");
   }
 
   private Cookie createCookie(String key, String value) {

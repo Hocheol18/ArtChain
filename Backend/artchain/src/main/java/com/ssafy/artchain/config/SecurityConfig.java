@@ -68,8 +68,8 @@ public class SecurityConfig {
 
                 CorsConfiguration configuration = new CorsConfiguration();
 
-                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080/"));
-//                configuration.setAllowedOrigins(Collections.singletonList("https://j10a708.p.ssafy.io/"));
+//                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080/"));
+                configuration.setAllowedOrigins(Collections.singletonList("https://j10a708.p.ssafy.io/"));
                 configuration.setAllowedMethods(Collections.singletonList("*"));
                 configuration.setAllowCredentials(true);
                 configuration.setAllowedHeaders(Collections.singletonList("*"));
