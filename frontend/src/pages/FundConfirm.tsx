@@ -22,12 +22,14 @@ export default function FundConfirm() {
           </Text>
           <Text fontSize={"1.5rem"}>100,000,000원</Text>
         </Flex>
-        <Flex justifyContent={"space-between"}  mt={"3rem"}>
+        <Flex justifyContent={"space-between"} mt={"3rem"}>
           <Text as={"b"} fontSize={"1.5rem"}>
             입금 날짜
           </Text>
           <Box w={"60%"}>
             <Input
+              border={"1px"}
+              borderColor={"gray.400"}
               placeholder="Select Date and Time"
               size="md"
               type="datetime-local"
