@@ -1,11 +1,8 @@
 package com.ssafy.artchain.funding.service;
 
-import com.ssafy.artchain.funding.dto.FundingCreateRequestDto;
-import com.ssafy.artchain.funding.dto.FundingNoticeRequestDto;
-import com.ssafy.artchain.funding.dto.FundingNoticeResponseDto;
-import com.ssafy.artchain.funding.dto.FundingResponseDto;
-import com.ssafy.artchain.funding.dto.InvestmentRequestDto;
-import com.ssafy.artchain.funding.entity.Funding;
+import com.ssafy.artchain.funding.dto.*;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface FundingService {
@@ -14,7 +11,7 @@ public interface FundingService {
 
     FundingResponseDto getFunding(Long fundingId);
 
-    List<Funding> getFundingListByCategoryAndStatus(String category, String status);
+    List<FundingResponseDto> getFundingListByCategoryAndStatus(String category, String status, String allowStat, Pageable pageable);
 
     int allowFunding(Long fundingId);
 
