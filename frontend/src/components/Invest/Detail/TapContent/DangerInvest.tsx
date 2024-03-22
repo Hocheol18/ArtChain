@@ -31,7 +31,7 @@ export const DangerInvest = () => {
   ];
 
   return (
-    <Box mb={"70px"}>
+    <Box mb={"70px"} pb={3}>
       <Box fontSize={"22"} fontWeight={"bold"} pl={6} mt={5} pb={2}>
         투자 위험 안내
       </Box>
