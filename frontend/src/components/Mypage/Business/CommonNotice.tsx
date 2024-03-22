@@ -1,10 +1,13 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 interface Props {
+  first : string;
+  second : string;
+  thrid : string;
   isNow: string;
 }
 
-export default function CommonNotice({ isNow }: Props) {
+export default function CommonNotice({ first, second, thrid, isNow }: Props) {
   return isNow === "now" ? (
     <Flex>
       <Box
@@ -20,8 +23,8 @@ export default function CommonNotice({ isNow }: Props) {
         bgColor={"blue.300"}
       >
         <Flex>
-          <Text color={"white.100"} ml={"0.2rem"}>
-            진행중
+          <Text color={"white.100"}>
+            {first}
           </Text>
         </Flex>
       </Box>
@@ -41,8 +44,8 @@ export default function CommonNotice({ isNow }: Props) {
         bgColor={"red"}
       >
         <Flex>
-          <Text color={"white.100"} ml={"0.2rem"}>
-            정산대기
+          <Text color={"white.100"}>
+            {second}
           </Text>
         </Flex>
       </Box>
@@ -57,13 +60,13 @@ export default function CommonNotice({ isNow }: Props) {
         boxShadow={"xl"}
         fontSize={"xs"}
         border={"1px"}
-        borderColor={"gray.300"}
+        borderColor={"black.100"}
         ml={"0.5rem"}
         bgColor={"gray.300"}
       >
         <Flex>
-          <Text color={"black"} ml={"0.2rem"}>
-            정산완료
+          <Text color={"black"}>
+            {thrid}
           </Text>
         </Flex>
       </Box>

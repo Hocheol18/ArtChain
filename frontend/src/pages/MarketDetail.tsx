@@ -33,6 +33,8 @@ export default function MarketDeatil() {
               first="최신순"
               second="높은 가격 순"
               third="낮은 가격 순"
+              forth=""
+              isCheck={true}
             />
           </Flex>
         </>
