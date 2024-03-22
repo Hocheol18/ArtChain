@@ -3,8 +3,12 @@ package com.ssafy.artchain.member.service;
 import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.jwt.entity.RefreshToken;
 import com.ssafy.artchain.jwt.repository.RefreshRepository;
+import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
+import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseDto;
+import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
+import com.ssafy.artchain.member.dto.response.MemberUserResponseDto;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -18,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -120,6 +126,27 @@ public class MemberServiceImpl implements MemberService {
 
         memberRepository.save(member);
 
+    }
+
+    @Override
+    public MemberUserResponseDto getUserInfo(CustomUserDetails customMember) {
+        Member member = memberRepository.findByMemberId(customMember.getUsername())
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+        return new MemberUserResponseDto(member);
+    }
+
+    @Override
+    public MemberUserMypageResponseListDto getUserMypage(CustomUserDetails customMember) {
+        Member member = memberRepository.findByMemberId(customMember.getUsername())
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+
+        List<MemberUserMypageResponseDto> list = memberRepository.memberMypage(member.getId());
+        int count = 0;
+        for (MemberUserMypageResponseDto dto: list) {
+            count += dto.getProgressCount();
+        }
+
+        return new MemberUserMypageResponseListDto(list, count);
     }
 
     private void addRefreshEntity(String memberId, String refresh, Long expiredMs) {

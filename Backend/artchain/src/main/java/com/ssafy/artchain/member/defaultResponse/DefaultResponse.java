@@ -1,4 +1,4 @@
-package com.ssafy.artchain.member.response;
+package com.ssafy.artchain.member.defaultResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

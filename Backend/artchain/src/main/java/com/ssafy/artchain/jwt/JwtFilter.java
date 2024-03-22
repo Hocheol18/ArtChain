@@ -32,10 +32,11 @@ public class JwtFilter extends OncePerRequestFilter {
         System.out.println("JwtFilter active");
         // 헤더에서 access키에 담긴 토큰을 꺼냄
         String accessToken = request.getHeader("access");
+        System.out.println(accessToken);
 
         // 토큰이 없다면 다음 필터로 넘김
         if (accessToken == null) {
-
+            System.out.println("access없대");
             filterChain.doFilter(request, response);
 
             return;
@@ -59,6 +60,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String category = jwtUtil.getCategory(accessToken);
 
         if (!category.equals("access")) {
+            System.out.println("access아니래");
 
             //response body
             PrintWriter writer = response.getWriter();

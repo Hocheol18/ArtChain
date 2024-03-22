@@ -1,9 +1,13 @@
 package com.ssafy.artchain.member.controller;
 
 import com.ssafy.artchain.jwt.JwtUtil;
+import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
-import com.ssafy.artchain.member.response.DefaultResponse;
+import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseDto;
+import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
+import com.ssafy.artchain.member.dto.response.MemberUserResponseDto;
+import com.ssafy.artchain.member.defaultResponse.DefaultResponse;
 import com.ssafy.artchain.member.service.MemberServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,10 +15,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import static com.ssafy.polaris.book.response.StatusCode.*;
 
@@ -25,6 +32,26 @@ import static com.ssafy.polaris.book.response.StatusCode.*;
 public class MemberController {
     private final JwtUtil jwtUtil;
     private final MemberServiceImpl memberService;
+
+    @GetMapping("/getLoginUserInfo")
+    public String getUser(@AuthenticationPrincipal CustomUserDetails member) {
+        System.out.println(member.getUsername());
+        System.out.println(member.getNickname());
+
+        return member.getNickname();
+    }
+
+//    @GetMapping("/individual")
+//    public ResponseEntity<DefaultResponse<MemberUserResponseDto>> getUserInfo(@AuthenticationPrincipal CustomUserDetails member) {
+//        MemberUserResponseDto memberUserResponseDto = memberService.getUserInfo(member);
+//        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_USER_VIEW, memberUserResponseDto);
+//    }
+
+    @GetMapping("/individual")
+    public ResponseEntity<DefaultResponse<MemberUserMypageResponseListDto>> getUserMypage(@AuthenticationPrincipal CustomUserDetails member) {
+        MemberUserMypageResponseListDto dto = memberService.getUserMypage(member);
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_USER_VIEW, dto);
+    }
 
 
     @PostMapping("/companyJoin")
