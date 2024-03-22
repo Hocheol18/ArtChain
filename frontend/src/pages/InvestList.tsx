@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Spacer } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import { useMediaQuery } from "react-responsive";
 import { InvestListItem } from "../components/Invest/InvestList/InvestListItem";
 import TopNav from "../components/Invest/InvestList/TopNav";
