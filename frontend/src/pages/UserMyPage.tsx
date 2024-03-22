@@ -82,6 +82,7 @@ export default function UserMyPage() {
         </Flex>
       </Box>
       <Flex
+      mt={"1rem"}
         p={"1rem"}
         ml={"1rem"}
         justifyContent={"space-between"}
