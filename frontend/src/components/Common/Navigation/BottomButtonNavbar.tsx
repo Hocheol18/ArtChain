@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const BottomButtonNavbar = ({ text, hanldeButton }: Props) => {
-  const isDesktop = useMediaQuery({ minWidth: 501 });
+  const isDesktop = useMediaQuery({ minWidth: 701 });
   return (
     <Box position={"fixed"} bottom={0} width={isDesktop ? "390px" : "100%"}>
       <Flex

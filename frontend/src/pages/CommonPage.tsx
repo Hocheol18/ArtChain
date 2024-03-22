@@ -15,7 +15,7 @@ export const CommonPage = ({
   bottomNavType,
   children,
 }: CommonProps) => {
-  const isDesktop = useMediaQuery({ minWidth: 501 });
+  const isDesktop = useMediaQuery({ minWidth: 701 });
 
   useEffect(() => {}, [topNavType, bottomNavType]);
 
