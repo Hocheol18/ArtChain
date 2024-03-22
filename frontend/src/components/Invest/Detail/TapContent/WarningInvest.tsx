@@ -1,4 +1,4 @@
-import { Box, ListItem, UnorderedList, Center, Image } from "@chakra-ui/react";
+import { Box, ListItem, UnorderedList, Image } from "@chakra-ui/react";
 
 import WarningIcon from "../../../../assets/invest-warning-icon.png";
 
