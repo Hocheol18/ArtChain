@@ -6,7 +6,7 @@ import puzzle from "../assets/puzzle.svg";
 import rightarrow from "../assets/rightarrow.svg";
 
 import BackIcon from "../assets/back-icon.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import DoughnutChart from "../components/Mypage/DoughnutChart";
 
 export default function UserMyPage() {
@@ -82,11 +82,13 @@ export default function UserMyPage() {
         </Flex>
       </Box>
       <Flex
-      mt={"1rem"}
+        mt={"1rem"}
         p={"1rem"}
         ml={"1rem"}
         justifyContent={"space-between"}
         minW={"360px"}
+        as={Link}
+        to={"/mypiece/1"}
       >
         <Flex>
           <Image boxSize={"2.7rem"} src={puzzle}></Image>
