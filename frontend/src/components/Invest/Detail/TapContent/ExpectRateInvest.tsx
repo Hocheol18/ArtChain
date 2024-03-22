@@ -52,9 +52,11 @@ export const ExpectRateInvest = () => {
           </Box>
         </Flex>
 
-        {data.map((item) => (
+        {data.map((item, index) => (
           <Flex justifyContent={"space-between"} py={1}>
-            <Box textColor={"gray.400"}>{item.audienceNum}</Box>
+            <Box textColor={"gray.400"} key={index}>
+              {item.audienceNum}
+            </Box>
             <Box>{item.expectRate}%</Box>
           </Flex>
         ))}
