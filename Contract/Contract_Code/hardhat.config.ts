@@ -41,7 +41,7 @@ module.exports = {
   defaultNetwork: "sepolia",
   networks: {
     sepolia: {
-      url: "https://sepolia.infura.io/v3/fcf1b848b122474ba6b758aec7c7f725",
+      url: "https://sepolia.infura.io/v3/5065fe39d7a24c22bbfb031ac09fa56e",
       accounts: [privateKey],
     },
   },

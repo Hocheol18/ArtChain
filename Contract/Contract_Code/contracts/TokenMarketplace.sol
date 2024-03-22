@@ -32,7 +32,7 @@ contract TokenMarketplace {
 
         // Ensure that the buyer has approved this contract to spend the required tokens
         require(
-            tokenContracts[tradePost.tokenAddress].approve(
+            tokenContracts[artCoinAddress].approve(
                 address(this),
                 tradePost.price
             ),
@@ -51,7 +51,7 @@ contract TokenMarketplace {
 
         // Transfer the price of the token to the seller
         require(
-            tokenContracts[tradePost.tokenAddress].transferFrom(
+            tokenContracts[artCoinAddress].transferFrom(
                 tradePost.seller,
                 msg.sender,
                 tradePost.price

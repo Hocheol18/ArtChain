@@ -5,7 +5,7 @@ import IERC20ABI from "./Contract/IERC20.json";
 
 const web3 = new Web3((window as any).ethereum);
 
-const TokenMarketplaceContractAddress = "0x34f6CbEf23389373077045D0443A2157cA45C2F4"; // TokenMarketplace 스마트 계약 주소
+const TokenMarketplaceContractAddress = "0x64FcdF7882e8b17d32D500FE80737C68A2f86A5d"; // TokenMarketplace 스마트 계약 주소
 
 const App: React.FC = () => {
   const [account, setAccount] = useState<string>("");
