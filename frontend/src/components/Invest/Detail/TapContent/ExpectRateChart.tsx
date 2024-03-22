@@ -1,6 +1,26 @@
 import { Bar } from "react-chartjs-2";
-import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Box } from "@chakra-ui/react";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Legend,
+  PointElement,
+  LineElement,
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Legend,
+  PointElement,
+  LineElement
+);
 
 export const ExpectRateChart = () => {
   //임시 데이터
