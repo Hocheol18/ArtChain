@@ -5,7 +5,7 @@ import BusinessProjectDetail from "../components/Mypage/Business/BusinessProject
 export default function BusinessMyPage() {
   return (
     <>
-      <Box mt={"1rem"} w={"90%"} ml={"1.5rem"} mr={"1.5rem"}>
+      <Box mt={"1rem"} w={"85%"} ml={"1.5rem"} mr={"1.5rem"}>
         <Flex>
           <Text as={"b"} fontSize={"1.7rem"}>
             스튜디오드래곤님
