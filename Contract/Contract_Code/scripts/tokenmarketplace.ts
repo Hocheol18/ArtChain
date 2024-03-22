@@ -1,7 +1,7 @@
 async function main10() {
   const [owner] = await ethers.getSigners();
 
-  const contractAddress = '0x34f6CbEf23389373077045D0443A2157cA45C2F4'; // 배포된 컨트랙트의 주소를 여기에 입력하세요.
+  const contractAddress = '0x64FcdF7882e8b17d32D500FE80737C68A2f86A5d'; // 배포된 컨트랙트의 주소를 여기에 입력하세요.
   const ContractFactory = await ethers.getContractFactory('TokenMarketplace'); // 컨트랙트 이름을 여기에 입력하세요.
   const contract = ContractFactory.attach(contractAddress);
 
