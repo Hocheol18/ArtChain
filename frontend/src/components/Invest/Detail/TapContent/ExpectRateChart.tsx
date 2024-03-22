@@ -66,7 +66,7 @@ export const ExpectRateChart = () => {
 
   return (
     <div>
-      <Box pl={4} pr={7} py={5}>
+      <Box pl={4} pr={7} py={7}>
         <Bar data={chartData} options={options} plugins={[ChartDataLabels]} />
       </Box>
     </div>
