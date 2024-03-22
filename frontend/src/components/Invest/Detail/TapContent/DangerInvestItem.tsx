@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const DangerInvestItem = ({ img, title, text }: Props) => {
-  const [imgStr, setImgStr] = useState();
+  const [imgStr, setImgStr] = useState(Icon1);
 
   useEffect(() => {
     switch (img) {
