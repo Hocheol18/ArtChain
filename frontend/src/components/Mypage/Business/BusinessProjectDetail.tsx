@@ -9,7 +9,7 @@ interface Props {
 export default function BusinessProjectDetail({ isNow } : Props) {
   return (
     <>
-      <Flex ml={"1.5rem"} mt={"2rem"} w={"100%"} maxH={"160px"}>
+      <Flex ml={"0.5rem"} mt={"2rem"} w={"100%"} maxH={"160px"}>
         <Image w={"95px"} h={"160px"} src={falloutboy} />
         <Flex direction={"column"} justifyContent={"space-around"}>
           <CommonNotice isNow={isNow} />
