@@ -39,9 +39,11 @@ export default function BusinessMyPage() {
           </Flex>
         </Box>
       </Flex>
-      <BusinessProjectDetail isNow="now" />
-      <BusinessProjectDetail isNow="wait" />
-      <BusinessProjectDetail isNow="" />
+      <Box p={"1rem"} mb={"2rem"}>
+        <BusinessProjectDetail isNow="now" />
+        <BusinessProjectDetail isNow="wait" />
+        <BusinessProjectDetail isNow="" />
+      </Box>
     </>
   );
 }

@@ -7,7 +7,7 @@ export default function SellHistory() {
   return (
     <>
       <Box position={"sticky"} left={"1px"}>
-        <Box ml={"1rem"} maxW={"360px"}>
+        <Box ml={"1.5rem"} w={"90%"}>
           <SellHistoryChart />
         </Box>
         <Box ml={"1rem"} mt={"1rem"}>
@@ -57,7 +57,13 @@ export default function SellHistory() {
             fontSize={"sm"}
             bg={"blue.300"}
           >
-            <Text as={"b"} color={"white.100"} onClick={() => {navigate("../market/tradeconfirm/1")}}>
+            <Text
+              as={"b"}
+              color={"white.100"}
+              onClick={() => {
+                navigate("../market/tradeconfirm/1");
+              }}
+            >
               보기
             </Text>
           </Box>
@@ -92,7 +98,13 @@ export default function SellHistory() {
             fontSize={"sm"}
             bg={"blue.300"}
           >
-            <Text as={"b"} color={"white.100"} onClick={() => {navigate("../market/tradenow/1")}}>
+            <Text
+              as={"b"}
+              color={"white.100"}
+              onClick={() => {
+                navigate("../market/tradenow/1");
+              }}
+            >
               보기
             </Text>
           </Box>

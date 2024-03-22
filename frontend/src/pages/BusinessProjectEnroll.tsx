@@ -11,11 +11,7 @@ export default function BusinessProjectEnroll() {
             프로젝트 등록
           </Text>
         </Box>
-        <Box mt={"0.5rem"}>
-          <Text as={"b"} fontSize={"2.2rem"}>
-            모네에서 앤디워홀까지 : 부산전
-          </Text>
-        </Box>
+        
       </Box>
 
       <BottomButtonNavbar text="등록하기" hanldeButton={() => {}} />

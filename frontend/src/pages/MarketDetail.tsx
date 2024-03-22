@@ -13,20 +13,29 @@ export default function MarketDeatil() {
   return (
     <>
       {check === "SellList" ? (
-        <Box p={"1rem"} position={"sticky"} left={"1px"}>
-          <Text as={"b"} fontSize={"lg"} onClick={() => setCheck("SellList")}>
-            판매 리스트
-          </Text>
-          <Text
-            as={"b"}
-            fontSize={"lg"}
-            color={"gray.400"}
-            ml={"1rem"}
-            onClick={() => setCheck("SellHistory")}
-          >
-            조각 거래 내역
-          </Text>
-        </Box>
+        <>
+          <Box p={"1rem"} position={"sticky"} left={"1px"}>
+            <Text as={"b"} fontSize={"lg"} onClick={() => setCheck("SellList")}>
+              판매 리스트
+            </Text>
+            <Text
+              as={"b"}
+              fontSize={"lg"}
+              color={"gray.400"}
+              ml={"1rem"}
+              onClick={() => setCheck("SellHistory")}
+            >
+              조각 거래 내역
+            </Text>
+          </Box>
+          <Flex justifyContent={"end"}>
+            <TopSecondNav
+              first="최신순"
+              second="높은 가격 순"
+              third="낮은 가격 순"
+            />
+          </Flex>
+        </>
       ) : (
         <Box p={"1rem"} position={"sticky"} left={"1px"}>
           <Text
@@ -47,16 +56,8 @@ export default function MarketDeatil() {
           </Text>
         </Box>
       )}
-      <Flex justifyContent={"end"}>
-        <TopSecondNav
-          first="최신순"
-          second="높은 가격 순"
-          third="낮은 가격 순"
-        />
-      </Flex>
 
       {check === "SellList" ? (
-        
         <Center>
           <Flex
             wrap={"wrap"}
