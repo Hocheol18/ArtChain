@@ -6,9 +6,7 @@ import com.ssafy.artchain.jwt.repository.RefreshRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
-import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseDto;
-import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
-import com.ssafy.artchain.member.dto.response.MemberUserResponseDto;
+import com.ssafy.artchain.member.dto.response.*;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -147,6 +145,21 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return new MemberUserMypageResponseListDto(list, count);
+    }
+
+    @Override
+    public MemberComMypageResponseDto getComMypage(CustomUserDetails customCompany) {
+        Member company = memberRepository.findByMemberId(customCompany.getUsername())
+                .orElseThrow(() -> new NoSuchElementException("COMPANY NOT FOUND"));
+        MemberComMypageDto comDto = MemberComMypageDto.builder()
+                .id(company.getId())
+                .name(company.getName())
+                .build();
+
+        List<FundingComMypageDto> list = memberRepository.comMypage(company.getId());
+
+
+        return new MemberComMypageResponseDto(comDto, list);
     }
 
     private void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
