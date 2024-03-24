@@ -35,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     private final RefreshRepository refreshRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Transactional
     @Override
     public String refreshToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         //get refresh token
@@ -162,7 +163,8 @@ public class MemberServiceImpl implements MemberService {
         return new MemberComMypageResponseDto(comDto, list);
     }
 
-    private void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
+    @Transactional
+    protected void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
 
         Date date = new Date(System.currentTimeMillis() + expiredMs);
 

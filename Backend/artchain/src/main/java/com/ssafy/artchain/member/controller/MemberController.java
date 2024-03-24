@@ -4,7 +4,6 @@ import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
-import com.ssafy.artchain.member.dto.response.MemberComMypageDto;
 import com.ssafy.artchain.member.dto.response.MemberComMypageResponseDto;
 import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
 import com.ssafy.artchain.member.defaultResponse.DefaultResponse;
@@ -16,10 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
 
 import static com.ssafy.polaris.book.response.StatusCode.*;
 
@@ -54,18 +52,18 @@ public class MemberController {
     @GetMapping("/enterprise")
     public ResponseEntity<DefaultResponse<MemberComMypageResponseDto>> getComMypage(@AuthenticationPrincipal CustomUserDetails company) {
         MemberComMypageResponseDto dto = memberService.getComMypage(company);
-        return null;
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_COMPANY_VIEW, dto);
     }
 
 
-    @PostMapping("/companyJoin")
-    public ResponseEntity<?> companyJoin(CompanyMemberRegistRequestDto companyDto) {
+    @PostMapping("/enterprise/join")
+    public ResponseEntity<?> companyJoin(@RequestBody @Validated CompanyMemberRegistRequestDto companyDto) {
         memberService.companyJoin(companyDto);
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_NEW_COMPANY_USER, 200);
     }
 
-    @PostMapping("/memberJoin")
-    public ResponseEntity<?> memberJoin(MemberRegistRequestDto memberDto) {
+    @PostMapping("/individual/join")
+    public ResponseEntity<?> memberJoin(@RequestBody @Validated MemberRegistRequestDto memberDto) {
         memberService.memberJoin(memberDto);
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_NEW_NORMAL_USER, 200);
     }
