@@ -40,23 +40,17 @@ contract TokenMarketplace {
         );
 
         // Transfer tokens from the buyer to this contract
-        require(
-            tokenContracts[tradePost.tokenAddress].transferFrom(
-                msg.sender,
-                tradePost.seller,
-                tradePost.tokenAmount
-            ),
-            "Failed to transfer token"
+        tokenContracts[tradePost.tokenAddress].transferFrom(
+            msg.sender,
+            tradePost.seller,
+            tradePost.tokenAmount
         );
 
         // Transfer the price of the token to the seller
-        require(
-            tokenContracts[artCoinAddress].transferFrom(
-                tradePost.seller,
-                msg.sender,
-                tradePost.price
-            ),
-            "Failed to transfer token payment to the seller"
+        tokenContracts[artCoinAddress].transferFrom(
+            tradePost.seller,
+            msg.sender,
+            tradePost.price
         );
     }
 
