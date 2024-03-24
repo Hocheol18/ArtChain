@@ -1,7 +1,7 @@
 import { useMediaQuery } from "react-responsive";
 import { ReactNode } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { MainPage } from "./pages/MainPage";
+import MainPage from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
 import { ChakraProvider } from "@chakra-ui/react";
 import { LoginPage } from "./pages/LoginPage";
