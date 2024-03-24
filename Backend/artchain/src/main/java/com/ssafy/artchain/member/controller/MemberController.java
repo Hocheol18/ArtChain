@@ -72,7 +72,7 @@ public class MemberController {
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String refresh = memberService.refreshToken(httpServletRequest, httpServletResponse);
 
-        if(refresh.equals("access")){
+        if(refresh.equals("Authorization")){
             return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_NEW_ACCESS_TOKEN, refresh);
 //            새로운 엑세스
         } else {

@@ -85,9 +85,9 @@ public class MemberServiceImpl implements MemberService {
         addRefreshEntity(memberId, newRefresh, 86400000L);
 
         //response
-        httpServletResponse.setHeader("access", newAccess);
+        httpServletResponse.setHeader("Authorization", newAccess);
         httpServletResponse.addCookie(createCookie("refresh", newRefresh));
-        return "access";
+        return "Authorization";
     }
 
     @Transactional
@@ -182,7 +182,7 @@ public class MemberServiceImpl implements MemberService {
         cookie.setMaxAge(24*60*60);
 //    https에서만 쓰게 할 수 있는 코드, localhost환경에서 개발 중이므로 주석
 //    cookie.setSecure(true);
-//    cookie.setPath("/");
+        cookie.setPath("/api");
 //    자바스크립트 접근 불가능
         cookie.setHttpOnly(true);
         return cookie;
