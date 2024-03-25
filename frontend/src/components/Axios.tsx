@@ -1,6 +1,11 @@
 import { Button } from "@chakra-ui/react";
 import React from "react";
-import { ProfileAxios, LoginAxios, UserEnrollAxios } from "../api/login";
+import {
+  ProfileAxios,
+  LoginAccessTokenAxios,
+  UserEnrollAxios,
+  RefreshTokenAxios,
+} from "../api/login";
 
 export const AxiosFunction = () => {
   const data = { username: "didifia", password: "1234" };
@@ -17,13 +22,11 @@ export const AxiosFunction = () => {
       <Button
         bgColor={"blue.200"}
         onClick={() =>
-          LoginAxios(data)
-            .then((res: any) =>
-              ProfileAxios(res.headers.authorization)
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err))
-            )
-            .catch((err) => console.log(err))
+          LoginAccessTokenAxios(data).then((res: any) =>
+            ProfileAxios(res.headers.authorization)
+              .then((res) => console.log(res))
+              .catch((err) => console.log(err))
+          )
         }
       >
         userconfirm{" "}
@@ -36,6 +39,15 @@ export const AxiosFunction = () => {
         }
       >
         signup
+      </Button>
+      <Button
+        onClick={() =>
+            RefreshTokenAxios()
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
+        }
+      >
+        refresh
       </Button>
     </>
   );
