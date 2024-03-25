@@ -1,5 +1,6 @@
 package com.ssafy.artchain.member.repository;
 
+import com.ssafy.artchain.member.dto.response.FundingComMypageDto;
 import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseDto;
 import com.ssafy.artchain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +35,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<MemberUserMypageResponseDto> memberMypage(
             @Param("memberId") Long memberId
     );
+
+
+    @Query(value = "select new com.ssafy.artchain.member.dto.response.FundingComMypageDto(f.id, f.name, f.progressStatus, f.poster, f.goalCoinCount, f.nowCoinCount, f.recruitEnd)" +
+            "from Member as m " +
+            " left join Funding f on m.id = f.entId" +
+            " where m.id = :companyId ")
+    List<FundingComMypageDto> comMypage(@Param("companyId") Long companyId);
 }

@@ -112,8 +112,8 @@ public class SecurityConfig {
                     "/login",
                     "/join",
                     "/api/member/login",
-                    "/api/member/companyJoin",
-                    "/api/member/memberJoin",
+                    "/api/member/enterprise/join",
+                    "/api/member/individual/join",
                     "/api/member/refresh"
             ).permitAll()
             .anyRequest().authenticated());

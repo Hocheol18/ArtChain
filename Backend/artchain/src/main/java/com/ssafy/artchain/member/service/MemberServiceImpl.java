@@ -6,9 +6,7 @@ import com.ssafy.artchain.jwt.repository.RefreshRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
-import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseDto;
-import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
-import com.ssafy.artchain.member.dto.response.MemberUserResponseDto;
+import com.ssafy.artchain.member.dto.response.*;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -37,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     private final RefreshRepository refreshRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Transactional
     @Override
     public String refreshToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         //get refresh token
@@ -86,9 +85,9 @@ public class MemberServiceImpl implements MemberService {
         addRefreshEntity(memberId, newRefresh, 86400000L);
 
         //response
-        httpServletResponse.setHeader("access", newAccess);
+        httpServletResponse.setHeader("Authorization", newAccess);
         httpServletResponse.addCookie(createCookie("refresh", newRefresh));
-        return "access";
+        return "Authorization";
     }
 
     @Transactional
@@ -149,7 +148,23 @@ public class MemberServiceImpl implements MemberService {
         return new MemberUserMypageResponseListDto(list, count);
     }
 
-    private void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
+    @Override
+    public MemberComMypageResponseDto getComMypage(CustomUserDetails customCompany) {
+        Member company = memberRepository.findByMemberId(customCompany.getUsername())
+                .orElseThrow(() -> new NoSuchElementException("COMPANY NOT FOUND"));
+        MemberComMypageDto comDto = MemberComMypageDto.builder()
+                .id(company.getId())
+                .name(company.getName())
+                .build();
+
+        List<FundingComMypageDto> list = memberRepository.comMypage(company.getId());
+
+
+        return new MemberComMypageResponseDto(comDto, list);
+    }
+
+    @Transactional
+    protected void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
 
         Date date = new Date(System.currentTimeMillis() + expiredMs);
 
@@ -167,7 +182,7 @@ public class MemberServiceImpl implements MemberService {
         cookie.setMaxAge(24*60*60);
 //    https에서만 쓰게 할 수 있는 코드, localhost환경에서 개발 중이므로 주석
 //    cookie.setSecure(true);
-//    cookie.setPath("/");
+        cookie.setPath("/api");
 //    자바스크립트 접근 불가능
         cookie.setHttpOnly(true);
         return cookie;

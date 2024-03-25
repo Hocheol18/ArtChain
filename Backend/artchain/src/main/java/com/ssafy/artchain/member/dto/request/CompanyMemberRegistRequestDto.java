@@ -6,6 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class CompanyMemberRegistRequestDto {
     private String memberId;
     private String password;
