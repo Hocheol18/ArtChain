@@ -10,11 +10,10 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
     mapping(address => uint256) public refunds; // 환불 address 1:1로 맵핑
     mapping(address => uint256) public newCoins; // 새로운 소각 1:1로 맵핑
 
-    uint256 public totalApply; // 총 발행량
     address public owner; // 컨트랙트 호출자
     uint256 public raisedAmount; // 총 모금 발행량 갯수
     uint256 public finishTime; // 마감 시간
-    address[] private listOfContributors; // ArtCoin 넣은 사람 address
+    address[] public listOfContributors; // ArtCoin 넣은 사람 address
 
     constructor(
         string memory name,
@@ -34,7 +33,7 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
     function distributeFund() external {
         require(msg.sender == owner, "must be owner");
         require(block.timestamp > finishTime, "Not time OVER");
-        require(raisedAmount >= (totalApply * 4) / 5, "not goal");
+        require(raisedAmount >= (initialSupply * 4) / 5, "not goal");
 
         for (uint i = 0; i < listOfContributors.length; i++) {
             address contributor = listOfContributors[i];
@@ -43,14 +42,13 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
             if (amount > 0) {
                 newCoins[contributor] = 0;
                 _transfer(owner, contributor, amount);
-                
             }
         }
     }
 
     // 환불 함수
     function refundDistribute() external {
-        require(raisedAmount < (totalApply * 4) / 5, "80% is not over");
+        require(raisedAmount < (initialSupply * 4) / 5, "80% is not over");
         require(block.timestamp > finishTime, "Not over");
 
         for (uint i = 0; i < listOfContributors.length; i++) {

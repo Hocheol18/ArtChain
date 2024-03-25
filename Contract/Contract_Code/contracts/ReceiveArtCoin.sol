@@ -8,12 +8,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 // FundRaisingContract 상속
 contract ReceiveArtCoinContract is FundRaisingContract {
     IERC20 public fundingToken;
-    address public contractAddress;
-    uint256 public initialSupply;
-
-    // indexed :: event 객체 내에서 사용할 수 있는 키워드, event를 검색 또는 필터링하는 데 사용할 수 있게 만든다.
-    // 동시성 문제 해결, 이로 인해 동시에 컨트랙트에 접근한 사람이 같은 데이터를 볼 수 있음.
-    event TokenReceived(address indexed funder, uint256 amount);
+    address public mainWalletaddress; // 메인 지갑 주소
+    mapping(address => bool) private hasContributed;
 
     constructor(
         string memory name,
@@ -21,21 +17,35 @@ contract ReceiveArtCoinContract is FundRaisingContract {
         uint256 _initialSupply, // 초기 조각 총발행량
         uint256 _time, // 시간 상속
         address _tokenAddress // 토큰 컨트랙트
-        // address _contractAddress // 생성된 컨트랙트 주소
     ) FundRaisingContract(name, symbol, _initialSupply, _time) {
+        mainWalletaddress = 0x67F07AFaD0f1528391a0CF8C5058370114B262d6;
         fundingToken = IERC20(_tokenAddress);
-        initialSupply = _initialSupply;
     }
 
+    event NewCoinsUpdated(address indexed _from, uint256 _amount);
+
     // ts에서 실행, button 이벤트를 주어야 실행가능함.
-    function fundToken(address _from, address _to, uint256 _amount) external {
+    function fundToken(address _from, uint256 _amount) external {
+        require(block.timestamp < finishTime, "Time Over");
         require(_amount > 0, "You need to donate a positive amount of tokens");
-        require(_amount + raisedAmount <= initialSupply);
+        require(
+            _amount + raisedAmount <= initialSupply,
+            "Exceeds initial supply"
+        );
+        bool success = fundingToken.transferFrom(
+            _from,
+            mainWalletaddress,
+            _amount
+        );
+        require(success, "Token transfer failed");
+        raisedAmount += _amount;
+        newCoins[_from] += _amount;
 
-        _transfer(_from, _to, _amount * 10 ** 18);
+        if (!hasContributed[_from]) {
+            listOfContributors.push(_from);
+            hasContributed[_from] = true;
+        }
 
-        // Event execute
-        emit TokenReceived(msg.sender, _amount);
-        newCoins[msg.sender] += _amount;
+        emit NewCoinsUpdated(_from, _amount);
     }
 }
