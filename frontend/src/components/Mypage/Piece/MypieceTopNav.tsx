@@ -1,6 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
 
 interface Props {
   onCheck: (whatCheck: string) => void;
@@ -18,8 +17,6 @@ export const MypieceTopNav = ({ onCheck, check }: Props) => {
       navigate(`/mypiece/${userId}`);
     }
   };
-
-  useEffect(() => {}, [check]);
 
   return (
     <>
