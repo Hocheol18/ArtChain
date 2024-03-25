@@ -1,5 +1,6 @@
 package com.ssafy.artchain.market.dto;
 
+import com.ssafy.artchain.market.entity.Market;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -21,4 +22,5 @@ public class MarketPieceTradeHistoryResponseDto {
     private String sellerAddress;
     private String buyerAddress;
     private String status;
+
 }

@@ -25,8 +25,16 @@ import static com.ssafy.artchain.market.response.StatusCode.SUCCESS_MARKET_MAIN_
 public class MarketController {
 
     private final MarketServiceImpl marketService;
+    /**
+     * 마켓 메인
+     * 마켓에 들어오면 정산 대기, 정산 완료 상태인 투자 리스트들을 볼 수 있다.
+     *
+     * @param String category, String status, int page, int size
+     * 투자 카테고리와 상태를 넣는다( pageable 기본은 0, 6 )
+     * @return marketMainResponseDtoList
+     */
     @GetMapping
-    public ResponseEntity<DefaultResponse<List<MarketMainResponseDto>>> getMarketMainList( @RequestParam String category, @RequestParam String status, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<DefaultResponse<List<MarketMainResponseDto>>> getMarketMainList( @RequestParam String category, @RequestParam String status, @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         System.out.println("category, status : "+ category + status );
         List<MarketMainResponseDto> marketMainResponseDtoList = marketService.getMarketMain( status, category, pageable);
         System.out.println(marketMainResponseDtoList);
@@ -34,6 +42,15 @@ public class MarketController {
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_MAIN_VIEW, marketMainResponseDtoList);
     }
 
+    /**
+     * 마켓 판매 리스트
+     * 마켓 메인에서 투자 상품을 클릭하면 그 상품에 관련된
+     * 현재 조각을 팔고 있는 리스트를 조회할 수 있다.
+     *
+     * @param String category, String status, int page, int size
+     * 투자 카테고리와 상태를 넣는다( pageable 기본은 0, 6 )
+     * @return marketMainResponseDtoList
+     */
     @GetMapping("/sellList")
     public ResponseEntity<DefaultResponse<List<MarketSellResponseDto>>> getMarketSellList( @RequestParam Long fundingId, @RequestParam String sortFlag, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         List<MarketSellResponseDto> list = marketService.getMarketSellList(fundingId, sortFlag, pageable);

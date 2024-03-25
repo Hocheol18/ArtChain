@@ -41,9 +41,7 @@ public class MarketServiceImpl implements MarketService {
 
         if (status.toUpperCase(Locale.ROOT).equals(UPPER_STATUS) || Stream.of(FundingProgressStatus.values())
                 .noneMatch(ps -> ps.name().equals(status))) {
-            statusList = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
-                    FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
-                    FundingProgressStatus.RECRUITMENT_FAILED);
+            statusList = List.of(FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED);
         } else {
             statusList = List.of(FundingProgressStatus.valueOf(status.toUpperCase()));
         }
@@ -62,17 +60,18 @@ public class MarketServiceImpl implements MarketService {
     @Override
     public List<MarketSellResponseDto> getMarketSellList(Long fundingId, String sortFlag, Pageable pageable) {
         Page<Market> marketPage;
+        String LISTED = "LISTED";
         if(sortFlag.equals("최신순")) {
-            marketPage = marketRepository.findAllByFundingIdOrderByCreatedAtDesc(fundingId, pageable);
+            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCreatedAtDesc(fundingId, LISTED, pageable);
         }
         else if(sortFlag.equals("높은가격순")) {
-            marketPage = marketRepository.findAllByFundingIdOrderByCoinPerPieceDesc(fundingId, pageable);
+            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceDesc(fundingId, LISTED, pageable);
         }
         else if(sortFlag.equals("낮은가격순")){
-            marketPage = marketRepository.findAllByFundingIdOrderByCoinPerPieceAsc(fundingId, pageable);
+            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceAsc(fundingId, LISTED, pageable);
         }
         else {
-            marketPage = marketRepository.findAllByFundingId(fundingId, pageable);
+            marketPage = marketRepository.findAllByFundingIdAndStatus(fundingId, LISTED, pageable);
         }
 
         List<MarketSellResponseDto> marketSellResponseDtoList = marketPage.getContent()
@@ -86,12 +85,17 @@ public class MarketServiceImpl implements MarketService {
             dto.setSellerAddress(member.getWalletAddress());
         }
 
-
         return marketSellResponseDtoList;
     }
 
     @Override
     public List<MarketPieceTradeHistoryResponseDto> getMarketPieceTradeHistoryList(Long fundingId, Pageable pageable) {
+        Page<Market> marketPage = marketRepository.findAllByFundingId(fundingId, pageable);
+
+        List<MarketPieceTradeHistoryResponseDto> marketPieceTradeHistoryResponseDtoList = marketPage.getContent()
+                .stream()
+                .map(MarketPieceTradeHistoryResponseDto::new)
+                .toList();
         return null;
     }
 }
