@@ -18,7 +18,7 @@ contract ReceiveArtCoinContract is FundRaisingContract {
         uint256 _time, // 시간 상속
         address _tokenAddress // 토큰 컨트랙트
     ) FundRaisingContract(name, symbol, _initialSupply, _time) {
-        mainWalletaddress = 0x67F07AFaD0f1528391a0CF8C5058370114B262d6;
+        mainWalletaddress = 0xDaBD9681C6fA9C2675f883FB67a1485038087DD3;
         fundingToken = IERC20(_tokenAddress);
     }
 
