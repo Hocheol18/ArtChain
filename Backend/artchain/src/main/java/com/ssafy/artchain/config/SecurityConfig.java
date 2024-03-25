@@ -117,7 +117,8 @@ public class SecurityConfig {
                     "/api/member/refresh",
                     "api/market",
                     "api/market/sellList",
-                    "api/market/pieceHistory"
+                    "api/market/pieceHistory",
+                    "/api/market/detail"
             ).permitAll()
             .anyRequest().authenticated());
 //                    .anyRequest().permitAll());

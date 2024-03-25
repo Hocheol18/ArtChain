@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.ssafy.artchain.market.response.StatusCode.SUCCESS_MARKET_MAIN_VIEW;
-import static com.ssafy.artchain.market.response.StatusCode.SUCCESS_MARKET_PIECE_TRADE_HISTORY_VIEW;
+import static com.ssafy.artchain.market.response.StatusCode.*;
 
 @RestController
 @RequestMapping("/api/market")
@@ -67,10 +66,10 @@ public class MarketController {
     }
 
     @GetMapping("/detail")
-    public ResponseEntity<DefaultResponse<?>> getMarketHistoryDetail( @RequestParam Long marketId ) {
+    public ResponseEntity<DefaultResponse<MarketDetailResponseDto>> getMarketHistoryDetail( @RequestParam Long marketId ) {
         MarketDetailResponseDto dto = marketService.getMarketDetail(marketId);
 
-        return null;
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_DETAIL_VIEW, dto);
     }
 
 

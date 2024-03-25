@@ -110,6 +110,7 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public MarketDetailResponseDto getMarketDetail(Long marketId) {
-        return null;
+        MarketDetailResponseDto dto = marketRepository.findMarketDetailByMarketId(marketId);
+        return dto;
     }
 }
