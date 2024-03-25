@@ -1,19 +1,16 @@
 import React from "react";
 import MainCarousel from "../components/Main/MainCarousel";
-import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import Poster from "../components/Main/Poster";
 import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
-import { login } from "../api/login";
+import { AxiosFunction } from "../components/Axios";
 
 export default function MainPage() {
-  const data = { username: "didifia", password: "1234" };
   return (
     <>
-      <Button bgColor={"blue.200"} onClick={() => login(data).then((res) => console.log(res)).catch((err) => console.log(err))}>Axios Button </Button>
-
-      {/* 여기서부터 진짜 */}
+      <AxiosFunction />
       <MainCarousel />
       <Box mt={"1rem"}>
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>
