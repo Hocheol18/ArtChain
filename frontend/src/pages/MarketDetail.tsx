@@ -66,7 +66,7 @@ export default function MarketDeatil() {
             justifyContent={"flex-start"}
             ml={"0.5rem"}
             mt={"1rem"}
-            w={"370px"}
+            w={"390px"}
           >
             <SellList />
           </Flex>

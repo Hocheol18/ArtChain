@@ -67,6 +67,7 @@ export default function Agreement({ setisAgree } : Props) {
             fontSize={"sm"}
             bgColor={"blue.300"}
             ml={"0.5rem"}
+            mr={"0.5rem"}
             onClick={() => {setisAgree(false)}}
           >
             <Center color={"white.100"}>다음</Center>
@@ -80,6 +81,7 @@ export default function Agreement({ setisAgree } : Props) {
             fontSize={"sm"}
             bgColor={"gray.300"}
             ml={"0.5rem"}
+            mr={"0.5rem"}
           >
             <Center color={"black.100"}>다음</Center>
           </Box>
