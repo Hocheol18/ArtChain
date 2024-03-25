@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Props {
   onCheck: (whatCheck: string) => void;
@@ -6,8 +7,15 @@ interface Props {
 }
 
 export const MypieceTopNav = ({ onCheck, check }: Props) => {
+  const navigate = useNavigate(); // useNavigate 훅 사용
+  const { userId } = useParams();
   const handleClick = (whatCheck: string) => {
     onCheck(whatCheck);
+    if (whatCheck === "transaction") {
+      navigate(`/mypiece/${userId}/transaction-list`); // 해당 경로로 이동
+    } else if (whatCheck === "invest") {
+      navigate(`/mypiece/${userId}`);
+    }
   };
 
   return (
