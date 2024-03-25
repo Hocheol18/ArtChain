@@ -4,6 +4,7 @@ import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.funding.response.DefaultResponse;
 import com.ssafy.artchain.funding.response.StatusCode;
 import com.ssafy.artchain.funding.service.FundingService;
+import com.ssafy.artchain.member.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +33,11 @@ public class FundingController {
      */
     @PostMapping
     public ResponseEntity<DefaultResponse<Void>> createFunding(
-            @RequestBody FundingCreateRequestDto dto) {
-        int result = fundingService.createFunding(dto);
-        if (result == -1) {
+            @RequestBody FundingCreateRequestDto dto, @AuthenticationPrincipal CustomUserDetails member) {
+        int result = fundingService.createFunding(dto, member);
+        if (result == -2) {
+            return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.ALLOW_ONLY_COMPANY);
+        } else if (result == -1) {
             return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.FAIL_CREATE_FUNDING);
         } else {
             return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.SUCCESS_CREATE_FUNDING);
@@ -101,11 +105,16 @@ public class FundingController {
      * @return
      */
     @PutMapping("/{fundingId}/allow")
-    public ResponseEntity<DefaultResponse<Void>> allowFunding(@PathVariable Long fundingId) {
-        // -1: 해당하는 펀딩 없음, 0: 이미 승인된 펀딩, 1: 펀딩 승인.
-        int result = fundingService.allowFunding(fundingId);
+    public ResponseEntity<DefaultResponse<Void>> allowFunding(@PathVariable Long fundingId, @AuthenticationPrincipal CustomUserDetails member) {
+        // -2: 관리자가 아님, -1: 해당하는 펀딩 없음, 0: 이미 승인된 펀딩, 1: 펀딩 승인.
+        int result = fundingService.allowFunding(fundingId, member);
 
-        if (result == -1) {
+        if (result == -2) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    StatusCode.ALLOW_ONLY_ADMIN
+            );
+        } else if (result == -1) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     StatusCode.FAIL_FUNDING_VIEW
@@ -123,13 +132,26 @@ public class FundingController {
         }
     }
 
+    /**
+     * 펀딩 진행 상태 변경
+     *
+     * @param fundingId
+     * @param progressStatus
+     * @param member
+     * @return
+     */
     @PutMapping("/{fundingId}/progress-status/{progressStatus}")
     public ResponseEntity<DefaultResponse<Void>> updateFundingProgressStatus(
-            @PathVariable Long fundingId, @PathVariable String progressStatus) {
-        // -1: 해당하는 펀딩 없음, 1: 펀딩 진행 상태 수정 완료.
-        int result = fundingService.updateFundingProgressStatus(fundingId, progressStatus);
+            @PathVariable Long fundingId, @PathVariable String progressStatus, @AuthenticationPrincipal CustomUserDetails member) {
+        // -2: 관리자 또는 해당 펀딩의 기업이 아님, -1: 해당하는 펀딩 없음, 0: 해당하는 진행 상태값 없음, 1: 펀딩 진행 상태 수정 완료.
+        int result = fundingService.updateFundingProgressStatus(fundingId, progressStatus, member);
 
-        if (result == -1) {
+        if (result == -2) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    StatusCode.ALLOW_OVER_FUNDING_COMPANY
+            );
+        } else if (result == -1) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     StatusCode.FAIL_FUNDING_VIEW
@@ -158,11 +180,17 @@ public class FundingController {
     @PostMapping("/{fundingId}/notice")
     public ResponseEntity<DefaultResponse<Void>> createNotice(@PathVariable Long fundingId,
                                                               @RequestBody
-                                                              FundingNoticeRequestDto dto) {
-        // -1: 해당 펀딩 없음, 0: 작성 실패, 1: 작성 성공
-        int result = fundingService.createNotice(fundingId, dto);
+                                                              FundingNoticeRequestDto dto,
+                                                              @AuthenticationPrincipal CustomUserDetails member) {
+        // -2: 펀딩 기업이 아님, -1: 해당 펀딩 없음, 0: 작성 실패, 1: 작성 성공
+        int result = fundingService.createNotice(fundingId, dto, member);
 
-        if (result == -1) {
+        if (result == -2) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    StatusCode.ALLOW_ONLY_FUNDING_COMPANY
+            );
+        } else if (result == -1) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     StatusCode.FAIL_FUNDING_VIEW
@@ -218,11 +246,17 @@ public class FundingController {
      */
     @PutMapping("/{fundingId}/notice/{fundingNoticeId}")
     public ResponseEntity<DefaultResponse<Void>> updateFundingNotice(@PathVariable Long fundingId,
-                                                                     @PathVariable Long fundingNoticeId, @RequestBody FundingNoticeRequestDto dto) {
-        // -1: 해당하는 펀딩 공지사항 없거나 해당 펀딩의 공지사항이 아님, 1: 펀딩 공지사항 수정 완료
-        int result = fundingService.updateFundingNotice(fundingId, fundingNoticeId, dto);
+                                                                     @PathVariable Long fundingNoticeId, @RequestBody FundingNoticeRequestDto dto,
+                                                                     @AuthenticationPrincipal CustomUserDetails member) {
+        // -2: 펀딩 기업이 아님, -1: 해당하는 펀딩 공지사항 없거나 해당 펀딩의 공지사항이 아님, 1: 펀딩 공지사항 수정 완료
+        int result = fundingService.updateFundingNotice(fundingId, fundingNoticeId, dto, member);
 
-        if (result == -1) {
+        if (result == -2) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    StatusCode.ALLOW_ONLY_FUNDING_COMPANY
+            );
+        } else if (result == -1) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     StatusCode.FAIL_FUNDING_NOTICE_VIEW
@@ -244,11 +278,17 @@ public class FundingController {
      */
     @DeleteMapping("/{fundingId}/notice/{fundingNoticeId}")
     public ResponseEntity<DefaultResponse<Void>> deleteFundingNotice(@PathVariable Long fundingId,
-                                                                     @PathVariable Long fundingNoticeId) {
-        // -1: 해당하는 펀딩 공지사항 없거나 해당 펀딩의 공지사항이 아님, 1: 펀딩 공지사항 삭제 완료
-        int result = fundingService.deleteFundingNotice(fundingId, fundingNoticeId);
+                                                                     @PathVariable Long fundingNoticeId,
+                                                                     @AuthenticationPrincipal CustomUserDetails member) {
+        // -2: 펀딩 기업이 아님, -1: 해당하는 펀딩 공지사항 없거나 해당 펀딩의 공지사항이 아님, 1: 펀딩 공지사항 삭제 완료
+        int result = fundingService.deleteFundingNotice(fundingId, fundingNoticeId, member);
 
-        if (result == -1) {
+        if (result == -2) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    StatusCode.ALLOW_ONLY_FUNDING_COMPANY
+            );
+        } else if (result == -1) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     StatusCode.FAIL_FUNDING_NOTICE_VIEW
@@ -272,19 +312,24 @@ public class FundingController {
     @PostMapping("/{fundingId}/invest")
     public ResponseEntity<DefaultResponse<InvestmentIdResponseDto>> createInvestmentLog(
             @PathVariable Long fundingId, @RequestBody
-    InvestmentRequestDto dto) {
-        // -2: 일치하는 회원 정보 없음, -1: 일치하는 펀딩 정보 없음, 1 이상: 생성된 로그의 식별자 값
-        Long result = fundingService.createInvestmentLog(fundingId, dto);
+    InvestmentRequestDto dto, @AuthenticationPrincipal CustomUserDetails member) {
+        // -2: 개인 회원 아님, -1: 일치하는 펀딩 정보 없음, 0: 모집 중인 펀딩이 아님, 1 이상: 생성된 로그의 식별자 값
+        Long result = fundingService.createInvestmentLog(fundingId, dto, member);
 
         if (result.equals(-2L)) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
-                    StatusCode.NOT_FOUND_MEMBER_INFO
+                    StatusCode.ALLOW_ONLY_USER
             );
         } else if (result.equals(-1L)) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     StatusCode.FAIL_FUNDING_VIEW
+            );
+        } else if (result.equals(0L)) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    StatusCode.FAIL_INVEST_BY_STATUS
             );
         }
 

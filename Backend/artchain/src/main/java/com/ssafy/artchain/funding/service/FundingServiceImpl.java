@@ -10,6 +10,7 @@ import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingNoticeRepository;
 import com.ssafy.artchain.funding.repository.FundingRepository;
 import com.ssafy.artchain.funding.repository.InvestmentLogRepository;
+import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
@@ -36,9 +37,15 @@ public class FundingServiceImpl implements FundingService {
     private final InvestmentLogRepository investmentLogRepository;
     private final MemberRepository memberRepository;
     private final EntityManager em;
+    private final String ROLE_COMPANY = "ROLE_COMPANY";
+    private final String ROLE_ADMIN = "ROLE_ADMIN";
+    private final String ROLE_USER = "ROLE_USER";
 
     @Override
-    public int createFunding(FundingCreateRequestDto data) {
+    public int createFunding(FundingCreateRequestDto data, CustomUserDetails member) {
+        if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_COMPANY))) {
+            return -2;
+        }
         Funding funding = fundingRepository.save(Funding.builder()
                 .entId(data.getEntId())
                 .name(data.getName())
@@ -124,11 +131,12 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional
-    public int allowFunding(Long fundingId) {
+    public int allowFunding(Long fundingId, CustomUserDetails member) {
         Funding funding = fundingRepository.findById(fundingId)
                 .orElse(null);
-
-        if (funding == null) {
+        if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN))) {
+            return -2;
+        } else if (funding == null) {
             return -1;
         } else if (funding.getIsAllow()) {
             return 0;
@@ -140,12 +148,17 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional
-    public int updateFundingProgressStatus(Long fundingId, String progressStatus) {
+    public int updateFundingProgressStatus(Long fundingId, String progressStatus, CustomUserDetails member) {
         Funding funding = fundingRepository.findById(fundingId)
                 .orElse(null);
 
         if (funding == null) {
             return -1;
+        }
+
+        if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN)
+                || (au.getAuthority().equals(ROLE_COMPANY) && member.getId().equals(funding.getEntId())))) {
+            return -2;
         }
 
         if (Stream.of(FundingProgressStatus.values())
@@ -158,10 +171,14 @@ public class FundingServiceImpl implements FundingService {
     }
 
     @Override
-    public int createNotice(Long fundingId, FundingNoticeRequestDto dto) {
+    public int createNotice(Long fundingId, FundingNoticeRequestDto dto, CustomUserDetails member) {
         Funding funding = fundingRepository.findById(fundingId).orElse(null);
         if (funding == null) {
             return -1;
+        }
+
+        if (member.getAuthorities().stream().noneMatch(au -> (au.getAuthority().equals(ROLE_COMPANY) && member.getId().equals(funding.getEntId())))) {
+            return -2;
         }
 
         FundingNotice fundingNotice = fundingNoticeRepository.save(
@@ -196,7 +213,7 @@ public class FundingServiceImpl implements FundingService {
     @Override
     @Transactional
     public int updateFundingNotice(Long fundingId, Long fundingNoticeId,
-                                   FundingNoticeRequestDto dto) {
+                                   FundingNoticeRequestDto dto, CustomUserDetails member) {
         FundingNotice fundingNotice = fundingNoticeRepository.findById(fundingNoticeId)
                 .orElse(null);
 
@@ -204,12 +221,16 @@ public class FundingServiceImpl implements FundingService {
             return -1;
         }
 
+        if (member.getAuthorities().stream().noneMatch(au -> (au.getAuthority().equals(ROLE_COMPANY) && member.getId().equals(fundingNotice.getFunding().getEntId())))) {
+            return -2;
+        }
+
         fundingNotice.updateTitleAndContent(dto.getTitle(), dto.getContent());
         return 1;
     }
 
     @Override
-    public int deleteFundingNotice(Long fundingId, Long fundingNoticeId) {
+    public int deleteFundingNotice(Long fundingId, Long fundingNoticeId, CustomUserDetails member) {
         FundingNotice fundingNotice = fundingNoticeRepository.findById(fundingNoticeId)
                 .orElse(null);
 
@@ -218,17 +239,20 @@ public class FundingServiceImpl implements FundingService {
             return -1;
         }
 
+        if (member.getAuthorities().stream().noneMatch(au -> (au.getAuthority().equals(ROLE_COMPANY) && member.getId().equals(fundingNotice.getFunding().getEntId())))) {
+            return -2;
+        }
+
         fundingNoticeRepository.delete(fundingNotice);
         return 1;
     }
 
     @Override
     @Transactional
-    public Long createInvestmentLog(Long fundingId, InvestmentRequestDto dto) {
-        // TODO: member 관련은 추후 수정해야 함.
-        Member member = memberRepository.findById(17L)
+    public Long createInvestmentLog(Long fundingId, InvestmentRequestDto dto, CustomUserDetails member) {
+        Member memberInfo = memberRepository.findById(member.getId())
                 .orElse(null);
-        if (member == null) {
+        if (memberInfo == null || member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
             return -2L;
         }
 
@@ -237,13 +261,16 @@ public class FundingServiceImpl implements FundingService {
         if (funding == null) {
             return -1L;
         }
+        if (!funding.getProgressStatus().equals(FundingProgressStatus.RECRUITMENT_STATUS)) {
+            return 0L;
+        }
 
         funding.renewNowCoinCount(funding.getNowCoinCount() + dto.getCoinCount());
 
         InvestmentLog savedInvestmentLog = investmentLogRepository.save(
                 InvestmentLog
                         .builder()
-                        .member(member)
+                        .member(memberInfo)
                         .funding(funding)
                         .transactionHash(dto.getTransactionHash())
                         .transactionTime(dto.getTransactionTime())
