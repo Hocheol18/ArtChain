@@ -1,20 +1,34 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MypieceTopNav } from "../components/Mypage/Piece/MypieceTopNav";
 import { MyInvest } from "../components/Mypage/Piece/MyInvest/MyInvest";
+import { MyTransactionList } from "../components/Mypage/Piece/MyTransaction/MyTransactionList";
 import { MyTransaction } from "../components/Mypage/Piece/MyTransaction/MyTransaction";
 
 interface Props {
-  myTopNav: string;
   type: string;
 }
 
-export const MyPiece = ({ myTopNav, type }: Props) => {
-  const [check, setCheck] = useState(myTopNav);
+export const MyPiece = ({ type }: Props) => {
+  const [check, setCheck] = useState("invest");
 
   const handleCheck = (whatCheck: string) => {
     setCheck(whatCheck);
   };
+
+  useEffect(() => {
+    switch (type) {
+      case "invest":
+        setCheck("invest");
+        break;
+      case "transaction-list":
+        setCheck("transaction");
+        break;
+      case "transaction":
+        setCheck("transaction");
+        break;
+    }
+  }, [type]);
 
   return (
     <>
@@ -25,9 +39,9 @@ export const MyPiece = ({ myTopNav, type }: Props) => {
         {type === "invest" ? (
           <MyInvest />
         ) : type === "transaction-list" ? (
-          <MyTransaction />
+          <MyTransactionList />
         ) : (
-          "dsi"
+          <MyTransaction />
         )}
       </Box>
     </>

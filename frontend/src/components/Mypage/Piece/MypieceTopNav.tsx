@@ -1,5 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 interface Props {
   onCheck: (whatCheck: string) => void;
@@ -18,6 +19,8 @@ export const MypieceTopNav = ({ onCheck, check }: Props) => {
     }
   };
 
+  useEffect(() => {}, [check]);
+
   return (
     <>
       {check === "invest" ? (
@@ -33,6 +36,7 @@ export const MypieceTopNav = ({ onCheck, check }: Props) => {
             color={"blue.400"}
             onClick={() => handleClick("invest")}
             borderBottom={"2px"}
+            backgroundColor={"white"}
           >
             나의 투자
           </Text>
@@ -40,17 +44,24 @@ export const MypieceTopNav = ({ onCheck, check }: Props) => {
             as={"b"}
             fontSize={"lg"}
             color={"gray.400"}
+            backgroundColor={"white"}
             onClick={() => handleClick("transaction")}
           >
             나의 거래
           </Text>
         </Flex>
       ) : (
-        <Flex justifyContent={"space-between"} px={"20%"} py={5}>
+        <Flex
+          justifyContent={"space-between"}
+          backgroundColor={"white"}
+          px={"20%"}
+          py={5}
+        >
           <Text
             as={"b"}
             fontSize={"lg"}
             color={"gray.400"}
+            backgroundColor={"white"}
             onClick={() => handleClick("invest")}
           >
             나의 투자
@@ -61,6 +72,7 @@ export const MypieceTopNav = ({ onCheck, check }: Props) => {
             onClick={() => handleClick("transaction")}
             color={"blue.400"}
             borderBottom={"2px"}
+            backgroundColor={"white"}
           >
             나의 거래
           </Text>

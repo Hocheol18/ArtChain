@@ -204,7 +204,7 @@ function App() {
                   path="/mypiece/:userId"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="my">
-                      <MyPiece myTopNav="invest" type="invest" />
+                      <MyPiece type="invest" />
                     </CommonPage>
                   }
                 ></Route>
@@ -214,7 +214,7 @@ function App() {
                   path="/mypiece/:userId/transaction-list"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="my">
-                      <MyPiece myTopNav="transaction" type="transaction-list" />
+                      <MyPiece type="transaction-list" />
                     </CommonPage>
                   }
                 ></Route>
@@ -224,7 +224,7 @@ function App() {
                   path="/mypiece/:userId/transaction/:transactionId"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="my">
-                      <MyPiece myTopNav="invest" type="transaction" />
+                      <MyPiece type="transaction" />
                     </CommonPage>
                   }
                 ></Route>
