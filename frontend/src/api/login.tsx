@@ -1,16 +1,27 @@
 import mainAxios from "./https";
-
 const https = mainAxios();
+import { LoginInterface, UserErnollInterface } from "../type/login";
 
-const url = "member/login";
+// urls
+const loginurl = "member/login";
+const userProfileurl = "member/individual";
+const userEnrollurl = "/member/individual/join";
 
-interface LoginData {
-  username: string;
-  password: string;
+// Axios
+async function ProfileAxios(accessToken: string) {
+  return await https.get(userProfileurl, {
+    headers: {
+      Authorization: accessToken,
+    },
+  });
 }
 
-async function login(data: LoginData) {
-  return await https.post(url, data);
+async function UserEnrollAxios(data: UserErnollInterface) {
+  return await https.post(userEnrollurl, data);
 }
 
-export { login };
+async function LoginAxios(data: LoginInterface) {
+  return await https.post(loginurl, data);
+}
+
+export { LoginAxios, ProfileAxios, UserEnrollAxios };
