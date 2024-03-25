@@ -96,6 +96,15 @@ public class MarketServiceImpl implements MarketService {
                 .stream()
                 .map(MarketPieceTradeHistoryResponseDto::new)
                 .toList();
-        return null;
+
+        for (MarketPieceTradeHistoryResponseDto dto: marketPieceTradeHistoryResponseDtoList) {
+            Member seller = memberRepository.findById(dto.getSellerId()).orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+            dto.setSellerAddress(seller.getWalletAddress());
+            if(dto.getBuyerId() != null){
+                Member buyer = memberRepository.findById(dto.getBuyerId()).orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+                dto.setBuyerAddress(buyer.getWalletAddress());
+            }
+        }
+        return marketPieceTradeHistoryResponseDtoList;
     }
 }

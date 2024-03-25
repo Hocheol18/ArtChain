@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.ssafy.artchain.market.response.StatusCode.SUCCESS_MARKET_MAIN_VIEW;
+import static com.ssafy.artchain.market.response.StatusCode.SUCCESS_MARKET_PIECE_TRADE_HISTORY_VIEW;
 
 @RestController
 @RequestMapping("/api/market")
@@ -59,10 +60,10 @@ public class MarketController {
     }
 
     @GetMapping("/pieceHistory")
-    public ResponseEntity<DefaultResponse<?>> getMarketPieceHistoryList( @RequestParam Long fundingId, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<DefaultResponse<List<MarketPieceTradeHistoryResponseDto>>> getMarketPieceHistoryList( @RequestParam Long fundingId, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         List<MarketPieceTradeHistoryResponseDto> list = marketService.getMarketPieceTradeHistoryList(fundingId, pageable);
 
-        return null;
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_PIECE_TRADE_HISTORY_VIEW, list);
     }
 
 }
