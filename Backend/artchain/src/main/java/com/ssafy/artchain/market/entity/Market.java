@@ -31,22 +31,22 @@ public class Market {
     @Column(name = "funding_id", nullable = false)
     private Long fundingId;
 
-    @Column(name = "contract_address", nullable = false)
+    @Column(name = "contract_address")
     private String contractAddress;
 
-    @Column(name = "piece_name", nullable = false)
+    @Column(name = "piece_name")
     private String pieceName;
 
-    @Column(name = "piece_count", nullable = false)
+    @Column(name = "piece_count")
     private Long pieceCount;
 
-    @Column(name = "total_coin", nullable = false)
+    @Column(name = "total_coin")
     private Long totalCoin;
 
-    @Column(name = "coin_per_piece", precision = 19, scale = 2, nullable = false)
+    @Column(name = "coin_per_piece", precision = 19, scale = 2)
     private BigDecimal coinPerPiece;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private String status;
 
     @Column(name = "transaction_hash")
