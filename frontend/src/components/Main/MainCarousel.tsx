@@ -93,7 +93,7 @@ export default function MainCarousel() {
         position={"absolute"}
         top={"50%"}
         transform={"translateY(-50%)"}
-        left={"10%"}
+        left={"5%"}
         zIndex={2}
       >
         <ChevronLeftIcon boxSize={7} onClick={moveLeft} />
@@ -103,7 +103,7 @@ export default function MainCarousel() {
         position={"absolute"}
         top={"50%"}
         transform={"translateY(-50%)"}
-        right={"10%"}
+        right={"5%"}
         zIndex={2}
       >
         <ChevronRightIcon boxSize={7} onClick={moveRight} />
