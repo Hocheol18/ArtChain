@@ -1,5 +1,70 @@
 # Wrap up
 
+## 20240325
+
+### 오늘 한 것
+
+- CORS 해결
+- 무중단 배포 성공!!!!
+
+### 어려웠던 점
+
+- 설정한 파일들이 Dockerfile, docker-compose, jenkins pipeline script 이렇게 세개가 있다보니 뭘 건드려야 하는지 헷갈렸다. 머리에서 꼬여서 손으로 적으면서 생각 정리를 했음
+- Pipeline Script의 `Groovy`와 그 안의 `sh` 문법이 초면이라 문법에서 오류가 나면 힘들었다.
+- Script에서 전역변수 설정
+- Nginx가 restart되면 내려가서 reload를 해야했는데, `nginx.service is not active, cannot reload`에러 발생
+
+### 새로 알게 된 점
+
+- 돌아가는 container의 image를 지우면 안된다.
+- 한 개의 image로 여러 container을 돌릴 수 있다.
+- 무중단 배포 순서
+  1. 이미지 build하고 dockerhub에 push
+  2. Blue/Green Port 확인 후 Port와 컨테이너명 변경
+  3. `docker image pull`받고 위에서 새롭게 지정한 port로 `docker run`
+  4. Nginx 포트 변경 후 reload
+  5. 연결 체크 후 옛날 컨테이너 삭제
+- `Groovy`에서 `'''`는 읽기 전용, 전역 변수를 사용하려면 `"""`를 사용해야함
+- 도커 컨테이너 내의 nginx를 Jenkins Script로 reload하려면 `docker exec nginx nginx -s reload`이렇게 하면 됨
+
+### 내일 할 것
+
+- S3 버킷 생성, 소프티어 코테
+
+## 20240322
+
+### 오늘 한 것
+
+- develop-fe 브랜치 자동 배포 설정
+- Slack에 pipeline 결과 Webhook 걸기
+- 웹소켓 연결 오류 해결
+- 무중단 배포 도전
+
+### 어려웠던 점
+
+- 자꾸 `[ERROR] WebSocket connection to ‘wss~’ `라는 에러가 뜨는데 이걸 못보고 그 밑의 hmr을 수정하라는 오류를 보고 그걸 고치느라 오래 걸림. hmr 설정을 하면 무한 새로고침이 됐다.
+- 무중단 배포 자체
+
+### 새로 알게 된 점
+
+- Nginx 웹소켓 연결
+  - https://blog.naver.com/hsmang/221837039250
+  - `nginx default.conf`에서 아래의 내용을 추가함
+  ```bash
+    #Websocket Setting
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+  ```
+  - HTTP에서 WebSocket으로 연결을 업그레이드 할 때 업그레이드 및 연결 헤더를 사용함.
+  - Nginx는 클라이언트의 Upgrade 요청을 Upgrade하고 Connection 헤더를 Upgrade로 명시적으로 설정하는 것임
+  - https://nginxstore.com/blog/nginx/websocket-proxy-%EB%A1%9C-nginx-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/
+- 자동배포를 따로 하는 게 아니라 수동 배포에서 GitLab으로 Webhook만 걸면 되는 거였음
+
+### 내일 할 것
+
+- 무중단 배포 성공
+
 ## 20240321
 
 ### 오늘 한 것
