@@ -27,6 +27,7 @@ import BusinessMyPage from "./pages/BusinessMyPage";
 import FundConfirm from "./pages/FundConfirm";
 import BusinessProjectEnroll from "./pages/BusinessProjectEnroll";
 import { MyPiece } from "./pages/MyPiece";
+import { Invest } from "./pages/Invest";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -231,6 +232,16 @@ function App() {
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <BusinessProjectEnroll />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                {/* 투자하기 페이지 */}
+                <Route
+                  path="/invest-buy"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="">
+                      <Invest />
                     </CommonPage>
                   }
                 ></Route>
