@@ -12,8 +12,10 @@ export const MyPiece = () => {
   };
   return (
     <>
-      <MypieceTopNav onCheck={handleCheck} check={check} />
-      <Box px={"6%"}>
+      <Box position={"fixed"} w={"100%"}>
+        <MypieceTopNav onCheck={handleCheck} check={check} />
+      </Box>
+      <Box px={"6%"} mt={20} overflowY={"auto"}>
         {check === "invest" ? <MyInvest /> : <MyTransaction />}
       </Box>
     </>

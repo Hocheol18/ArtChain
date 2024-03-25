@@ -13,7 +13,12 @@ export const MypieceTopNav = ({ onCheck, check }: Props) => {
   return (
     <>
       {check === "invest" ? (
-        <Flex justifyContent={"space-between"} px={"20%"} py={"8%"}>
+        <Flex
+          justifyContent={"space-between"}
+          px={"20%"}
+          py={5}
+          backgroundColor={"white"}
+        >
           <Text
             as={"b"}
             fontSize={"lg"}
@@ -33,7 +38,7 @@ export const MypieceTopNav = ({ onCheck, check }: Props) => {
           </Text>
         </Flex>
       ) : (
-        <Flex justifyContent={"space-between"} px={"20%"} py={"8%"}>
+        <Flex justifyContent={"space-between"} px={"20%"} py={5}>
           <Text
             as={"b"}
             fontSize={"lg"}
