@@ -31,7 +31,7 @@ public class MarketController {
      *
      * @param String category, String status, int page, int size
      * 투자 카테고리와 상태를 넣는다( pageable 기본은 0, 6 )
-     * @return marketMainResponseDtoList
+     * @return List<MarketMainResponseDto>
      */
     @GetMapping
     public ResponseEntity<DefaultResponse<List<MarketMainResponseDto>>> getMarketMainList( @RequestParam String category, @RequestParam String status, @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -49,7 +49,7 @@ public class MarketController {
      *
      * @param String category, String status, int page, int size
      * 투자 카테고리와 상태를 넣는다( pageable 기본은 0, 6 )
-     * @return marketMainResponseDtoList
+     * @return List<MarketSellResponseDto>
      */
     @GetMapping("/sellList")
     public ResponseEntity<DefaultResponse<List<MarketSellResponseDto>>> getMarketSellList( @RequestParam Long fundingId, @RequestParam String sortFlag, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -58,6 +58,14 @@ public class MarketController {
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_MAIN_VIEW, list);
     }
 
+    /**
+     * 조각 거래 내역
+     * 마켓에서 투자 상품과 관련된 조각이 거래 된 내역을 확인할 수 있다.
+     *
+     * @param Long fundingId, int page, int size
+     * 투자 상품 PK를 넣는다( pageable 기본은 0, 6 )
+     * @return List<MarketPieceTradeHistoryResponseDto>
+     */
     @GetMapping("/pieceHistory")
     public ResponseEntity<DefaultResponse<List<MarketPieceTradeHistoryResponseDto>>> getMarketPieceHistoryList( @RequestParam Long fundingId, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         List<MarketPieceTradeHistoryResponseDto> list = marketService.getMarketPieceTradeHistoryList(fundingId, pageable);
@@ -65,6 +73,15 @@ public class MarketController {
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_PIECE_TRADE_HISTORY_VIEW, list);
     }
 
+    /**
+     * 조각 거래 상세 조회
+     * 마켓에서 거래 중이거나 거래 된
+     * 조각 거래 내역을 상세히 볼 수 있다.
+     *
+     * @param Long marketId, int page, int size
+     * 마켓 PK를 넣는다( pageable 기본은 0, 6 )
+     * @return MarketDetailResponseDto
+     */
     @GetMapping("/detail")
     public ResponseEntity<DefaultResponse<MarketDetailResponseDto>> getMarketHistoryDetail( @RequestParam Long marketId ) {
         MarketDetailResponseDto dto = marketService.getMarketDetail(marketId);

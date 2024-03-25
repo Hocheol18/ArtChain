@@ -60,6 +60,7 @@ public class MarketServiceImpl implements MarketService {
     @Override
     public List<MarketSellResponseDto> getMarketSellList(Long fundingId, String sortFlag, Pageable pageable) {
         Page<Market> marketPage;
+//      현재 판매중인 놈만 보이도록하기 위한 코드
         String LISTED = "LISTED";
         if(sortFlag.equals("최신순")) {
             marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCreatedAtDesc(fundingId, LISTED, pageable);
@@ -97,9 +98,12 @@ public class MarketServiceImpl implements MarketService {
                 .map(MarketPieceTradeHistoryResponseDto::new)
                 .toList();
 
+//        판매자를 찾아 판매자 주소를 Dto에 넣어준다
+
         for (MarketPieceTradeHistoryResponseDto dto: marketPieceTradeHistoryResponseDtoList) {
             Member seller = memberRepository.findById(dto.getSellerId()).orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
             dto.setSellerAddress(seller.getWalletAddress());
+//            구매자가 있다면 구매자 주소도 넣어준다.
             if(dto.getBuyerId() != null){
                 Member buyer = memberRepository.findById(dto.getBuyerId()).orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
                 dto.setBuyerAddress(buyer.getWalletAddress());
