@@ -107,4 +107,9 @@ public class MarketServiceImpl implements MarketService {
         }
         return marketPieceTradeHistoryResponseDtoList;
     }
+
+    @Override
+    public MarketDetailResponseDto getMarketDetail(Long marketId) {
+        return null;
+    }
 }

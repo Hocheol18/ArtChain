@@ -1,9 +1,12 @@
 package com.ssafy.artchain.market.repository;
 
+import com.ssafy.artchain.market.dto.MarketDetailResponseDto;
 import com.ssafy.artchain.market.entity.Market;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,6 +21,15 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
     //    일반 조회
     Page<Market> findAllByFundingIdAndStatus(Long fundingId, String status, Pageable pageable);
     Page<Market> findAllByFundingId(Long fundingId, Pageable pageable);
+
+    @Query("SELECT new com.ssafy.artchain.market.dto.MarketDetailResponseDto(m.id, m.fundingId, f.name, m.status, m.contractAddress, m.pieceName, m.pieceCount, m.totalCoin, m.coinPerPiece, s.walletAddress, b.walletAddress, cm.name) " +
+            "FROM Market m " +
+            "JOIN Member s ON m.sellerId = s.id " +
+            "LEFT JOIN Member b ON m.buyerId = b.id " +
+            "JOIN Funding f ON m.fundingId = f.id " +
+            "JOIN Member cm ON f.entId = cm.id " +
+            "WHERE m.id = :marketId")
+    MarketDetailResponseDto findMarketDetailByMarketId(@Param("marketId") Long marketId);
 
 
 

@@ -67,8 +67,8 @@ public class MarketController {
     }
 
     @GetMapping("/detail")
-    public ResponseEntity<DefaultResponse<?>> getMarketHistoryDetail( @RequestParam Long fundingId ) {
-        MarketDetailResponseDto dto = marketService.getMarketDetail(fundingId);
+    public ResponseEntity<DefaultResponse<?>> getMarketHistoryDetail( @RequestParam Long marketId ) {
+        MarketDetailResponseDto dto = marketService.getMarketDetail(marketId);
 
         return null;
     }

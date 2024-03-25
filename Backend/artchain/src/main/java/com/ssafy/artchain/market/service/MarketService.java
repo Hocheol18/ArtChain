@@ -9,4 +9,6 @@ public interface MarketService {
     List<MarketMainResponseDto> getMarketMain(String status, String category, Pageable pageable);
     List<MarketSellResponseDto> getMarketSellList(Long fundingId, String sortFlag, Pageable pageable);
     List<MarketPieceTradeHistoryResponseDto> getMarketPieceTradeHistoryList(Long fundingId, Pageable pageable);
+
+    MarketDetailResponseDto getMarketDetail(Long marketId);
 }
