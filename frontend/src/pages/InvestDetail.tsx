@@ -9,12 +9,14 @@ export const InvestDetail = () => {
   const navigate = useNavigate();
 
   const handleInvest = () => {
-    navigate("/invest-buy");
+    if (category === "ing") {
+      navigate("/invest-buy");
+    }
   };
 
   //받아오는 애 (임시)
   //ing, endSuccess(마켓나오는 애), endFail, complete
-  const [category, setCategory] = useState<string>("endSuccess");
+  const [category, setCategory] = useState<string>("ing");
 
   //버튼에 들어가는 문자열
   const [text, setText] = useState<string>("");
