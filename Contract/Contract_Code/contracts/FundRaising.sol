@@ -7,10 +7,15 @@ import "./ERC20MintBurnTransfer.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract FundRaisingContract is ERC20MintBurnTransferContract {
-    event TokenReceived(address indexed sender, address indexed tokenAddress, uint256 amount);
-    
+    event TokenReceived(
+        address indexed sender,
+        address indexed tokenAddress,
+        uint256 amount
+    );
+
     mapping(address => uint256) public refunds; // 환불 address 1:1로 맵핑
     mapping(address => uint256) public newCoins; // 새로운 소각 1:1로 맵핑
+    mapping(address => IERC20) public tokenContracts;
 
     address public owner; // 컨트랙트 호출자
     uint256 public raisedAmount; // 총 모금 발행량 갯수
@@ -40,24 +45,28 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
     // 나중에 컨트랙트 상에서 전송해야 하므로 이더 받는 함수
     receive() external payable {}
 
-
     // 투자 함수, 사용자의 주소와 얼마나 투자했는지가 들어옴.
-    function fund(address _tokenAddress, uint256 _tokenAmount) external {
+    function fund(uint256 _tokenAmount) external {
         // 사용자가 토큰을 전송했음을 이벤트로 기록
-        emit TokenReceived(msg.sender, _tokenAddress, _tokenAmount);
-
+        emit TokenReceived(msg.sender, artCoinAddress, _tokenAmount);
+        require(
+            tokenContracts[artCoinAddress].approve(address(this), _tokenAmount),
+            "Failed to approve token transfer"
+        );
         // 실제 토큰 전송
-        require(IERC20(_tokenAddress).transferFrom(
-            msg.sender,
-            address(this),
-            _tokenAmount
-        ), "Token transfer failed");
+        require(
+            IERC20(artCoinAddress).transferFrom(
+                msg.sender,
+                address(this),
+                _tokenAmount * (10 ** 18)
+            ),
+            "Token transfer failed"
+        );
 
         // 토큰 수집자 목록에 추가
         if (newCoins[msg.sender] == 0) {
             listOfContributors.push(msg.sender);
         }
-
         // 모금액 증가
         raisedAmount += _tokenAmount;
 
@@ -98,14 +107,12 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
         }
     }
 
-    function getAllContributor() public view returns (
-        address[] memory
-    ) {
+    function getAllContributor() public view returns (address[] memory) {
         uint256 length = listOfContributors.length;
 
         address[] memory investor = new address[](length);
 
-        for(uint256 i = 0; i < length; i++){
+        for (uint256 i = 0; i < length; i++) {
             investor[i] = listOfContributors[i];
         }
         return investor;
