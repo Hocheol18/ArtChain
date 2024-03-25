@@ -2,11 +2,12 @@ package com.ssafy.artchain.funding.dto;
 
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Getter;
 
 @Getter
 public class FundingResponseDto {
@@ -20,6 +21,7 @@ public class FundingResponseDto {
     private BigDecimal estimatedReturn;
     private String riskNotice;
     private Long goalCoinCount;
+    private Long nowCoinCount;
     private String contractAddress;
     private String attachment;
     private String category;
@@ -38,6 +40,7 @@ public class FundingResponseDto {
         this.estimatedReturn = funding.getEstimatedReturn();
         this.riskNotice = funding.getRiskNotice();
         this.goalCoinCount = funding.getGoalCoinCount();
+        this.nowCoinCount = funding.getNowCoinCount();
         this.contractAddress = funding.getContractAddress();
         this.attachment = funding.getAttachment();
         this.category = funding.getCategory();
@@ -45,7 +48,7 @@ public class FundingResponseDto {
         this.progressStatus = funding.getProgressStatus();
         this.recruitEnd = funding.getRecruitEnd();
         this.noticeList = funding.getNoticeList().stream().map(FundingNoticeResponseDto::new)
-            .collect(
-                Collectors.toList());
+                .collect(
+                        Collectors.toList());
     }
 }
