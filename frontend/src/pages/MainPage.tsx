@@ -1,8 +1,17 @@
 import React from "react";
-import { useMediaQuery } from "react-responsive";
+import MainCarousel from "../components/Main/MainCarousel";
+import { Box, Text } from "@chakra-ui/react";
 
-export const MainPage = () => {
-  const isDesktop = useMediaQuery({ minWidth: 501 });
+export default function MainPage() {
+  return (
+    <>
+      <MainCarousel />
 
-  return <div>디스이스메인페이지</div>;
+      <Box mt={"0.5rem"}>
+        <Text as={"b"} ml={"1rem"}>
+          진행 중인 투자 작품
+        </Text>
+      </Box>
+
+    </>)
 };
