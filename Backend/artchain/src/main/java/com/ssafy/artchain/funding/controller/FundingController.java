@@ -34,10 +34,10 @@ public class FundingController {
     @PostMapping
     public ResponseEntity<DefaultResponse<Void>> createFunding(
             @RequestBody FundingCreateRequestDto dto, @AuthenticationPrincipal CustomUserDetails member) {
-        int result = fundingService.createFunding(dto, member);
-        if (result == -2) {
+        Long result = fundingService.createFunding(dto, member);
+        if (result.equals(-2L)) {
             return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.ALLOW_ONLY_COMPANY);
-        } else if (result == -1) {
+        } else if (result.equals(-1L)) {
             return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.FAIL_CREATE_FUNDING);
         } else {
             return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.SUCCESS_CREATE_FUNDING);
@@ -79,7 +79,7 @@ public class FundingController {
     public ResponseEntity<DefaultResponse<FundingListResponseDto>> getFundingByStatus(
             @RequestParam String category, @RequestParam String status, @RequestParam String allowStat, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        List<FundingResponseDto> fundingList = fundingService.getFundingListByCategoryAndStatus(category,
+        List<FundingListItemDto> fundingList = fundingService.getFundingListByCategoryAndStatus(category,
                 status, allowStat, pageable);
 
         if (fundingList.isEmpty()) {

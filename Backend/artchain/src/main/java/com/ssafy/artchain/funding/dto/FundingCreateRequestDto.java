@@ -1,10 +1,11 @@
 package com.ssafy.artchain.funding.dto;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,22 +18,32 @@ public class FundingCreateRequestDto {
 
     private String poster;
 
-    private String description;
+    private String category;
 
-    private String investmentStructure;
+    private String descriptionImg;
 
-    private BigDecimal estimatedReturn;
+    private LocalDate recruitStart;
 
-    private String riskNotice;
+    private LocalDate recruitEnd;
+
+    private LocalDate settlement;
 
     private Long goalCoinCount;
 
     private String contractAddress;
 
-    // TODO: AWS S3로 첨부 파일 저장하기
-    private String attachment;
+    private Long totalBudget;
 
-    private String category;
+    private int unitPrice;
 
-    private LocalDate recruitEnd;
+    private int bep;
+
+    private List<FundingScheduleCreateDto> scheduleList;
+
+    private List<FundingExpectedReturnCreateDto> expectedReturnList;
+
+    private List<FundingSaleCreateDto> saleList;
+
+    private List<FundingCostCreateDto> costList;
+
 }

@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface FundingService {
 
-    int createFunding(FundingCreateRequestDto data, CustomUserDetails member);
+    Long createFunding(FundingCreateRequestDto data, CustomUserDetails member);
 
     FundingResponseDto getFunding(Long fundingId);
 
-    List<FundingResponseDto> getFundingListByCategoryAndStatus(String category, String status, String allowStat, Pageable pageable);
+    List<FundingListItemDto> getFundingListByCategoryAndStatus(String category, String status, String allowStat, Pageable pageable);
 
     int allowFunding(Long fundingId, CustomUserDetails member);
 
