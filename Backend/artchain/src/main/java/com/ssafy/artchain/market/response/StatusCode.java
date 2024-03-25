@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum StatusCode {
 
 	// 200 OK : 성공
-	SUCCESS_LIBRARY_VIEW(200, "서재 조회 성공"),
+	SUCCESS_MARKET_MAIN_VIEW(200, "마켓 메인화면 조회 성공"),
 	SUCCESS_USER_BOOK_VIEW(200, "사용자 도서 조회 성공"),
 	SUCCESS_USER_BOOK_UPDATE(200, "사용자 도서 업데이트 성공"),
 	SUCCESS_USER_BOOK_DELETE(200, "사용자 도서 삭제 성공"),
