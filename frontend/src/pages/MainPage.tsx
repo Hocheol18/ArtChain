@@ -27,7 +27,7 @@ export default function MainPage() {
         ml={"0.5rem"}
         mr={"0.5rem"}
       >
-        <Center color={"blue.400"} as="b">
+        <Center color={"blue.400"} as="b" fontSize={"1.1rem"}>
           더 많은 작품 투자하러 가기
         </Center>
       </Box>
@@ -57,7 +57,7 @@ export default function MainPage() {
         mr={"0.5rem"}
         mb={"4rem"}
       >
-        <Center color={"blue.400"} as="b">
+        <Center color={"blue.400"} as="b" fontSize={"1.1rem"}>
           마켓 보러 가기
         </Center>
       </Box>

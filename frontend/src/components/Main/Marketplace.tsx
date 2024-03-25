@@ -1,4 +1,4 @@
-import { AspectRatio, Box, Flex, Image, Text } from "@chakra-ui/react";
+import { AspectRatio, Box, Image, Text } from "@chakra-ui/react";
 import React from "react";
 
 interface Props {
