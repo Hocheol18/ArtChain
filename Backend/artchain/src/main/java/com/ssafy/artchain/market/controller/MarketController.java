@@ -66,4 +66,12 @@ public class MarketController {
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_PIECE_TRADE_HISTORY_VIEW, list);
     }
 
+    @GetMapping("/detail")
+    public ResponseEntity<DefaultResponse<?>> getMarketHistoryDetail( @RequestParam Long fundingId ) {
+        MarketDetailResponseDto dto = marketService.getMarketDetail(fundingId);
+
+        return null;
+    }
+
+
 }

@@ -36,6 +36,5 @@ public class MarketPieceTradeHistoryResponseDto {
         this.buyerId = market.getBuyerId();
         this.buyerAddress = null;
         this.status = market.getStatus();
-
     }
 }
