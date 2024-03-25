@@ -12,6 +12,7 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
 
     private final Member member;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
@@ -28,6 +29,10 @@ public class CustomUserDetails implements UserDetails {
         return collection;
     }
 
+    public Long getId() {
+        return member.getId();
+    }
+
     @Override
     public String getPassword() {
         return member.getPassword();
@@ -38,7 +43,9 @@ public class CustomUserDetails implements UserDetails {
         return member.getMemberId();
     }
 
-    public String getNickname(){ return member.getName(); }
+    public String getNickname() {
+        return member.getName();
+    }
 
     @Override
     public boolean isAccountNonExpired() {
