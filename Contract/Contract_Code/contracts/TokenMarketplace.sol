@@ -33,24 +33,24 @@ contract TokenMarketplace {
         // Ensure that the buyer has approved this contract to spend the required tokens
         require(
             tokenContracts[artCoinAddress].approve(
-                address(this),
-                tradePost.price
+                tradePost.seller,
+                tradePost.price*(10**18)
             ),
             "Failed to approve token transfer"
         );
 
         // Transfer tokens from the buyer to this contract
-        tokenContracts[tradePost.tokenAddress].transferFrom(
+        tokenContracts[artCoinAddress].transferFrom(
             msg.sender,
             tradePost.seller,
-            tradePost.tokenAmount
+            tradePost.price*(10**18)
         );
 
         // Transfer the price of the token to the seller
-        tokenContracts[artCoinAddress].transferFrom(
-            tradePost.seller,
+        tokenContracts[tradePost.tokenAddress].transferFrom(
+            address(this),
             msg.sender,
-            tradePost.price
+            tradePost.tokenAmount*(10**18)
         );
     }
 
@@ -60,20 +60,29 @@ contract TokenMarketplace {
         uint256 _price
     ) external {
         require(isTokenListed[_tokenAddress], "Token not listed");
+        // require(
+        //     // 내가 얼마나 많은 토큰을 인출할 수 있는지를 확인할 수 있음!
+        //     // 즉, 아래의 로직은 스마트 컨트랙트 속에 보관 중인 토큰의 양 중 내가 사용할 수 있는 양이 충분한지 확인
+        //     tokenContracts[_tokenAddress].allowance(
+        //         msg.sender,
+        //         address(this)
+        //     ) >= _tokenAmount*(10**18),
+        //     "Insufficient allowance for token"
+        // );
         require(
-            tokenContracts[_tokenAddress].allowance(
-                msg.sender,
-                address(this)
-            ) >= _tokenAmount,
-            "Insufficient allowance for token"
+            tokenContracts[_tokenAddress].approve(
+                address(this),
+                _tokenAmount*(10**18)
+            ),
+            "Insufficient approve for token"
         );
 
         // Transfer tokens from user to this contract
         require(
             tokenContracts[_tokenAddress].transferFrom(
-                msg.sender,
+                msg.sender, 
                 address(this),
-                _tokenAmount
+                _tokenAmount*(10**18)
             ),
             "Token transfer failed"
         );
@@ -90,5 +99,9 @@ contract TokenMarketplace {
 
     function getAllPosts() external view returns (TradePost[] memory) {
         return tradePosts;
+    }
+
+    function getSpecificPost(uint256 index) external view returns (TradePost memory) {
+        return tradePosts[index];
     }
 }

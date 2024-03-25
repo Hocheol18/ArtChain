@@ -6,7 +6,7 @@ import IERC20ABI from "./Contract/IERC20.json";
 const web3 = new Web3((window as any).ethereum);
 
 const TokenMarketplaceContractAddress =
-  "0x64FcdF7882e8b17d32D500FE80737C68A2f86A5d"; // TokenMarketplace 스마트 계약 주소
+  "0xb889a3f84DD29f49C75e673cB1f0114cd3c27601"; // TokenMarketplace 스마트 계약 주소
 
 const App: React.FC = () => {
   const [account, setAccount] = useState<string>("");
@@ -39,6 +39,7 @@ const App: React.FC = () => {
     }
   }, []);
 
+
   // MetaMask 연결 함수
   const connectWallet = async () => {
     if ((window as any).ethereum) {
@@ -59,120 +60,135 @@ const App: React.FC = () => {
   const selectTradePost = (index: number) => {
     setSelectedTradePostIndex(index);
   };
-
   // 거래하기 함수 수정
-  const buyToken = async () => {
-    if (selectedTradePostIndex === null) return;
-    const selectedTradePost = tokenList[selectedTradePostIndex];
-    try {
+const buyToken = async () => {
+  if (selectedTradePostIndex === null) return;
+  const selectedTradePost = tokenList[selectedTradePostIndex];
+  try {
       const marketplaceContract = new web3.eth.Contract(
-        TokenMarketplaceABI.abi,
-        TokenMarketplaceContractAddress
+          TokenMarketplaceABI.abi,
+          TokenMarketplaceContractAddress
       );
       const artTokenContractAddress =
-        "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
+          "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
       const artTokenContract = new web3.eth.Contract(
-        IERC20ABI.abi,
-        artTokenContractAddress
+          IERC20ABI.abi,
+          artTokenContractAddress
       );
 
       // 사용자가 스마트 계약에 대해 특정 양의 토큰을 승인하도록 요청
       const approveTx = await artTokenContract.methods
-        .approve(TokenMarketplaceContractAddress, selectedTradePost.price)
-        .send({ from: account });
+          .approve(TokenMarketplaceContractAddress, convertToInteger(selectedTradePost.price))
+          .send({ from: account });
       const approveTxReceipt = await web3.eth.getTransactionReceipt(
-        approveTx.transactionHash
+          approveTx.transactionHash
       );
       if (approveTxReceipt.status) {
-        console.log("토큰 승인 완료");
+          console.log("토큰 승인 완료");
 
-        // 토큰 구매 트랜잭션 보내기
-        const buyTokenTx = await marketplaceContract.methods
-          .buyToken(selectedTradePostIndex)
-          .send({ from: account });
-        console.log("토큰 구매 성공", buyTokenTx);
+          // 토큰 구매 트랜잭션 보내기
+          const buyTokenTx = await marketplaceContract.methods
+              .buyToken(selectedTradePostIndex)
+              .send({ from: account });
+          console.log("토큰 구매 성공", buyTokenTx);
       } else {
-        console.error("토큰 승인 실패");
+          console.error("토큰 승인 실패");
       }
-    } catch (error) {
+  } catch (error) {
       console.error("거래 처리 중 오류가 발생했습니다.", error);
-    }
-  };
+  }
+};
 
-  // 거래 게시판 글 올리기
-  // 거래 게시판 글 올리기 함수 수정
-  const addTradePost = async (
-    tokenAddress: string,
-    tokenAmount: string,
-    price: string
-  ) => {
-    try {
+
+// 거래 게시글 추가
+const addTradePost = async (
+  tokenAddress: string,
+  tokenAmount: string,
+  price: string
+) => {
+  try {
       const marketplaceContract = new web3.eth.Contract(
-        TokenMarketplaceABI.abi,
-        TokenMarketplaceContractAddress
+          TokenMarketplaceABI.abi,
+          TokenMarketplaceContractAddress
       );
 
       // 토큰 주소가 올바른 형식인지 확인
       if (!web3.utils.isAddress(tokenAddress)) {
-        console.error("유효하지 않은 토큰 주소입니다.");
-        return;
+          console.error("유효하지 않은 토큰 주소입니다.");
+          return;
       }
+
+      // 사용자가 입력한 값을 그대로 사용
+      const integerPrice = price;
+      const integerTokenAmount = tokenAmount;
 
       // 토큰 컨트랙트 생성
       const tokenContract = new web3.eth.Contract(IERC20ABI.abi, tokenAddress);
 
       // 거래 게시글 추가 전에 사용자가 특정 양의 토큰을 스마트 계약에 대해 승인하도록 요청
       const approveTx = await tokenContract.methods
-        .approve(TokenMarketplaceContractAddress, parseFloat(tokenAmount))
-        .send({ from: account });
+          .approve(TokenMarketplaceContractAddress, convertToInteger(integerTokenAmount))
+          .send({ from: account });
       const approveTxReceipt = await web3.eth.getTransactionReceipt(
-        approveTx.transactionHash
+          approveTx.transactionHash
       );
       if (!approveTxReceipt.status) {
-        console.error("토큰 승인에 실패했습니다.");
-        return;
+          console.error("토큰 승인에 실패했습니다.");
+          return;
       }
 
       // 거래 게시글 추가
       await marketplaceContract.methods
-        .addTradePost(tokenAddress, parseFloat(tokenAmount), parseFloat(price))
-        .send({ from: account });
+          .addTradePost(tokenAddress, integerTokenAmount, integerPrice)
+          .send({ from: account });
       fetchTokenList();
-    } catch (error) {
+  } catch (error) {
       console.error("거래 게시글을 추가하는 중 오류가 발생했습니다.", error);
-    }
-  };
+  }
+};
+
+// 가격과 토큰의 양을 정수로 변환하는 함수
+const convertToInteger = (value: string) => {
+    // 부동 소수점 수로 변환
+    const floatValue = parseFloat(value);
+    // 10^18을 곱하여 처리
+    const integerValue = Math.floor(floatValue * (10 ** 18)).toString();
+    return integerValue;
+};
+
 
   // 토큰 목록 가져오기
-  const fetchTokenList = async () => {
-    try {
-      const marketplaceContract = new web3.eth.Contract(
-        TokenMarketplaceABI.abi,
-        TokenMarketplaceContractAddress
-      );
-      const tradePosts: {
-        tokenAddress: string;
-        tokenAmount: BigInt;
-        price: BigInt;
-      }[] = await marketplaceContract.methods.getAllPosts().call();
-      const tokenListData: {
-        address: string;
-        amount: string;
-        price: string;
-      }[] = [];
-      for (let i = 0; i < tradePosts.length; i++) {
-        const tradePost = tradePosts[i];
-        tokenListData.push({
-          address: tradePost.tokenAddress,
-          amount: tradePost.tokenAmount.toString(),
-          price: tradePost.price.toString(),
-        });
-      }
-      setTokenList(tokenListData);
-    } catch (error) {
-      console.error("토큰 목록을 가져오는 중 오류가 발생했습니다.", error);
+const fetchTokenList = async () => {
+  try {
+    const marketplaceContract = new web3.eth.Contract(
+      TokenMarketplaceABI.abi,
+      TokenMarketplaceContractAddress
+    );
+    const tradePosts: {
+      tokenAddress: string;
+      tokenAmount: BigInt;
+      price: BigInt;
+    }[] = await marketplaceContract.methods.getAllPosts().call();
+    const tokenListData: {
+      address: string;
+      amount: string;
+      price: string;
+    }[] = [];
+    for (let i = 0; i < tradePosts.length; i++) {
+      const tradePost = tradePosts[i];
+      
+      tokenListData.push({
+        address: tradePost.tokenAddress,
+        amount: tradePost.tokenAmount.toString(),
+        price: tradePost.price.toString(),
+      });
     }
-  };
+    setTokenList(tokenListData);
+  } catch (error) {
+    console.error("토큰 목록을 가져오는 중 오류가 발생했습니다.", error);
+  }
+};
+
 
   return (
     <header className="App-header">
