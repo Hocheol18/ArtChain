@@ -1,5 +1,7 @@
 package com.ssafy.artchain.jwt;
 
+import com.ssafy.artchain.jwt.response.DefaultResponse;
+import com.ssafy.artchain.jwt.response.StatusCode;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
@@ -12,6 +14,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,8 +55,8 @@ public class JwtFilter extends OncePerRequestFilter {
             writer.print("access token expired");
 
             //response status code
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            response.setStatus(StatusCode.FAIL_EXPIRED_ACCESS_TOKEN.getStatus());
+            return ;
         }
 
 // 토큰이 access인지 확인 (발급시 페이로드에 명시)
@@ -67,7 +70,8 @@ public class JwtFilter extends OncePerRequestFilter {
             writer.print("invalid access token");
 
             //response status code
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(StatusCode.FAIL_INVAILD_ACCESS_TOKEN.getStatus());
             return;
         }
         String memberId = jwtUtil.getMemberId(accessToken);

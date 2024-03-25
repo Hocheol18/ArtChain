@@ -83,6 +83,12 @@ public class Funding {
     @Column(name = "recruit_end", nullable = false)
     private LocalDate recruitEnd;
 
+    @Column(name = "recruit_start")
+    private LocalDate recruitStart;
+
+    @Column(name = "settlement")
+    private LocalDate settlement;
+
     @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;
 
