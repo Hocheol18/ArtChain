@@ -1,4 +1,4 @@
-package com.ssafy.artchain.connectentity;
+package com.ssafy.artchain.connectentity.entity;
 
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.member.entity.Member;

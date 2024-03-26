@@ -1,6 +1,6 @@
 package com.ssafy.artchain.funding.entity;
 
-import com.ssafy.artchain.connectentity.InvestmentLog;
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

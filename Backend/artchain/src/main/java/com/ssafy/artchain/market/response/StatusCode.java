@@ -12,6 +12,7 @@ public enum StatusCode {
 	SUCCESS_MARKET_SELL_LIST_VIEW(200, "마켓 판매 리스트 조회 성공"),
 	SUCCESS_MARKET_PIECE_TRADE_HISTORY_VIEW(200, "마켓 조각 거래 내역 조회 성공"),
 	SUCCESS_MARKET_DETAIL_VIEW(200, "마켓 판매글 상세 조회 성공"),
+	SUCCESS_MARKET_REGIST_FORM_VIEW(200, "마켓 판매글 작성시 내가 투자한 상품 이름 목록 조회 성공"),
 	// 201 CREATED : 새로운 리소스 생성
 	SUCCESS_CREATE_MARKET_TRADE(201, "마켓 조각 판매글 생성 성공"),
 

@@ -1,7 +1,7 @@
 package com.ssafy.artchain.funding.service;
 
 
-import com.ssafy.artchain.connectentity.InvestmentLog;
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingAllowStatus;
@@ -9,7 +9,7 @@ import com.ssafy.artchain.funding.entity.FundingNotice;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingNoticeRepository;
 import com.ssafy.artchain.funding.repository.FundingRepository;
-import com.ssafy.artchain.funding.repository.InvestmentLogRepository;
+import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import jakarta.persistence.EntityManager;

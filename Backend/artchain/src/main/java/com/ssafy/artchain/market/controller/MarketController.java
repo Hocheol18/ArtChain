@@ -5,6 +5,7 @@ import com.ssafy.artchain.market.dto.*;
 import com.ssafy.artchain.market.dto.MarketSellResponseDto;
 import com.ssafy.artchain.market.response.DefaultResponse;
 import com.ssafy.artchain.market.service.MarketServiceImpl;
+import com.ssafy.artchain.member.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -87,6 +89,15 @@ public class MarketController {
         MarketDetailResponseDto dto = marketService.getMarketDetail(marketId);
 
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_DETAIL_VIEW, dto);
+    }
+
+    @GetMapping("/registForm")
+    public ResponseEntity<DefaultResponse<List<String>>> getMarketRegistForm(@AuthenticationPrincipal CustomUserDetails customMember) {
+        Long memberId = customMember.getId();
+
+        List<String> fundingNameList = marketService.getMarketRegistForm(memberId);
+
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_REGIST_FORM_VIEW, fundingNameList);
     }
 
 

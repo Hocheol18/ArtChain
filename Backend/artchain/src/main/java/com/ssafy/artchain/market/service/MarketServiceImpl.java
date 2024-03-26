@@ -1,5 +1,6 @@
 package com.ssafy.artchain.market.service;
 
+import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
@@ -31,6 +32,7 @@ public class MarketServiceImpl implements MarketService {
     private final MarketRepository marketRepository;
     private final FundingRepository fundingRepository;
     private final MemberRepository memberRepository;
+    private final InvestmentLogRepository investmentLogRepository;
 
     @Override
     public List<MarketMainResponseDto> getMarketMain(String status, String category, Pageable pageable) {
@@ -116,5 +118,11 @@ public class MarketServiceImpl implements MarketService {
     public MarketDetailResponseDto getMarketDetail(Long marketId) {
         MarketDetailResponseDto dto = marketRepository.findMarketDetailByMarketId(marketId);
         return dto;
+    }
+
+    @Override
+    public List<String> getMarketRegistForm(Long memberId) {
+        List<String> fundingNameList = investmentLogRepository.findFundingNamesByMemberId(memberId);
+        return fundingNameList;
     }
 }
