@@ -62,8 +62,8 @@ public class FundingServiceImpl implements FundingService {
                 .totalBudget(data.getTotalBudget())
                 .unitPrice(data.getUnitPrice())
                 .bep(data.getBep())
-                .progressStatus(FundingProgressStatus.RECRUITMENT_STATUS)
-                .isAllow(false)
+                .progressStatus(FundingProgressStatus.BEFORE_RECRUITMENT)
+                .isAllow(null)
                 .investmentLogs(new ArrayList<>())
                 .scheduleList(new ArrayList<>())
                 .expectedReturnList(new ArrayList<>())
@@ -135,7 +135,7 @@ public class FundingServiceImpl implements FundingService {
 
         List<FundingProgressStatus> statuses;
         if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || Stream.of(FundingProgressStatus.values())
-                .noneMatch(ps -> ps.name().equals(status))) {
+                .noneMatch(ps -> ps.name().equals(status))) { // 모집 시작 전을 제외한 모든 진행 상태
             statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
                     FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
                     FundingProgressStatus.RECRUITMENT_FAILED);
@@ -169,17 +169,17 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional
-    public int allowFunding(Long fundingId, CustomUserDetails member) {
+    public int allowFunding(Long fundingId, String allowStatus, CustomUserDetails member) {
         Funding funding = fundingRepository.findById(fundingId)
                 .orElse(null);
         if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN))) {
             return -2;
         } else if (funding == null) {
             return -1;
-        } else if (funding.getIsAllow()) {
+        } else if (funding.getIsAllow() != null) {
             return 0;
         } else {
-            funding.allowFunding(true);
+            funding.allowFunding(FundingAllowStatus.TRUE.name().equals(allowStatus.toUpperCase(Locale.ROOT)));
             return 1;
         }
     }

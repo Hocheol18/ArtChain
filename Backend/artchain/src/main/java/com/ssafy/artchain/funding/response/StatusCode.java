@@ -19,14 +19,14 @@ public enum StatusCode {
 
     // 204 NO CONTENT : 성공하였으나, 반환할 값이 없음
     NO_CONTENT_IN_FUNDING_LIST_VIEW(204, "해당 작품 분야에 해당 상태값을 가지는 펀딩이 없음"),
-    SUCCESS_ALLOW_FUNDING(204, "펀딩 승인 완료"),
+    SUCCESS_CHANGE_FUNDING_ALLOW_STATUS(204, "펀딩 승인 또는 거절 완료"),
     SUCCESS_UPDATE_FUNDING_PROGRESS_STATUS(204, "펀딩 진행 상태 수정 완료"),
     SUCCESS_MODIFY_FUNDING_NOTICE(204, "펀딩 공지사항 수정 완료"),
     SUCCESS_DELETE_FUNDING_NOTICE(204, "펀딩 공지사항 삭제 완료"),
 
     // 400 BAD REQUEST : 잘못된 요청 - 요청 구문이 잘못되었음
     FAIL_CREATE_FUNDING(400, "잘못된 요청으로 펀딩이 생성되지 않음"),
-    ALREADY_ALLOWED_FUNDING(400, "이미 승인된 펀딩"),
+    ALREADY_CHANGE_FUNDING_ALLOW_STATUS(400, "이미 승인 또는 거절된 펀딩"),
     NOT_EXIST_PROGRESS_STATUS(400, "해당하는 진행 상태 값이 없음"),
     FAIL_CREATE_FUNDING_NOTICE(400, "잘못된 요청으로 펀딩 공지사항이 생성되지 않음"),
     FAIL_INVEST_BY_STATUS(400, "펀딩 모집이 진행 중인 경우 투자 가능"),
@@ -34,7 +34,7 @@ public enum StatusCode {
     // 403 FORBIDDEN : 요청에 대한 권한 없음
     ALLOW_ONLY_COMPANY(403, "기업 회원에 허용된 요청"),
     ALLOW_ONLY_ADMIN(403, "관리자에 허용된 요청"),
-    ALLOW_ONLY_FUNDING_COMPANY(403, "관리자에 허용된 요청"),
+    ALLOW_ONLY_FUNDING_COMPANY(403, "펀딩 기업에 허용된 요청"),
     ALLOW_OVER_FUNDING_COMPANY(403, "펀딩 기업 또는 관리자에 허용된 요청"),
     ALLOW_ONLY_USER(403, "개인 회원만 투자 가능"),
 
