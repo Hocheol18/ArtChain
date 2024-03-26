@@ -62,7 +62,7 @@ public class FundingServiceImpl implements FundingService {
                 .unitPrice(data.getUnitPrice())
                 .bep(data.getBep())
                 .progressStatus(FundingProgressStatus.BEFORE_RECRUITMENT)
-                .isAllow(false)
+                .isAllow(null)
                 .investmentLogs(new ArrayList<>())
                 .scheduleList(new ArrayList<>())
                 .expectedReturnList(new ArrayList<>())
@@ -168,17 +168,17 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional
-    public int allowFunding(Long fundingId, CustomUserDetails member) {
+    public int allowFunding(Long fundingId, String allowStatus, CustomUserDetails member) {
         Funding funding = fundingRepository.findById(fundingId)
                 .orElse(null);
         if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN))) {
             return -2;
         } else if (funding == null) {
             return -1;
-        } else if (funding.getIsAllow()) {
+        } else if (funding.getIsAllow() != null) {
             return 0;
         } else {
-            funding.allowFunding(true);
+            funding.allowFunding(FundingAllowStatus.TRUE.name().equals(allowStatus.toUpperCase(Locale.ROOT)));
             return 1;
         }
     }

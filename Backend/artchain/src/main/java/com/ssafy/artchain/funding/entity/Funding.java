@@ -67,7 +67,7 @@ public class Funding {
     @Enumerated(EnumType.STRING)
     private FundingProgressStatus progressStatus = FundingProgressStatus.RECRUITMENT_STATUS;
 
-    @Column(name = "is_allow", nullable = false)
+    @Column(name = "is_allow")
     private Boolean isAllow;
 
     @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)

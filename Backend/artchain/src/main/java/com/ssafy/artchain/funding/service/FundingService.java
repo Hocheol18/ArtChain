@@ -14,7 +14,7 @@ public interface FundingService {
 
     List<FundingListItemDto> getFundingListByCategoryAndStatus(String category, String status, String allowStat, Pageable pageable);
 
-    int allowFunding(Long fundingId, CustomUserDetails member);
+    int allowFunding(Long fundingId, String allowStatus, CustomUserDetails member);
 
     int createNotice(Long fundingId, FundingNoticeRequestDto dto, CustomUserDetails member);
 

@@ -104,10 +104,10 @@ public class FundingController {
      * @param fundingId
      * @return
      */
-    @PutMapping("/{fundingId}/allow")
-    public ResponseEntity<DefaultResponse<Void>> allowFunding(@PathVariable Long fundingId, @AuthenticationPrincipal CustomUserDetails member) {
-        // -2: 관리자가 아님, -1: 해당하는 펀딩 없음, 0: 이미 승인된 펀딩, 1: 펀딩 승인.
-        int result = fundingService.allowFunding(fundingId, member);
+    @PutMapping("/{fundingId}/allow/{allowStatus}")
+    public ResponseEntity<DefaultResponse<Void>> allowFunding(@PathVariable Long fundingId, @PathVariable String allowStatus, @AuthenticationPrincipal CustomUserDetails member) {
+        // -2: 관리자가 아님, -1: 해당하는 펀딩 없음, 0: 이미 승인 또는 거절된 펀딩, 1: 펀딩 승인 또는 거절.
+        int result = fundingService.allowFunding(fundingId, allowStatus, member);
 
         if (result == -2) {
             return DefaultResponse.emptyResponse(
@@ -122,12 +122,12 @@ public class FundingController {
         } else if (result == 0) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
-                    StatusCode.ALREADY_ALLOWED_FUNDING
+                    StatusCode.ALREADY_CHANGE_FUNDING_ALLOW_STATUS
             );
         } else {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
-                    StatusCode.SUCCESS_ALLOW_FUNDING
+                    StatusCode.SUCCESS_CHANGE_FUNDING_ALLOW_STATUS
             );
         }
     }
