@@ -15,6 +15,11 @@ export default function UserMyPage() {
   const handleBack = () => {
     navigate(-1); //뒤로가기
   };
+
+  const handleCharge = () => {
+    navigate("/charge");
+  };
+
   return (
     <>
       <Box
@@ -65,6 +70,7 @@ export default function UserMyPage() {
             mt={"0.5rem"}
             fontSize={"sm"}
             bgColor={"blue.300"}
+            onClick={handleCharge}
           >
             <Center color={"white.100"}>충전하기</Center>
           </Box>

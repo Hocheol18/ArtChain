@@ -28,6 +28,7 @@ import FundConfirm from "./pages/FundConfirm";
 import BusinessProjectEnroll from "./pages/BusinessProjectEnroll";
 import { MyPiece } from "./pages/MyPiece";
 import { Invest } from "./pages/Invest";
+import { Charge } from "./pages/Charge";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -117,8 +118,7 @@ function App() {
                     </CommonPage>
                   }
                 ></Route>
-                {/* 코인 충전 */}
-                <Route path="/coin-charge" element={<CoinCharge />}></Route>
+
                 {/* 투자리스트 */}
                 <Route
                   path="/invest-list"
@@ -262,6 +262,16 @@ function App() {
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <Invest />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                {/* 충전하기 페이지 */}
+                <Route
+                  path="/charge"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="">
+                      <Charge />
                     </CommonPage>
                   }
                 ></Route>
