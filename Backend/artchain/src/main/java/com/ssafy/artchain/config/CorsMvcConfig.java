@@ -15,7 +15,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
     corsRegistry.addMapping("/**")
             .exposedHeaders("Set-Cookie")
             .exposedHeaders("Authorization")
-//            .allowedOrigins("http://localhost:8080/");
+            .allowedOrigins("http://localhost:3000/")
             .allowedOrigins("https://j10a708.p.ssafy.io/");
   }
 }

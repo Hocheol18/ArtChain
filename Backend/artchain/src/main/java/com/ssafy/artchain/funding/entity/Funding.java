@@ -1,9 +1,9 @@
 package com.ssafy.artchain.funding.entity;
 
-import com.ssafy.artchain.connectentity.InvestmentLog;
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
+import java.math.BigDecimal;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class Funding {
 
     @Column(name = "is_allow")
     private Boolean isAllow;
-
+    
     @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;
 

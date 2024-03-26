@@ -1,10 +1,10 @@
 package com.ssafy.artchain.scheduler;
 
-import com.ssafy.artchain.connectentity.InvestmentLog;
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
-import com.ssafy.artchain.funding.repository.InvestmentLogRepository;
+import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.pieceowner.entity.PieceOwner;
 import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;

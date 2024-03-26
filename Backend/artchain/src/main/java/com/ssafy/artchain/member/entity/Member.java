@@ -1,6 +1,6 @@
 package com.ssafy.artchain.member.entity;
 
-import com.ssafy.artchain.connectentity.InvestmentLog;
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import com.ssafy.artchain.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;

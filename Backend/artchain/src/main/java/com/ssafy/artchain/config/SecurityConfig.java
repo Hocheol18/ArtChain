@@ -68,7 +68,7 @@ public class SecurityConfig {
 
                 CorsConfiguration configuration = new CorsConfiguration();
 
-//                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080/"));
+                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000/"));
                 configuration.setAllowedOrigins(Collections.singletonList("https://j10a708.p.ssafy.io/"));
                 configuration.setAllowedMethods(Collections.singletonList("*"));
                 configuration.setAllowCredentials(true);
@@ -114,7 +114,11 @@ public class SecurityConfig {
                     "/api/member/login",
                     "/api/member/enterprise/join",
                     "/api/member/individual/join",
-                    "/api/member/refresh"
+                    "/api/member/refresh",
+                    "api/market",
+                    "api/market/sellList",
+                    "api/market/pieceHistory",
+                    "/api/market/detail"
             ).permitAll()
             .anyRequest().authenticated());
 //                    .anyRequest().permitAll());
