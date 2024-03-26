@@ -24,7 +24,7 @@ export const Charge = () => {
         check={check}
       />
 
-      {check === "one" ? <ArtCharge /> : <ChargeHistory />}
+      {check === "one" ? <ArtCharge /> : <ChargeHistory type="charge" />}
     </div>
   );
 };
