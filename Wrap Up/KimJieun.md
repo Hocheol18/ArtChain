@@ -1,5 +1,35 @@
 # Wrap up
 
+## 20240326
+
+### 오늘 한 것
+
+- IAM Identity Center에서 SSO 로그인 실행
+- S3 버킷 생성
+- S3 업로드 Service Class 제작
+- 포트폴리오 취업특강
+
+### 어려웠던 점
+
+- IAM Identity Center 에서 만든 계정으로 S3에 Access Key와 Secret Access Key를 넣으면 없다고 오류가 남
+  - 그래서 새로운 IAM 계정 만들어서 하니까 성공
+
+### 새로 알게 된 점
+
+- IAM Identity Center란
+  - AWS SSO(Single Sign-On)의 후속 서비스로 한 번의 로그인으로 통합 서비스 이용 가능
+  - 계정을 만들어서 로그인 → 안전한 루트 계정이라고 생각하면 됨
+    - 이 밑에 그룹, IAM 계정 만들어서 로그인
+  - https://okms1017.tistory.com/10
+- IAM Identity Center 생성
+  - https://btcd.tistory.com/1739
+  - 주의
+    - 리전 먼저 선택하고 생성해야함!! 안그러면 다시 삭제하고 재생성 해야함
+
+### 내일 할 것
+
+- 포트원 연결
+
 ## 20240325
 
 ### 오늘 한 것
