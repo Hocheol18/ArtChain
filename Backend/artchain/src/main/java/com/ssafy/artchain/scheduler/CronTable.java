@@ -34,6 +34,43 @@ public class CronTable {
     @Value("${schedule.funding.progress-status.active}")
     private boolean fundingProgressStatusCronActive;
 
+    @Value("${schedule.funding.set-recruit-start.active}")
+    private boolean fundingProgressSetRecruitmentStartCronActive;
+
+    /**
+     * 관리자 승인 완료 & 모집 시작 전인 펀딩을 모집 시작일을 기준 일자로 하여
+     * 모집 중 상태로 변경
+     */
+    @Transactional
+    @Scheduled(cron = "${schedule.funding.set-recruit-start.cron}")
+    public void fundingProgressSetRecruitmentStartCron() {
+        try {
+            if (fundingProgressSetRecruitmentStartCronActive) {
+                List<FundingProgressStatus> targetProgressStatus = List.of(
+                        FundingProgressStatus.BEFORE_RECRUITMENT);
+
+                List<Funding> fundingList = fundingRepository
+                        .findAllByProgressStatusInAndIsAllowIn(targetProgressStatus, List.of(true))
+                        .stream()
+                        .filter(
+                                funding -> funding.getRecruitStart().isEqual(LocalDate.now())
+                        )
+                        .toList();
+
+                for (Funding funding : fundingList) {
+                    funding.updateProgressStatus(FundingProgressStatus.RECRUITMENT_STATUS);
+                }
+            }
+        } catch (Exception e) {
+            log.info("* Batch 시스템이 예기치 않게 종료되었습니다. Message: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * 관리자 승인 완료 & 모집 중인 펀딩을 모집 종료일을 기준 일자로 하여 모집 성공 기준 퍼센트를 넘었느나에 따라
+     * 모집 성공(정산 대기)과 모집 실패로 상태 변경.
+     * 모집 성공(정산 대기)인 경우 조각 코인 소유자 테이블에 작품/투자자별 총 조각 코인 수를 등록
+     */
     @Transactional
     @Scheduled(cron = "${schedule.funding.progress-status.cron}")
     public void fundingProgressStatusCron() {

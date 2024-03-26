@@ -61,7 +61,7 @@ public class FundingServiceImpl implements FundingService {
                 .totalBudget(data.getTotalBudget())
                 .unitPrice(data.getUnitPrice())
                 .bep(data.getBep())
-                .progressStatus(FundingProgressStatus.RECRUITMENT_STATUS)
+                .progressStatus(FundingProgressStatus.BEFORE_RECRUITMENT)
                 .isAllow(false)
                 .investmentLogs(new ArrayList<>())
                 .scheduleList(new ArrayList<>())
@@ -134,7 +134,7 @@ public class FundingServiceImpl implements FundingService {
 
         List<FundingProgressStatus> statuses;
         if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || Stream.of(FundingProgressStatus.values())
-                .noneMatch(ps -> ps.name().equals(status))) {
+                .noneMatch(ps -> ps.name().equals(status))) { // 모집 시작 전을 제외한 모든 진행 상태
             statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
                     FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
                     FundingProgressStatus.RECRUITMENT_FAILED);
