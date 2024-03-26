@@ -34,7 +34,7 @@ public enum StatusCode {
     // 403 FORBIDDEN : 요청에 대한 권한 없음
     ALLOW_ONLY_COMPANY(403, "기업 회원에 허용된 요청"),
     ALLOW_ONLY_ADMIN(403, "관리자에 허용된 요청"),
-    ALLOW_ONLY_FUNDING_COMPANY(403, "관리자에 허용된 요청"),
+    ALLOW_ONLY_FUNDING_COMPANY(403, "펀딩 기업에 허용된 요청"),
     ALLOW_OVER_FUNDING_COMPANY(403, "펀딩 기업 또는 관리자에 허용된 요청"),
     ALLOW_ONLY_USER(403, "개인 회원만 투자 가능"),
 
