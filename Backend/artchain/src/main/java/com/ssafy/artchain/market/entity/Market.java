@@ -36,9 +36,6 @@ public class Market extends BaseTimeEntity {
     @Column(name = "contract_address")
     private String contractAddress;
 
-    @Column(name = "piece_name")
-    private String pieceName;
-
     @Column(name = "piece_count")
     private Long pieceCount;
 

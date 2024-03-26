@@ -1,6 +1,7 @@
 package com.ssafy.artchain.market.service;
 
 import com.ssafy.artchain.market.dto.*;
+import com.ssafy.artchain.member.dto.CustomUserDetails;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -11,5 +12,7 @@ public interface MarketService {
     List<MarketPieceTradeHistoryResponseDto> getMarketPieceTradeHistoryList(Long fundingId, Pageable pageable);
     MarketDetailResponseDto getMarketDetail(Long marketId);
 
-    List<String> getMarketRegistForm(Long memberId);
+    List<MarketRegistFundingNameResponseDto> getMarketRegistForm(Long memberId);
+
+    void createMarketRegist(CustomUserDetails member, MarketRegistRequestDto dto);
 }

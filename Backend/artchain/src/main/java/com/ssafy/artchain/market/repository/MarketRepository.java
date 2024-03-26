@@ -28,7 +28,7 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
 //    이 market안의 buyerId와 같은 member를 찾고,
 //    이 market 안의 fundingId와 같은 funding을 찾고,
 //    이 funding안의 entId와 같은 member를 찾아서 찾은 값을 알맞은 DTO에 넣어준다
-    @Query("SELECT new com.ssafy.artchain.market.dto.MarketDetailResponseDto(m.id, m.fundingId, f.name, m.status, m.contractAddress, m.pieceName, m.pieceCount, m.totalCoin, m.coinPerPiece, s.walletAddress, b.walletAddress, cm.name) " +
+    @Query("SELECT new com.ssafy.artchain.market.dto.MarketDetailResponseDto(m.id, m.fundingId, f.name, m.status, m.contractAddress, m.pieceCount, m.totalCoin, m.coinPerPiece, s.walletAddress, b.walletAddress, cm.name) " +
             "FROM Market m " +
             "JOIN Member s ON m.sellerId = s.id " +
             "LEFT JOIN Member b ON m.buyerId = b.id " +

@@ -92,13 +92,18 @@ public class MarketController {
     }
 
     @GetMapping("/registForm")
-    public ResponseEntity<DefaultResponse<List<String>>> getMarketRegistForm(@AuthenticationPrincipal CustomUserDetails customMember) {
+    public ResponseEntity<DefaultResponse<List<MarketRegistFundingNameResponseDto>>> getMarketRegistForm(@AuthenticationPrincipal CustomUserDetails customMember) {
         Long memberId = customMember.getId();
-
-        List<String> fundingNameList = marketService.getMarketRegistForm(memberId);
+//        fundingId와 fundingName, 갖고있는 pieceCount 반환
+        List<MarketRegistFundingNameResponseDto> fundingNameList = marketService.getMarketRegistForm(memberId);
 
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_REGIST_FORM_VIEW, fundingNameList);
     }
 
+    @PostMapping
+    public ResponseEntity<DefaultResponse<?>> createMarketRegist(@AuthenticationPrincipal CustomUserDetails member, @RequestBody MarketRegistRequestDto dto) {
+        marketService.createMarketRegist(member, dto);
 
+        return null;
+    }
 }

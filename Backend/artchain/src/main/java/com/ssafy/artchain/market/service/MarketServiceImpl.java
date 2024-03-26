@@ -8,8 +8,10 @@ import com.ssafy.artchain.market.dto.MarketMainResponseDto;
 import com.ssafy.artchain.market.dto.MarketSellResponseDto;
 import com.ssafy.artchain.market.entity.Market;
 import com.ssafy.artchain.market.repository.MarketRepository;
+import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
+import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -33,6 +35,7 @@ public class MarketServiceImpl implements MarketService {
     private final FundingRepository fundingRepository;
     private final MemberRepository memberRepository;
     private final InvestmentLogRepository investmentLogRepository;
+    private final PieceOwnerRepository pieceOwnerRepository;
 
     @Override
     public List<MarketMainResponseDto> getMarketMain(String status, String category, Pageable pageable) {
@@ -121,8 +124,29 @@ public class MarketServiceImpl implements MarketService {
     }
 
     @Override
-    public List<String> getMarketRegistForm(Long memberId) {
-        List<String> fundingNameList = investmentLogRepository.findFundingNamesByMemberId(memberId);
+    public List<MarketRegistFundingNameResponseDto> getMarketRegistForm(Long memberId) {
+//        정산 대기 중인 놈들만 조각 거래 가능함
+        String PENDING_SETTLEMENT = "PENDING_SETTLEMENT";
+        FundingProgressStatus state = FundingProgressStatus.valueOf(PENDING_SETTLEMENT);
+        List<MarketRegistFundingNameResponseDto> fundingNameList = investmentLogRepository.findFundingNamesByMemberId(memberId, state);
         return fundingNameList;
+    }
+
+    @Override
+    public void createMarketRegist(CustomUserDetails member, MarketRegistRequestDto dto) {
+        Market market = Market.builder()
+                .fundingId(dto.getFundingId())
+                .contractAddress(dto.getContractAddress())
+                .pieceCount(dto.getPieceCount())
+                .totalCoin(dto.getTotalCoin())
+                .coinPerPiece(dto.getCoinPerPiece())
+                .transactionHash(null)
+                .transactionTime(null)
+                .sellerId(member.getId())
+                .buyerId(null)
+                .status("LISTED")
+                .build();
+
+        marketRepository.save(market);
     }
 }

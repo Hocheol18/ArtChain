@@ -16,7 +16,6 @@ public class MarketResponseDto {
     private Long id;
     private Long fundingId;
     private String contractAddress;
-    private String pieceName;
     private Long pieceCount;
     private Long totalCoin;
     private BigDecimal coinPerPiece;
@@ -31,7 +30,6 @@ public class MarketResponseDto {
         this.id = market.getId();
         this.fundingId = market.getFundingId();
         this.contractAddress = market.getContractAddress();
-        this.pieceName = market.getPieceName();
         this.pieceCount = market.getPieceCount();
         this.totalCoin = market.getTotalCoin();
         this.coinPerPiece = market.getCoinPerPiece();

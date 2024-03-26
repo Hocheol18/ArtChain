@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class MarketDetailResponseDto {
   private Long id;
   private Long fundingId;
-  private String fundingName;
   private String status;
   private String contractAddress;
   private String pieceName;
@@ -29,9 +28,7 @@ public class MarketDetailResponseDto {
   public MarketDetailResponseDto(Market market) {
     this.id = market.getId();
     this.fundingId = market.getFundingId();
-    this.status = market.getStatus();
     this.contractAddress = market.getContractAddress();
-    this.pieceName = market.getPieceName();
     this.pieceCount = market.getPieceCount();
     this.totalCoin = market.getTotalCoin();
     this.coinPerPiece = market.getCoinPerPiece();
