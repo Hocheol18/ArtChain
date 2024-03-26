@@ -1,8 +1,9 @@
 package com.ssafy.artchain.funding.service;
 
 
-import com.ssafy.artchain.connectentity.InvestmentLog;
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import com.ssafy.artchain.funding.dto.*;
+import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.funding.entity.*;
 import com.ssafy.artchain.funding.repository.*;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
