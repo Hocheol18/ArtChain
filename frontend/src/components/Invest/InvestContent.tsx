@@ -15,7 +15,7 @@ export const InvestContent = () => {
       <Image
         src={tmpImg}
         objectFit="cover"
-        height={120}
+        height={140}
         w={200}
         px={5}
         py={4}

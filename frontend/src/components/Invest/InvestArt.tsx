@@ -17,7 +17,7 @@ export const InvestArt = ({ artNum, value }: Props) => {
         borderBottomStyle="dashed"
         borderBottomColor={"gray.400"}
       >
-        <SimpleGrid columns={3} alignItems={"center"} spacingX={10}>
+        <SimpleGrid columns={3} alignItems={"center"} spacingX={1}>
           <Box fontSize={"17"} fontWeight={"bold"}>
             현재 아트 잔액
           </Box>

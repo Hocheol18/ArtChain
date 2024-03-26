@@ -199,12 +199,32 @@ function App() {
                   }
                 ></Route>
 
-                {/* 나의 조각 */}
+                {/* 나의 조각-나의 투자 */}
                 <Route
-                  path="/mypiece/:id"
+                  path="/mypiece/:userId"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="my">
-                      <MyPiece />
+                      <MyPiece type="invest" />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                {/* 나의 조각-나의 거래 리스트 */}
+                <Route
+                  path="/mypiece/:userId/transaction-list"
+                  element={
+                    <CommonPage topNavType="coinBack" bottomNavType="my">
+                      <MyPiece type="transaction-list" />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                {/* 나의 조각-나의 거래 리스트 항목 */}
+                <Route
+                  path="/mypiece/:userId/transaction/:transactionId"
+                  element={
+                    <CommonPage topNavType="coinBack" bottomNavType="my">
+                      <MyPiece type="transaction" />
                     </CommonPage>
                   }
                 ></Route>
