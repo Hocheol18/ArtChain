@@ -8,7 +8,7 @@ const FundRaisingPage: React.FC = () => {
   const [tokenAmount, setTokenAmount] = useState<string>("");
   const web3 = new Web3((window as any).ethereum);
   const FundRaisingContractAddress =
-    "0xb1f9b901fd19f0567F0efFF9437ab35f80B7fA90";
+    "0x315576edD3B74896B0e8F25835a38d76af1bc437";
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const FundRaisingPage: React.FC = () => {
             setAccount(accounts[0]);
           }
         });
-    }
+    }   
   }, []);
 
   // MetaMask와 연결
@@ -40,7 +40,6 @@ const FundRaisingPage: React.FC = () => {
     }
   };
 
-  // 투자 함수
   const invest = async () => {
     try {
       const fundingContract = new web3.eth.Contract(
@@ -61,10 +60,9 @@ const FundRaisingPage: React.FC = () => {
       );
       if (approveTxReceipt.status) {
         console.log("토큰 승인 완료");
-
-        // 토큰 구매 트랜잭션 보내기
+  
         const investTx = await fundingContract.methods
-          .fund(FundRaisingContractAddress, tokenAmount)
+          .fund(convertToInteger(tokenAmount)) // 정수형으로 변환하여 전달
           .send({ from: account });
         console.log("토큰 투자 성공", investTx);
       } else {

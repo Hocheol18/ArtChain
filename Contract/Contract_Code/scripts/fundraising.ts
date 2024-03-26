@@ -1,6 +1,6 @@
 async function main10() {
     const [owner] = await ethers.getSigners();
-    const contractAddress = '0xb1f9b901fd19f0567F0efFF9437ab35f80B7fA90';
+    const contractAddress = '0x97a7E9F95D629bC11f4874E7e83CaF72Ffe17d0A';
     const ContractFactory = await ethers.getContractFactory('FundRaisingContract');
     const contract = ContractFactory.attach(contractAddress);
     

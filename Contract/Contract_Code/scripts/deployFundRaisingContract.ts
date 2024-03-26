@@ -4,8 +4,8 @@ async function main12() {
     const FundRaisingContract = await ethers.getContractFactory("FundRaisingContract");
   
     // 생성자에 전달할 인수를 정의합니다.
-    const name = "MyFundRaisingToken"; // 토큰의 이름
-    const symbol = "MFT"; // 토큰의 심볼
+    const name = "WhyDontRunning"; // 토큰의 이름
+    const symbol = "WDR"; // 토큰의 심볼
     const initialSupply = 1000000; // 초기 공급량
     const time = 60; // 분 단위로 마감 시간 설정
   
