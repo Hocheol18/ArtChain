@@ -42,6 +42,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
 
       <Link to="/mypage">
         <Image boxSize={8} src={ProfileIcon} />
+        {/* <Avatar boxSize="8" name='Dan Abrahmov' src='https://bit.ly/dan-abramov' /> */}
       </Link>
     </Box>
   );
