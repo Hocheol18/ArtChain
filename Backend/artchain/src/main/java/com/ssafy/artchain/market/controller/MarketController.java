@@ -101,9 +101,9 @@ public class MarketController {
     }
 
     @PostMapping
-    public ResponseEntity<DefaultResponse<?>> createMarketRegist(@AuthenticationPrincipal CustomUserDetails member, @RequestBody MarketRegistRequestDto dto) {
+    public ResponseEntity<DefaultResponse<Object>> createMarketRegist(@AuthenticationPrincipal CustomUserDetails member, @RequestBody MarketRegistRequestDto dto) {
         marketService.createMarketRegist(member, dto);
 
-        return null;
+        return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_CREATE_MARKET_TRADE);
     }
 }
