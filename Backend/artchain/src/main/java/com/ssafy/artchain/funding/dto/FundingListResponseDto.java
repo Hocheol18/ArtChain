@@ -1,14 +1,15 @@
 package com.ssafy.artchain.funding.dto;
 
-import java.util.List;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 public class FundingListResponseDto {
 
-    private final List<FundingResponseDto> fundingList;
+    private final List<FundingListItemDto> fundingList;
 
-    public FundingListResponseDto(List<FundingResponseDto> fundingList) {
+    public FundingListResponseDto(List<FundingListItemDto> fundingList) {
         this.fundingList = fundingList;
     }
 }
