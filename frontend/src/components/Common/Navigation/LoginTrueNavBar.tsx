@@ -17,7 +17,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
       justifyContent={"space-between"}
     >
       <Box position={"relative"}>
-        <Link to="/coin-charge">
+        <Link to="/charge">
           <Image
             boxSize={9}
             src={AddCoinIcon}
