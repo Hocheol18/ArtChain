@@ -42,7 +42,7 @@ export const ArtCharge = () => {
         amount: price,
         buyer_email: "4pjttest@gmail.com",
         buyer_name: "구매자이름",
-        m_redirect_url: "http://localhost:3000/charge",
+        m_redirect_url: "http://j10a708.p.ssafy.io:3000/charge",
       },
       async function (rsp) {
         // callback
