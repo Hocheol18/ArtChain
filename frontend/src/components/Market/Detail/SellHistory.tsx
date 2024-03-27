@@ -49,7 +49,7 @@ export default function SellHistory() {
           </Flex>
         </Box>
         {/* 판매 */}
-        <Flex mt={"0.5rem"} w={"900px"}>
+        <Flex mt={"0.5rem"} w={"830px"}>
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -90,7 +90,7 @@ export default function SellHistory() {
           </Text>
         </Flex>
         {/* 등록 */}
-        <Flex mt={"0.5rem"} w={"900px"}>
+        <Flex mt={"0.5rem"} w={"830px"}>
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
