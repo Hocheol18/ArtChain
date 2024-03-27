@@ -2,7 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function TopSecondNav() {
-  const [check, checkFounder] = useState("total");
+  const [check, checkFounder] = useState("ALL");
 
   return (
     <>
@@ -12,7 +12,7 @@ export default function TopSecondNav() {
         mt={"0.5rem"}
         wrap={"wrap"}
       >
-        {check === "total" ? (
+        {check === "ALL" ? (
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -33,14 +33,14 @@ export default function TopSecondNav() {
             <Text
               color={"gray.400"}
               onClick={() => {
-                checkFounder("total");
+                checkFounder("ALL");
               }}
             >
               전체
             </Text>
           </Box>
         )}
-        {check === "ing" ? (
+        {check === "RECRUITMENT_STATUS" ? (
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -58,13 +58,16 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text color={"gray.400"} onClick={() => checkFounder("ing")}>
+            <Text
+              color={"gray.400"}
+              onClick={() => checkFounder("RECRUITMENT_STATUS")}
+            >
               진행중
             </Text>
           </Box>
         )}
 
-        {check === "end" ? (
+        {check === "RECRUITMENT_END" ? (
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -82,13 +85,16 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text color={"gray.400"} onClick={() => checkFounder("end")}>
+            <Text
+              color={"gray.400"}
+              onClick={() => checkFounder("RECRUITMENT_END")}
+            >
               모집종료
             </Text>
           </Box>
         )}
 
-        {check === "complete" ? (
+        {check === "SETTLED" ? (
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -106,7 +112,7 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text color={"gray.400"} onClick={() => checkFounder("complete")}>
+            <Text color={"gray.400"} onClick={() => checkFounder("SETTLED")}>
               정산완료
             </Text>
           </Box>

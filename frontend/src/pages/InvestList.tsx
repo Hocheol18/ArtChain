@@ -3,13 +3,58 @@ import { useMediaQuery } from "react-responsive";
 import { InvestListItem } from "../components/Invest/InvestList/InvestListItem";
 import TopNav from "../components/Invest/InvestList/TopNav";
 import TopSecondNav from "../components/Invest/InvestList/TopSecondNav";
+import { getFunddingList } from "../api/invest";
+import {
+  GetFunddingListParams,
+  GetFunddingListResponse,
+} from "../type/invest.interface";
+import { useEffect, useState } from "react";
 
 export const InvestList = () => {
   const isDesktop = useMediaQuery({ minWidth: 501 });
 
+  //받아오는 펀딩 리스트 배열
+  const [fundArr, setFundArr] = useState<GetFunddingListResponse[]>();
+
+  const [category, setCategory] = useState("ALL");
+  const handleCategory = (whatCategory: string) => {
+    setCategory(whatCategory);
+  };
+
+  const [status, setStatus] = useState("ALL");
+
+  //펀딩리스트 조회
+  const funddingList = async () => {
+    getFunddingList({
+      category: `ALL`,
+      status: `ALL`,
+      allowStat: `ALL`,
+      page: 0,
+      size: 10,
+    }).then((res) => {
+      console.log(res);
+      setFundArr(res);
+    });
+  };
+
+  //처음 실행시 조회리스트 다 들고 와!
+  useEffect(() => {
+    funddingList();
+  }, []);
+
+  //조회 목록 바뀌 때
+  useEffect(() => {
+    if (fundArr) console.log(fundArr[0]);
+  }, [fundArr]);
+
+  //카테고리 바뀔 때
+  useEffect(() => {
+    console.log(category);
+  }, [category]);
+
   return (
     <Box>
-      <TopNav />
+      <TopNav check={category} handleCheck={handleCategory} />
       <TopSecondNav />
       <SimpleGrid spacing={10} padding={7}>
         <InvestListItem />
