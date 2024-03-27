@@ -29,7 +29,7 @@ contract ReceiveArtCoinContract is FundRaisingContract {
         require(block.timestamp < finishTime, "Time Over");
         require(_amount > 0, "You need to donate a positive amount of tokens");
         require(
-            _amount + raisedAmount <= initialSupply,
+            _amount*(10**18) + raisedAmount <= initialSupply,
             "Exceeds initial supply"
         );
         bool success = fundingToken.transferFrom(
@@ -38,14 +38,14 @@ contract ReceiveArtCoinContract is FundRaisingContract {
             _amount*(10**18)
         );
         require(success, "Token transfer failed");
-        raisedAmount += _amount;
-        newCoins[msg.sender] += _amount;
+        raisedAmount += _amount*(10**18);
+        newCoins[msg.sender] += _amount*(10**18);
 
         if (!hasContributed[msg.sender]) {
             listOfContributors.push(msg.sender);
             hasContributed[msg.sender] = true;
         }
 
-        emit NewCoinsUpdated(msg.sender, _amount);
+        emit NewCoinsUpdated(msg.sender, _amount*(10**18));
     }
 }
