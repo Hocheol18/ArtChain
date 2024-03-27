@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 public class MarketDetailResponseDto {
   private Long id;
   private Long fundingId;
+  private String fundingName;
   private String status;
   private String contractAddress;
-  private String pieceName;
   private Long pieceCount;
   private Long totalCoin;
   private BigDecimal coinPerPiece;
