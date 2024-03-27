@@ -8,6 +8,8 @@ import rightarrow from "../assets/rightarrow.svg";
 import BackIcon from "../assets/back-icon.svg";
 import { useNavigate, Link } from "react-router-dom";
 import DoughnutChart from "../components/Mypage/DoughnutChart";
+import { LogoutAxios } from "../api/user";
+import useUserInfo from "../store/useUserInfo";
 
 export default function UserMyPage() {
   const num = 100;
@@ -15,6 +17,21 @@ export default function UserMyPage() {
   const handleBack = () => {
     navigate(-1); //뒤로가기
   };
+  const { userInfo, setUserInfo } = useUserInfo();
+
+  function clearFunction() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+
+    const clearUserIdStorage = useUserInfo.persist.clearStorage;
+    sessionStorage.removeItem("accessToken")
+    setUserInfo({
+      profileUrl: "",
+      nickname: "",
+      walletBalance: "",
+      isLogin: false,
+    });
+    clearUserIdStorage();
+  }
 
   const handleCharge = () => {
     navigate("/charge");
@@ -48,6 +65,11 @@ export default function UserMyPage() {
               src={settings}
               ml={"0.5rem"}
               mt={"0.8rem"}
+              onClick={() =>
+                LogoutAxios()
+                  .then(clearFunction())
+                  .catch((err) => console.log(err))
+              }
             />
           </Flex>
           <Flex ml={"1.5rem"}>
