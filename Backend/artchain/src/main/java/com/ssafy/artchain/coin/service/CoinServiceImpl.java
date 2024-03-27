@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -20,7 +22,8 @@ public class CoinServiceImpl implements CoinService{
     private final MemberRepository memberRepository;
     @Override
     public CoinMainResponseDto getCoinMain(CustomUserDetails member) {
-        Member memberEntity = memberRepository.findById(member.getId()).orElseThrow();
+        Member memberEntity = memberRepository.findById(member.getId())
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
         CoinMainResponseDto dto = CoinMainResponseDto.builder()
                 .walletAddress(memberEntity.getWalletAddress())
                 .walletBalance(memberEntity.getWalletBalance())
