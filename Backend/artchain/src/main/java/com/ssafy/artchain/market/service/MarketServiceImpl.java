@@ -4,13 +4,13 @@ import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
-import com.ssafy.artchain.market.dto.MarketMainResponseDto;
-import com.ssafy.artchain.market.dto.MarketSellResponseDto;
+import com.ssafy.artchain.market.dto.*;
 import com.ssafy.artchain.market.entity.Market;
 import com.ssafy.artchain.market.repository.MarketRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
+import com.ssafy.artchain.pieceowner.entity.PieceOwner;
 import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.ssafy.artchain.market.dto.*;
 
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +35,7 @@ public class MarketServiceImpl implements MarketService {
     private final MemberRepository memberRepository;
     private final InvestmentLogRepository investmentLogRepository;
     private final PieceOwnerRepository pieceOwnerRepository;
+    private final String ROLE_USER = "ROLE_USER";
 
     @Override
     public List<MarketMainResponseDto> getMarketMain(String status, String category, Pageable pageable) {
@@ -51,7 +51,7 @@ public class MarketServiceImpl implements MarketService {
             statusList = List.of(FundingProgressStatus.valueOf(status.toUpperCase()));
         }
         Page<Funding> fundingPage;
-        if(category.toUpperCase(Locale.ROOT).equals(UPPER_CATEGORY)) {
+        if (category.toUpperCase(Locale.ROOT).equals(UPPER_CATEGORY)) {
             fundingPage = fundingRepository.findAllByProgressStatusIn(statusList, pageable);
         } else {
             fundingPage = fundingRepository.findAllByProgressStatusInAndCategory(statusList, category, pageable);
@@ -67,16 +67,13 @@ public class MarketServiceImpl implements MarketService {
         Page<Market> marketPage;
 //      현재 판매중인 놈만 보이도록하기 위한 코드
         String LISTED = "LISTED";
-        if(sortFlag.equals("최신순")) {
+        if (sortFlag.equals("최신순")) {
             marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCreatedAtDesc(fundingId, LISTED, pageable);
-        }
-        else if(sortFlag.equals("높은가격순")) {
+        } else if (sortFlag.equals("높은가격순")) {
             marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceDesc(fundingId, LISTED, pageable);
-        }
-        else if(sortFlag.equals("낮은가격순")){
+        } else if (sortFlag.equals("낮은가격순")) {
             marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceAsc(fundingId, LISTED, pageable);
-        }
-        else {
+        } else {
             marketPage = marketRepository.findAllByFundingIdAndStatus(fundingId, LISTED, pageable);
         }
 
@@ -86,7 +83,7 @@ public class MarketServiceImpl implements MarketService {
                 .toList();
 
 //        판매자 ID로 member 객체를 찾고, 그 안에 있는 지갑 주소를 넣어준다.
-        for (MarketSellResponseDto dto: marketSellResponseDtoList) {
+        for (MarketSellResponseDto dto : marketSellResponseDtoList) {
             Member member = memberRepository.findById(dto.getSellerId()).orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
             dto.setSellerAddress(member.getWalletAddress());
         }
@@ -105,11 +102,11 @@ public class MarketServiceImpl implements MarketService {
 
 //        판매자를 찾아 판매자 주소를 Dto에 넣어준다
 
-        for (MarketPieceTradeHistoryResponseDto dto: marketPieceTradeHistoryResponseDtoList) {
+        for (MarketPieceTradeHistoryResponseDto dto : marketPieceTradeHistoryResponseDtoList) {
             Member seller = memberRepository.findById(dto.getSellerId()).orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
             dto.setSellerAddress(seller.getWalletAddress());
 //            구매자가 있다면 구매자 주소도 넣어준다.
-            if(dto.getBuyerId() != null){
+            if (dto.getBuyerId() != null) {
                 Member buyer = memberRepository.findById(dto.getBuyerId()).orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
                 dto.setBuyerAddress(buyer.getWalletAddress());
             }
@@ -148,5 +145,49 @@ public class MarketServiceImpl implements MarketService {
                 .build();
 
         marketRepository.save(market);
+    }
+
+    @Override
+    @Transactional
+    public int buyMarketItem(Long marketId, CustomUserDetails member) {
+        if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
+            return -3;
+        }
+
+        Market market = marketRepository.findById(marketId)
+                .orElse(null);
+        if (market == null) {
+            return -2;
+        }
+        if (!market.getStatus().equals("LISTED")) {
+            return -1;
+        }
+        
+        // 구매자 기록 및 상태 변경
+        market.updateBuyerAndStatus(member.getId(), "SOLD");
+
+        // 판매 조각에 대해 조각 코인 소유자 이전
+        PieceOwner sellerPieceInfo = pieceOwnerRepository
+                .findPieceOwnerByMemberIdAndFundingId(market.getSellerId(), market.getFundingId());
+        PieceOwner buyerPieceInfo = pieceOwnerRepository
+                .findPieceOwnerByMemberIdAndFundingId(member.getId(), market.getFundingId());
+
+        if (sellerPieceInfo == null || (sellerPieceInfo.getPieceCount() < market.getPieceCount())) {
+            return 0;
+        } else {
+            sellerPieceInfo.updatePieceCount(sellerPieceInfo.getPieceCount() - market.getPieceCount());
+        }
+
+        if (buyerPieceInfo == null) {
+            pieceOwnerRepository.save(PieceOwner.builder()
+                    .memberId(member.getId())
+                    .fundingId(market.getFundingId())
+                    .pieceCount(market.getPieceCount())
+                    .build());
+        } else {
+            buyerPieceInfo.updatePieceCount(buyerPieceInfo.getPieceCount() + market.getPieceCount());
+        }
+
+        return 1;
     }
 }
