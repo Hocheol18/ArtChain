@@ -34,7 +34,8 @@ async function UserEnrollAxios(data: UserErnollInterface) {
 
 // 로그인 함수
 async function LoginAxios(data: LoginInterface) {
-  return await localAxios.post(loginurl, data);
+  const res = await localAxios.post(loginurl, data);
+  return res
 }
 
 export {
