@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import React from "react";
+
 import {
   ProfileAxios,
   LoginAccessTokenAxios,
@@ -22,19 +23,20 @@ export const AxiosFunction = () => {
 
   return (
     <>
+      
       <Button
         bgColor={"blue.200"}
         onClick={() =>
           LoginAccessTokenAxios(data).then((firstres: any) =>
             ProfileAxios(firstres.headers.authorization)
-              .then((res) =>
+              .then(async (res) =>
                 setUserInfo({
                   profileUrl: "",
                   nickname: "",
                   walletBalance:
                     res.data.data.memberUserMypageResponseDtoList[0]
                       .walletBalance,
-                  accessToken: firstres.headers.authorization,
+                  
                   isLogin: true,
                 })
               )
@@ -64,7 +66,7 @@ export const AxiosFunction = () => {
       </Button>
       <Button
         onClick={() =>
-          ProfileAxios(userInfo.accessToken)
+          ProfileAxios()
             .then((res) => console.log(res))
             .catch((err) => console.log(err))
         }

@@ -6,7 +6,6 @@ interface userInfoType {
   profileUrl: string;
   nickname: string;
   walletBalance: string;
-  accessToken: string;
   isLogin: boolean;
 }
 
@@ -23,7 +22,6 @@ const defaultState = {
   profileUrl: "",
   nickname: "",
   walletBalance: "",
-  accessToken: "dfdfdfd",
   isLogin: false,
 };
 
@@ -42,9 +40,7 @@ const useUserInfo = create<UserInfoState & UserInfoActions>()(
       {
         name: "userInfo",
         storage: createJSONStorage(() => sessionStorage),
-        onRehydrateStorage:(state) => {
-         console.log(state)
-        },
+        
       }
     )
   )

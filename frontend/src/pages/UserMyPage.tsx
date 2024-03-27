@@ -28,7 +28,6 @@ export default function UserMyPage() {
       profileUrl: "",
       nickname: "",
       walletBalance: "",
-      accessToken: "",
       isLogin: false,
     });
     clearUserIdStorage();

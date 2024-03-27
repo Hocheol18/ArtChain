@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-export const localAxios: AxiosInstance = axios.create({
+const localAxios: AxiosInstance = axios.create({
   baseURL: "/api",
   headers: {
     "Content-Type": "application/json;charset=utf-8",
@@ -11,7 +11,7 @@ export const localAxios: AxiosInstance = axios.create({
 localAxios.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem("accessToken");
-    console.log(token)
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -21,3 +21,5 @@ localAxios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+export { localAxios }
