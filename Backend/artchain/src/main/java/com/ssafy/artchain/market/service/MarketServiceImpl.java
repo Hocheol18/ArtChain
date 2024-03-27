@@ -71,10 +71,10 @@ public class MarketServiceImpl implements MarketService {
             marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCreatedAtDesc(fundingId, LISTED, pageable);
         }
         else if(sortFlag.equals("높은가격순")) {
-            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceDesc(fundingId, LISTED, pageable);
+            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceAsc(fundingId, LISTED, pageable);
         }
         else if(sortFlag.equals("낮은가격순")){
-            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceAsc(fundingId, LISTED, pageable);
+            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceDesc(fundingId, LISTED, pageable);
         }
         else {
             marketPage = marketRepository.findAllByFundingIdAndStatus(fundingId, LISTED, pageable);
