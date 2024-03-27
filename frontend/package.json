@@ -9,12 +9,12 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
-  
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
+    "@portone/browser-sdk": "^0.0.5",
     "@types/react-responsive": "^8.0.8",
     "axios": "^1.6.8",
     "chart.js": "^4.4.2",
