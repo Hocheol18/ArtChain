@@ -40,7 +40,10 @@ public enum StatusCode {
 
     // 404 NOT FOUND
     FAIL_FUNDING_VIEW(404, "펀딩 조회 실패"),
-    FAIL_FUNDING_NOTICE_VIEW(404, "펀딩 공지사항 조회 실패");
+    FAIL_FUNDING_NOTICE_VIEW(404, "펀딩 공지사항 조회 실패"),
+
+    // 500 INTERNAL SERVER ERROR
+    FAIL_SAVE_FILE_TO_S3(500, "S3 업로드 실패");
 
 
     private final int status;

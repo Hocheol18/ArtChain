@@ -18,6 +18,7 @@ public class MarketMainResponseDto {
     private String poster;
     private String category;
     private FundingProgressStatus status;
+    //        모집 완료 된 작품의 모집 완료까지 모인 코인 숫자
     private Long nowCoinCount;
     private LocalDate settlement;
 
@@ -27,6 +28,7 @@ public class MarketMainResponseDto {
         this.poster = funding.getPoster();
         this.category = funding.getCategory();
         this.status = funding.getProgressStatus();
+//        모집 완료 된 작품의 모집 완료까지 모인 코인 숫자
         this.nowCoinCount = funding.getNowCoinCount();
         this.settlement = funding.getSettlement();
     }

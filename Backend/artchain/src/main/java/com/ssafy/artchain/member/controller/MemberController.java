@@ -5,6 +5,7 @@ import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.response.MemberComMypageResponseDto;
+import com.ssafy.artchain.member.dto.response.MemberMainUserInfoResponseDto;
 import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
 import com.ssafy.artchain.member.defaultResponse.DefaultResponse;
 import com.ssafy.artchain.member.service.MemberServiceImpl;
@@ -30,11 +31,10 @@ public class MemberController {
     private final MemberServiceImpl memberService;
 
     @GetMapping("/getLoginUserInfo")
-    public String getUser(@AuthenticationPrincipal CustomUserDetails member) {
-        System.out.println(member.getUsername());
-        System.out.println(member.getNickname());
+    public ResponseEntity<DefaultResponse<MemberMainUserInfoResponseDto>> getMainLoginUserInfo(@AuthenticationPrincipal CustomUserDetails member) {
+        MemberMainUserInfoResponseDto dto = memberService.getMainLoginUserInfo(member);
 
-        return member.getNickname();
+        return DefaultResponse.toResponseEntity(HttpStatus.OK,SUCCESS_USER_MAIN_VIEW, dto);
     }
 
 //    @GetMapping("/individual")

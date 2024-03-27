@@ -163,6 +163,14 @@ public class MemberServiceImpl implements MemberService {
         return new MemberComMypageResponseDto(comDto, list);
     }
 
+    @Override
+    public MemberMainUserInfoResponseDto getMainLoginUserInfo(CustomUserDetails member) {
+        Member memberEntity = memberRepository.findById(member.getId())
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+
+        return new MemberMainUserInfoResponseDto(memberEntity);
+    }
+
     @Transactional
     protected void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
 
