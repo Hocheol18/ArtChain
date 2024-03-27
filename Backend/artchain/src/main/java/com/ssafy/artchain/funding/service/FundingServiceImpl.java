@@ -9,6 +9,7 @@ import com.ssafy.artchain.funding.repository.*;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
+import com.ssafy.artchain.s3.S3Service;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +39,7 @@ public class FundingServiceImpl implements FundingService {
     private final FundingCostRepository fundingCostRepository;
     private final InvestmentLogRepository investmentLogRepository;
     private final MemberRepository memberRepository;
+    private final S3Service s3Service;
     private final EntityManager em;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
     private final String ROLE_ADMIN = "ROLE_ADMIN";
@@ -43,10 +47,18 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional
-    public Long createFunding(FundingCreateRequestDto data, CustomUserDetails member) {
+    public Long createFunding(MultipartFile poster, MultipartFile descriptionImg, FundingCreateRequestDto data, CustomUserDetails member) {
         if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_COMPANY))) {
+            return -3L;
+        }
+
+        try {
+            data.setPoster(s3Service.upload(poster, data.getName()));
+            data.setDescriptionImg(s3Service.upload(descriptionImg, data.getName()));
+        } catch (IOException e) {
             return -2L;
         }
+
         Funding funding = fundingRepository.save(Funding.builder()
                 .entId(data.getEntId())
                 .name(data.getName())
