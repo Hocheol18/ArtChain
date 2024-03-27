@@ -47,7 +47,9 @@ export const ArtCharge = () => {
       async function (rsp) {
         // callback
         if (rsp.success) {
-          //결제 성공시
+          // 결제 성공시
+          // 1. 컨트랙트 실행해야함
+          // 2. axios 날려서 db에 저장해야함
           console.log(rsp);
 
           if (rsp.status == 200) {
