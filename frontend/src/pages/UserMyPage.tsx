@@ -20,6 +20,10 @@ export default function UserMyPage() {
     navigate("/charge");
   };
 
+  const handleExchange = () => {
+    navigate("/exchange");
+  };
+
   return (
     <>
       <Box
@@ -82,6 +86,7 @@ export default function UserMyPage() {
             fontSize={"sm"}
             bgColor={"white.100"}
             ml={"2rem"}
+            onClick={handleExchange}
           >
             <Center color={"blue.400"}>환전하기</Center>
           </Box>

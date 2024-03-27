@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArtCharge } from "../components/ChargeAndExchange/Charge/ArtCharge";
-import { ChargeHistory } from "../components/ChargeAndExchange/Charge/ChargeHistory";
+import { History } from "../components/ChargeAndExchange/History";
 
 import { CommonTopBox } from "../components/ChargeAndExchange/CommonTopBox";
 
@@ -24,7 +24,7 @@ export const Charge = () => {
         check={check}
       />
 
-      {check === "one" ? <ArtCharge /> : <ChargeHistory type="charge" />}
+      {check === "one" ? <ArtCharge /> : <History type="charge" />}
     </div>
   );
 };

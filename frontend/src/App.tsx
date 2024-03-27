@@ -6,7 +6,6 @@ import { InvestList } from "./pages/InvestList";
 import { ChakraProvider } from "@chakra-ui/react";
 import { LoginPage } from "./pages/LoginPage";
 
-import { CoinCharge } from "./pages/CoinCharge";
 import { CommonPage } from "./pages/CommonPage";
 import { Theme } from "./theme/theme";
 import Market from "./pages/Market";
@@ -29,6 +28,7 @@ import BusinessProjectEnroll from "./pages/BusinessProjectEnroll";
 import { MyPiece } from "./pages/MyPiece";
 import { Invest } from "./pages/Invest";
 import { Charge } from "./pages/Charge";
+import { Exchange } from "./pages/Exchange";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -272,6 +272,16 @@ function App() {
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <Charge />
+                    </CommonPage>
+                  }
+                ></Route>
+
+                {/* 환전하기 페이지 */}
+                <Route
+                  path="/exchange"
+                  element={
+                    <CommonPage topNavType="back" bottomNavType="">
+                      <Exchange />
                     </CommonPage>
                   }
                 ></Route>
