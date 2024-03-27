@@ -1,5 +1,117 @@
 # Wrap up
 
+## 20240327
+
+### 오늘 한 것
+
+- Nginx 업로드 용량 수정
+- PortOne 카카오페이 테스트 결제 성공
+
+### 어려웠던 점
+
+- 타입스크립트를 하나도 모르는 상태로 포트원을 하는 게 처음에 정말 막막했다.
+- 그리고 카카오페이 결제 페이지에서 `mInfo:1 Failed to launch 'intent://kakaopay/pg?url=' because the scheme does not have a registered handler.`에러가 떠서 너무 슬펐다. 이유가 개발자 모드 자체 지원이 안된다는 말을 보고는 가슴이 찢어질 것 같았다.
+
+### 새로 알게 된 점
+
+- 인증 결제 흐름 : [https://github.com/iamport/iamport-manual/blob/master/인증결제/background.md](https://github.com/iamport/iamport-manual/blob/master/%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/background.md)
+- 포트원 결제 연동
+
+1. 포트원 계정 생성
+2. 결제 연동
+   - 결제 연동 과정
+     1. `결제연동-채널추가`
+        ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/fdbd9918-5257-4331-b015-8f6b32e7c1a5/b486d462-7a06-475b-b44f-b5f9968aee35/Untitled.png)
+     1. 꼭 `테스트`선택
+        ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/fdbd9918-5257-4331-b015-8f6b32e7c1a5/1858f0d5-fc42-4af6-b5be-a9cef1c5b4a1/Untitled.png)
+        ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/fdbd9918-5257-4331-b015-8f6b32e7c1a5/49d81375-99cb-4504-9233-18e4c2589098/Untitled.png)
+3. 가맹점 식별코드 확인
+   - 확인 과정
+     1. 상점관리 클릭
+        ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/fdbd9918-5257-4331-b015-8f6b32e7c1a5/716cae5c-bbde-46e0-943f-9d1919bfbd4b/Untitled.png)
+     1. `내 식별코드 / API Keys` 누르기
+        ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/fdbd9918-5257-4331-b015-8f6b32e7c1a5/2e1f27b2-294b-4c84-a98c-d2fbf090bd5a/Untitled.png)
+4. 프론트 코드 작성(v2는 테스트가 안되는것 같아서 v1으로 진행)
+
+   - 코드
+
+     - 포트원 라이브러리 추가(나는 index.html에 추가함)
+
+     ```bash
+     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+     ```
+
+     - 결제 요청 코드 추가
+     - 은평쿤의 블로그 : [https://velog.io/@jep1995/포트원portone을-이용한-결제payment](https://velog.io/@jep1995/%ED%8F%AC%ED%8A%B8%EC%9B%90portone%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EA%B2%B0%EC%A0%9Cpayment)
+     - 공홈 : https://developers.portone.io/docs/ko/auth/guide/2?v=v1
+
+       ```bash
+       // 충전하기 버튼 클릭 핸들러
+         const handleCharge = async () => {
+           if (!window.IMP) return;
+           const { IMP } = window;
+           IMP.init("imp53764281");
+
+           // 선택된 아이템 찾기
+           const selectedItem = artCoinArr.find((item) => item.art === value);
+           // 선택된 아이템의 money 값을 숫자로 변환
+           const price = selectedItem
+             ? parseInt(selectedItem.money.replace(/,/g, ""), 10)
+             : 0;
+
+           IMP.request_pay(
+             {
+               pg: "kakaopay.TC0ONETIME",
+               pay_method: "card", // 생략가
+               merchant_uid: `ORD${new Date().getUTCMilliseconds()}`, // 상점에서 생성한 고유 주문번호
+               name: "Artchain 아트 구매",
+               amount: price,
+               buyer_email: "4pjttest@gmail.com",
+               buyer_name: "구매자이름",
+               m_redirect_url: "http://j10a708.p.ssafy.io:3000/charge",
+             },
+             async function (rsp) {
+               // callback
+               if (rsp.success) {
+                 // 결제 성공시
+                 // 1. 컨트랙트 실행해야함
+                 // 2. axios 날려서 db에 저장해야함
+                 alert("결제 완료!");
+                 window.location.reload();
+                 console.log(rsp);
+
+                 if (rsp.status == 200) {
+                   // DB저장 성공시
+                   alert("결제 완료!");
+                   window.location.reload();
+                 } else {
+                   // 결제완료 후 DB저장 실패시
+                   alert(
+                     `error:[${rsp.status}]\n결제요청이 승인된 경우 관리자에게 문의바랍니다.`
+                   );
+                   // DB저장 실패시 status에 따라 추가적인 작업 가능성
+                 }
+               } else if (rsp.success == false) {
+                 // 결제 실패시
+                 alert(rsp.error_msg);
+               }
+             }
+           );
+       ```
+
+- `mInfo:1 Failed to launch 'intent://kakaopay/pg?url=' because the scheme does not have a registered handler.` 에러 해결
+  - 에러 원인
+    - 개발자 모드에서 모바일 화면을 봤는데, 카카오페이는 그 화면이 지원이 안된다고 한다.
+    - https://devtalk.kakao.com/t/failed-to-launch-intent/112796
+  - 해결 방법
+    - 창 자체를 줄이거나, 폰으로 보면 됨
+
+### 내일 할 것
+
+- 컨트랙트로 요청 보내기
+- 백으로 axios 보내기
+- 관리자 페이지 생성
+
 ## 20240326
 
 ### 오늘 한 것
