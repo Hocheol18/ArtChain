@@ -4,7 +4,7 @@
 pragma solidity ^0.8.20;
 
 import "./ERC20MintBurnTransfer.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+// import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract FundRaisingContract is ERC20MintBurnTransferContract {
     event TokenReceived(
@@ -15,7 +15,8 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
 
     mapping(address => uint256) public refunds; // 환불 address 1:1로 맵핑
     mapping(address => uint256) public newCoins; // 새로운 소각 1:1로 맵핑
-    mapping(address => IERC20) public tokenContracts;
+    // mapping(address => IERC20) public tokenContracts;
+   
 
     address public owner; // 컨트랙트 호출자
     uint256 public raisedAmount; // 총 모금 발행량 갯수
@@ -38,6 +39,7 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
         uint256 _time
     ) ERC20MintBurnTransferContract(name, symbol, initialSupply) {
         owner = msg.sender;
+        
         raisedAmount = 0;
         finishTime = block.timestamp + (_time * 1 minutes);
     }
@@ -47,21 +49,29 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
 
     // 투자 함수, 사용자의 주소와 얼마나 투자했는지가 들어옴.
     function fund(uint256 _tokenAmount) external {
-        // 사용자가 토큰을 전송했음을 이벤트로 기록
-        emit TokenReceived(msg.sender, artCoinAddress, _tokenAmount);
-        require(
-            tokenContracts[artCoinAddress].approve(address(this), _tokenAmount),
-            "Failed to approve token transfer"
-        );
-        // 실제 토큰 전송
-        require(
-            IERC20(artCoinAddress).transferFrom(
-                msg.sender,
-                address(this),
-                _tokenAmount * (10 ** 18)
-            ),
-            "Token transfer failed"
-        );
+        // Frontend 단에서 이미 approve를 진행했기 때문에 allowance를 통해 할당이 되어 있는지 확인!
+        // require(
+        //     tokenContracts[artCoinAddress].allowance(
+        //         msg.sender,
+        //         address(this))
+        //      >= _tokenAmount*(10**18),
+        //     "Insufficient allowance"
+        // );
+        // require(
+        //     fundToken.approve(
+        //         address(this),
+        //         _tokenAmount*(10**18)
+        //     ),
+        //     "Insufficient approve for token"
+        // );
+        // // 실제 토큰 전송
+        // fundToken.transferFrom(   
+        //     msg.sender, // 호출한 사람 -> 기업으로 토큰 전송
+        //     owner,
+        //     _tokenAmount*(10**18) // 정수형으로 받도록 수정
+        // );
+        // // 사용자가 토큰을 전송했음을 이벤트로 기록
+        // emit TokenReceived(msg.sender, artCoinAddress, _tokenAmount);
 
         // 토큰 수집자 목록에 추가
         if (newCoins[msg.sender] == 0) {
@@ -69,8 +79,6 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
         }
         // 모금액 증가
         raisedAmount += _tokenAmount;
-
-        // 토큰 증가
         newCoins[msg.sender] += _tokenAmount;
     }
 

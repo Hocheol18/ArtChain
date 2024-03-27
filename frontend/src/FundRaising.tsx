@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
-import FundRaisingContractABI from "./Contract/FundRaisingContract.json"; // 스마트 계약 ABI 파일
+import FundRaisingContractABI from "./Contract/ReceiveArtCoinContract.json"; // 스마트 계약 ABI 파일
 import IERC20ABI from "./Contract/IERC20.json";
 
 const FundRaisingPage: React.FC = () => {
@@ -8,7 +8,7 @@ const FundRaisingPage: React.FC = () => {
   const [tokenAmount, setTokenAmount] = useState<string>("");
   const web3 = new Web3((window as any).ethereum);
   const FundRaisingContractAddress =
-    "0x315576edD3B74896B0e8F25835a38d76af1bc437";
+    "0xE70588f57d06c347206bf417cD15308b23b6b6b7";
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
   useEffect(() => {
@@ -42,27 +42,41 @@ const FundRaisingPage: React.FC = () => {
 
   const invest = async () => {
     try {
+      // 펀딩할 때 이용할 FundRaisingContract 연결!
+      // 그 속에 있는 메서드가 정의된 ABI를 이용하기 위함이다.
       const fundingContract = new web3.eth.Contract(
         FundRaisingContractABI.abi,
         FundRaisingContractAddress
       );
-      // 사용자가 스마트 계약에 대해 특정 양의 토큰을 승인하도록 요청
+      // 아트 토큰 컨트랙트에 있는 기능을 이용하기 위해 선언
+      // IERC의 ABI를 쓰는 이유는 ART 토큰이 IERC20을 상속해서 구현되었기 때문이다.
       const artTokenContract = new web3.eth.Contract(
         IERC20ABI.abi,
         artTokenContractAddress
       );
       // const tokenContract = new web3.eth.Contract(IERC20ABI.abi, tokenAddress);
+
+      // 투자할 때 지불할 ART 토큰에 대해 approve 과정을 거친다.
+      // 지불할 곳인 FundRaising 컨트랙트의 주소와
+      // 지불할 토큰의 양에 (10**18)을 하여 호출한다.
       const approveTx = await artTokenContract.methods
         .approve(FundRaisingContractAddress, convertToInteger(tokenAmount))
         .send({ from: account });
+
+      // approve 과정이 성공적으로 수행되면 그 결과를 받아온다.
       const approveTxReceipt = await web3.eth.getTransactionReceipt(
         approveTx.transactionHash
       );
+      // 만약 결과가 true이면 승인이 된 것이다.
       if (approveTxReceipt.status) {
         console.log("토큰 승인 완료");
-  
+        // 토큰이 승인되었다면 이제 fundRaising 컨트랙트의 메서드를 호출해서
+        // fund를 진행한다.
+        // 내가 지불할 양에 (10**18)을 곱해서 정수로 맞춰준 후 펀딩을 진행한다.
+        console.log(`tokenAmount type : ${typeof(tokenAmount)} val : ${tokenAmount}`);
+        console.log(`account type : ${typeof(account)} val : ${account}`);
         const investTx = await fundingContract.methods
-          .fund(convertToInteger(tokenAmount)) // 정수형으로 변환하여 전달
+          .fundToken(tokenAmount)
           .send({ from: account });
         console.log("토큰 투자 성공", investTx);
       } else {
