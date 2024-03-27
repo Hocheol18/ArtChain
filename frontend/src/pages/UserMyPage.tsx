@@ -33,6 +33,14 @@ export default function UserMyPage() {
     clearUserIdStorage();
   }
 
+  const handleCharge = () => {
+    navigate("/charge");
+  };
+
+  const handleExchange = () => {
+    navigate("/exchange");
+  };
+
   return (
     <>
       <Box
@@ -88,6 +96,7 @@ export default function UserMyPage() {
             mt={"0.5rem"}
             fontSize={"sm"}
             bgColor={"blue.300"}
+            onClick={handleCharge}
           >
             <Center color={"white.100"}>충전하기</Center>
           </Box>
@@ -99,6 +108,7 @@ export default function UserMyPage() {
             fontSize={"sm"}
             bgColor={"white.100"}
             ml={"2rem"}
+            onClick={handleExchange}
           >
             <Center color={"blue.400"}>환전하기</Center>
           </Box>
