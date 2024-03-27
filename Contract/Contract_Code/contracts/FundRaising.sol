@@ -55,14 +55,14 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
 
     // 환불 함수
     function refundDistribute() external {
+        require(msg.sender == owner, "Must be owner");
         require(raisedAmount < (initialSupply * 4) / 5, "80% is not over");
         require(block.timestamp > finishTime, "Not over");
         
         for (uint256 i = 0; i < listOfContributors.length; i++) {
             address contributor = listOfContributors[i];
             uint256 amount = refunds[contributor];
-        // Transfer 가능?
-        // transferFrom 해야하는 거 아님?
+
             if (amount > 0) {
                 refunds[contributor] = 0;
                 payable(contributor).transfer(amount);

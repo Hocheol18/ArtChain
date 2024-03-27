@@ -40,7 +40,7 @@ contract ReceiveArtCoinContract is FundRaisingContract {
         require(success, "Token transfer failed");
         raisedAmount += _amount*(10**18);
         newCoins[msg.sender] += _amount*(10**18);
-
+        refunds[msg.sender] += _amount*(10**18);
         if (!hasContributed[msg.sender]) {
             listOfContributors.push(msg.sender);
             hasContributed[msg.sender] = true;
