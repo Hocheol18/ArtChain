@@ -20,7 +20,6 @@ public class MarketSellResponseDto {
     private BigDecimal coinPerPiece;
     private Long sellerId;
     private String sellerAddress;
-
     private String status;
 
     public MarketSellResponseDto(Market market) {
