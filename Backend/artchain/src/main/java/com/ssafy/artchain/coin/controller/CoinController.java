@@ -41,7 +41,7 @@ public class CoinController {
     }
 
     @GetMapping("/history")
-    public ResponseEntity<DefaultResponse<List<CoinHistoryResponseDto>>> getCoinChargeList(@AuthenticationPrincipal CustomUserDetails member, @RequestParam String inoutFlag){
+    public ResponseEntity<DefaultResponse<List<CoinHistoryResponseDto>>> getCoinHistoryList(@AuthenticationPrincipal CustomUserDetails member, @RequestParam String inoutFlag){
         List<CoinHistoryResponseDto> list = coinService.getCoinChargeList(member, inoutFlag);
         return DefaultResponse.toResponseEntity(HttpStatus.OK,SUCCESS_COIN_MAIN_VIEW,list);
     }

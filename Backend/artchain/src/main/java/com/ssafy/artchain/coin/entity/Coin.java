@@ -34,7 +34,8 @@ public class Coin extends BaseTimeEntity {
     private String transactionHash;
 
 //    충전, 환전 구분
-    @Column(name = "inout_flag")
+    @Column(name = "inout_flag", columnDefinition = "varchar(255)")
+    @Enumerated(EnumType.STRING)
     private InoutFlag inoutFlag;
 
     @Column(name = "currency_flow")
