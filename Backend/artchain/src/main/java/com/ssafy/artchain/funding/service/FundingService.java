@@ -3,12 +3,13 @@ package com.ssafy.artchain.funding.service;
 import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface FundingService {
 
-    Long createFunding(FundingCreateRequestDto data, CustomUserDetails member);
+    Long createFunding(MultipartFile poster, MultipartFile descriptionImg, FundingCreateRequestDto data, CustomUserDetails member);
 
     FundingResponseDto getFunding(Long fundingId);
 

@@ -11,9 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,12 +33,14 @@ public class FundingController {
      * @param dto
      * @return
      */
-    @PostMapping
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<DefaultResponse<Void>> createFunding(
-            @RequestBody FundingCreateRequestDto dto, @AuthenticationPrincipal CustomUserDetails member) {
-        Long result = fundingService.createFunding(dto, member);
-        if (result.equals(-2L)) {
+            @RequestPart("poster") MultipartFile poster, @RequestPart("descriptionImg") MultipartFile descriptionImg, @RequestPart("dto") FundingCreateRequestDto dto, @AuthenticationPrincipal CustomUserDetails member) {
+        Long result = fundingService.createFunding(poster, descriptionImg, dto, member);
+        if (result.equals(-3L)) {
             return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.ALLOW_ONLY_COMPANY);
+        } else if (result.equals(-2L)) {
+            return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.FAIL_SAVE_FILE_TO_S3);
         } else if (result.equals(-1L)) {
             return DefaultResponse.emptyResponse(HttpStatus.OK, StatusCode.FAIL_CREATE_FUNDING);
         } else {
