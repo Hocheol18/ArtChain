@@ -26,4 +26,7 @@ public class PieceOwner {
     @Column(name = "piece_count", nullable = false)
     private Long pieceCount;
 
+    public void updatePieceCount(Long pieceCount) {
+        this.pieceCount = pieceCount;
+    }
 }

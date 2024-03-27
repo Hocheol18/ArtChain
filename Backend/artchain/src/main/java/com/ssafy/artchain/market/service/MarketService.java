@@ -8,11 +8,16 @@ import java.util.List;
 
 public interface MarketService {
     List<MarketMainResponseDto> getMarketMain(String status, String category, Pageable pageable);
+
     List<MarketSellResponseDto> getMarketSellList(Long fundingId, String sortFlag, Pageable pageable);
+
     List<MarketPieceTradeHistoryResponseDto> getMarketPieceTradeHistoryList(Long fundingId, Pageable pageable);
+
     MarketDetailResponseDto getMarketDetail(Long marketId);
 
     List<MarketRegistFundingNameResponseDto> getMarketRegistForm(Long memberId);
 
     void createMarketRegist(CustomUserDetails member, MarketRegistRequestDto dto);
+
+    int buyMarketItem(Long marketId, CustomUserDetails member);
 }
