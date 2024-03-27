@@ -11,28 +11,32 @@ interface UserAccessTokenActions {
 }
 
 interface UserAccessTOkenInfoState {
-    userAccessTokenInfo : userAccessTokenInfterface
+  userAccessTokenInfo: userAccessTokenInfterface;
 }
 
 const defaultState = {
-    userAccessToken: ""
-}
+  userAccessToken: "",
+};
 
 const useUserAccessToken = create<
-UserAccessTOkenInfoState & UserAccessTokenActions
+  UserAccessTOkenInfoState & UserAccessTokenActions
 >()(
   devtools(
-    persist((set) => ({
-      userAccessTokenInfo: defaultState,
-      setUserAccessToken: (userAccessTokenInfo: userAccessTokenInfterface) => {
-        set({ userAccessTokenInfo });
-      },
-    }),
-    {
-        name : "accessToken",
-        storage: createJSONStorage(() => sessionStorage)
-    })
+    persist(
+      (set) => ({
+        userAccessTokenInfo: defaultState,
+        setUserAccessToken: (
+          userAccessTokenInfo: userAccessTokenInfterface
+        ) => {
+          set({ userAccessTokenInfo });
+          sessionStorage.setItem("accessToken", userAccessTokenInfo);
+        },
+      }),
+      {
+        name: "accessToken",
+      }
+    )
   )
 );
 
-export default useUserAccessToken
+export default useUserAccessToken;

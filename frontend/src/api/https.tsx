@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-const localAxios: AxiosInstance = axios.create({
+export const localAxios: AxiosInstance = axios.create({
   baseURL: "/api",
   headers: {
     "Content-Type": "application/json;charset=utf-8",
@@ -10,10 +10,9 @@ const localAxios: AxiosInstance = axios.create({
 
 localAxios.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("accessToken");
-    
+    const token = sessionStorage.getItem("AccessToken");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `${token}`;
     }
     return config;
   },
@@ -22,4 +21,33 @@ localAxios.interceptors.request.use(
   }
 );
 
-export { localAxios }
+localAxios.interceptors.response.use(
+  async (response) => {
+    console.log(response)
+    if (response) {
+      sessionStorage.setItem("accessToken", response.data.jwtToken.accessToken);
+      sessionStorage.setItem(
+        "refreshToken",
+        response.data.jwtToken.refreshToken
+      );
+      return response;
+    } else if (response.data.code === "NOT_VALID_USER") {
+      sessionStorage.removeItem("accessToken");
+      
+      try {
+        const refreshedResponse = await refreshAccessToken();
+        return refreshedResponse;
+      } catch (error) {
+        store.dispatch(logout());
+        
+      }
+      
+    } else {
+      //console.log("response", response);
+      return response;
+    }
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);

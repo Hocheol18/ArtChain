@@ -8,6 +8,7 @@ import {
   RefreshTokenAxios,
 } from "../api/login";
 import useUserInfo from "../store/useUserInfo";
+import useUserAccessToken from "../store/accessToken";
 
 export const AxiosFunction = () => {
   const data = { username: "didifia", password: "1234" };
@@ -20,28 +21,25 @@ export const AxiosFunction = () => {
     bankAccount: "2441230099231",
   };
   const { userInfo, setUserInfo } = useUserInfo();
+  const { setUserAccessToken } = useUserAccessToken();
 
   return (
     <>
-      
       <Button
         bgColor={"blue.200"}
         onClick={() =>
-          LoginAccessTokenAxios(data).then((firstres: any) =>
-            ProfileAxios(firstres.headers.authorization)
-              .then(async (res) =>
-                setUserInfo({
-                  profileUrl: "",
-                  nickname: "",
-                  walletBalance:
-                    res.data.data.memberUserMypageResponseDtoList[0]
-                      .walletBalance,
-                  
-                  isLogin: true,
-                })
-              )
-              .catch((err) => console.log(err))
-          )
+          ProfileAxios()
+            .then((res) =>
+              setUserInfo({
+                profileUrl: "",
+                nickname: "",
+                walletBalance:
+                  res.data.data.memberUserMypageResponseDtoList[0]
+                    .walletBalance,
+                isLogin: true,
+              })
+            )
+            .catch((err) => console.log(err))
         }
       >
         user{" "}
@@ -64,7 +62,7 @@ export const AxiosFunction = () => {
       >
         refresh
       </Button>
-      <Button
+      {/* <Button
         onClick={() =>
           ProfileAxios()
             .then((res) => console.log(res))
@@ -72,6 +70,15 @@ export const AxiosFunction = () => {
         }
       >
         Profile
+      </Button> */}
+      <Button
+        onClick={() =>
+          LoginAccessTokenAxios(data)
+            .then((res) => setUserAccessToken(res.headers.authorization))
+            .catch((err) => console.log(err))
+        }
+      >
+        flr
       </Button>
     </>
   );

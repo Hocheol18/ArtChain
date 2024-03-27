@@ -23,7 +23,7 @@ export default function UserMyPage() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
 
     const clearUserIdStorage = useUserInfo.persist.clearStorage;
-
+    sessionStorage.removeItem("accessToken")
     setUserInfo({
       profileUrl: "",
       nickname: "",
@@ -58,7 +58,7 @@ export default function UserMyPage() {
               ml={"0.5rem"}
               mt={"0.8rem"}
               onClick={() =>
-                LogoutAxios(userInfo.accessToken)
+                LogoutAxios()
                   .then(clearFunction())
                   .catch((err) => console.log(err))
               }
