@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PieceOwnerRepository extends JpaRepository<PieceOwner, Long> {
 
+    PieceOwner findPieceOwnerByMemberIdAndFundingId(Long memberId, Long fundingId);
+
 }
