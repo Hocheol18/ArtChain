@@ -15,7 +15,8 @@ public enum StatusCode {
 	SUCCESS_COMPANY_VIEW(200, "회사 유저 조회 성공"),
 	SUCCESS_USER_MAIN_VIEW(200, "메인 화면 유저 정보 조회 성공"),
 	// 201 CREATED : 새로운 리소스 생성
-//	SUCCESS_CREATE_USER_BOOK(201, "사용자 도서 생성 성공"),
+	SUCCESS_CREATE_COIN_CHARGE(201, "코인 충전 내역 저장 성공"),
+	SUCCESS_CREATE_COIN_EXCHANGE(201, "코인 환전 내역 저장 성공"),
 
 	// 204 NO CONTENT : 성공하였으나, 반환할 값이 없음
 //	NO_CONTENT_IN_LIBRARY_VIEW(204, "서재에 도서가 없음"),

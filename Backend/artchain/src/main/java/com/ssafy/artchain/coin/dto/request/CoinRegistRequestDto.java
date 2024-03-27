@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @ToString
 public class CoinRegistRequestDto {
 
-    private boolean inProgress;
     private BigDecimal coinAmount;
     private LocalDateTime processAt;
     private String transactionHash;

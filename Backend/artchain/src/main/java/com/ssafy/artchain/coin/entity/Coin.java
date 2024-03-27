@@ -24,9 +24,6 @@ public class Coin extends BaseTimeEntity {
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(name = "in_progress")
-    private boolean inProgress;
-
     @Column(name = "coin_amount", precision = 19, scale = 2)
     private BigDecimal coinAmount;
 
