@@ -13,7 +13,7 @@ export const AxiosFunction = () => {
     bankName: "국민은행",
     bankAccount: "2441230099231",
   };
-  const { userInfo, setUserInfo } = useUserInfo();
+  const { setUserInfo } = useUserInfo();
 
   return (
     <>
