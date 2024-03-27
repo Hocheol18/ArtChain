@@ -12,7 +12,7 @@ contract Marketplace {
         uint256 amountSell;
         address tokenBuy;
         uint256 amountBuy;
-        address seller;
+        address seller; 
         bool executed;
     }
 
@@ -36,19 +36,31 @@ contract Marketplace {
             })
         );
 
-
         emit TradeCreated(trades.length - 1, msg.sender);
     }
 
     function executeTrade(uint256 tradeIndex) public {
-        Trade storage trade = trades[tradeIndex]; // 저장소에 저장된 거래의 정보를 인덱스를 통해 가져옴
-        require(!trade.executed, "Trade already executed"); // 만약 거래가 존재한다면 통과 x
+        Trade storage trade = trades[tradeIndex];
+        require(!trade.executed, "Trade already executed");
 
-        IERC20 tokenSell = IERC20(trade.tokenSell); // 조각 코인을 컨트랙트로 캐스팅
-        IERC20 tokenBuy = IERC20(trade.tokenBuy); // 아트 코인을 컨트랙트로 캐스팅
+        IERC20 tokenSell = IERC20(trade.tokenSell);
+        IERC20 tokenBuy = IERC20(trade.tokenBuy);
 
-        // 토큰 판매자로부터 토큰을 받아오고, 교환 대상자에게 토큰을 전송합니다.
-        // 즉, 조각 코인과 아트 코인의 교환 과정이 해당 코드로써 실행됨
+        // 마켓플레이스 컨트랙트가 충분한 양의 토큰을 사용자의 계정에서 전송할 권한을 부여합니다.
+        require(
+            tokenSell.approve(address(this), trade.amountSell),
+            "Failed to approve sell token"
+        );
+
+        // 아래 코드는 필요에 따라 주석 처리된 부분입니다.
+        // require(tokenBuy.approve(address(this), trade.amountBuy), "Failed to approve buy token");
+
+        // 아래 코드는 주석 처리된 부분을 추가하여 수정된 부분입니다.
+        require(
+            tokenBuy.approve(address(this), trade.amountBuy),
+            "Failed to approve buy token"
+        );
+
         require(
             tokenSell.transferFrom(trade.seller, msg.sender, trade.amountSell),
             "Failed to transfer sell token"

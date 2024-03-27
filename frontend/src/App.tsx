@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import TokenMarketplaceABI from "./Contract/TokenMarketplace.json";
 import IERC20ABI from "./Contract/IERC20.json";
+import FundRaisingPage from "./FundRaising";
 
 const web3 = new Web3((window as any).ethereum);
 
@@ -190,7 +191,8 @@ const fetchTokenList = async () => {
 };
 
 
-  return (
+return (
+  <div className="App">
     <header className="App-header">
       {account ? (
         <p>계정: {account}</p>
@@ -266,8 +268,12 @@ const fetchTokenList = async () => {
           <button onClick={buyToken}>거래하기</button>
         </div>
       )}
+
+      {/* FundRaisingPage 컴포넌트 */}
+      <FundRaisingPage />
     </header>
-  );
-};
+  </div>
+);
+      }
 
 export default App;
