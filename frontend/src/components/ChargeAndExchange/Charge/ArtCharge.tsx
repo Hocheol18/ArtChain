@@ -50,6 +50,8 @@ export const ArtCharge = () => {
           // 결제 성공시
           // 1. 컨트랙트 실행해야함
           // 2. axios 날려서 db에 저장해야함
+          alert("결제 완료!");
+          window.location.reload();
           console.log(rsp);
 
           if (rsp.status == 200) {
