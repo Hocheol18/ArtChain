@@ -8,7 +8,7 @@ import rightarrow from "../assets/rightarrow.svg";
 import BackIcon from "../assets/back-icon.svg";
 import { useNavigate, Link } from "react-router-dom";
 import DoughnutChart from "../components/Mypage/DoughnutChart";
-import { LogoutAxios } from "../api/login";
+import { LogoutAxios } from "../api/user";
 import useUserInfo from "../store/useUserInfo";
 
 export default function UserMyPage() {

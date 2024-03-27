@@ -1,14 +1,7 @@
 import { Button } from "@chakra-ui/react";
-import React from "react";
 
-import {
-  ProfileAxios,
-  LoginAccessTokenAxios,
-  UserEnrollAxios,
-  RefreshTokenAxios,
-} from "../api/login";
+import { ProfileAxios, LoginAxios, UserEnrollAxios } from "../api/user";
 import useUserInfo from "../store/useUserInfo";
-import useUserAccessToken from "../store/accessToken";
 
 export const AxiosFunction = () => {
   const data = { username: "didifia", password: "1234" };
@@ -21,7 +14,6 @@ export const AxiosFunction = () => {
     bankAccount: "2441230099231",
   };
   const { userInfo, setUserInfo } = useUserInfo();
-  const { setUserAccessToken } = useUserAccessToken();
 
   return (
     <>
@@ -32,7 +24,7 @@ export const AxiosFunction = () => {
             .then((res) =>
               setUserInfo({
                 profileUrl: "",
-                nickname: "",
+                nickname: "김지은",
                 walletBalance:
                   res.data.data.memberUserMypageResponseDtoList[0]
                     .walletBalance,
@@ -53,15 +45,7 @@ export const AxiosFunction = () => {
       >
         signup
       </Button>
-      <Button
-        onClick={() =>
-          RefreshTokenAxios()
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err))
-        }
-      >
-        refresh
-      </Button>
+
       {/* <Button
         onClick={() =>
           ProfileAxios()
@@ -73,8 +57,10 @@ export const AxiosFunction = () => {
       </Button> */}
       <Button
         onClick={() =>
-          LoginAccessTokenAxios(data)
-            .then((res) => setUserAccessToken(res.headers.authorization))
+          LoginAxios(data)
+            .then((res) =>
+              sessionStorage.setItem("accessToken", res.headers.authorization)
+            )
             .catch((err) => console.log(err))
         }
       >

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Image } from "@chakra-ui/react";
 import Logo from "../../../assets/logo.svg";
 import BackIcon from "../../../assets/back-icon.svg";
@@ -14,13 +14,13 @@ export const TopNavBar = ({ navType }: NavProp) => {
   const rightPadding = 15;
   const [leftPadding, setLeftPadding] = useState<number>(15);
   const [justifyCon, setJustifyCon] = useState<string>("space-between");
-  const { userInfo, deleteUserInfo } = useUserInfo();
+  const { userInfo } = useUserInfo();
 
   //   로그인 유무
   const [isLogin, setIsLogin] = useState<boolean>(userInfo.isLogin);
 
   //유저의 코인 보유 수량
-  const userCoin = 9999999;
+  const userCoin = Number(userInfo.walletBalance)
 
   const navigate = useNavigate();
   const handleBack = () => {
