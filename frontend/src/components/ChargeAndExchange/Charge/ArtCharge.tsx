@@ -37,12 +37,12 @@ export const ArtCharge = () => {
       {
         pg: "kakaopay.TC0ONETIME",
         pay_method: "card", // 생략가
-        merchant_uid: `order_${new Date().getDate()}`, // 상점에서 생성한 고유 주문번호
-        name: "아트체인 ",
+        merchant_uid: `ORD${new Date().getUTCMilliseconds()}`, // 상점에서 생성한 고유 주문번호
+        name: "Artchain 아트 구매",
         amount: price,
         buyer_email: "4pjttest@gmail.com",
         buyer_name: "구매자이름",
-        m_redirect_url: "http://localhost:3000",
+        m_redirect_url: "http://localhost:3000/charge",
       },
       async function (rsp) {
         // callback
