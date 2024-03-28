@@ -11,12 +11,14 @@ import lombok.NoArgsConstructor;
 public class FundingPermissionResponseDto {
     private Long id;
     private Long entId;
-    private String name;
+    private String fundingName;
+    private String comName;
 
     public FundingPermissionResponseDto(Funding funding){
         this.id = funding.getId();
         this.entId = funding.getEntId();
-        this.name = funding.getName();
+        this.fundingName = funding.getName();
+        this.comName = null;
     }
 
 }

@@ -222,12 +222,8 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     public List<FundingPermissionResponseDto> getFundingPermissionList() {
-        List<Funding> list = fundingRepository.findAllByIsAllowIsNull();
-
-
-        return list.stream()
-                .map(FundingPermissionResponseDto::new)
-                .toList();
+        List<FundingPermissionResponseDto> list = fundingRepository.findAllByIsAllowIsNullAndComName();
+        return list;
     }
 
     @Override
