@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 public class CoinRegistRequestDto {
 
     private BigDecimal coinAmount;
-    private LocalDateTime processAt;
     private String transactionHash;
     private InoutFlag inoutFlag;
     private Long currencyFlow;

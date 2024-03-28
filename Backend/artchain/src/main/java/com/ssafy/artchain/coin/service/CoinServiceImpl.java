@@ -68,7 +68,6 @@ public class CoinServiceImpl implements CoinService{
             Coin coin = Coin.builder()
                     .memberId(member.getId())
                     .coinAmount(coinRegistRequestDto.getCoinAmount())
-                    .processAt(coinRegistRequestDto.getProcessAt())
                     .transactionHash(coinRegistRequestDto.getTransactionHash())
                     .inoutFlag(coinRegistRequestDto.getInoutFlag())
                     .currencyFlow(coinRegistRequestDto.getCurrencyFlow())

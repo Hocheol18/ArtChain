@@ -27,9 +27,6 @@ public class Coin extends BaseTimeEntity {
     @Column(name = "coin_amount", precision = 19, scale = 2)
     private BigDecimal coinAmount;
 
-    @Column(name = "process_at")
-    private LocalDateTime processAt;
-
     @Column(name = "transaction_hash")
     private String transactionHash;
 

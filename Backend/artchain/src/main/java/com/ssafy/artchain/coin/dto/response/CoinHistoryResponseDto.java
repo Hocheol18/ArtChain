@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 public class CoinHistoryResponseDto {
 
     private BigDecimal coinAmount;
-    private LocalDateTime processAt;
+    private LocalDateTime createAt;
     private Long currencyFlow;
 
     public CoinHistoryResponseDto(Coin coin) {
         this.coinAmount = coin.getCoinAmount();
-        this.processAt = coin.getProcessAt();
+        this.createAt = coin.getCreatedAt();
         this.currencyFlow = coin.getCurrencyFlow();
     }
 
