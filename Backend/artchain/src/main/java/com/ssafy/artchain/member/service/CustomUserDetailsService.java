@@ -2,6 +2,7 @@ package com.ssafy.artchain.member.service;
 
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
+import com.ssafy.artchain.member.entity.Permission;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Member loginMember = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new RuntimeException("NOT FOUND MEMBER"));
 
-        if(loginMember.getPermission().equals("Y")){
+        if(loginMember.getPermission().equals(Permission.Y)){
             return new CustomUserDetails(loginMember);
         } else {
             throw new UsernameNotFoundException("아직 허가되지 않은 유저");
