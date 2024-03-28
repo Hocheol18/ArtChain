@@ -5,12 +5,10 @@ import Poster from "../components/Main/Poster";
 import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
-import { AxiosFunction } from "../components/Axios";
 
 export default function MainPage() {
   return (
     <>
-      <AxiosFunction />
       <MainCarousel />
       <Box mt={"1rem"}>
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>

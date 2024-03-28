@@ -7,14 +7,75 @@ import {
   AbsoluteCenter,
   Center,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import LoginUser from "../assets/loginuser.png";
 import kakao from "../assets/kakaologin.png";
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { LoginInterface } from "../type/login";
+import { LoginAxios, ProfileAxios } from "../api/user";
+import useUserInfo from "../store/useUserInfo";
+import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const { setUserInfo } = useUserInfo();
+  const toast = useToast();
+
+  const [values, setValues] = useState<LoginInterface>({
+    username: "",
+    password: "",
+  });
+  const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const loginDone = async (res: any) => {
+    sessionStorage.setItem("accessToken", res.headers.authorization);
+    try {
+      const res = await ProfileAxios();
+      toast({
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        render: () => (
+          <Flex
+            color="white"
+            mt={"50px"}
+            bg="blue.300"
+            p={"1rem"}
+            borderRadius={"0.7rem"}
+            alignItems={"center"}
+          >
+            <CheckCircleIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+            <Center ml={"1rem"}>
+              <Text as={"b"}>로그인 성공</Text>
+            </Center>
+          </Flex>
+        ),
+      })
+      setUserInfo({
+        profileUrl: "",
+        nickname: res.data.data.memberUserMypageResponseDtoList[0].nickname,
+        walletBalance:
+          res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
+        isLogin: true,
+      });
+      navigate("../");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
+
   return (
     <Box p={"1rem"}>
       <Flex direction={"column"}>
@@ -36,6 +97,7 @@ export const LoginPage = () => {
           </AbsoluteCenter>
         </Box>
         <Input
+          w={"340px"}
           px={"1rem"}
           py={"0.7rem"}
           rounded={"0.7rem"}
@@ -45,9 +107,13 @@ export const LoginPage = () => {
           borderColor={"gray.300"}
           ml={"0.5rem"}
           placeholder="아이디를 입력하세요"
+          name="username"
+          onChange={handleSetValue}
         />
 
         <Input
+        type="password"
+          w={"340px"}
           px={"1rem"}
           py={"0.7rem"}
           rounded={"0.7rem"}
@@ -56,10 +122,13 @@ export const LoginPage = () => {
           border={"1px"}
           borderColor={"gray.300"}
           ml={"0.5rem"}
+          name="password"
           placeholder="비밀번호를 입력하세요"
+          onChange={handleSetValue}
         />
 
         <Box
+          w={"340px"}
           px={"1rem"}
           py={"0.7rem"}
           rounded={"0.7rem"}
@@ -69,6 +138,36 @@ export const LoginPage = () => {
           border={"1px"}
           bgColor={"blue.300"}
           ml={"0.5rem"}
+          onClick={() =>
+            LoginAxios(values)
+              .then((res) => loginDone(res))
+              .catch(() =>
+                toast({
+                  duration: 2000,
+                  isClosable: true,
+                  position: "top",
+                  render: () => (
+                    <Flex
+                      color="white"
+                      mt={"50px"}
+                      bg="#C70000"
+                      p={"1rem"}
+                      borderRadius={"0.7rem"}
+                      alignItems={"center"}
+                    >
+                      <WarningTwoIcon
+                        boxSize={5}
+                        color={"white"}
+                        ml={"0.5rem"}
+                      />
+                      <Center ml={"1rem"}>
+                        <Text as={"b"}>로그인 실패</Text>
+                      </Center>
+                    </Flex>
+                  ),
+                })
+              )
+          }
         >
           <Center as={"b"} color={"white"}>
             로그인

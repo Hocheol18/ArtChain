@@ -1,5 +1,5 @@
 import { localAxios } from "./https";
-import { LoginInterface, UserErnollInterface } from "../type/login";
+import { BusinessEnrollInterface, LoginInterface, UserErnollInterface } from "../type/login";
 
 // urls
 const loginurl = "/member/login";
@@ -7,6 +7,8 @@ const userProfileurl = "/member/individual";
 const userEnrollurl = "/member/individual/join";
 const refreshurl = "/member/refresh";
 const logouturl = "/member/logout";
+const IsEnrollurl = "/member/check-id/"
+const businessEnrollurl = "/member/enterprise/join"
 
 // 프로필 함수
 async function ProfileAxios() {
@@ -27,14 +29,25 @@ async function RefreshTokenAxios(accessToken: string) {
   });
 }
 
-// 회원가입 함수
+// 일반 유저 회원가입 함수
 async function UserEnrollAxios(data: UserErnollInterface) {
   return await localAxios.post(userEnrollurl, data);
 }
 
 // 로그인 함수
 async function LoginAxios(data: LoginInterface) {
-  return await localAxios.post(loginurl, data);
+  const res = await localAxios.post(loginurl, data);
+  return res
+}
+
+// 유저 중복 확인 함수
+async function IsEnrollAxios(data : string) {
+  return await localAxios.post(IsEnrollurl + `${data}`);
+}
+
+// 기업 회원가입 함수
+async function BusinessEnrollAxios(data : BusinessEnrollInterface) {
+  return await localAxios.post(businessEnrollurl, data)
 }
 
 export {
@@ -43,4 +56,6 @@ export {
   UserEnrollAxios,
   RefreshTokenAxios,
   LogoutAxios,
+  IsEnrollAxios,
+  BusinessEnrollAxios,
 };
