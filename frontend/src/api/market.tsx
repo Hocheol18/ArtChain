@@ -1,8 +1,9 @@
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios } from "./https";
 import {
+  getMarketHistoryDisplayListAxiosInterface,
   getMarketMainDisplayListParams,
-  getMarketSellingDisplayListInterface,
+  getMarketSellingDisplayListAxiosInterface,
 } from "../type/market.interface";
 
 async function getMarketMainDisplayList(
@@ -19,7 +20,7 @@ async function getMarketMainDisplayList(
 }
 
 async function getMarketSellingDisplayList(
-  params: getMarketSellingDisplayListInterface
+  params: getMarketSellingDisplayListAxiosInterface
 ) {
   const { fundingId, sortFlag, page, size } = params;
   const url = `/market/sellList${makeQuerystring({
@@ -31,4 +32,20 @@ async function getMarketSellingDisplayList(
   return await localAxios.get(url);
 }
 
-export { getMarketMainDisplayList, getMarketSellingDisplayList };
+async function getMarketHistoryDisplayList(
+  params: getMarketHistoryDisplayListAxiosInterface
+) {
+  const { fundingId, page, size } = params;
+  const url = `/market/pieceHistory${makeQuerystring({
+    fundingId,
+    page,
+    size,
+  })}`;
+  return await localAxios.get(url);
+}
+
+export {
+  getMarketMainDisplayList,
+  getMarketSellingDisplayList,
+  getMarketHistoryDisplayList,
+};

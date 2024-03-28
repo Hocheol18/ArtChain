@@ -1,9 +1,8 @@
 import { Box, Center, Flex, Image, Text } from "@chakra-ui/react";
 import puzzle from "../../../assets/puzzle.svg";
+import { getMarketSellingDisplayListInterface } from "../../../type/market.interface";
 
-interface Props {}
-
-export default function SellList() {
+export default function SellList(params: getMarketSellingDisplayListInterface) {
   return (
     <>
       <Center>
@@ -29,7 +28,7 @@ export default function SellList() {
                   fontSize={"0.9rem"}
                   ml={"0.2rem"}
                 >
-                  26 조각
+                  {params.pieceCount} 조각
                 </Text>
               </Flex>
             </Center>
@@ -55,13 +54,13 @@ export default function SellList() {
                 p={"0.5rem"}
               >
                 <Text as={"b"} fontSize={"0.7rem"}>
-                  30 아트
+                  {params.totalCoin} 아트
                 </Text>
                 <Text as={"b"} fontSize={"0.7rem"} mt={"0.1rem"}>
-                  1.15 아트
+                  {params.coinPerPiece} 아트
                 </Text>
                 <Text as={"b"} fontSize={"0.7rem"} mt={"0.1rem"}>
-                  bw12wdf...
+                  {params.sellerAddress.substring(0, 6)}...
                 </Text>
               </Flex>
             </Flex>
