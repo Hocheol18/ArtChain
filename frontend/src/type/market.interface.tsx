@@ -14,3 +14,10 @@ export interface getMarketMainDisplayListInterface {
     nowCoinCount : number;
     settlement : string;
 }
+
+export interface getMarketSellingDisplayListInterface {
+    fundingId : number;
+    sortFlag : string;
+    page : number;
+    size : number;
+}

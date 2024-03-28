@@ -12,7 +12,7 @@ import {
 import LoginUser from "../assets/loginuser.png";
 import kakao from "../assets/kakaologin.png";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LoginInterface } from "../type/login.interface";
 import { LoginAxios, ProfileAxios } from "../api/user";
 import useUserInfo from "../store/useUserInfo";
@@ -58,7 +58,7 @@ export const LoginPage = () => {
             </Center>
           </Flex>
         ),
-      })
+      });
       setUserInfo({
         profileUrl: "",
         nickname: res.data.data.memberUserMypageResponseDtoList[0].nickname,
@@ -71,10 +71,6 @@ export const LoginPage = () => {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
 
   return (
     <Box p={"1rem"}>
@@ -112,7 +108,7 @@ export const LoginPage = () => {
         />
 
         <Input
-        type="password"
+          type="password"
           w={"340px"}
           px={"1rem"}
           py={"0.7rem"}

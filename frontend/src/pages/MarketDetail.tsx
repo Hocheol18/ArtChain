@@ -1,13 +1,23 @@
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Grid, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import SellList from "../components/Market/Detail/SellList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SellHistory from "../components/Market/Detail/SellHistory";
 import TopSecondNav from "../components/Market/Main/TopSecondNav";
+import { getMarketSellingDisplayList } from "../api/market";
 
 export default function MarketDeatil() {
   const id = useParams() as { id: string };
-
+  useEffect(() => {
+    getMarketSellingDisplayList({
+      fundingId: Number(id.id),
+      sortFlag: "높은가격순",
+      page: 0,
+      size: 6,
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }, []);
   const [check, setCheck] = useState("SellList");
 
   return (
@@ -35,6 +45,8 @@ export default function MarketDeatil() {
               third="낮은 가격 순"
               forth=""
               isCheck={true}
+              statusTopSecondNav=""
+              setSecondTopNav={() => {}}
             />
           </Flex>
         </>
@@ -60,17 +72,13 @@ export default function MarketDeatil() {
       )}
 
       {check === "SellList" ? (
-        <Center>
-          <Flex
-            wrap={"wrap"}
-            justifyContent={"flex-start"}
-            ml={"0.5rem"}
-            mt={"1rem"}
-            w={"390px"}
-          >
-            <SellList />
-          </Flex>
-        </Center>
+        <Grid
+          templateColumns="repeat(auto-fill, minmax(160px, 1fr))"
+          mt={"0.5rem"}
+          p={"1rem"}
+        >
+          <SellList />
+        </Grid>
       ) : (
         <SellHistory />
       )}
