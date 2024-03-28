@@ -8,7 +8,7 @@ const FundRaisingPage: React.FC = () => {
   const [tokenAmount, setTokenAmount] = useState<string>("");
   const web3 = new Web3((window as any).ethereum);
   const ReceviceArtCoinContractAddress =
-    "0x20C9eA22E9F5D6F2fC1c976f6dBdc605b48a5e9D";
+    "0x304a24F09d13dFe34aDFF767Fa9807111805623b";
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
   
