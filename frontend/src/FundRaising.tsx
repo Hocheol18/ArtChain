@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
-import FundRaisingContractABI from "./Contract/ReceiveArtCoinContract.json"; // 스마트 계약 ABI 파일
+import ReceiveArtCoinContractABI from "./Contract/ReceiveArtCoinContract.json"; // 스마트 계약 ABI 파일
 import IERC20ABI from "./Contract/IERC20.json";
 
 const FundRaisingPage: React.FC = () => {
   const [account, setAccount] = useState<string>("");
   const [tokenAmount, setTokenAmount] = useState<string>("");
   const web3 = new Web3((window as any).ethereum);
-  const FundRaisingContractAddress =
-    "0xE70588f57d06c347206bf417cD15308b23b6b6b7";
+  const ReceviceArtCoinContractAddress =
+    "0x304a24F09d13dFe34aDFF767Fa9807111805623b";
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
-  useEffect(() => {
-    // MetaMask 계정 연결 확인
-    if ((window as any).ethereum) {
+  
+useEffect(() => {
+  // MetaMask 계정 연결 확인
+  if ((window as any).ethereum) {
       (window as any).ethereum
-        .request({ method: "eth_accounts" })
-        .then((accounts: string[]) => {
-          if (accounts.length > 0) {
-            setAccount(accounts[0]);
-          }
-        });
-    }   
-  }, []);
+          .request({ method: "eth_requestAccounts" })
+          .then((accounts: string[]) => {
+              if (accounts.length > 0) {
+                  setAccount(accounts[0]);
+              }
+          })
+          .catch((error: any) => {
+              // 사용자가 거절할 경우 또는 오류가 발생한 경우 처리
+              console.error("MetaMask 계정 연결 요청에 실패했습니다.", error);
+          });
+  }
+}, []);
 
   // MetaMask와 연결
   const connectWallet = async () => {
@@ -45,8 +50,8 @@ const FundRaisingPage: React.FC = () => {
       // 펀딩할 때 이용할 FundRaisingContract 연결!
       // 그 속에 있는 메서드가 정의된 ABI를 이용하기 위함이다.
       const fundingContract = new web3.eth.Contract(
-        FundRaisingContractABI.abi,
-        FundRaisingContractAddress
+        ReceiveArtCoinContractABI.abi,
+        ReceviceArtCoinContractAddress
       );
       // 아트 토큰 컨트랙트에 있는 기능을 이용하기 위해 선언
       // IERC의 ABI를 쓰는 이유는 ART 토큰이 IERC20을 상속해서 구현되었기 때문이다.
@@ -60,7 +65,7 @@ const FundRaisingPage: React.FC = () => {
       // 지불할 곳인 FundRaising 컨트랙트의 주소와
       // 지불할 토큰의 양에 (10**18)을 하여 호출한다.
       const approveTx = await artTokenContract.methods
-        .approve(FundRaisingContractAddress, convertToInteger(tokenAmount))
+        .approve(ReceviceArtCoinContractAddress, convertToInteger(tokenAmount))
         .send({ from: account });
 
       // approve 과정이 성공적으로 수행되면 그 결과를 받아온다.
