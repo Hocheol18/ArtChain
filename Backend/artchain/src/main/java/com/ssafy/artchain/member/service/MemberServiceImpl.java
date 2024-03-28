@@ -8,6 +8,7 @@ import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.response.*;
 import com.ssafy.artchain.member.entity.Member;
+import com.ssafy.artchain.member.entity.Permission;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -96,6 +97,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .memberId(companyDto.getMemberId())
                 .password(bCryptPasswordEncoder.encode(companyDto.getPassword()))
+                .permission(Permission.HOLD)
                 .name(companyDto.getName())
                 .bankAccount(companyDto.getBankAccount())
                 .bankName(companyDto.getBankName())
@@ -115,6 +117,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .memberId(memberDto.getMemberId())
                 .password(bCryptPasswordEncoder.encode(memberDto.getPassword()))
+                .permission(Permission.Y)
                 .name(memberDto.getName())
                 .bankAccount(memberDto.getBankAccount())
                 .bankName(memberDto.getBankName())
