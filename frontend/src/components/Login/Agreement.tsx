@@ -63,7 +63,7 @@ export default function Agreement({ setisAgree } : Props) {
             px={"1rem"}
             py={"0.7rem"}
             rounded={"0.7rem"}
-            mt={"0.8rem"}
+            mt={"1.2rem"}
             fontSize={"sm"}
             bgColor={"blue.300"}
             ml={"0.5rem"}
@@ -77,7 +77,7 @@ export default function Agreement({ setisAgree } : Props) {
             px={"1rem"}
             py={"0.7rem"}
             rounded={"0.7rem"}
-            mt={"0.5rem"}
+            mt={"1.2rem"}
             fontSize={"sm"}
             bgColor={"gray.300"}
             ml={"0.5rem"}

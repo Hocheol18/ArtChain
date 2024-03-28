@@ -1,13 +1,20 @@
 import { Box, Flex } from "@chakra-ui/layout";
 import { useState } from "react";
 
-export default function TopNav() {
-  const [check, isCheck] = useState("Total");
+interface Props {
+  check: string;
+  handleCheck: (whatCheck: string) => void;
+}
+
+export default function TopNav({ check, handleCheck }: Props) {
+  const handleClick = (whatCheck: string) => {
+    handleCheck(whatCheck);
+  };
 
   return (
     <>
       <Flex justifyContent={"center"} mt={"1rem"} wrap={"wrap"}>
-        {check === "Total" ? (
+        {check === "ALL" ? (
           <Box
             borderBottom={"2px"}
             color={"blue.300"}
@@ -20,14 +27,12 @@ export default function TopNav() {
           <Box
             mr={"0.7rem"}
             color={"gray.400"}
-            onClick={() => {
-              isCheck("Total");
-            }}
+            onClick={() => handleClick("ALL")}
           >
             전체
           </Box>
         )}
-        {check === "Arrow" ? (
+        {check === "SHOW" ? (
           <Box
             borderBottom={"2px"}
             color={"blue.300"}
@@ -41,13 +46,13 @@ export default function TopNav() {
             mr={"0.7rem"}
             color={"gray.400"}
             onClick={() => {
-              isCheck("Arrow");
+              handleClick("SHOW");
             }}
           >
             공연
           </Box>
         )}
-        {check === "Festival" ? (
+        {check === "EXHIBITION" ? (
           <Box
             borderBottom={"2px"}
             color={"blue.300"}
@@ -61,13 +66,13 @@ export default function TopNav() {
             mr={"0.7rem"}
             color={"gray.400"}
             onClick={() => {
-              isCheck("Festival");
+              handleClick("EXHIBITION");
             }}
           >
             전시
           </Box>
         )}
-        {check === "Movie" ? (
+        {check === "MOVIE" ? (
           <Box
             borderBottom={"2px"}
             color={"blue.300"}
@@ -81,7 +86,7 @@ export default function TopNav() {
             mr={"0.7rem"}
             color={"gray.400"}
             onClick={() => {
-              isCheck("Movie");
+              handleClick("MOVIE");
             }}
           >
             영화

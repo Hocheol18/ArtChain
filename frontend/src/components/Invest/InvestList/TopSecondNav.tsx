@@ -1,8 +1,15 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-export default function TopSecondNav() {
-  const [check, checkFounder] = useState("total");
+interface Props {
+  check: string;
+  handleCheck: (whatCheck: string) => void;
+}
+
+export default function TopSecondNav({ check, handleCheck }: Props) {
+  const handleClick = (whatCheck: string) => {
+    handleCheck(whatCheck);
+  };
 
   return (
     <>
@@ -12,7 +19,7 @@ export default function TopSecondNav() {
         mt={"0.5rem"}
         wrap={"wrap"}
       >
-        {check === "total" ? (
+        {check === "ALL" ? (
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -30,17 +37,12 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text
-              color={"gray.400"}
-              onClick={() => {
-                checkFounder("total");
-              }}
-            >
+            <Text color={"gray.400"} onClick={() => handleClick("ALL")}>
               전체
             </Text>
           </Box>
         )}
-        {check === "ing" ? (
+        {check === "RECRUITMENT_STATUS" ? (
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -58,13 +60,16 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text color={"gray.400"} onClick={() => checkFounder("ing")}>
+            <Text
+              color={"gray.400"}
+              onClick={() => handleClick("RECRUITMENT_STATUS")}
+            >
               진행중
             </Text>
           </Box>
         )}
 
-        {check === "end" ? (
+        {check === "RECRUITMENT_END" ? (
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -82,13 +87,16 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text color={"gray.400"} onClick={() => checkFounder("end")}>
+            <Text
+              color={"gray.400"}
+              onClick={() => handleClick("RECRUITMENT_END")}
+            >
               모집종료
             </Text>
           </Box>
         )}
 
-        {check === "complete" ? (
+        {check === "SETTLED" ? (
           <Box
             px={"0.6rem"}
             py={"0.1rem"}
@@ -106,7 +114,7 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text color={"gray.400"} onClick={() => checkFounder("complete")}>
+            <Text color={"gray.400"} onClick={() => handleClick("SETTLED")}>
               정산완료
             </Text>
           </Box>

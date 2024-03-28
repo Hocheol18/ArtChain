@@ -3,28 +3,66 @@ import { Box, Image, Text, Progress } from "@chakra-ui/react";
 import tmpImg from "../../../assets/invest-poster-tmp-img.jpg";
 import { Link } from "react-router-dom";
 
-export const InvestListItem = () => {
+interface Props {
+  id: number;
+  entId: number;
+  name: string;
+  poster: string;
+  goalCoinCount: number;
+  nowCoinCount: number;
+  contractAddress: string;
+  category: string;
+  progressStatus: string;
+  recruitEnd: string;
+  recruitStart: string;
+  settlement: string;
+}
+
+export const InvestListItem = ({
+  id,
+  entId,
+  name,
+  poster,
+  goalCoinCount,
+  nowCoinCount,
+  contractAddress,
+  category,
+  recruitEnd,
+  recruitStart,
+  settlement,
+  progressStatus,
+}: Props) => {
   // ing, end, complete
-  const [statusBadge, setStatusBadge] = useState("ing");
+  const [statusBadge, setStatusBadge] = useState("");
   const [statusColor, setStatusColor] = useState("blue.300");
   const [brightness, setBrightness] = useState("brightness(100%)");
 
+  //진행률
+  const progress = parseFloat(
+    ((nowCoinCount / goalCoinCount) * 100).toFixed(1)
+  );
+
+  const today = new Date();
+
   useEffect(() => {
-    switch (statusBadge) {
-      case "ing":
+    switch (progressStatus) {
+      case "RECRUITMENT_STATUS":
         setStatusColor("blue.300");
         setBrightness("brightness(100%)");
+        setStatusBadge("진행중");
         break;
-      case "end":
+      case "PENDING_SETTLEMENT" || "RECRUITMENT_FAILED":
         setStatusColor("gray.500");
         setBrightness("brightness(70%)");
+        setStatusBadge("모집종료");
         break;
-      case "complete":
+      case "SETTLED":
         setStatusColor("blue.200");
         setBrightness("brightness(50%)");
+        setStatusBadge("정산완료");
         break;
     }
-  }, [statusBadge]);
+  }, []);
 
   return (
     <div>
@@ -68,7 +106,7 @@ export const InvestListItem = () => {
               boxShadow={"base"}
               mr={1}
             >
-              <Text fontSize={12}>전시</Text>
+              <Text fontSize={12}>{category}</Text>
             </Box>
             <Box
               backgroundColor={statusColor}
@@ -81,17 +119,17 @@ export const InvestListItem = () => {
               boxShadow={"base"}
             >
               <Text fontSize={12} as={"b"} color={"white"}>
-                진행중
+                {statusBadge}
               </Text>
             </Box>
           </Box>
 
           <Text fontSize={15} as={"b"}>
-            The Power Of Space 전시
+            {name}
           </Text>
           <Box display={"flex"} alignItems={"center"}>
             <Progress
-              value={80}
+              value={progress}
               size={"sm"}
               sx={{
                 width: "100%", // 너비를 100%로 설정하여 부모 컨테이너를 꽉 채우도록 함
@@ -101,7 +139,7 @@ export const InvestListItem = () => {
               }}
             />
             <Text fontSize={14} ml={5} as={"b"} color={"gray.500"}>
-              80%
+              {progress} %
             </Text>
           </Box>
           <Box display="flex" justifyContent={"space-between"}>
@@ -109,7 +147,7 @@ export const InvestListItem = () => {
               총 발행 조각
             </Text>
             <Text color={"gray.500"} fontSize={14} as={"b"}>
-              30,000 조각
+              {goalCoinCount} 조각
             </Text>
           </Box>
           <Box display={"flex"} justifyContent={"space-between"}>
