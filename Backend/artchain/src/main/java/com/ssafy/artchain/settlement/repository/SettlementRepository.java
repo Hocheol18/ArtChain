@@ -24,4 +24,7 @@ public interface SettlementRepository extends JpaRepository<Settlement, Long> {
             "where st.status = :status "
     )
     List<SettlementListItemDto> getSettlementList(@Param("status") String status);
+
+    @Query("SELECT st.returnRate FROM Settlement st WHERE st.fundingId = :fundingId")
+    Integer findReturnRateByFundingId(@Param("fundingId") Long fundingId);
 }

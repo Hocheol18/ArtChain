@@ -32,8 +32,9 @@ public class FundingResponseDto {
     private List<FundingExpectedReturnResponseDto> expectedReturnList;
     private List<FundingSaleResponseDto> saleList;
     private List<FundingCostResponseDto> costList;
+    private Long investorNum; // 투자자 수(모집 중 ~ 정산 완료)
 
-    public FundingResponseDto(Funding funding) {
+    public FundingResponseDto(Funding funding, Long investorNum) {
         this.id = funding.getId();
         this.entId = funding.getEntId();
         this.name = funding.getName();
@@ -61,5 +62,6 @@ public class FundingResponseDto {
                 .toList();
         this.costList = funding.getCostList().stream().map(FundingCostResponseDto::new)
                 .toList();
+        this.investorNum = investorNum;
     }
 }

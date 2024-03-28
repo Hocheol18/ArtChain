@@ -21,8 +21,10 @@ public class FundingListItemDto {
     private LocalDate recruitEnd;
     private LocalDate recruitStart;
     private LocalDate settlement;
+    private Long investorNum;
+    private Integer finalReturnRate;
 
-    public FundingListItemDto(Funding funding) {
+    public FundingListItemDto(Funding funding, Long investorNum, Integer finalReturnRate) {
         this.id = funding.getId();
         this.entId = funding.getEntId();
         this.name = funding.getName();
@@ -36,5 +38,7 @@ public class FundingListItemDto {
         this.recruitEnd = funding.getRecruitEnd();
         this.recruitStart = funding.getRecruitStart();
         this.settlement = funding.getSettlement();
+        this.investorNum = investorNum;
+        this.finalReturnRate = finalReturnRate;
     }
 }

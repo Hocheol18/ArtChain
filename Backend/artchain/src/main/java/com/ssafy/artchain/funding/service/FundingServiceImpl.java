@@ -10,6 +10,7 @@ import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import com.ssafy.artchain.s3.S3Service;
+import com.ssafy.artchain.settlement.repository.SettlementRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class FundingServiceImpl implements FundingService {
     private final FundingCostRepository fundingCostRepository;
     private final InvestmentLogRepository investmentLogRepository;
     private final MemberRepository memberRepository;
+    private final SettlementRepository settlementRepository;
     private final S3Service s3Service;
     private final EntityManager em;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
@@ -131,12 +133,14 @@ public class FundingServiceImpl implements FundingService {
     public FundingResponseDto getFunding(Long fundingId) {
         Funding funding = fundingRepository.findById(fundingId)
                 .orElse(null);
-
-        if (funding != null) {
-            return new FundingResponseDto(funding);
-        } else {
+        if (funding == null) {
             return null;
         }
+
+        Long investorNum = funding.getProgressStatus().equals(FundingProgressStatus.BEFORE_RECRUITMENT)
+                ? null : investmentLogRepository.countDistinctMemberByFundingId(fundingId);
+
+        return new FundingResponseDto(funding, investorNum);
     }
 
     @Override
@@ -175,7 +179,13 @@ public class FundingServiceImpl implements FundingService {
 
         return fundingPage.getContent()
                 .stream()
-                .map(FundingListItemDto::new)
+                .map(funding -> {
+                    Long investorNum = funding.getProgressStatus().equals(FundingProgressStatus.BEFORE_RECRUITMENT)
+                            ? null : investmentLogRepository.countDistinctMemberByFundingId(funding.getId());
+                    Integer finalReturnRate = funding.getProgressStatus().equals(FundingProgressStatus.SETTLED)
+                            ? settlementRepository.findReturnRateByFundingId(funding.getId()) : null;
+                    return new FundingListItemDto(funding, investorNum, finalReturnRate);
+                })
                 .toList();
     }
 
