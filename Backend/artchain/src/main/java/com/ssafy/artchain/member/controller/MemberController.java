@@ -6,6 +6,7 @@ import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.response.MemberComMypageResponseDto;
 import com.ssafy.artchain.member.dto.response.MemberMainUserInfoResponseDto;
+import com.ssafy.artchain.member.dto.response.MemberPermissionResponseDto;
 import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
 import com.ssafy.artchain.member.defaultResponse.DefaultResponse;
 import com.ssafy.artchain.member.service.MemberServiceImpl;
@@ -19,6 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.List;
 
 import static com.ssafy.polaris.book.response.StatusCode.*;
 
@@ -59,6 +62,12 @@ public class MemberController {
     public ResponseEntity<DefaultResponse<MemberComMypageResponseDto>> getComMypage(@AuthenticationPrincipal CustomUserDetails company) {
         MemberComMypageResponseDto dto = memberService.getComMypage(company);
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_COMPANY_VIEW, dto);
+    }
+
+    @GetMapping("/permission")
+    public ResponseEntity<DefaultResponse<List<MemberPermissionResponseDto>>> getComPermissionList(){
+        List<MemberPermissionResponseDto> memberPermissionResponseDtoList = memberService.getComPermissionList();
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_PERMISSION_COMPANYS_VIEW, memberPermissionResponseDtoList);
     }
 
 

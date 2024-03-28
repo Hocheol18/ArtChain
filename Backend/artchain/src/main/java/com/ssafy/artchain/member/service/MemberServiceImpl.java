@@ -3,6 +3,7 @@ package com.ssafy.artchain.member.service;
 import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.jwt.entity.RefreshToken;
 import com.ssafy.artchain.jwt.repository.RefreshRepository;
+import com.ssafy.artchain.market.dto.MarketSellResponseDto;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
@@ -177,6 +178,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean isExistsMemberId(String checkId) {
         return memberRepository.existsByMemberId(checkId);
+    }
+
+    @Override
+    public List<MemberPermissionResponseDto> getComPermissionList() {
+        Permission ps = Permission.HOLD;
+        List<Member> list = memberRepository.findAllByPermission(ps);
+
+        return list.stream().map(MemberPermissionResponseDto::new).toList();
     }
 
     @Transactional

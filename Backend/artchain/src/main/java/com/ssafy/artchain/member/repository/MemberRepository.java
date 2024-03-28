@@ -3,6 +3,7 @@ package com.ssafy.artchain.member.repository;
 import com.ssafy.artchain.member.dto.response.FundingComMypageDto;
 import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseDto;
 import com.ssafy.artchain.member.entity.Member;
+import com.ssafy.artchain.member.entity.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,17 +16,10 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByMemberId(String memberId);
 
+    List<Member> findAllByPermission(Permission permission);
+
     boolean existsByMemberId(String memberId);
 
-    //  @Query( value =
-//          "select new com.ssafy.artchain.member.dto.response.MemberUserMypageResponseDto(m.id, m.name, m.walletAddress, m.walletBalance, f.progressStatus, count(f.progressStatus))"  +
-//                  "from Member as m join fetch m.investmentLogs i " +
-//                  "join fetch i.funding f " +
-//                  "where m.id = :memberId " +
-//                  "group by m.id, m.name, m.walletAddress, m.walletBalance, f.progressStatus")
-//  List<MemberUserMypageResponseDto> memberMypage(
-//          @Param("memberId") Long memberId
-//  );
     @Query(value =
             "select new com.ssafy.artchain.member.dto.response.MemberUserMypageResponseDto(m.id, m.name, m.walletAddress, m.walletBalance, f.progressStatus, count(f.progressStatus))" +
                     "from Member as m left join InvestmentLog i on m = i.member" +
@@ -42,4 +36,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             " left join Funding f on m.id = f.entId" +
             " where m.id = :companyId ")
     List<FundingComMypageDto> comMypage(@Param("companyId") Long companyId);
+
 }
