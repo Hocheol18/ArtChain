@@ -28,4 +28,6 @@ public interface FundingService {
     Long createInvestmentLog(Long fundingId, InvestmentRequestDto dto, CustomUserDetails member);
 
     int updateFundingProgressStatus(Long fundingId, String progressStatus, CustomUserDetails member);
+
+    List<FundingPermissionResponseDto> getFundingPermissionList();
 }

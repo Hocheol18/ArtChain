@@ -221,6 +221,12 @@ public class FundingServiceImpl implements FundingService {
     }
 
     @Override
+    public List<FundingPermissionResponseDto> getFundingPermissionList() {
+        List<FundingPermissionResponseDto> list = fundingRepository.findAllByIsAllowIsNullAndComName();
+        return list;
+    }
+
+    @Override
     public int createNotice(Long fundingId, FundingNoticeRequestDto dto, CustomUserDetails member) {
         Funding funding = fundingRepository.findById(fundingId).orElse(null);
         if (funding == null) {
