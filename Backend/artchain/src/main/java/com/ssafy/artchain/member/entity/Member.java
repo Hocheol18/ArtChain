@@ -68,6 +68,7 @@ public class Member extends BaseTimeEntity {
     public void updateName(String name) {
         this.name = name;
     }
+    public void updateWalletBalance(BigDecimal walletBalance) {this.walletBalance = walletBalance;}
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;
