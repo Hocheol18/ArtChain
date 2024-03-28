@@ -168,6 +168,13 @@ public class SettlementController {
         );
     }
 
+    /**
+     * 관리자가 정산 신청건을 삭제한다.
+     *
+     * @param settlementId
+     * @param member
+     * @return
+     */
     @DeleteMapping("/{settlementId}")
     public ResponseEntity<DefaultResponse<Void>> deleteSettlement(
             @PathVariable Long settlementId, @AuthenticationPrincipal CustomUserDetails member
