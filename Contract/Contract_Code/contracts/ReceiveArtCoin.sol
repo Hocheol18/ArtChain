@@ -16,36 +16,71 @@ contract ReceiveArtCoinContract is FundRaisingContract {
         string memory symbol,
         uint256 _initialSupply, // 초기 조각 총발행량
         uint256 _time // 시간 상속
+    )
         // address _tokenAddress // 토큰 컨트랙트
-    ) FundRaisingContract(name, symbol, _initialSupply, _time) {
+        FundRaisingContract(name, symbol, _initialSupply, _time)
+    {
         mainWalletaddress = 0xDaBD9681C6fA9C2675f883FB67a1485038087DD3;
-        fundingToken = IERC20(0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB);
+        fundingToken = IERC20(artTokenAddress);
     }
 
     event NewCoinsUpdated(address indexed _from, uint256 _amount);
 
     // ts에서 실행, button 이벤트를 주어야 실행가능함.
+    // function fundToken(uint256 _amount) external {
+    //     require(block.timestamp < finishTime, "Time Over");
+    //     require(_amount > 0, "You need to donate a positive amount of tokens");
+    //     require(
+    //         _amount*(10**18) + raisedAmount <= initialSupply,
+    //         "Exceeds initial supply"
+    //     );
+    //     bool success = fundingToken.transferFrom(
+    //         msg.sender,
+    //         mainWalletaddress,
+    //         _amount*(10**18)
+    //     );
+
+    //     fundingToken.approve(contributor, _amount*(10**18));
+
+    //     require(success, "Token transfer failed");
+    //     raisedAmount += _amount*(10**18);
+    //     newCoins[msg.sender] += _amount*(10**18);
+    //     refunds[msg.sender] += _amount*(10**18);
+    //     if (!hasContributed[msg.sender]) {
+    //         listOfContributors.push(msg.sender);
+    //         hasContributed[msg.sender] = true;
+    //     }
+
+    //     emit NewCoinsUpdated(msg.sender, _amount*(10**18));
+    // }
+
     function fundToken(uint256 _amount) external {
-        require(block.timestamp < finishTime, "Time Over");
+        require(block.timestamp < finishTime, "Fundraising time is over");
         require(_amount > 0, "You need to donate a positive amount of tokens");
         require(
             _amount + raisedAmount <= initialSupply,
             "Exceeds initial supply"
         );
+
+        // 토큰을 모금 컨트랙트로 전송
         bool success = fundingToken.transferFrom(
             msg.sender,
-            mainWalletaddress,
+            address(this),
             _amount*(10**18)
         );
         require(success, "Token transfer failed");
-        raisedAmount += _amount;
-        newCoins[msg.sender] += _amount;
 
+        // 모금된 토큰 양 증가
+        raisedAmount += _amount*(10**18);
+
+        // 모금자 정보 갱신
+        newCoins[msg.sender] += _amount*(10**18);
+        refunds[msg.sender] += _amount*(10**18);
         if (!hasContributed[msg.sender]) {
             listOfContributors.push(msg.sender);
             hasContributed[msg.sender] = true;
         }
 
-        emit NewCoinsUpdated(msg.sender, _amount);
+        emit NewCoinsUpdated(msg.sender, _amount*(10**18));
     }
 }
