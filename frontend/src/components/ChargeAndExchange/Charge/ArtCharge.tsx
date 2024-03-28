@@ -12,10 +12,6 @@ import { BottomButtonNavbar } from "../../Common/Navigation/BottomButtonNavbar";
 import { useState } from "react";
 import axios from "axios";
 
-// declare const window: typeof globalThis & {
-//   IMP: any;
-// };
-
 export const ArtCharge = () => {
   //충전 인덱스
   const [value, setValue] = useState<string>("");
@@ -50,9 +46,6 @@ export const ArtCharge = () => {
           // 결제 성공시
           // 1. 컨트랙트 실행해야함
           // 2. axios 날려서 db에 저장해야함
-          alert("결제 완료!");
-          window.location.reload();
-          console.log(rsp);
 
           if (rsp.status == 200) {
             // DB저장 성공시
