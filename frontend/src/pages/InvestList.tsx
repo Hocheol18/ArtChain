@@ -22,8 +22,8 @@ export const InvestList = () => {
 
   //진행상황
   const [status, setStatus] = useState("ALL");
-  const handleStatus = (whatCategory: string) => {
-    setStatus(whatCategory);
+  const handleStatus = (whatStatus: string) => {
+    setStatus(whatStatus);
   };
 
   //펀딩리스트 조회

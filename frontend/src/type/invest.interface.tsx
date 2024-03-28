@@ -21,3 +21,68 @@ export interface GetFunddingListResponse {
   recruitStart: string;
   settlement: string;
 }
+
+export interface GetFundingParams {
+  fundingId: string | undefined;
+}
+
+export interface Notice {
+  id: number;
+  fundingId: number;
+  title: string;
+  content: string;
+}
+
+export interface Schedule {
+  id: number;
+  fundingId: number;
+  scheduleName: string;
+  scheduleDate: string;
+}
+
+export interface ExpectedReturn {
+  id: number;
+  fundingId: number;
+  spectatorNum: number;
+  expectedReturn: number;
+}
+
+export interface Sale {
+  id: number;
+  fundingId: number;
+  mainVariety: string;
+  subVariety: string;
+  percentage: number;
+}
+
+export interface Cost {
+  id: number;
+  fundingId: number;
+  mainVariety: string;
+  subVariety: string;
+}
+
+export interface GetFundingResponse {
+  id: number;
+  entId: number;
+  name: string;
+  poster: string;
+  category: string;
+  descriptionImg: string;
+  recruitStart: string;
+  recruitEnd: string;
+  settlement: string;
+  goalCoinCount: number;
+  nowCoinCount: number;
+  contractAddress: string;
+  totalBudget: number;
+  unitPrice: number;
+  bep: number;
+  progressStatus: string;
+  isAllow: boolean;
+  noticeList: Notice[];
+  scheduleList: Schedule[];
+  expectedReturnList: ExpectedReturn[];
+  saleList: Sale[];
+  costList: Cost[];
+}
