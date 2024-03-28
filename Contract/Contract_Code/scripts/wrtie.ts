@@ -1,7 +1,7 @@
 // scripts/write.js
 const { ethers } = require("ethers");
 
-async function main2() {
+async function main3() {
   const [owner] = await ethers.getSigners();
 
   const contractAddress = "0xC0E771f6413E4139a175fB75f91A1e0508e2F34C"; // 배포된 컨트랙트의 주소를 여기에 입력하세요.
@@ -27,7 +27,7 @@ async function main2() {
   );
 }
 
-main2()
+main3()
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
