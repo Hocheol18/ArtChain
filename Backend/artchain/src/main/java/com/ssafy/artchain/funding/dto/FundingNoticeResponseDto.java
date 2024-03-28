@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 public class FundingNoticeResponseDto {
 
-    Long id;
-    Long fundingId;
-    String title;
-    String content;
+    private Long id;
+    private Long fundingId;
+    private String title;
+    private String content;
 
     public FundingNoticeResponseDto(FundingNotice fundingNotice) {
         this.id = fundingNotice.getId();

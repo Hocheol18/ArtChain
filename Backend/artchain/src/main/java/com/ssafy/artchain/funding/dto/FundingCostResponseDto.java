@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class FundingCostResponseDto {
-    Long id;
-    Long fundingId;
-    String mainVariety;
-    String subVariety;
+    private Long id;
+    private Long fundingId;
+    private String mainVariety;
+    private String subVariety;
 
     public FundingCostResponseDto(FundingCost fundingCost) {
         this.id = fundingCost.getId();
