@@ -112,6 +112,7 @@ export const LoginPage = () => {
         />
 
         <Input
+        type="password"
           w={"340px"}
           px={"1rem"}
           py={"0.7rem"}

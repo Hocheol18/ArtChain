@@ -191,7 +191,7 @@ function App() {
                 ></Route>
                 {/* 마이페이지 */}
                 <Route
-                  path="/mypage/:id"
+                  path="/mypage"
                   element={
                     <CommonPage topNavType="" bottomNavType="my">
                       <UserMyPage />
