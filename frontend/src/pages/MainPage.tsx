@@ -5,24 +5,11 @@ import Poster from "../components/Main/Poster";
 import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
-
-// MetaMask 연결 함수
-const connectWallet = async () => {
-  if ((window as any).ethereum) {
-    try {
-      const accounts: string[] = await (window as any).ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      setAccount(accounts[0]);
-    } catch (error) {
-      console.error("연결에 실패했습니다.", error);
-    }
-  } else {
-    alert("MetaMask를 설치해주세요!");
-  }
-};
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
+  const navigate = useNavigate();
+
   return (
     <>
       <MainCarousel />
@@ -30,7 +17,7 @@ export default function MainPage() {
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>
           진행 중인 투자 작품
         </Text>
-        <button onClick={connectWallet}>MetaMask 연결</button>
+        <button onClick={() => navigate("/test")}>TEST GAZA</button>
       </Box>
       <Poster />
       <Poster />
