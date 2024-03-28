@@ -13,9 +13,8 @@ public interface MemberService {
     void memberJoin(MemberRegistRequestDto memberDto);
     MemberUserResponseDto getUserInfo(CustomUserDetails customMember);
     MemberUserMypageResponseListDto getUserMypage(CustomUserDetails customMember);
-
     MemberComMypageResponseDto getComMypage(CustomUserDetails customCompany);
-
     MemberMainUserInfoResponseDto getMainLoginUserInfo(CustomUserDetails member);
+    boolean isExistsMemberId(String checkId);
 
 }
