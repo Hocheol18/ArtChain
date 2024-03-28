@@ -7,7 +7,7 @@ import { localAxios } from "./https";
 
 export const getFunddingList = async (
   params: GetFunddingListParams
-): Promise<GetFunddingListResponse[]> => {
+): Promise<GetFunddingListResponse[] | string> => {
   const { category, status, allowStat, page, size } = params;
   const url = `/funding/list${makeQuerystring({
     category,
@@ -16,8 +16,11 @@ export const getFunddingList = async (
     page,
     size,
   })}`;
-  console.log(url);
   const response = await localAxios.get(url);
-  //   const response = await axios.get(url);
-  return response.data.data.fundingList;
+
+  if (response.data.data && response.data.data.fundingList) {
+    return response.data.data.fundingList;
+  } else {
+    return response.data.message;
+  }
 };

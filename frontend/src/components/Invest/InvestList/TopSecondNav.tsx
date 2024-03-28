@@ -1,8 +1,15 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-export default function TopSecondNav() {
-  const [check, checkFounder] = useState("ALL");
+interface Props {
+  check: string;
+  handleCheck: (whatCheck: string) => void;
+}
+
+export default function TopSecondNav({ check, handleCheck }: Props) {
+  const handleClick = (whatCheck: string) => {
+    handleCheck(whatCheck);
+  };
 
   return (
     <>
@@ -30,12 +37,7 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text
-              color={"gray.400"}
-              onClick={() => {
-                checkFounder("ALL");
-              }}
-            >
+            <Text color={"gray.400"} onClick={() => handleClick("ALL")}>
               전체
             </Text>
           </Box>
@@ -60,7 +62,7 @@ export default function TopSecondNav() {
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
             <Text
               color={"gray.400"}
-              onClick={() => checkFounder("RECRUITMENT_STATUS")}
+              onClick={() => handleClick("RECRUITMENT_STATUS")}
             >
               진행중
             </Text>
@@ -87,7 +89,7 @@ export default function TopSecondNav() {
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
             <Text
               color={"gray.400"}
-              onClick={() => checkFounder("RECRUITMENT_END")}
+              onClick={() => handleClick("RECRUITMENT_END")}
             >
               모집종료
             </Text>
@@ -112,7 +114,7 @@ export default function TopSecondNav() {
           </Box>
         ) : (
           <Box px={"0.6rem"} py={"0.1rem"} ml={"0.5rem"}>
-            <Text color={"gray.400"} onClick={() => checkFounder("SETTLED")}>
+            <Text color={"gray.400"} onClick={() => handleClick("SETTLED")}>
               정산완료
             </Text>
           </Box>
