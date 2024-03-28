@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { LoginInterface } from "../type/login";
 import { LoginAxios, ProfileAxios } from "../api/user";
 import useUserInfo from "../store/useUserInfo";
-import Toast from "../components/Common/Navigation/Toast";
+import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -40,15 +40,28 @@ export const LoginPage = () => {
     try {
       const res = await ProfileAxios();
       toast({
-        title: "로그인",
-        description: "로그인 성공",
-        status: "success",
         duration: 2000,
         isClosable: true,
-      });
+        position: "top",
+        render: () => (
+          <Flex
+            color="white"
+            mt={"50px"}
+            bg="blue.300"
+            p={"1rem"}
+            borderRadius={"0.7rem"}
+            alignItems={"center"}
+          >
+            <CheckCircleIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+            <Center ml={"1rem"}>
+              <Text as={"b"}>로그인 성공</Text>
+            </Center>
+          </Flex>
+        ),
+      })
       setUserInfo({
         profileUrl: "",
-        nickname: "김지은",
+        nickname: res.data.data.memberUserMypageResponseDtoList[0].nickname,
         walletBalance:
           res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
         isLogin: true,
@@ -99,6 +112,7 @@ export const LoginPage = () => {
         />
 
         <Input
+        type="password"
           w={"340px"}
           px={"1rem"}
           py={"0.7rem"}
@@ -129,11 +143,28 @@ export const LoginPage = () => {
               .then((res) => loginDone(res))
               .catch(() =>
                 toast({
-                  title: "로그인",
-                  description: "로그인 실패",
-                  status: "error",
                   duration: 2000,
                   isClosable: true,
+                  position: "top",
+                  render: () => (
+                    <Flex
+                      color="white"
+                      mt={"50px"}
+                      bg="#C70000"
+                      p={"1rem"}
+                      borderRadius={"0.7rem"}
+                      alignItems={"center"}
+                    >
+                      <WarningTwoIcon
+                        boxSize={5}
+                        color={"white"}
+                        ml={"0.5rem"}
+                      />
+                      <Center ml={"1rem"}>
+                        <Text as={"b"}>로그인 실패</Text>
+                      </Center>
+                    </Flex>
+                  ),
                 })
               )
           }

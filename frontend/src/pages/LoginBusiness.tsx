@@ -1,10 +1,4 @@
-import {
-  Box,
-  Flex,
-  Text,
-  Image,
-  Center,
-} from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Center, Input } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Business from "../assets/business.png";
 
@@ -26,7 +20,8 @@ export default function LoginBusiness() {
           </Box>
         </Flex>
 
-        <Box
+        <Input
+          w={"340px"}
           px={"1rem"}
           py={"0.7rem"}
           rounded={"0.7rem"}
@@ -35,12 +30,12 @@ export default function LoginBusiness() {
           border={"1px"}
           borderColor={"gray.300"}
           ml={"0.5rem"}
-        >
-          <Text as={"b"} color={"gray.400"}>
-            아이디를 입력하세요
-          </Text>
-        </Box>
-        <Box
+          placeholder="아이디를 입력하세요"
+        />
+
+        <Input
+          type="password"
+          w={"340px"}
           px={"1rem"}
           py={"0.7rem"}
           rounded={"0.7rem"}
@@ -49,12 +44,11 @@ export default function LoginBusiness() {
           border={"1px"}
           borderColor={"gray.300"}
           ml={"0.5rem"}
-        >
-          <Text as={"b"} color={"gray.400"}>
-            비밀번호를 입력하세요
-          </Text>
-        </Box>
+          placeholder="비밀번호를 입력하세요"
+        />
+
         <Box
+          w={"340px"}
           px={"1rem"}
           py={"0.7rem"}
           rounded={"0.7rem"}
@@ -69,7 +63,13 @@ export default function LoginBusiness() {
             로그인
           </Center>
         </Box>
-        <Flex justifyContent={"center"} mt={"0.5rem"} onClick={() => {navigate("../businessenroll")}}>
+        <Flex
+          justifyContent={"center"}
+          mt={"0.5rem"}
+          onClick={() => {
+            navigate("../businessenroll");
+          }}
+        >
           <Text>회원가입</Text>
         </Flex>
       </Flex>
