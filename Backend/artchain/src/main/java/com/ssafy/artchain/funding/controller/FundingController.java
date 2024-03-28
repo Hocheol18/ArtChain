@@ -5,6 +5,7 @@ import com.ssafy.artchain.funding.response.DefaultResponse;
 import com.ssafy.artchain.funding.response.StatusCode;
 import com.ssafy.artchain.funding.service.FundingService;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
+import com.ssafy.artchain.member.dto.response.MemberPermissionResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static com.ssafy.artchain.funding.response.StatusCode.SUCCESS_FUNDING_PERMISSION_LIST_VIEW;
+import static com.ssafy.polaris.book.response.StatusCode.SUCCESS_PERMISSION_COMPANYS_VIEW;
 
 @RestController
 @RequestMapping("/api/funding")
@@ -342,5 +346,15 @@ public class FundingController {
                 StatusCode.SUCCESS_CREATE_INVESTMENT_LOG,
                 new InvestmentIdResponseDto(result)
         );
+    }
+
+    /**
+     * 관리자 페이지 투자 내역 생성
+     *
+     */
+    @GetMapping("/permission")
+    public ResponseEntity<DefaultResponse<List<FundingPermissionResponseDto>>> getComPermissionList(){
+        List<FundingPermissionResponseDto> fundingPermissionResponseDtoList = fundingService.getFundingPermissionList();
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_FUNDING_PERMISSION_LIST_VIEW, fundingPermissionResponseDtoList);
     }
 }

@@ -24,4 +24,5 @@ public interface FundingRepository extends JpaRepository<Funding, Long> {
 
     Page<Funding> findAllByProgressStatusInAndCategory(List<FundingProgressStatus> progressStatus, String category, Pageable pageable);
 
+    List<Funding> findAllByIsAllowIsNull();
 }
