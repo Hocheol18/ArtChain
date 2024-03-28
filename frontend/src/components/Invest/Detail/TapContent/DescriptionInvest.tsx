@@ -11,16 +11,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import DescriptionPoster from "../../../../assets/inveset-description-tmp-img.jpg";
+import { Schedule } from "../../../../type/invest.interface";
 
-export const DescriptionInvest = () => {
-  const steps = [
-    { title: "모집 시작", description: "2024년 02월 05일" },
-    { title: "모집 종료", description: "2024년 03월 01일" },
-    { title: "전시 계약", description: "2024년 07월 02일" },
-    { title: "전시 종료", description: "2024년 10월 02일" },
-    { title: "정산 예정일", description: "2024년 01월 04일" },
-  ];
+interface Props {
+  scheduleList: Schedule[];
+}
 
+export const DescriptionInvest = ({ scheduleList }: Props) => {
   return (
     <Center py={3} mb={"70px"} display={"flex"} flexDirection={"column"}>
       {/* 소개 포스터 */}
@@ -52,13 +49,13 @@ export const DescriptionInvest = () => {
         </Center>
         <Stepper
           my={10}
-          index={steps.length}
+          index={scheduleList.length}
           orientation="vertical"
           gap="0"
           size={"lg"}
-          height={"400px"}
+          height={scheduleList.length * 80}
         >
-          {steps.map((step, index) => (
+          {scheduleList.map((step, index) => (
             <Step key={index}>
               <StepIndicator
                 style={{ transform: "scale(0.5)", backgroundColor: "#013878" }}
@@ -66,13 +63,17 @@ export const DescriptionInvest = () => {
 
               <Box flexShrink="0">
                 <StepTitle style={{ fontWeight: "bold" }}>
-                  {step.title}
+                  {step.scheduleName}
                 </StepTitle>
-                <StepDescription>{step.description}</StepDescription>
+                <StepDescription>
+                  {step.scheduleDate.split("-")[0]}년{" "}
+                  {step.scheduleDate.split("-")[1]}월{" "}
+                  {step.scheduleDate.split("-")[2]}일
+                </StepDescription>
               </Box>
 
               <StepSeparator
-                style={{ transform: "scale(1.5)", backgroundColor: "#DBDDE0" }}
+                style={{ transform: "scale(1)", backgroundColor: "#DBDDE0" }}
               />
             </Step>
           ))}

@@ -87,11 +87,11 @@ export const InvestDetail = () => {
 
   return (
     <div>
-      {fundingData !== undefined ? (
+      {fundingData && (
         <>
           <InvestDetailHeader fundingData={fundingData} />
-          <InvestDetailHeaderInfo />
-          <InvestDetailBox />
+          <InvestDetailHeaderInfo fundingData={fundingData} />
+          <InvestDetailBox fundingData={fundingData} />
 
           <BottomButtonNavbar
             text={text}
@@ -99,7 +99,7 @@ export const InvestDetail = () => {
             hanldeButton={handleInvest}
           />
         </>
-      ) : null}
+      )}
     </div>
   );
 };

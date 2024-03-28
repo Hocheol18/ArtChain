@@ -7,6 +7,7 @@ import { ExpectRateInvest } from "./TapContent/ExpectRateInvest";
 import { NoticeInvest } from "./TapContent/NoticeInvest";
 import { DangerInvest } from "./TapContent/DangerInvest";
 import { WarningInvest } from "./TapContent/WarningInvest";
+import { GetFundingResponse } from "../../../type/invest.interface";
 
 type State = {
   descActive: boolean;
@@ -17,7 +18,11 @@ type State = {
   warningActive: boolean;
 };
 
-export const InvestDetailBox = () => {
+interface Props {
+  fundingData: GetFundingResponse;
+}
+
+export const InvestDetailBox = ({ fundingData }: Props) => {
   const [state, setState] = useState<State>({
     descActive: false,
     structureActive: false,
@@ -38,10 +43,20 @@ export const InvestDetailBox = () => {
 
     switch (key) {
       case "descActive":
-        setShowComponent(<DescriptionInvest />);
+        setShowComponent(
+          <DescriptionInvest scheduleList={fundingData.scheduleList} />
+        );
         break;
       case "structureActive":
-        setShowComponent(<StructureInvest />);
+        setShowComponent(
+          <StructureInvest
+            saleList={fundingData.saleList}
+            costList={fundingData.costList}
+            totalBudget={fundingData.totalBudget}
+            unitPrice={fundingData.unitPrice}
+            bep={fundingData.bep}
+          />
+        );
         break;
       case "expectRateActive":
         setShowComponent(<ExpectRateInvest />);
