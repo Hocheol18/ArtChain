@@ -11,7 +11,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IsEnrollAxios, UserEnrollAxios } from "../../api/user";
-import { UserErnollInterface } from "../../type/login";
+import { UserErnollInterface } from "../../type/login.interface";
 import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
 
 export default function Normal() {

@@ -13,7 +13,7 @@ import LoginUser from "../assets/loginuser.png";
 import kakao from "../assets/kakaologin.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { LoginInterface } from "../type/login";
+import { LoginInterface } from "../type/login.interface";
 import { LoginAxios, ProfileAxios } from "../api/user";
 import useUserInfo from "../store/useUserInfo";
 import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";

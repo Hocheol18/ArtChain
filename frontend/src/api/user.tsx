@@ -1,5 +1,5 @@
 import { localAxios } from "./https";
-import { BusinessEnrollInterface, LoginInterface, UserErnollInterface } from "../type/login";
+import { BusinessEnrollInterface, LoginInterface, UserErnollInterface } from "../type/login.interface";
 
 // urls
 const loginurl = "/member/login";
