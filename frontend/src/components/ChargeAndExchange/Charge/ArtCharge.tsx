@@ -9,10 +9,25 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { BottomButtonNavbar } from "../../Common/Navigation/BottomButtonNavbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { handleMintTokens } from "../../../MintTokenComponent";
 
 export const ArtCharge = () => {
+  const [account, setAccount] = useState<string>("");
+
+  useEffect(() => {
+    if ((window as any).ethereum) {
+      (window as any).ethereum
+        .request({ method: "eth_accounts" })
+        .then((accounts: string[]) => {
+          if (accounts.length > 0) {
+            setAccount(accounts[0]);
+          }
+        });
+    }
+  }, []);
+
   //충전 인덱스
   const [value, setValue] = useState<string>("");
 
@@ -42,27 +57,62 @@ export const ArtCharge = () => {
       },
       async function (rsp) {
         // callback
-        if (rsp.success) {
-          // 결제 성공시
-          // 1. 컨트랙트 실행해야함
-          // 2. axios 날려서 db에 저장해야함
 
-          if (rsp.status == 200) {
-            // DB저장 성공시
-            alert("결제 완료!");
-            window.location.reload();
-          } else {
-            // 결제완료 후 DB저장 실패시
-            alert(
-              `error:[${rsp.status}]\n결제요청이 승인된 경우 관리자에게 문의바랍니다.`
-            );
-            // DB저장 실패시 status에 따라 추가적인 작업 가능성
-          }
-        } else if (rsp.success == false) {
-          // 결제 실패시
-          alert(rsp.error_msg);
+        if (rsp.success === true) {
+          // 결제 성공
+          alert("결제 성공~!!!");
+
+          // 1. 컨트랙트 실행해야함
+          handleMintTokens(
+            price / 1000,
+            account, // 여기에 사용자의 이더리움 주소를 추가하세요.
+            (transactionHash) => {
+              alert(`민트 성공, 트랜잭션 해시: ${transactionHash}`);
+              // 여기에 성공시의 로직을 추가하세요.
+            },
+            (error) => {
+              alert(`민트 실패 : ${error}`);
+              // 여기에 에러 처리 로직을 추가하세요.
+            }
+          );
+
+          // 2. DB로 axios 날리기
+        } else {
+          //결제 실패
+          alert(`결제 실패, 에러 내용 : ${rsp.error_msg}`);
         }
+
+        // if (rsp.success != "false") {
+        // 결제 성공시
+        // alert("결제 완료!");
+        // 1. 컨트랙트 실행해야함
+        // handleMintTokens(
+        //   price / 1000,
+        //   account, // 여기에 사용자의 이더리움 주소를 추가하세요.
+        //   (transactionHash) => {
+        //     alert(`민트 성공, 트랜잭션 해시: ${transactionHash}`);
+        //     // 여기에 성공시의 로직을 추가하세요.
+        //   },
+        //   (error) => {
+        //     alert(`민트 실패 : ${error}`);
+        //     // 여기에 에러 처리 로직을 추가하세요.
+        //   }
+        // );
+        // 2. axios 날려서 db에 저장해야함
+        // if (rsp.status) {
+        // DB저장 성공시
+        // window.location.reload();
+        // } else {
+        // 결제완료 후 DB저장 실패시
+        // alert(
+        //   `error:[${rsp.status}]\n결제요청이 승인된 경우 관리자에게 문의바랍니다.`
+        // );
+        // DB저장 실패시 status에 따라 추가적인 작업 가능성
       }
+      // } else if (rsp.success == false) {
+      //   // 결제 실패시
+      //   alert(rsp.error_msg);
+      // }
     );
   };
 
