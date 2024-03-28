@@ -19,5 +19,6 @@ public interface MemberService {
     MemberMainUserInfoResponseDto getMainLoginUserInfo(CustomUserDetails member);
     boolean isExistsMemberId(String checkId);
     List<MemberPermissionResponseDto> getComPermissionList();
+    void putPermission(Long memberId);
 
 }

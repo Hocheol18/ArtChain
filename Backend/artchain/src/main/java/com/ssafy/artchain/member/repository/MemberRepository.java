@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByMemberId(String memberId);
 
-    List<Member> findAllByPermission(Permission permission);
+    List<Member> findAllByPermissionAndAuthority(Permission permission, String authority);
 
     boolean existsByMemberId(String memberId);
 

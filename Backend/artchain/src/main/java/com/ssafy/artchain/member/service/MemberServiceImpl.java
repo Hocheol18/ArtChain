@@ -183,9 +183,21 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberPermissionResponseDto> getComPermissionList() {
         Permission ps = Permission.HOLD;
-        List<Member> list = memberRepository.findAllByPermission(ps);
+        String role = "ROLE_COMPANY";
+        List<Member> list = memberRepository.findAllByPermissionAndAuthority(ps, role);
 
         return list.stream().map(MemberPermissionResponseDto::new).toList();
+    }
+
+    @Transactional
+    @Override
+    public void putPermission(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+
+        member.updatePermission(Permission.Y);
+        memberRepository.save(member);
+
     }
 
     @Transactional

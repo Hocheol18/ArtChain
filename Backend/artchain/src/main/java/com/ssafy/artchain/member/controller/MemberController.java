@@ -70,6 +70,12 @@ public class MemberController {
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_PERMISSION_COMPANYS_VIEW, memberPermissionResponseDtoList);
     }
 
+    @PutMapping("/permission")
+    public ResponseEntity<DefaultResponse<Object>> putPermission(@RequestParam Long memberId){
+        memberService.putPermission(memberId);
+        return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_PERMISSION_COMPANY_PUT);
+    }
+
 
     @PostMapping("/enterprise/join")
     public ResponseEntity<?> companyJoin(@RequestBody @Validated CompanyMemberRegistRequestDto companyDto) {
