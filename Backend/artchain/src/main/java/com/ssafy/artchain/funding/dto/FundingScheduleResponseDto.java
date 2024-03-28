@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 @Getter
 public class FundingScheduleResponseDto {
-    Long id;
-    Long fundingId;
-    String scheduleName;
-    LocalDate scheduleDate;
+    private Long id;
+    private Long fundingId;
+    private String scheduleName;
+    private LocalDate scheduleDate;
 
     public FundingScheduleResponseDto(FundingSchedule fundingSchedule) {
         this.id = fundingSchedule.getId();

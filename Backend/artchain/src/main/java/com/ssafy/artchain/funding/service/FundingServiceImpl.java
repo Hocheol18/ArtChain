@@ -2,8 +2,8 @@ package com.ssafy.artchain.funding.service;
 
 
 import com.ssafy.artchain.connectentity.entity.InvestmentLog;
-import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
+import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.funding.entity.*;
 import com.ssafy.artchain.funding.repository.*;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
@@ -146,8 +146,8 @@ public class FundingServiceImpl implements FundingService {
         String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
 
         List<FundingProgressStatus> statuses;
-        if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || Stream.of(FundingProgressStatus.values())
-                .noneMatch(ps -> ps.name().equals(status))) { // 모집 시작 전을 제외한 모든 진행 상태
+        if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || (Stream.of(FundingProgressStatus.values())
+                .noneMatch(ps -> ps.name().equals(status)) && !status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END))) { // 모집 시작 전을 제외한 모든 진행 상태
             statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
                     FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
                     FundingProgressStatus.RECRUITMENT_FAILED);

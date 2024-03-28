@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class FundingExpectedReturnResponseDto {
-    Long id;
-    Long fundingId;
-    int spectatorNum;
-    int expectedReturn;
+    private Long id;
+    private Long fundingId;
+    private int spectatorNum;
+    private int expectedReturn;
 
     public FundingExpectedReturnResponseDto(FundingExpectedReturn fundingExpectedReturn) {
         this.id = fundingExpectedReturn.getId();
