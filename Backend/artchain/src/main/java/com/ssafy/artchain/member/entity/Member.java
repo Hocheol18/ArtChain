@@ -29,8 +29,9 @@ public class Member extends BaseTimeEntity {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "OAUTH")
-    private String oauth;
+    @Column(name = "PERMISSION")
+    @Enumerated(EnumType.STRING)
+    private Permission permission;
 
     @Column(name = "NAME", nullable = false)
     private String name;
@@ -69,6 +70,7 @@ public class Member extends BaseTimeEntity {
         this.name = name;
     }
     public void updateWalletBalance(BigDecimal walletBalance) {this.walletBalance = walletBalance;}
+    public void updatePermission(Permission permission) {this.permission = permission;}
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;

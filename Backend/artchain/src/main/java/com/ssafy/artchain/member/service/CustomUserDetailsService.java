@@ -28,6 +28,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         Member loginMember = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new RuntimeException("NOT FOUND MEMBER"));
 
-        return new CustomUserDetails(loginMember);
+        if(loginMember.getPermission().equals("Y")){
+            return new CustomUserDetails(loginMember);
+        } else {
+            throw new UsernameNotFoundException("아직 허가되지 않은 유저");
+        }
+
     }
 }

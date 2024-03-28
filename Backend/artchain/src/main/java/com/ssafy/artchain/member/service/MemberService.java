@@ -7,6 +7,8 @@ import com.ssafy.artchain.member.dto.response.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.List;
+
 public interface MemberService {
     String refreshToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
     void companyJoin(CompanyMemberRegistRequestDto companyDto);
@@ -16,5 +18,7 @@ public interface MemberService {
     MemberComMypageResponseDto getComMypage(CustomUserDetails customCompany);
     MemberMainUserInfoResponseDto getMainLoginUserInfo(CustomUserDetails member);
     boolean isExistsMemberId(String checkId);
+    List<MemberPermissionResponseDto> getComPermissionList();
+    void putPermission(Long memberId, String permissionFlag);
 
 }

@@ -3,11 +3,13 @@ package com.ssafy.artchain.member.service;
 import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.jwt.entity.RefreshToken;
 import com.ssafy.artchain.jwt.repository.RefreshRepository;
+import com.ssafy.artchain.market.dto.MarketSellResponseDto;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.response.*;
 import com.ssafy.artchain.member.entity.Member;
+import com.ssafy.artchain.member.entity.Permission;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -96,6 +98,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .memberId(companyDto.getMemberId())
                 .password(bCryptPasswordEncoder.encode(companyDto.getPassword()))
+                .permission(Permission.HOLD)
                 .name(companyDto.getName())
                 .bankAccount(companyDto.getBankAccount())
                 .bankName(companyDto.getBankName())
@@ -115,6 +118,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .memberId(memberDto.getMemberId())
                 .password(bCryptPasswordEncoder.encode(memberDto.getPassword()))
+                .permission(Permission.Y)
                 .name(memberDto.getName())
                 .bankAccount(memberDto.getBankAccount())
                 .bankName(memberDto.getBankName())
@@ -174,6 +178,30 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean isExistsMemberId(String checkId) {
         return memberRepository.existsByMemberId(checkId);
+    }
+
+    @Override
+    public List<MemberPermissionResponseDto> getComPermissionList() {
+        Permission ps = Permission.HOLD;
+        String role = "ROLE_COMPANY";
+        List<Member> list = memberRepository.findAllByPermissionAndAuthority(ps, role);
+
+        return list.stream().map(MemberPermissionResponseDto::new).toList();
+    }
+
+    @Transactional
+    @Override
+    public void putPermission(Long memberId, String permissionFlag) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+        if(Permission.valueOf(permissionFlag) == Permission.N){
+            memberRepository.delete(member);
+        }
+        else {
+            member.updatePermission(Permission.valueOf(permissionFlag));
+            memberRepository.save(member);
+        }
+
     }
 
     @Transactional
