@@ -3,6 +3,7 @@ import Web3 from "web3";
 import TokenMarketplaceABI from "./Contract/TokenMarketplace.json";
 import IERC20ABI from "./Contract/IERC20.json";
 import FundRaisingPage from "./FundRaising";
+import TokenManagementComponent from "./MintTokenComponent";
 
 const web3 = new Web3((window as any).ethereum);
 
@@ -271,6 +272,7 @@ return (
 
       {/* FundRaisingPage 컴포넌트 */}
       <FundRaisingPage />
+      <TokenManagementComponent />
     </header>
   </div>
 );

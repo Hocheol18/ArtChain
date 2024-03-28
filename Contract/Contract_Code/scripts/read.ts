@@ -6,7 +6,7 @@ async function main1() {
   const contract = ContractFactory.attach(contractAddress);
 
   // 토큰 민트
-  await contract.mintTokens(1000);
+  await contract.mintTokens(process.argv[2]);
 
   // 토큰 소각
   // const burnToken = ethers.utils.parseUnits("10000", "ether");
