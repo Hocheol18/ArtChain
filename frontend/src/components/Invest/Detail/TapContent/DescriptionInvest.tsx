@@ -14,14 +14,15 @@ import DescriptionPoster from "../../../../assets/inveset-description-tmp-img.jp
 import { Schedule } from "../../../../type/invest.interface";
 
 interface Props {
+  poster: string;
   scheduleList: Schedule[];
 }
 
-export const DescriptionInvest = ({ scheduleList }: Props) => {
+export const DescriptionInvest = ({ poster, scheduleList }: Props) => {
   return (
     <Center py={3} mb={"70px"} display={"flex"} flexDirection={"column"}>
       {/* 소개 포스터 */}
-      <Image src={DescriptionPoster} w={"100%"} />
+      <Image src={poster} w={"100%"} alt="설명 포스터" />
 
       {/* 일정 */}
       <Center

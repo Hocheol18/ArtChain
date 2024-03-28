@@ -44,7 +44,10 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
     switch (key) {
       case "descActive":
         setShowComponent(
-          <DescriptionInvest scheduleList={fundingData.scheduleList} />
+          <DescriptionInvest
+            poster={fundingData.poster}
+            scheduleList={fundingData.scheduleList}
+          />
         );
         break;
       case "structureActive":
@@ -59,10 +62,19 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
         );
         break;
       case "expectRateActive":
-        setShowComponent(<ExpectRateInvest />);
+        setShowComponent(
+          <ExpectRateInvest
+            expectedReturnList={fundingData.expectedReturnList}
+          />
+        );
         break;
       case "noticeActive":
-        setShowComponent(<NoticeInvest />);
+        setShowComponent(
+          <NoticeInvest
+            entId={fundingData.entId}
+            noticeList={fundingData.noticeList}
+          />
+        );
         break;
       case "dangerActive":
         setShowComponent(<DangerInvest />);

@@ -140,7 +140,7 @@ function App() {
 
                 {/* 작품 공지사항 상세보기 */}
                 <Route
-                  path="/invest/:investId/notice/:noticeId"
+                  path="/invest/:fundingId/notice/:noticeId"
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <InvestNoticeDetail />

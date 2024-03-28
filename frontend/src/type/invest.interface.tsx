@@ -1,3 +1,4 @@
+//투자리스트 조회 param
 export interface GetFunddingListParams {
   category: string;
   status: string;
@@ -6,6 +7,7 @@ export interface GetFunddingListParams {
   size: number;
 }
 
+//투자리스트 조회 응답
 export interface GetFunddingListResponse {
   id: number;
   entId: number;
@@ -22,6 +24,7 @@ export interface GetFunddingListResponse {
   settlement: string;
 }
 
+//투자상세보기 param
 export interface GetFundingParams {
   fundingId: string | undefined;
 }
@@ -85,4 +88,9 @@ export interface GetFundingResponse {
   expectedReturnList: ExpectedReturn[];
   saleList: Sale[];
   costList: Cost[];
+}
+
+export interface GetNoticeParams {
+  fundingId: string | undefined;
+  fundingNoticeId: string | undefined;
 }

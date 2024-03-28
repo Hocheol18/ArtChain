@@ -3,10 +3,13 @@ import {
   GetFunddingListResponse,
   GetFundingParams,
   GetFundingResponse,
+  GetNoticeParams,
+  Notice,
 } from "../type/invest.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios } from "./https";
 
+//투자 리스트 보기
 export const getFunddingList = async (
   params: GetFunddingListParams
 ): Promise<GetFunddingListResponse[] | string> => {
@@ -28,6 +31,7 @@ export const getFunddingList = async (
   }
 };
 
+//투자 상세보기
 export const getFundding = async (
   params: GetFundingParams
 ): Promise<GetFundingResponse> => {
@@ -38,4 +42,13 @@ export const getFundding = async (
   const response = await localAxios.get(url);
 
   return response.data.data;
+};
+
+//투자 공지사항 상세보기
+export const getNotice = async (params: GetNoticeParams): Promise<Notice> => {
+  const { fundingId, fundingNoticeId } = params;
+  const url = `/funding/${fundingId}/notice/${fundingNoticeId}`;
+
+  const response = await localAxios.get(url);
+  return response.data;
 };
