@@ -37,11 +37,17 @@ public class MemberController {
         return DefaultResponse.toResponseEntity(HttpStatus.OK,SUCCESS_USER_MAIN_VIEW, dto);
     }
 
-//    @GetMapping("/individual")
-//    public ResponseEntity<DefaultResponse<MemberUserResponseDto>> getUserInfo(@AuthenticationPrincipal CustomUserDetails member) {
-//        MemberUserResponseDto memberUserResponseDto = memberService.getUserInfo(member);
-//        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_USER_VIEW, memberUserResponseDto);
-//    }
+    @GetMapping("/checkId")
+    public ResponseEntity<DefaultResponse<Object>> getCheckId(@RequestParam String checkId) {
+        boolean isExists = memberService.isExistsMemberId(checkId);
+        if (isExists) {
+            // 이미 존재하는 아이디인 경우
+            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_ALREADY_EXIST_MEMBERID);
+        } else {
+            // 사용 가능한 아이디인 경우
+            return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_USER_MEMBERID_CHECK);
+        }
+    }
 
     @GetMapping("/individual")
     public ResponseEntity<DefaultResponse<MemberUserMypageResponseListDto>> getUserMypage(@AuthenticationPrincipal CustomUserDetails member) {

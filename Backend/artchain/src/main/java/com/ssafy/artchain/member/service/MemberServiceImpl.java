@@ -171,6 +171,11 @@ public class MemberServiceImpl implements MemberService {
         return new MemberMainUserInfoResponseDto(memberEntity);
     }
 
+    @Override
+    public boolean isExistsMemberId(String checkId) {
+        return memberRepository.existsByMemberId(checkId);
+    }
+
     @Transactional
     protected void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
 

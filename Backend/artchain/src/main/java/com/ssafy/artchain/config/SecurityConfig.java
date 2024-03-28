@@ -119,7 +119,8 @@ public class SecurityConfig {
                         "/api/market/detail",
                         "/api/funding/list",
                         "/api/funding/{fundingId}",
-                        "/api/funding/{fundingId}/notice/{fundingNoticeId}"
+                        "/api/funding/{fundingId}/notice/{fundingNoticeId}",
+                        "/api/member/checkId"
                 ).permitAll()
                 .anyRequest().authenticated());
 //                    .anyRequest().permitAll());
