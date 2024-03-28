@@ -191,12 +191,16 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void putPermission(Long memberId) {
+    public void putPermission(Long memberId, String permissionFlag) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
-
-        member.updatePermission(Permission.Y);
-        memberRepository.save(member);
+        if(Permission.valueOf(permissionFlag) == Permission.N){
+            memberRepository.delete(member);
+        }
+        else {
+            member.updatePermission(Permission.valueOf(permissionFlag));
+            memberRepository.save(member);
+        }
 
     }
 

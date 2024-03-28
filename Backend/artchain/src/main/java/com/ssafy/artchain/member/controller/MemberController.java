@@ -71,8 +71,8 @@ public class MemberController {
     }
 
     @PutMapping("/permission")
-    public ResponseEntity<DefaultResponse<Object>> putPermission(@RequestParam Long memberId){
-        memberService.putPermission(memberId);
+    public ResponseEntity<DefaultResponse<Object>> putPermission(@RequestParam Long memberId, @RequestParam String permissionFlag){
+        memberService.putPermission(memberId,permissionFlag);
         return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_PERMISSION_COMPANY_PUT);
     }
 
