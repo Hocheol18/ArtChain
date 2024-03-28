@@ -6,12 +6,15 @@ import com.ssafy.artchain.coin.dto.response.CoinMainResponseDto;
 import com.ssafy.artchain.coin.entity.Coin;
 import com.ssafy.artchain.coin.entity.InoutFlag;
 import com.ssafy.artchain.coin.repository.CoinRepository;
+import com.ssafy.artchain.market.dto.MarketPieceTradeHistoryResponseDto;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,13 +84,13 @@ public class CoinServiceImpl implements CoinService{
     }
 
     @Override
-    public List<CoinHistoryResponseDto> getCoinChargeList(CustomUserDetails member, String inoutFlag) {
+    public List<CoinHistoryResponseDto> getCoinChargeList(CustomUserDetails member, String inoutFlag, Pageable pageable) {
         Long memberId = member.getId();
-        List<Coin> list = coinRepository.findAllByMemberIdAndInoutFlag(memberId, InoutFlag.valueOf(inoutFlag));
-        List<CoinHistoryResponseDto> dtoList = new ArrayList<>();
-        for(Coin now: list){
-            dtoList.add(new CoinHistoryResponseDto(now));
-        }
+        Page<Coin> list = coinRepository.findAllByMemberIdAndInoutFlag(memberId, InoutFlag.valueOf(inoutFlag), pageable);
+        List<CoinHistoryResponseDto> dtoList = list.getContent()
+                .stream()
+                .map(CoinHistoryResponseDto::new)
+                .toList();
         return dtoList;
     }
 }

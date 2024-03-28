@@ -9,6 +9,9 @@ import com.ssafy.artchain.coin.service.CoinServiceImpl;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,8 +44,8 @@ public class CoinController {
     }
 
     @GetMapping("/history")
-    public ResponseEntity<DefaultResponse<List<CoinHistoryResponseDto>>> getCoinHistoryList(@AuthenticationPrincipal CustomUserDetails member, @RequestParam String inoutFlag){
-        List<CoinHistoryResponseDto> list = coinService.getCoinChargeList(member, inoutFlag);
+    public ResponseEntity<DefaultResponse<List<CoinHistoryResponseDto>>> getCoinHistoryList(@AuthenticationPrincipal CustomUserDetails member, @RequestParam String inoutFlag, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        List<CoinHistoryResponseDto> list = coinService.getCoinChargeList(member, inoutFlag, pageable);
         return DefaultResponse.toResponseEntity(HttpStatus.OK,SUCCESS_COIN_MAIN_VIEW,list);
     }
 
