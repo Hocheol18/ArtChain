@@ -12,7 +12,7 @@ import { localAxios } from "./https";
 //투자 리스트 보기
 export const getFunddingList = async (
   params: GetFunddingListParams
-): Promise<GetFunddingListResponse[] | string> => {
+): Promise<GetFunddingListResponse | string> => {
   const { category, status, allowStat, page, size } = params;
   const url = `/funding/list${makeQuerystring({
     category,
@@ -25,7 +25,7 @@ export const getFunddingList = async (
   const response = await localAxios.get(url);
 
   if (response.data.data && response.data.data.fundingList) {
-    return response.data.data.fundingList;
+    return response.data.data;
   } else {
     return response.data.message;
   }

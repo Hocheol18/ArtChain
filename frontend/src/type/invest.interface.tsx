@@ -8,7 +8,7 @@ export interface GetFunddingListParams {
 }
 
 //투자리스트 조회 응답
-export interface GetFunddingListResponse {
+export interface FunddingList {
   id: number;
   entId: number;
   name: string;
@@ -24,6 +24,11 @@ export interface GetFunddingListResponse {
   settlement: string;
   investorNum: number;
   finalReturnRate: number;
+}
+
+export interface GetFunddingListResponse {
+  totalCount: number;
+  fundingList: FunddingList[];
 }
 
 //투자상세보기 param
