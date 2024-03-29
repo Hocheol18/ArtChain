@@ -1,4 +1,18 @@
-import { Box, Input, Center, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Input,
+  Center,
+  Flex,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 import { InvestContent } from "../components/Invest/InvestContent";
@@ -7,10 +21,36 @@ import useUserInfo from "../store/useUserInfo";
 import { getFundding } from "../api/invest";
 import { useParams } from "react-router-dom";
 import { GetFundingResponse } from "../type/invest.interface";
+import { FundRaisingPage } from "../FundRaising";
 
 export const Invest = () => {
   //투자하기 누르면 실행될 함수
-  const handleInvest = () => {};
+  const handleInvest = async () => {
+    onOpen();
+    console.log(userInfo.metamask);
+    //0이 아니고 숫자라면
+    if (!isNaN(value) && value !== 0) {
+      try {
+        //transactionHash
+        const transactionHash = await FundRaisingPage({
+          // account: "0x9630b4B3d0593C02A91836b4B985f1802757eBF4",
+          account: userInfo.metamask,
+          tokenAmount: value.toString(),
+        });
+        if (transactionHash) {
+          setTransactionHashCode(transactionHash);
+        } else {
+          alert("조각 구매 중 에러가 발생하였습니다. 다시 시도해주세요.");
+        }
+      } catch (err) {
+        //트랜잭션 에러
+        alert("조각 구매 중 에러가 발생하였습니다. 다시 시도해주세요.");
+      }
+    } else {
+      // 여기 커스텀 에러
+      alert("조각 개수를 입력해주세요");
+    }
+  };
 
   //url에서 fundingId 가져오고
   const { fundingId } = useParams();
@@ -24,6 +64,9 @@ export const Invest = () => {
 
   //조각구매갯수
   const [value, setValue] = useState<number>(0);
+
+  //transactionHash (거래 성공 후 보낼 거)
+  const [transactionHashCode, setTransactionHashCode] = useState<string>();
 
   const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value, 10);
@@ -44,6 +87,9 @@ export const Invest = () => {
     getFundingData();
   }, []);
 
+  //모달을 위한
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
       {fundingData && (
@@ -56,6 +102,22 @@ export const Invest = () => {
           <Center my={10} textColor={""} fontSize={"25"} fontWeight={"bold"}>
             몇조각을 구매할까요?
           </Center>
+
+          <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent bg={"white"} w="80%" h="50%">
+              <ModalHeader>Create your account</ModalHeader>
+
+              <ModalBody pb={6}>"ㄴㅇㄹㄴㅇㄹ"</ModalBody>
+
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3}>
+                  Save
+                </Button>
+                <Button onClick={onClose}>Cancel</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
 
           <Box
             px={7}
