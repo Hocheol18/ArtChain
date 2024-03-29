@@ -10,7 +10,7 @@ const FundRaisingPage: React.FC = () => {
   const [status, setStatus] = useState<string>('');
   const web3 = new Web3((window as any).ethereum);
   const ReceviceArtCoinContractAddress =
-    "0x5CbdFA4496ABd5115072656097c2aD4877322Fb6";
+    "0x94E2Dc83093531e2b2e7171cE2243B2750A04482";
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
   
@@ -22,8 +22,8 @@ useEffect(() => {
           .then((accounts: string[]) => {
               if (accounts.length > 0) {
                   setAccount(accounts[0]);
-              }
-          })
+                }
+            })
           .catch((error: any) => {
               // 사용자가 거절할 경우 또는 오류가 발생한 경우 처리
               console.error("MetaMask 계정 연결 요청에 실패했습니다.", error);
