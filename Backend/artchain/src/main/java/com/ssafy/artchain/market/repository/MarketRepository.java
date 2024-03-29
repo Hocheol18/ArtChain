@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface MarketRepository extends JpaRepository<Market, Long> {
 
@@ -19,7 +17,7 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
 //    조각 당 높은 가격순
     Page<Market> findAllByFundingIdAndStatusOrderByCoinPerPieceDesc(Long fundingId, String status, Pageable pageable);
 //    조각 당 낮은 가격순
-    Page<Market> findAllByFundingIdAndStatusOrderByCoinPerPieceAsc(Long fundingId, String status, Pageable pageable);
+    Page<Market> findAllByFundingIdAndStatusOrderByCoinPerPiece(Long fundingId, String status, Pageable pageable);
     //    일반 조회
     Page<Market> findAllByFundingIdAndStatus(Long fundingId, String status, Pageable pageable);
     Page<Market> findAllByFundingId(Long fundingId, Pageable pageable);

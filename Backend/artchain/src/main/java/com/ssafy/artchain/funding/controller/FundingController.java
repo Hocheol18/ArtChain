@@ -350,7 +350,7 @@ public class FundingController {
 
     /**
      * 관리자 페이지 투자 내역 생성
-     *
+     * 관리자 권한 확인하는 로직 넣을것
      */
     @GetMapping("/permission")
     public ResponseEntity<DefaultResponse<List<FundingPermissionResponseDto>>> getComPermissionList(){
