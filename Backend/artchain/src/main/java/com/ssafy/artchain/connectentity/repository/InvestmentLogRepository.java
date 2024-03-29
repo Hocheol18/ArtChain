@@ -16,7 +16,11 @@ public interface InvestmentLogRepository extends JpaRepository<InvestmentLog, Lo
 
     List<InvestmentLog> findAllByFunding(Funding funding);
 
-    @Query("SELECT new com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto(f.id, f.name, p.pieceCount) FROM InvestmentLog il JOIN il.member m JOIN il.funding f JOIN PieceOwner p On m.id = p.memberId WHERE m.id = :memberId and f.progressStatus = :state")
+    @Query("SELECT new com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto(f.id, f.name, p.pieceCount) " +
+            "FROM InvestmentLog il JOIN il.member m " +
+            "JOIN il.funding f " +
+            "JOIN PieceOwner p On m.id = p.memberId " +
+            "WHERE m.id = :memberId and f.progressStatus = :state")
     List<MarketRegistFundingNameResponseDto> findFundingNamesByMemberId(@Param("memberId") Long memberId, FundingProgressStatus state);
 
     @Query("SELECT COUNT(DISTINCT il.member) FROM InvestmentLog il WHERE il.funding.id = :fundingId")

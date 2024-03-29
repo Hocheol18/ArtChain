@@ -19,9 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.NoSuchElementException;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -72,7 +76,7 @@ public class MarketServiceImpl implements MarketService {
         } else if (sortFlag.equals("높은가격순")) {
             marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceDesc(fundingId, LISTED, pageable);
         } else if (sortFlag.equals("낮은가격순")) {
-            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPieceAsc(fundingId, LISTED, pageable);
+            marketPage = marketRepository.findAllByFundingIdAndStatusOrderByCoinPerPiece(fundingId, LISTED, pageable);
         } else {
             marketPage = marketRepository.findAllByFundingIdAndStatus(fundingId, LISTED, pageable);
         }
@@ -189,5 +193,43 @@ public class MarketServiceImpl implements MarketService {
         }
 
         return 1;
+    }
+
+//    테스트가 더 필요하긴 함
+    @Override
+    public List<MarketGraphResponseDto> getGraphList(Long fundingId) {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate endDate = now.toLocalDate(); // 시간 정보 제외
+        LocalDate startDate = endDate.minusWeeks(1);
+
+        List<MarketGraphResponseDto> responseDtos = marketRepository.findAvgCoinPerPiecePerDay(fundingId, startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
+        Map<LocalDate, MarketGraphResponseDto> dtoMap = new HashMap<>();
+
+        // 조회된 데이터를 Map에 날짜별로 저장합니다.
+        for (MarketGraphResponseDto dto : responseDtos) {
+            dtoMap.put(dto.getDate(), dto); // LocalDate로 변환하여 저장
+        }
+
+        List<MarketGraphResponseDto> result = new ArrayList<>();
+        long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+
+        // 시작일부터 종료일까지 모든 날짜를 순회합니다.
+        for (long i = 0; i <= daysBetween; i++) {
+            LocalDate currentDate = startDate.plusDays(i);
+
+            // 해당 날짜에 데이터가 있는지 확인합니다.
+            if (dtoMap.containsKey(currentDate)) {
+                // 데이터가 있으면 결과 리스트에 추가합니다.
+                result.add(dtoMap.get(currentDate));
+            } else {
+                // 데이터가 없는 경우 null 값을 가진 DTO를 생성하여 결과 리스트에 추가합니다.
+                result.add(new MarketGraphResponseDto(Date.valueOf(currentDate), 0.00));
+            }
+        }
+
+        return result;
+
+
     }
 }

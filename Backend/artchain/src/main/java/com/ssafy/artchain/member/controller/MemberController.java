@@ -16,11 +16,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.ssafy.polaris.book.response.StatusCode.*;
@@ -65,15 +68,36 @@ public class MemberController {
     }
 
     @GetMapping("/permission")
-    public ResponseEntity<DefaultResponse<List<MemberPermissionResponseDto>>> getComPermissionList(){
-        List<MemberPermissionResponseDto> memberPermissionResponseDtoList = memberService.getComPermissionList();
-        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_PERMISSION_COMPANYS_VIEW, memberPermissionResponseDtoList);
+    public ResponseEntity<DefaultResponse<List<MemberPermissionResponseDto>>> getComPermissionList(@AuthenticationPrincipal CustomUserDetails admin){
+        Collection<? extends GrantedAuthority> authorities = admin.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        GrantedAuthority auth = iterator.next();
+        String authority = auth.getAuthority();
+
+        if(authority.equals("ROLE_ADMIN")){
+            List<MemberPermissionResponseDto> memberPermissionResponseDtoList = memberService.getComPermissionList();
+            return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_PERMISSION_COMPANYS_VIEW, memberPermissionResponseDtoList);
+        }
+        else {
+            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
+        }
     }
 
     @PutMapping("/permission")
-    public ResponseEntity<DefaultResponse<Object>> putPermission(@RequestParam Long memberId, @RequestParam String permissionFlag){
-        memberService.putPermission(memberId,permissionFlag);
-        return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_PERMISSION_COMPANY_PUT);
+    public ResponseEntity<DefaultResponse<Object>> putPermission(@AuthenticationPrincipal CustomUserDetails admin, @RequestParam Long memberId, @RequestParam String permissionFlag){
+        Collection<? extends GrantedAuthority> authorities = admin.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        GrantedAuthority auth = iterator.next();
+        String authority = auth.getAuthority();
+
+        if(authority.equals("ROLE_ADMIN")){
+            memberService.putPermission(memberId,permissionFlag);
+            return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_PERMISSION_COMPANY_PUT);
+        }
+        else {
+            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
+        }
+
     }
 
 

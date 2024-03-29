@@ -99,6 +99,14 @@ public class MarketController {
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_REGIST_FORM_VIEW, fundingNameList);
     }
 
+    @GetMapping("/graph")
+    public ResponseEntity<DefaultResponse<List<MarketGraphResponseDto>>> getGraphList(@RequestParam Long fundingId) {
+
+        List<MarketGraphResponseDto> graphList = marketService.getGraphList(fundingId);
+
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_PIECE_TRADE_HISTORY_VIEW, graphList);
+    }
+
     @PostMapping
     public ResponseEntity<DefaultResponse<Object>> createMarketRegist(@AuthenticationPrincipal CustomUserDetails member, @RequestBody MarketRegistRequestDto dto) {
         marketService.createMarketRegist(member, dto);
