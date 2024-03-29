@@ -33,7 +33,7 @@ public class SettlementServiceImpl implements SettlemnetService {
     private final S3Service s3Service;
     private final EntityManager entityManager;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
-    private final String ROLE_ADMIN = "ROLD_ADMIN";
+    private final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Override
     public Long createSettlementRequest(MultipartFile file, SettlementRequestDto dto, CustomUserDetails member) {
@@ -86,16 +86,15 @@ public class SettlementServiceImpl implements SettlemnetService {
 
     @Override
     public SettlementResponseDto getSettlement(Long settlementId, CustomUserDetails member) {
-        Settlement settlement = settlementRepository.findById(settlementId)
-                .orElse(null);
+        SettlementResponseDto settlement = settlementRepository.getSettlement(settlementId);
         if (settlement == null ||
                 (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN)) &&
-                        !settlement.getId().equals(member.getId()))
+                        !settlement.getEntId().equals(member.getId()))
         ) {
             return null;
         }
 
-        return new SettlementResponseDto(settlement);
+        return settlement;
     }
 
     @Override
