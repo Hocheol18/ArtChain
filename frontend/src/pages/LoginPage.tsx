@@ -21,7 +21,7 @@ import MetaMask from "../components/Login/Metamask";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { userInfo, setUserInfo } = useUserInfo();
+  const { setUserInfo } = useUserInfo();
   const toast = useToast();
 
   const [values, setValues] = useState<LoginInterface>({
@@ -36,33 +36,121 @@ export const LoginPage = () => {
     }));
   };
 
-  const tmp = async () => {
+  const effect = (res: any) => {
+    tmp(
+      res.data.data.memberUserMypageResponseDtoList[0].name,
+      res.data.data.memberUserMypageResponseDtoList[0].walletBalance
+    );
+  };
+
+  const tmp = async (nickname: string, walletBalance: string) => {
     const res = await MetaMask();
     switch (res) {
       case "MetamaskUninstall":
-        console.log("언인스톨");
+        toast({
+          duration: 2000,
+          isClosable: true,
+          position: "top",
+          render: () => (
+            <Flex
+              color="white"
+              mt={"50px"}
+              bg="#C70000"
+              p={"1rem"}
+              borderRadius={"0.7rem"}
+              alignItems={"center"}
+            >
+              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+              <Center ml={"1rem"}>
+                <Text as={"b"}>메타마스크를 설치해주세요</Text>
+              </Center>
+            </Flex>
+          ),
+        });
+        navigate("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
         break;
       case "MetamaskRejct":
-        console.log("리젝에러");
+        toast({
+          duration: 2000,
+          isClosable: true,
+          position: "top",
+          render: () => (
+            <Flex
+              color="white"
+              mt={"50px"}
+              bg="#C70000"
+              p={"1rem"}
+              borderRadius={"0.7rem"}
+              alignItems={"center"}
+            >
+              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+              <Center ml={"1rem"}>
+                <Text as={"b"}>사용자 거절</Text>
+              </Center>
+            </Flex>
+          ),
+        });
         break;
       case "MetamaskAccountNotFound":
-        console.log("계정오류");
+        toast({
+          duration: 2000,
+          isClosable: true,
+          position: "top",
+          render: () => (
+            <Flex
+              color="white"
+              mt={"50px"}
+              bg="#C70000"
+              p={"1rem"}
+              borderRadius={"0.7rem"}
+              alignItems={"center"}
+            >
+              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+              <Center ml={"1rem"}>
+                <Text as={"b"}>계정을 찾을 수 없습니다</Text>
+              </Center>
+            </Flex>
+          ),
+        });
         break;
       default:
-        setUserInfo({
-          profileUrl: "",
-          nickname: userInfo.nickname,
-          walletBalance: userInfo.walletBalance,
-          isLogin: userInfo.isLogin,
-          metamask: res,
-        });
+        setTimeout(() => {
+          toast({
+            duration: 2000,
+            isClosable: true,
+            position: "top",
+            render: () => (
+              <Flex
+                color="white"
+                mt={"50px"}
+                bg="blue.300"
+                p={"1rem"}
+                borderRadius={"0.7rem"}
+                alignItems={"center"}
+              >
+                <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+                <Center ml={"1rem"}>
+                  <Text as={"b"}>메타마스크 연결 성공</Text>
+                </Center>
+              </Flex>
+            ),
+          });
+          setUserInfo({
+            profileUrl: "",
+            nickname: nickname,
+            walletBalance: walletBalance,
+            isLogin: true,
+            metamask: res,
+          });
+        }, 2000);
+        break;
     }
   };
 
   const loginDone = async (res: any) => {
     sessionStorage.setItem("accessToken", res.headers.authorization);
     try {
-      const res = await ProfileAxios();
+      await ProfileAxios().then((res) => effect(res));
       toast({
         duration: 2000,
         isClosable: true,
@@ -83,15 +171,7 @@ export const LoginPage = () => {
           </Flex>
         ),
       });
-      tmp();
-      setUserInfo({
-        profileUrl: "",
-        nickname: res.data.data.memberUserMypageResponseDtoList[0].nickname,
-        walletBalance:
-          res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
-        isLogin: true,
-        metamask: "",
-      });
+
       navigate("../");
     } catch (err) {
       console.log(err);

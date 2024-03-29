@@ -1,4 +1,3 @@
-import { useState } from "react";
 import MainCarousel from "../components/Main/MainCarousel";
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import Poster from "../components/Main/Poster";
@@ -7,7 +6,6 @@ import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 
 export default function MainPage() {
-
   return (
     <>
       <MainCarousel />
