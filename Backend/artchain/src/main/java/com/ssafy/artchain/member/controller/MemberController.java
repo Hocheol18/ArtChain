@@ -4,6 +4,7 @@ import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
+import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
 import com.ssafy.artchain.member.dto.response.MemberComMypageResponseDto;
 import com.ssafy.artchain.member.dto.response.MemberMainUserInfoResponseDto;
 import com.ssafy.artchain.member.dto.response.MemberPermissionResponseDto;
@@ -40,7 +41,7 @@ public class MemberController {
     public ResponseEntity<DefaultResponse<MemberMainUserInfoResponseDto>> getMainLoginUserInfo(@AuthenticationPrincipal CustomUserDetails member) {
         MemberMainUserInfoResponseDto dto = memberService.getMainLoginUserInfo(member);
 
-        return DefaultResponse.toResponseEntity(HttpStatus.OK,SUCCESS_USER_MAIN_VIEW, dto);
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_USER_MAIN_VIEW, dto);
     }
 
     @GetMapping("/checkId")
@@ -68,33 +69,31 @@ public class MemberController {
     }
 
     @GetMapping("/permission")
-    public ResponseEntity<DefaultResponse<List<MemberPermissionResponseDto>>> getComPermissionList(@AuthenticationPrincipal CustomUserDetails admin){
+    public ResponseEntity<DefaultResponse<List<MemberPermissionResponseDto>>> getComPermissionList(@AuthenticationPrincipal CustomUserDetails admin) {
         Collection<? extends GrantedAuthority> authorities = admin.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String authority = auth.getAuthority();
 
-        if(authority.equals("ROLE_ADMIN")){
+        if (authority.equals("ROLE_ADMIN")) {
             List<MemberPermissionResponseDto> memberPermissionResponseDtoList = memberService.getComPermissionList();
             return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_PERMISSION_COMPANYS_VIEW, memberPermissionResponseDtoList);
-        }
-        else {
+        } else {
             return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
         }
     }
 
     @PutMapping("/permission")
-    public ResponseEntity<DefaultResponse<Object>> putPermission(@AuthenticationPrincipal CustomUserDetails admin, @RequestParam Long memberId, @RequestParam String permissionFlag){
+    public ResponseEntity<DefaultResponse<Object>> putPermission(@AuthenticationPrincipal CustomUserDetails admin, @RequestParam Long memberId, @RequestParam String permissionFlag) {
         Collection<? extends GrantedAuthority> authorities = admin.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String authority = auth.getAuthority();
 
-        if(authority.equals("ROLE_ADMIN")){
-            memberService.putPermission(memberId,permissionFlag);
+        if (authority.equals("ROLE_ADMIN")) {
+            memberService.putPermission(memberId, permissionFlag);
             return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_PERMISSION_COMPANY_PUT);
-        }
-        else {
+        } else {
             return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
         }
 
@@ -113,11 +112,27 @@ public class MemberController {
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_NEW_NORMAL_USER, 200);
     }
 
+    @PutMapping("/walletInfo")
+    public ResponseEntity<?> putMemberWalletInfo(@AuthenticationPrincipal CustomUserDetails member, MemberWalletInfoRequestDto walletInfo) {
+        Collection<? extends GrantedAuthority> authorities = member.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        GrantedAuthority auth = iterator.next();
+        String authority = auth.getAuthority();
+
+//        회사 자격은 지갑 등록 못함
+        if (authority.equals("ROLE_COMPANY")) {
+            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
+        } else {
+            memberService.putMemberWalletInfo(member, walletInfo);
+            return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_USER_WALLET_PUT);
+        }
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String refresh = memberService.refreshToken(httpServletRequest, httpServletResponse);
 
-        if(refresh.equals("Authorization")){
+        if (refresh.equals("Authorization")) {
             return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_NEW_ACCESS_TOKEN, refresh);
 //            새로운 엑세스
         } else {

@@ -17,6 +17,7 @@ public enum StatusCode {
 	SUCCESS_USER_MEMBERID_CHECK(200, "사용 가능한 아이디입니다."),
 	SUCCESS_PERMISSION_COMPANYS_VIEW(200, "승인 대기중인 기업 목록 조회 성공"),
 	SUCCESS_PERMISSION_COMPANY_PUT(200, "승인 대기중인 기업 처리 성공"),
+	SUCCESS_USER_WALLET_PUT(200,"지갑 정보 등록 성공"),
 	// 201 CREATED : 새로운 리소스 생성
 //	SUCCESS_CREATE_USER_BOOK(201, "사용자 도서 생성 성공"),
 
