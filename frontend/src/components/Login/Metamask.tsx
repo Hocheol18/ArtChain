@@ -5,6 +5,7 @@ export default async function MetaMask(): Promise<string> {
         method: "eth_requestAccounts",
       });
       if (accounts.length > 0) {
+        console.log(accounts[0]);
         return accounts[0]; // This returns the first account
       } else {
         return "MetamaskAccountNotFound"; // No accounts found case
