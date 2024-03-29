@@ -12,7 +12,7 @@ import {
 import LoginUser from "../assets/loginuser.png";
 import kakao from "../assets/kakaologin.png";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LoginInterface } from "../type/login.interface";
 import { LoginAxios, ProfileAxios } from "../api/user";
 import useUserInfo from "../store/useUserInfo";
@@ -21,10 +21,8 @@ import MetaMask from "../components/Login/Metamask";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { setUserInfo } = useUserInfo();
+  const { userInfo, setUserInfo } = useUserInfo();
   const toast = useToast();
-  const { userInfo } = useUserInfo();
-  const [wallet, setWallet] = useState<string>("");
 
   const [values, setValues] = useState<LoginInterface>({
     username: "",
@@ -51,19 +49,15 @@ export const LoginPage = () => {
         console.log("계정오류");
         break;
       default:
-        setWallet(res);
+        setUserInfo({
+          profileUrl: "",
+          nickname: userInfo.nickname,
+          walletBalance: userInfo.walletBalance,
+          isLogin: userInfo.isLogin,
+          metamask: res,
+        });
     }
   };
-
-  useEffect(() => {
-    if (userInfo.isLogin) {
-      tmp();
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    console.log(userInfo.metamask);
-  }, [userInfo]);
 
   const loginDone = async (res: any) => {
     sessionStorage.setItem("accessToken", res.headers.authorization);
@@ -89,13 +83,14 @@ export const LoginPage = () => {
           </Flex>
         ),
       });
+      tmp();
       setUserInfo({
         profileUrl: "",
         nickname: res.data.data.memberUserMypageResponseDtoList[0].nickname,
         walletBalance:
           res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
         isLogin: true,
-        metamask: wallet,
+        metamask: "",
       });
       navigate("../");
     } catch (err) {
