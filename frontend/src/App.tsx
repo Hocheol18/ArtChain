@@ -4,14 +4,17 @@ import TokenMarketplaceABI from "./Contract/TokenMarketplace.json";
 import IERC20ABI from "./Contract/IERC20.json";
 import FundRaisingPage from "./FundRaising";
 import TokenManagementComponent from "./MintTokenComponent";
+import Moralis from "moralis";
 
 const web3 = new Web3((window as any).ethereum);
 
 const TokenMarketplaceContractAddress =
   "0xb889a3f84DD29f49C75e673cB1f0114cd3c27601"; // TokenMarketplace 스마트 계약 주소
+let myTokens: any;
 
 const App: React.FC = () => {
   const [account, setAccount] = useState<string>("");
+  const [accountInitialized, setAccountInitialized] = useState<boolean>(false);
   const [tokenList, setTokenList] = useState<
     { address: string; price: string; amount: string }[]
   >([]);
@@ -27,6 +30,7 @@ const App: React.FC = () => {
     tokenAmount: "",
     price: "",
   });
+  const [tokens, setTokens] = useState<any[]>([]);
 
   useEffect(() => {
     // MetaMask 계정 연결 확인
@@ -39,9 +43,35 @@ const App: React.FC = () => {
           }
         });
     }
+    if (!Moralis.Core.isStarted) {
+      // Moralis SDK 시작
+      startMoralis();
+      console.log("start moralis");
+    }
+    // Moralis에서 토큰 목록 가져오기
   }, []);
+  const startMoralis = async () => {
+    await Moralis.start({
+      apiKey:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6ImU5MTdjOGYzLWEzZDAtNGM2Yi1hNjA5LWZjODMxZGNjOWQxYyIsIm9yZ0lkIjoiMzg1MTM3IiwidXNlcklkIjoiMzk1NzQyIiwidHlwZUlkIjoiNmIyNGNlYTMtY2QxNC00OTEyLWJhYjYtMzUzMDY2ZDQwZmE0IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3MTE2MjUyMzcsImV4cCI6NDg2NzM4NTIzN30.gNio_V_VWV03nfw-Kd2z5B5ejrIvzD7sj8YnLUGGJGM",
+    });
+    console.log("moralis start end");
+  };
 
+  const fetchTokens = async () => {
+    try {
+      console.log(account);
+      myTokens = await Moralis.EvmApi.token.getWalletTokenBalances({
+        chain: "0xaa36a7", // sepolia
+        address: account,
+      });
 
+      console.log(myTokens.raw);
+      setTokens(myTokens);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   // MetaMask 연결 함수
   const connectWallet = async () => {
     if ((window as any).ethereum) {
@@ -57,67 +87,74 @@ const App: React.FC = () => {
       alert("MetaMask를 설치해주세요!");
     }
   };
-
+  if (account !== "") {
+    if (accountInitialized == false) {
+      setAccountInitialized(true);
+      fetchTokens();
+    }
+  }
   // 거래 게시글 선택
   const selectTradePost = (index: number) => {
     setSelectedTradePostIndex(index);
   };
   // 거래하기 함수 수정
-const buyToken = async () => {
-  if (selectedTradePostIndex === null) return;
-  const selectedTradePost = tokenList[selectedTradePostIndex];
-  try {
+  const buyToken = async () => {
+    if (selectedTradePostIndex === null) return;
+    const selectedTradePost = tokenList[selectedTradePostIndex];
+    try {
       const marketplaceContract = new web3.eth.Contract(
-          TokenMarketplaceABI.abi,
-          TokenMarketplaceContractAddress
+        TokenMarketplaceABI.abi,
+        TokenMarketplaceContractAddress
       );
       const artTokenContractAddress =
-          "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
+        "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
       const artTokenContract = new web3.eth.Contract(
-          IERC20ABI.abi,
-          artTokenContractAddress
+        IERC20ABI.abi,
+        artTokenContractAddress
       );
 
       // 사용자가 스마트 계약에 대해 특정 양의 토큰을 승인하도록 요청
       const approveTx = await artTokenContract.methods
-          .approve(TokenMarketplaceContractAddress, convertToInteger(selectedTradePost.price))
-          .send({ from: account });
+        .approve(
+          TokenMarketplaceContractAddress,
+          convertToInteger(selectedTradePost.price)
+        )
+        .send({ from: account });
       const approveTxReceipt = await web3.eth.getTransactionReceipt(
-          approveTx.transactionHash
+        approveTx.transactionHash
       );
       if (approveTxReceipt.status) {
-          console.log("토큰 승인 완료");
+        console.log("토큰 승인 완료");
 
-          // 토큰 구매 트랜잭션 보내기
-          const buyTokenTx = await marketplaceContract.methods
-              .buyToken(selectedTradePostIndex)
-              .send({ from: account });
-          console.log("토큰 구매 성공", buyTokenTx);
+        // 토큰 구매 트랜잭션 보내기
+        const buyTokenTx = await marketplaceContract.methods
+          .buyToken(selectedTradePostIndex)
+          .send({ from: account });
+        console.log("토큰 구매 성공", buyTokenTx);
       } else {
-          console.error("토큰 승인 실패");
+        console.error("토큰 승인 실패");
       }
-  } catch (error) {
+    } catch (error) {
       console.error("거래 처리 중 오류가 발생했습니다.", error);
-  }
-};
+    }
+  };
 
-
-// 거래 게시글 추가
-const addTradePost = async (
-  tokenAddress: string,
-  tokenAmount: string,
-  price: string
-) => {
-  try {
+  // 거래 게시글 추가
+  const addTradePost = async (
+    tokenAddress: string,
+    tokenAmount: string,
+    price: string
+  ) => {
+    try {
       const marketplaceContract = new web3.eth.Contract(
-          TokenMarketplaceABI.abi,
-          TokenMarketplaceContractAddress
+        TokenMarketplaceABI.abi,
+        TokenMarketplaceContractAddress
       );
 
       // 토큰 주소가 올바른 형식인지 확인
       if (!web3.utils.isAddress(tokenAddress)) {
-          console.error("유효하지 않은 토큰 주소입니다.");
-          return;
+        console.error("유효하지 않은 토큰 주소입니다.");
+        return;
       }
 
       // 사용자가 입력한 값을 그대로 사용
@@ -129,153 +166,156 @@ const addTradePost = async (
 
       // 거래 게시글 추가 전에 사용자가 특정 양의 토큰을 스마트 계약에 대해 승인하도록 요청
       const approveTx = await tokenContract.methods
-          .approve(TokenMarketplaceContractAddress, convertToInteger(integerTokenAmount))
-          .send({ from: account });
+        .approve(
+          TokenMarketplaceContractAddress,
+          convertToInteger(integerTokenAmount)
+        )
+        .send({ from: account });
       const approveTxReceipt = await web3.eth.getTransactionReceipt(
-          approveTx.transactionHash
+        approveTx.transactionHash
       );
       if (!approveTxReceipt.status) {
-          console.error("토큰 승인에 실패했습니다.");
-          return;
+        console.error("토큰 승인에 실패했습니다.");
+        return;
       }
 
       // 거래 게시글 추가
       await marketplaceContract.methods
-          .addTradePost(tokenAddress, integerTokenAmount, integerPrice)
-          .send({ from: account });
+        .addTradePost(tokenAddress, integerTokenAmount, integerPrice)
+        .send({ from: account });
       fetchTokenList();
-  } catch (error) {
+    } catch (error) {
       console.error("거래 게시글을 추가하는 중 오류가 발생했습니다.", error);
-  }
-};
+    }
+  };
 
-// 가격과 토큰의 양을 정수로 변환하는 함수
-const convertToInteger = (value: string) => {
+  // 가격과 토큰의 양을 정수로 변환하는 함수
+  const convertToInteger = (value: string) => {
     // 부동 소수점 수로 변환
     const floatValue = parseFloat(value);
     // 10^18을 곱하여 처리
-    const integerValue = Math.floor(floatValue * (10 ** 18)).toString();
+    const integerValue = Math.floor(floatValue * 10 ** 18).toString();
     return integerValue;
-};
-
+  };
 
   // 토큰 목록 가져오기
-const fetchTokenList = async () => {
-  try {
-    const marketplaceContract = new web3.eth.Contract(
-      TokenMarketplaceABI.abi,
-      TokenMarketplaceContractAddress
+  const fetchTokenList = async () => {
+    try {
+      const marketplaceContract = new web3.eth.Contract(
+        TokenMarketplaceABI.abi,
+        TokenMarketplaceContractAddress
+      );
+      const tradePosts: {
+        tokenAddress: string;
+        tokenAmount: BigInt;
+        price: BigInt;
+      }[] = await marketplaceContract.methods.getAllPosts().call();
+      const tokenListData: {
+        address: string;
+        amount: string;
+        price: string;
+      }[] = [];
+      for (let i = 0; i < tradePosts.length; i++) {
+        const tradePost = tradePosts[i];
+
+        tokenListData.push({
+          address: tradePost.tokenAddress,
+          amount: tradePost.tokenAmount.toString(),
+          price: tradePost.price.toString(),
+        });
+      }
+      setTokenList(tokenListData);
+    } catch (error) {
+      console.error("토큰 목록을 가져오는 중 오류가 발생했습니다.", error);
+    }
+  };
+
+  // 드롭다운에서 토큰 선택 시
+  const handleTokenSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedTokenAddress = e.target.value;
+    const selectedToken = myTokens.find(
+      (token: any) => token.token_address === selectedTokenAddress
     );
-    const tradePosts: {
-      tokenAddress: string;
-      tokenAmount: BigInt;
-      price: BigInt;
-    }[] = await marketplaceContract.methods.getAllPosts().call();
-    const tokenListData: {
-      address: string;
-      amount: string;
-      price: string;
-    }[] = [];
-    for (let i = 0; i < tradePosts.length; i++) {
-      const tradePost = tradePosts[i];
-      
-      tokenListData.push({
-        address: tradePost.tokenAddress,
-        amount: tradePost.tokenAmount.toString(),
-        price: tradePost.price.toString(),
+    if (selectedToken) {
+      setNewTradePostData({
+        ...newTradePostData,
+        tokenAddress: selectedToken.token_address,
+        // 가격 정보가 없으므로 가격은 임시로 설정하지 않음
       });
     }
-    setTokenList(tokenListData);
-  } catch (error) {
-    console.error("토큰 목록을 가져오는 중 오류가 발생했습니다.", error);
-  }
-};
+  };
 
-
-return (
-  <div className="App">
-    <header className="App-header">
-      {account ? (
-        <p>계정: {account}</p>
-      ) : (
-        <button onClick={connectWallet}>MetaMask 연결</button>
-      )}
-
-      {/* 마켓플레이스에 상장된 토큰 목록 표시 */}
-      <div>
-        <h2>상장된 토큰 목록</h2>
-        <ul>
-          {tokenList.map((token, index) => (
-            <li key={index}>
-              <p>주소: {token.address}</p>
-              <p>가격: {token.price}</p>
-              <p>수량: {token.amount}</p>
-              <button onClick={() => selectTradePost(index)}>구매하기</button>
-            </li>
-          ))}
-        </ul>
-        <button onClick={fetchTokenList}>토큰 목록 업데이트</button>
-      </div>
-
-      {/* 새 거래 게시글 추가 양식 */}
-      <div>
-        <h2>새 거래 게시글 추가</h2>
-        <input
-          type="text"
-          placeholder="토큰 주소"
-          value={newTradePostData.tokenAddress}
-          onChange={(e) =>
-            setNewTradePostData({
-              ...newTradePostData,
-              tokenAddress: e.target.value,
-            })
-          }
-        />
-        <input
-          type="text"
-          placeholder="토큰 양"
-          value={newTradePostData.tokenAmount}
-          onChange={(e) =>
-            setNewTradePostData({
-              ...newTradePostData,
-              tokenAmount: e.target.value,
-            })
-          }
-        />
-        <input
-          type="text"
-          placeholder="가격"
-          value={newTradePostData.price}
-          onChange={(e) =>
-            setNewTradePostData({ ...newTradePostData, price: e.target.value })
-          }
-        />
-        <button
-          onClick={() =>
-            addTradePost(
-              newTradePostData.tokenAddress,
-              newTradePostData.tokenAmount,
-              newTradePostData.price
-            )
-          }
-        >
-          거래 게시글 추가
-        </button>
-      </div>
-
-      {selectedTradePostIndex !== null && (
+  return (
+    <div className="App">
+      <header className="App-header">
+        {account ? (
+          <p>계정: {account}</p>
+        ) : (
+          <button onClick={connectWallet}>MetaMask 연결</button>
+        )}
+        {/* 마켓플레이스에 상장된 토큰 목록 표시 */}
+        {/* Moralis에서 가져온 내 지갑의 토큰 목록을 드롭다운으로 표시 */}
         <div>
-          <h3>선택된 거래 게시글</h3>
-          <button onClick={buyToken}>거래하기</button>
+          <h2>내 토큰 목록</h2>
+          <select onChange={handleTokenSelect}>
+            <option value="">토큰 선택</option>
+            {tokens.length > 0 &&
+              tokens.map((token: any, index: number) => (
+                <option key={index} value={token.token_address}>
+                  {token.name} - {token.balance}
+                </option>
+              ))}
+          </select>
         </div>
-      )}
-
-      {/* FundRaisingPage 컴포넌트 */}
-      <FundRaisingPage />
-      <TokenManagementComponent />
-    </header>
-  </div>
-);
-      }
+        {/* 새 거래 게시글 추가 양식 */}
+        <div>
+          <h2>새 거래 게시글 추가</h2>
+          {/* 드롭다운 메뉴로 토큰 선택 */}
+          <select onChange={handleTokenSelect}>
+            <option value="">토큰 선택</option>
+            {tokens.length > 0 &&
+              tokens.map((token: any, index: number) => (
+                <option key={index} value={token.token_address}>
+                  {token.name} - {token.balance}
+                </option>
+              ))}
+          </select>
+          <input
+            type="text"
+            placeholder="토큰 양"
+            value={newTradePostData.tokenAmount}
+            onChange={(e) =>
+              setNewTradePostData({
+                ...newTradePostData,
+                tokenAmount: e.target.value,
+              })
+            }
+          />
+          {/* 가격 정보 입력란은 표시하지 않음 */}
+          <button
+            onClick={() =>
+              addTradePost(
+                newTradePostData.tokenAddress,
+                newTradePostData.tokenAmount,
+                "가격 정보 없음" // 가격 정보가 없으므로 임시 메시지 전달
+              )
+            }
+          >
+            거래 게시글 추가
+          </button>
+        </div>
+        {selectedTradePostIndex !== null && (
+          <div>
+            <h3>선택된 거래 게시글</h3>
+            <button onClick={buyToken}>거래하기</button>
+          </div>
+        )}
+        {/* FundRaisingPage 컴포넌트 */}
+        <FundRaisingPage />
+        <TokenManagementComponent />)
+      </header>
+    </div>
+  );
+};
 
 export default App;
