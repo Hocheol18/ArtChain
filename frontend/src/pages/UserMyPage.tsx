@@ -91,42 +91,44 @@ export default function UserMyPage() {
             <Text as={"b"} fontSize={"1.7rem"} ml={"2rem"}>
               김지은님
             </Text>
-            <Image
-              boxSize={"1rem"}
-              src={settings}
-              ml={"0.5rem"}
-              mt={"0.8rem"}
-              onClick={() =>
-                LogoutAxios()
-                  .then(() => clearFunction())
-                  .catch(() =>
-                    toast({
-                      duration: 2000,
-                      isClosable: true,
-                      position: "top",
-                      render: () => (
-                        <Flex
-                          color="white"
-                          mt={"50px"}
-                          bg="#C70000"
-                          p={"1rem"}
-                          borderRadius={"0.7rem"}
-                          alignItems={"center"}
-                        >
-                          <CheckCircleIcon
-                            boxSize={5}
-                            color={"white"}
-                            ml={"0.5rem"}
-                          />
-                          <Center ml={"1rem"}>
-                            <Text as={"b"}>로그아웃 실패</Text>
-                          </Center>
-                        </Flex>
-                      ),
-                    })
-                  )
-              }
-            />
+            {userInfo.isLogin ? (
+              <Image
+                boxSize={"1rem"}
+                src={settings}
+                ml={"0.5rem"}
+                mt={"0.8rem"}
+                onClick={() =>
+                  LogoutAxios()
+                    .then(() => clearFunction())
+                    .catch(() =>
+                      toast({
+                        duration: 2000,
+                        isClosable: true,
+                        position: "top",
+                        render: () => (
+                          <Flex
+                            color="white"
+                            mt={"50px"}
+                            bg="#C70000"
+                            p={"1rem"}
+                            borderRadius={"0.7rem"}
+                            alignItems={"center"}
+                          >
+                            <CheckCircleIcon
+                              boxSize={5}
+                              color={"white"}
+                              ml={"0.5rem"}
+                            />
+                            <Center ml={"1rem"}>
+                              <Text as={"b"}>로그아웃 실패</Text>
+                            </Center>
+                          </Flex>
+                        ),
+                      })
+                    )
+                }
+              />
+            ) : null}
           </Flex>
           <Flex ml={"1.5rem"}>
             <Image boxSize={"1rem"} src={wallet} ml={"0.5rem"} mt={"0.8rem"} />
