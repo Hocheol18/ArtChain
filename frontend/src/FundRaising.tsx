@@ -4,30 +4,37 @@ import ReceiveArtCoinContractABI from "./Contract/ReceiveArtCoinContract.json"; 
 import IERC20ABI from "./Contract/IERC20.json";
 
 const FundRaisingPage: React.FC = () => {
+  //account: 구매하는 (개인) 계정
   const [account, setAccount] = useState<string>("");
+
+  //tokenAmount: 토큰의 양
   const [tokenAmount, setTokenAmount] = useState<string>("");
+
   const web3 = new Web3((window as any).ethereum);
+
+  // 투자를 하고자하는 펀딩의 주소 (기업이 가지고 있는 주소)
   const ReceviceArtCoinContractAddress =
     "0x304a24F09d13dFe34aDFF767Fa9807111805623b";
+
+  // 아트코인의 주소(안 변함)
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
-  
-useEffect(() => {
-  // MetaMask 계정 연결 확인
-  if ((window as any).ethereum) {
+  useEffect(() => {
+    // MetaMask 계정 연결 확인
+    if ((window as any).ethereum) {
       (window as any).ethereum
-          .request({ method: "eth_requestAccounts" })
-          .then((accounts: string[]) => {
-              if (accounts.length > 0) {
-                  setAccount(accounts[0]);
-              }
-          })
-          .catch((error: any) => {
-              // 사용자가 거절할 경우 또는 오류가 발생한 경우 처리
-              console.error("MetaMask 계정 연결 요청에 실패했습니다.", error);
-          });
-  }
-}, []);
+        .request({ method: "eth_requestAccounts" })
+        .then((accounts: string[]) => {
+          if (accounts.length > 0) {
+            setAccount(accounts[0]);
+          }
+        })
+        .catch((error: any) => {
+          // 사용자가 거절할 경우 또는 오류가 발생한 경우 처리
+          console.error("MetaMask 계정 연결 요청에 실패했습니다.", error);
+        });
+    }
+  }, []);
 
   // MetaMask와 연결
   const connectWallet = async () => {
@@ -78,8 +85,10 @@ useEffect(() => {
         // 토큰이 승인되었다면 이제 fundRaising 컨트랙트의 메서드를 호출해서
         // fund를 진행한다.
         // 내가 지불할 양에 (10**18)을 곱해서 정수로 맞춰준 후 펀딩을 진행한다.
-        console.log(`tokenAmount type : ${typeof(tokenAmount)} val : ${tokenAmount}`);
-        console.log(`account type : ${typeof(account)} val : ${account}`);
+        console.log(
+          `tokenAmount type : ${typeof tokenAmount} val : ${tokenAmount}`
+        );
+        console.log(`account type : ${typeof account} val : ${account}`);
         const investTx = await fundingContract.methods
           .fundToken(tokenAmount)
           .send({ from: account });

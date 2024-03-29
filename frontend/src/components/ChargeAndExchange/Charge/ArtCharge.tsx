@@ -48,7 +48,7 @@ export const ArtCharge = () => {
       {
         pg: "kakaopay.TC0ONETIME",
         pay_method: "card", // 생략가
-        merchant_uid: `ORD${new Date().getUTCMilliseconds()}`, // 상점에서 생성한 고유 주문번호
+        merchant_uid: `ORD${crypto.randomUUID()}`, // 상점에서 생성한 고유 주문번호
         name: "Artchain 아트 구매",
         amount: price,
         buyer_email: "4pjttest@gmail.com",
@@ -162,7 +162,8 @@ export const ArtCharge = () => {
                 borderTopColor={"gray.200"}
                 borderBottomColor={"gray.200"}
                 px={4}
-                py={2}>
+                py={2}
+              >
                 <Center w={"50%"} fontWeight={"bold"}>
                   아트
                 </Center>
@@ -174,7 +175,8 @@ export const ArtCharge = () => {
                 <GridItem
                   w={"100%"}
                   borderRadius={"3xl"}
-                  backgroundColor={value === item.art ? "blue.100" : "white"}>
+                  backgroundColor={value === item.art ? "blue.100" : "white"}
+                >
                   <Radio px={4} py={3} value={item.art}>
                     <Flex w={"85vw"}>
                       <Center fontWeight={"bold"} w={"50%"}>
