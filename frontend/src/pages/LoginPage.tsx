@@ -72,6 +72,39 @@ export const LoginPage = () => {
     }
   };
 
+  const Login = () => {
+    LoginAxios(values)
+      .then((res) => loginDone(res))
+      .catch(() =>
+        toast({
+          duration: 2000,
+          isClosable: true,
+          position: "top",
+          render: () => (
+            <Flex
+              color="white"
+              mt={"50px"}
+              bg="#C70000"
+              p={"1rem"}
+              borderRadius={"0.7rem"}
+              alignItems={"center"}
+            >
+              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+              <Center ml={"1rem"}>
+                <Text as={"b"}>로그인 실패</Text>
+              </Center>
+            </Flex>
+          ),
+        })
+      );
+  };
+
+  const onKeyPress = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      Login();
+    }
+  };
+
   return (
     <Box p={"1rem"}>
       <Flex direction={"column"}>
@@ -121,6 +154,7 @@ export const LoginPage = () => {
           name="password"
           placeholder="비밀번호를 입력하세요"
           onChange={handleSetValue}
+          onKeyDown={onKeyPress}
         />
 
         <Box
@@ -134,36 +168,7 @@ export const LoginPage = () => {
           border={"1px"}
           bgColor={"blue.300"}
           ml={"0.5rem"}
-          onClick={() =>
-            LoginAxios(values)
-              .then((res) => loginDone(res))
-              .catch(() =>
-                toast({
-                  duration: 2000,
-                  isClosable: true,
-                  position: "top",
-                  render: () => (
-                    <Flex
-                      color="white"
-                      mt={"50px"}
-                      bg="#C70000"
-                      p={"1rem"}
-                      borderRadius={"0.7rem"}
-                      alignItems={"center"}
-                    >
-                      <WarningTwoIcon
-                        boxSize={5}
-                        color={"white"}
-                        ml={"0.5rem"}
-                      />
-                      <Center ml={"1rem"}>
-                        <Text as={"b"}>로그인 실패</Text>
-                      </Center>
-                    </Flex>
-                  ),
-                })
-              )
-          }
+          onClick={Login}
         >
           <Center as={"b"} color={"white"}>
             로그인

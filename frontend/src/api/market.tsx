@@ -4,6 +4,7 @@ import {
   getMarketHistoryDisplayListAxiosInterface,
   getMarketMainDisplayListParams,
   getMarketSellingDisplayListAxiosInterface,
+  postMarketEnrollInterface,
 } from "../type/market.interface";
 
 async function getMarketMainDisplayList(
@@ -44,8 +45,14 @@ async function getMarketHistoryDisplayList(
   return await localAxios.get(url);
 }
 
+async function postMarketEnroll(data: postMarketEnrollInterface) {
+  const url = "/market";
+  return await localAxios.get(url, data);
+}
+
 export {
   getMarketMainDisplayList,
   getMarketSellingDisplayList,
   getMarketHistoryDisplayList,
+  postMarketEnroll,
 };

@@ -1,5 +1,10 @@
 import { localAxios } from "./https";
-import { BusinessEnrollInterface, LoginInterface, UserErnollInterface } from "../type/login.interface";
+import {
+  BusinessEnrollInterface,
+  LoginInterface,
+  UserErnollInterface,
+} from "../type/login.interface";
+import { makeQuerystring } from "../utils/ApiUtils";
 
 // urls
 const loginurl = "/member/login";
@@ -7,8 +12,8 @@ const userProfileurl = "/member/individual";
 const userEnrollurl = "/member/individual/join";
 const refreshurl = "/member/refresh";
 const logouturl = "/member/logout";
-const IsEnrollurl = "/member/check-id/"
-const businessEnrollurl = "/member/enterprise/join"
+const IsEnrollurl = "/member/checkId";
+const businessEnrollurl = "/member/enterprise/join";
 
 // 프로필 함수
 async function ProfileAxios() {
@@ -37,17 +42,21 @@ async function UserEnrollAxios(data: UserErnollInterface) {
 // 로그인 함수
 async function LoginAxios(data: LoginInterface) {
   const res = await localAxios.post(loginurl, data);
-  return res
+  return res;
 }
 
 // 유저 중복 확인 함수
-async function IsEnrollAxios(data : string) {
-  return await localAxios.post(IsEnrollurl + `${data}`);
+async function IsEnrollAxios(checkId: string) {
+  const url = `${IsEnrollurl}${makeQuerystring({
+    checkId,
+  })}`
+
+  return await localAxios.get(url);
 }
 
 // 기업 회원가입 함수
-async function BusinessEnrollAxios(data : BusinessEnrollInterface) {
-  return await localAxios.post(businessEnrollurl, data)
+async function BusinessEnrollAxios(data: BusinessEnrollInterface) {
+  return await localAxios.post(businessEnrollurl, data);
 }
 
 export {

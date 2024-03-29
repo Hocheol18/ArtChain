@@ -8,7 +8,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IsEnrollAxios, UserEnrollAxios } from "../../api/user";
 import { UserErnollInterface } from "../../type/login.interface";
@@ -18,7 +18,6 @@ export default function Normal() {
   const navigate = useNavigate();
   const [isFilled, setisFilled] = useState(false);
   const toast = useToast();
-  const [num, setNum] = useState("");
 
   const [values, setValues] = useState<UserErnollInterface>({
     memberId: "",
@@ -82,32 +81,51 @@ export default function Normal() {
     }
   }, [values]);
 
-  // 휴대폰 번호 입력 함수
-  useEffect(() => {
-    const value = values.bankAccount;
-    const numberLength = 11;
-
-    let result;
-    result = "";
-
-    for (let i = 0; i < value.length && i < numberLength; i++) {
-      switch (i) {
-        case 3:
-          result += "-";
-          break;
-        case 7:
-          result += "-";
-          break;
-
-        default:
-          break;
-      }
-
-      result += value[i];
+  const success = (res: any) => {
+    if (res.data.status === 200) {
+      toast({
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        render: () => (
+          <Flex
+            color="white"
+            mt={"50px"}
+            bg="blue.300"
+            p={"1rem"}
+            borderRadius={"0.7rem"}
+            alignItems={"center"}
+          >
+            <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+            <Center ml={"1rem"}>
+              <Text as={"b"}>사용 가능한 아이디입니다</Text>
+            </Center>
+          </Flex>
+        ),
+      });
+    } else {
+      toast({
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        render: () => (
+          <Flex
+            color="white"
+            mt={"50px"}
+            bg="#C70000"
+            p={"1rem"}
+            borderRadius={"0.7rem"}
+            alignItems={"center"}
+          >
+            <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+            <Center ml={"1rem"}>
+              <Text as={"b"}>이미 가입되어 있는 회원입니다</Text>
+            </Center>
+          </Flex>
+        ),
+      });
     }
-
-    setNum(result);
-  }, [values.bankAccount]);
+  };
 
   return (
     <Box p={"1rem"}>
@@ -142,7 +160,9 @@ export default function Normal() {
               mt={"0.5rem"}
               onClick={() =>
                 IsEnrollAxios(values.memberId)
-                  .then((res) => console.log(res))
+                  .then((res) => {
+                    success(res);
+                  })
                   .catch((err) => console.log(err))
               }
             >

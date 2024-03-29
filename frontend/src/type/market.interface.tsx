@@ -40,14 +40,24 @@ export interface getMarketHistoryDisplayListAxiosInterface {
 }
 
 export interface getMarketHistoryDisplayListInterface {
-    id : number;
-    fundingId: number;
-    pieceCount : number;
-    totalCoin : number;
-    coinPerPiece : number;
-    sellerId : number;
-    sellerAddress : string;
-    buyerId : number;
-    buyerAddress : string;
-    status : string;
+  id: number;
+  fundingId: number;
+  pieceCount: number;
+  totalCoin: number;
+  coinPerPiece: number;
+  sellerId: number;
+  sellerAddress: string;
+  buyerId: number;
+  buyerAddress: string;
+  status: string;
 }
+
+export interface postMarketEnrollInterface {
+  fundingId: number;
+  contractAddress: string;
+  pieceCount: number;
+  totalCoin: number;
+  coinPerPiece: number;
+}
+
+ 
