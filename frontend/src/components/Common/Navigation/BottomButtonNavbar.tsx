@@ -18,13 +18,13 @@ export const BottomButtonNavbar = ({ text, category, hanldeButton }: Props) => {
   useEffect(() => {
     switch (category) {
       case "endSuccess":
-        setColor("gray.400");
+        setColor("gray.500");
         break;
       case "endFail":
-        setColor("gray.400");
+        setColor("gray.500");
         break;
       case "complete":
-        setColor("gray.500");
+        setColor("gray.400");
         break;
     }
   }, [category]);
