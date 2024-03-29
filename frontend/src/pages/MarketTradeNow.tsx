@@ -1,29 +1,46 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { getMarketSoldDetail } from "../api/market";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getMarketDetailDisplayInterface } from "../type/market.interface";
+import { formatNumberWithComma } from "../components/Common/Comma";
 
 export default function MarketTradeNow() {
+  const id = useParams() as { id: string };
+  const [data, setDatas] = useState<getMarketDetailDisplayInterface>();
+
+  useEffect(() => {
+    getMarketSoldDetail(Number(id.id)).then((res) => setDatas(res.data.data));
+  }, [id]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  if (data?.pieceCount === undefined) {
+    return;
+  }
+
   return (
     <Box p={"1.5rem"}>
       <Flex direction={"column"}>
-        <Text as={"b"} fontSize={"1.7rem"}>
-          모네에서 앤디워홀까지
-        </Text>
-        <Text as={"b"} fontSize={"1.7rem"}>
-          {" "}
-          : 부산전
+        <Text as={"b"} fontSize={"2rem"}>
+          {data?.fundingName}
         </Text>
         <Text as={"b"} fontSize={"1.3rem"} mt={"1rem"}>
           {" "}
-          대원미디어
+          {data?.companyName}
         </Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
           거래 ID
         </Text>
-        <Text fontSize={"1rem"}> #1314</Text>
+        <Text fontSize={"1rem"}>#{data?.id}</Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
           거래분류
         </Text>
+
         <Flex mt={"0.2rem"}>
           <Box
             px={"0.6rem"}
@@ -40,24 +57,30 @@ export default function MarketTradeNow() {
           {" "}
           조각수
         </Text>
-        <Text fontSize={"1rem"}> 8295 조각</Text>
+        <Text fontSize={"1rem"}>
+          {" "}
+          {formatNumberWithComma(data?.pieceCount)} 조각
+        </Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
           총 가격
         </Text>
-        <Text fontSize={"1rem"}> 10,850 아트</Text>
+        <Text fontSize={"1rem"}>
+          {" "}
+          {formatNumberWithComma(data?.totalCoin)} 아트
+        </Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
           조각 당 가격
         </Text>
-        <Text fontSize={"1rem"}> 1.31 아트</Text>
+        <Text fontSize={"1rem"}> {data?.coinPerPiece} 아트</Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
           판매자 지갑
         </Text>
         <Text fontSize={"1rem"}>
           {" "}
-          0xF48eDbbD8b15aE1025865bb95056b8C97f3852F8
+          {data?.sellerAddress}
         </Text>
 
         <Text fontSize={"1.2rem"} mt={"1rem"}>

@@ -47,9 +47,10 @@ export interface getMarketHistoryDisplayListInterface {
   coinPerPiece: number;
   sellerId: number;
   sellerAddress: string;
-  buyerId: number;
-  buyerAddress: string;
+  buyerId: number | null;
+  buyerAddress: string | null;
   status: string;
+  historyTime: string;
 }
 
 export interface postMarketEnrollInterface {
@@ -60,4 +61,16 @@ export interface postMarketEnrollInterface {
   coinPerPiece: number;
 }
 
- 
+export interface getMarketDetailDisplayInterface {
+  buyerAddress: string | null;
+  coinPerPiece: number;
+  companyName: string;
+  contractAddress: string;
+  fundingId: number;
+  fundingName: string;
+  id: number;
+  pieceCount: number;
+  sellerAddress: string;
+  status: string;
+  totalCoin: number;
+}

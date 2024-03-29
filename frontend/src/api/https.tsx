@@ -35,6 +35,7 @@ localAxios.interceptors.response.use(
     return response;
   },
   async (error) => {
+    const originConfig = error.config;
     try {
       const at: string | null = sessionStorage.getItem("accessToken");
       sessionStorage.removeItem("accessToken");
@@ -43,6 +44,7 @@ localAxios.interceptors.response.use(
           sessionStorage.setItem("accessToken", res.headers.authorization)
         );
       }
+      return localAxios.request(originConfig);
     } catch (error) {
       console.error("Error refreshing token:", error);
     }

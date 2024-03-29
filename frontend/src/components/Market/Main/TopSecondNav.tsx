@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
 
 interface Props {
   first: string;
@@ -20,7 +19,6 @@ export default function TopSecondNav({
   statusTopSecondNav,
   setSecondTopNav,
 }: Props) {
-  console.log(statusTopSecondNav)
   return (
     <>
       {isCheck ? (

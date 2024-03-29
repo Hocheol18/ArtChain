@@ -14,18 +14,6 @@ export default function MarketDeatil() {
     getMarketSellingDisplayListInterface[]
   >([]);
 
-  // switch (statusTopSecondNav) {
-  //   case "ALL":
-  //     setSecondTopNav("최신순");
-  //     break;
-  //   case "PENDING_SETTLEMENT":
-  //     setSecondTopNav("높은가격순");
-  //     break;
-  //   case "SETTLED":
-  //     setSecondTopNav("낮은가격순");
-  //     break;
-  // }
-
   useEffect(() => {
     getMarketSellingDisplayList({
       fundingId: Number(id.id),
