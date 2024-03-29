@@ -13,10 +13,12 @@ import java.math.BigDecimal;
 @ToString
 public class MemberMainUserInfoResponseDto {
     private String name;
+    private String walletAddress;
     private BigDecimal walletBalance;
 
     public MemberMainUserInfoResponseDto(Member member){
         this.name = member.getName();
+        this.walletAddress = member.getWalletAddress();
         this.walletBalance = member.getWalletBalance();
     }
 }
