@@ -5,6 +5,7 @@ import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -34,6 +35,8 @@ public class FundingResponseDto {
     private List<FundingSaleResponseDto> saleList;
     private List<FundingCostResponseDto> costList;
     private Long investorNum; // 투자자 수(모집 중 ~ 정산 완료)
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public FundingResponseDto(Funding funding, Long investorNum, String entName) {
         this.id = funding.getId();
@@ -65,5 +68,7 @@ public class FundingResponseDto {
         this.costList = funding.getCostList().stream().map(FundingCostResponseDto::new)
                 .toList();
         this.investorNum = investorNum;
+        this.createdAt = funding.getCreatedAt();
+        this.updatedAt = funding.getUpdatedAt();
     }
 }
