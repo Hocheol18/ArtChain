@@ -97,6 +97,8 @@ export const InvestList = () => {
                     recruitStart={item.recruitStart}
                     settlement={item.settlement}
                     progressStatus={item.progressStatus}
+                    investorNum={item.investorNum}
+                    finalReturnRate={item.finalReturnRate}
                   />
                 </Box>
               );

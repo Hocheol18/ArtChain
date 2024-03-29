@@ -50,5 +50,5 @@ export const getNotice = async (params: GetNoticeParams): Promise<Notice> => {
   const url = `/funding/${fundingId}/notice/${fundingNoticeId}`;
 
   const response = await localAxios.get(url);
-  return response.data;
+  return response.data.data;
 };

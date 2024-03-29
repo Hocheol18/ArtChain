@@ -5,10 +5,9 @@ import { Notice } from "../../../../type/invest.interface";
 
 interface Props {
   notice: Notice;
-  entId: number;
 }
 
-export const NoticeInvestItem = ({ notice, entId }: Props) => {
+export const NoticeInvestItem = ({ notice }: Props) => {
   if (!notice) {
     return null;
   }
@@ -43,7 +42,7 @@ export const NoticeInvestItem = ({ notice, entId }: Props) => {
               borderRadius={5}
               px={2}
             >
-              {entId}
+              {notice.entName}
             </Box>
           </Flex>
         </Flex>

@@ -141,7 +141,7 @@ export const InvestDetailHeader = ({ fundingData }: Props) => {
           <Center fontSize={14}>투자자</Center>
           <Center>
             <Box fontSize={22} pr={2}>
-              (받아오기)
+              {fundingData.investorNum}
             </Box>
             <Box fontSize={12}>명</Box>
           </Center>

@@ -3,11 +3,10 @@ import { NoticeInvestItem } from "./NoticeInvestItem";
 import { Notice } from "../../../../type/invest.interface";
 
 interface Props {
-  entId: number;
   noticeList: Notice[];
 }
 
-export const NoticeInvest = ({ entId, noticeList }: Props) => {
+export const NoticeInvest = ({ noticeList }: Props) => {
   return (
     <Box mb={"70px"}>
       <Box fontSize={"22"} fontWeight={"bold"} pl={6} mt={5} pb={5}>
@@ -17,7 +16,7 @@ export const NoticeInvest = ({ entId, noticeList }: Props) => {
         {noticeList.length !== 0 ? (
           noticeList.map((notice) => (
             <>
-              <NoticeInvestItem notice={notice} entId={entId} />
+              <NoticeInvestItem notice={notice} />
             </>
           ))
         ) : (

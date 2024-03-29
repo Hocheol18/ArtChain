@@ -15,6 +15,8 @@ interface Props {
   recruitEnd: string;
   recruitStart: string;
   settlement: string;
+  investorNum: number;
+  finalReturnRate: number;
 }
 
 export const InvestListItem = ({
@@ -30,6 +32,8 @@ export const InvestListItem = ({
   recruitStart,
   settlement,
   progressStatus,
+  investorNum,
+  finalReturnRate,
 }: Props) => {
   // statusBadge: 진행중, 모집종료, 정산완료
   const [statusBadge, setStatusBadge] = useState("");
@@ -195,11 +199,18 @@ export const InvestListItem = ({
           </Box>
           <Box display={"flex"} justifyContent={"space-between"}>
             <Text color={"gray.500"} fontSize={14}>
-              모집 종료
+              {statusBadge === "진행중"
+                ? "모집 종료"
+                : statusBadge === "모집종료"
+                ? "총 투자자 수"
+                : "최종 수익률"}
             </Text>
             <Text color={"gray.500"} fontSize={14} as={"b"}>
-              D-
-              {dateDiff}
+              {statusBadge === "진행중"
+                ? `D-${dateDiff}`
+                : statusBadge === "모집종료"
+                ? investorNum
+                : finalReturnRate}
             </Text>
           </Box>
         </Box>

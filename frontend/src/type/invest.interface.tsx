@@ -22,6 +22,8 @@ export interface GetFunddingListResponse {
   recruitEnd: string;
   recruitStart: string;
   settlement: string;
+  investorNum: number;
+  finalReturnRate: number;
 }
 
 //투자상세보기 param
@@ -34,6 +36,7 @@ export interface Notice {
   fundingId: number;
   title: string;
   content: string;
+  entName: string;
 }
 
 export interface Schedule {
@@ -88,6 +91,7 @@ export interface GetFundingResponse {
   expectedReturnList: ExpectedReturn[];
   saleList: Sale[];
   costList: Cost[];
+  investorNum: number;
 }
 
 export interface GetNoticeParams {

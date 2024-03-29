@@ -69,12 +69,7 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
         );
         break;
       case "noticeActive":
-        setShowComponent(
-          <NoticeInvest
-            entId={fundingData.entId}
-            noticeList={fundingData.noticeList}
-          />
-        );
+        setShowComponent(<NoticeInvest noticeList={fundingData.noticeList} />);
         break;
       case "dangerActive":
         setShowComponent(<DangerInvest />);
