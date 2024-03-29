@@ -43,8 +43,6 @@ localAxios.interceptors.response.use(
         await RefreshTokenAxios(at).then((res) =>
           sessionStorage.setItem("accessToken", res.headers.authorization)
         );
-      } else {
-        return Promise.reject(error);
       }
       return localAxios.request(originConfig);
     } catch (error) {
