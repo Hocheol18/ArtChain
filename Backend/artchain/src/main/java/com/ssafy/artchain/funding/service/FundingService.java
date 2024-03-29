@@ -30,4 +30,6 @@ public interface FundingService {
     int updateFundingProgressStatus(Long fundingId, String progressStatus, CustomUserDetails member);
 
     List<FundingPermissionResponseDto> getFundingPermissionList();
+
+    Long getFundingListByCategoryAndStatusTotalCount(String category, String status, String allowStat);
 }
