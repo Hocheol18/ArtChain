@@ -9,6 +9,7 @@ import {
 import TmpImg from "../../../assets/invest-poster-tmp-img.jpg";
 import { useEffect, useState } from "react";
 import { GetFundingResponse } from "../../../type/invest.interface";
+import { formatNumberWithComma } from "../../Common/Comma";
 
 interface Props {
   fundingData: GetFundingResponse;
@@ -132,7 +133,7 @@ export const InvestDetailHeader = ({ fundingData }: Props) => {
           <Center fontSize={14}>현재 구매된 조각</Center>
           <Center>
             <Box fontSize={22} pr={2}>
-              {fundingData.nowCoinCount}
+              {formatNumberWithComma(fundingData.nowCoinCount)}
             </Box>
             <Box fontSize={12}>조각</Box>
           </Center>
@@ -141,7 +142,7 @@ export const InvestDetailHeader = ({ fundingData }: Props) => {
           <Center fontSize={14}>투자자</Center>
           <Center>
             <Box fontSize={22} pr={2}>
-              {fundingData.investorNum}
+              {formatNumberWithComma(fundingData.investorNum)}
             </Box>
             <Box fontSize={12}>명</Box>
           </Center>
