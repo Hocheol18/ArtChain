@@ -6,15 +6,20 @@ import { InvestDetailHeaderInfo } from "../components/Invest/Detail/InvestDetail
 import { useEffect, useState } from "react";
 import { getFundding } from "../api/invest";
 import { GetFundingResponse } from "../type/invest.interface";
+import useUserInfo from "../store/useUserInfo";
 
 export const InvestDetail = () => {
   const navigate = useNavigate();
 
   const handleInvest = () => {
-    if (category === "ing") {
+    if (category === "ing" && userInfo.isLogin === true) {
       navigate(`/invest-buy/${fundingId}`);
+    } else if (category === "ing" && userInfo.isLogin === false) {
+      navigate(`/login`);
     }
   };
+
+  const { userInfo } = useUserInfo();
 
   //url의 fundingID 가져오고
   const { fundingId } = useParams();
