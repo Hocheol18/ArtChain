@@ -1,4 +1,12 @@
-import { Box, Button, Text, Image, Flex, Center, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Text,
+  Image,
+  Flex,
+  Center,
+  useToast,
+} from "@chakra-ui/react";
 import settings from "../assets/setting.svg";
 import wallet from "../assets/wallet.svg";
 import copy from "../assets/copy.svg";
@@ -24,12 +32,13 @@ export default function UserMyPage() {
   function clearFunction() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const clearUserIdStorage = useUserInfo.persist.clearStorage;
-    sessionStorage.removeItem("accessToken")
+    sessionStorage.removeItem("accessToken");
     setUserInfo({
       profileUrl: "",
       nickname: "",
       walletBalance: "",
       isLogin: false,
+      metamask: "",
     });
     clearUserIdStorage();
     toast({
@@ -51,8 +60,8 @@ export default function UserMyPage() {
           </Center>
         </Flex>
       ),
-    })
-    navigate("../")
+    });
+    navigate("../");
   }
 
   const handleCharge = () => {
@@ -90,26 +99,32 @@ export default function UserMyPage() {
               onClick={() =>
                 LogoutAxios()
                   .then(() => clearFunction())
-                  .catch(() => toast({
-                    duration: 2000,
-                    isClosable: true,
-                    position: "top",
-                    render: () => (
-                      <Flex
-                        color="white"
-                        mt={"50px"}
-                        bg="#C70000"
-                        p={"1rem"}
-                        borderRadius={"0.7rem"}
-                        alignItems={"center"}
-                      >
-                        <CheckCircleIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-                        <Center ml={"1rem"}>
-                          <Text as={"b"}>로그아웃 실패</Text>
-                        </Center>
-                      </Flex>
-                    ),
-                  }))
+                  .catch(() =>
+                    toast({
+                      duration: 2000,
+                      isClosable: true,
+                      position: "top",
+                      render: () => (
+                        <Flex
+                          color="white"
+                          mt={"50px"}
+                          bg="#C70000"
+                          p={"1rem"}
+                          borderRadius={"0.7rem"}
+                          alignItems={"center"}
+                        >
+                          <CheckCircleIcon
+                            boxSize={5}
+                            color={"white"}
+                            ml={"0.5rem"}
+                          />
+                          <Center ml={"1rem"}>
+                            <Text as={"b"}>로그아웃 실패</Text>
+                          </Center>
+                        </Flex>
+                      ),
+                    })
+                  )
               }
             />
           </Flex>

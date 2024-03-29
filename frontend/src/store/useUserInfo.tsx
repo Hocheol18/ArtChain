@@ -7,6 +7,7 @@ interface userInfoType {
   nickname: string;
   walletBalance: string;
   isLogin: boolean;
+  metamask: string;
 }
 
 interface UserInfoState {
@@ -23,6 +24,7 @@ const defaultState = {
   nickname: "",
   walletBalance: "",
   isLogin: false,
+  metamask: "",
 };
 
 const useUserInfo = create<UserInfoState & UserInfoActions>()(
@@ -40,7 +42,6 @@ const useUserInfo = create<UserInfoState & UserInfoActions>()(
       {
         name: "userInfo",
         storage: createJSONStorage(() => sessionStorage),
-        
       }
     )
   )

@@ -12,16 +12,19 @@ import {
 import LoginUser from "../assets/loginuser.png";
 import kakao from "../assets/kakaologin.png";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoginInterface } from "../type/login.interface";
 import { LoginAxios, ProfileAxios } from "../api/user";
 import useUserInfo from "../store/useUserInfo";
 import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
+import MetaMask from "../components/Login/Metamask";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { setUserInfo } = useUserInfo();
   const toast = useToast();
+  const { userInfo } = useUserInfo();
+  const [wallet, setWallet] = useState<string>("");
 
   const [values, setValues] = useState<LoginInterface>({
     username: "",
@@ -34,6 +37,33 @@ export const LoginPage = () => {
       [name]: value,
     }));
   };
+
+  const tmp = async () => {
+    const res = await MetaMask();
+    switch (res) {
+      case "MetamaskUninstall":
+        console.log("언인스톨");
+        break;
+      case "MetamaskRejct":
+        console.log("리젝에러");
+        break;
+      case "MetamaskAccountNotFound":
+        console.log("계정오류");
+        break;
+      default:
+        setWallet(res);
+    }
+  };
+
+  useEffect(() => {
+    if (userInfo.isLogin) {
+      tmp();
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    console.log(userInfo.metamask);
+  }, [userInfo]);
 
   const loginDone = async (res: any) => {
     sessionStorage.setItem("accessToken", res.headers.authorization);
@@ -65,6 +95,7 @@ export const LoginPage = () => {
         walletBalance:
           res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
         isLogin: true,
+        metamask: wallet,
       });
       navigate("../");
     } catch (err) {
@@ -99,7 +130,7 @@ export const LoginPage = () => {
       );
   };
 
-  const onKeyPress = (e: KeyboardEvent) => {
+  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       Login();
     }
