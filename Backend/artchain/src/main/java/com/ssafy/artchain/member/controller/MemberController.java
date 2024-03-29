@@ -113,7 +113,7 @@ public class MemberController {
     }
 
     @PutMapping("/walletInfo")
-    public ResponseEntity<?> putMemberWalletInfo(@AuthenticationPrincipal CustomUserDetails member, MemberWalletInfoRequestDto walletInfo) {
+    public ResponseEntity<?> putMemberWalletInfo(@AuthenticationPrincipal CustomUserDetails member, @RequestBody MemberWalletInfoRequestDto walletInfo) {
         Collection<? extends GrantedAuthority> authorities = member.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();

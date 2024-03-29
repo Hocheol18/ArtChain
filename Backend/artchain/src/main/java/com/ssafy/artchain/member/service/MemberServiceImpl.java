@@ -204,13 +204,14 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    @Transactional
     @Override
     public void putMemberWalletInfo(CustomUserDetails member, MemberWalletInfoRequestDto requestDto) {
         Member memberEntity = memberRepository.findById(member.getId())
                 .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
 
         memberEntity.updateWalletInfo(requestDto);
-
+        System.out.println(requestDto);
         memberRepository.save(memberEntity);
     }
 
