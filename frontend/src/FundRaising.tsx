@@ -10,15 +10,22 @@ const FundRaisingPage: React.FC = () => {
   //tokenAmount: 토큰의 양
   const [tokenAmount, setTokenAmount] = useState<string>("");
 
+  // 투자했을 때 리턴값
+  const [transactionHash, setTransactionHash] = useState<string>("");
+
+  // 성공 실패 유무
+  const [status, setStatus] = useState<string>("");
+
   const web3 = new Web3((window as any).ethereum);
 
-  // 투자를 하고자하는 펀딩의 주소 (기업이 가지고 있는 주소)
+  // 투자를 하고자하는 펀딩의 주소 (기업이 가지고 있는 주소) (임시)
   const ReceviceArtCoinContractAddress =
-    "0x304a24F09d13dFe34aDFF767Fa9807111805623b";
+    "0x5CbdFA4496ABd5115072656097c2aD4877322Fb6";
 
   // 아트코인의 주소(안 변함)
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
+  // 로그인 할 때 확인해야하는 부분
   useEffect(() => {
     // MetaMask 계정 연결 확인
     if ((window as any).ethereum) {
@@ -93,6 +100,8 @@ const FundRaisingPage: React.FC = () => {
           .fundToken(tokenAmount)
           .send({ from: account });
         console.log("토큰 투자 성공", investTx);
+        setStatus("토큰 투자 성공");
+        setTransactionHash(investTx.transactionHash);
       } else {
         console.error("토큰 승인 실패");
       }
@@ -120,6 +129,12 @@ const FundRaisingPage: React.FC = () => {
         onChange={(e) => setTokenAmount(e.target.value)}
       />
       <button onClick={invest}>Invest</button>
+      <div>{status}</div>
+      {transactionHash && (
+        <div>
+          <p>트랜잭션 해시: {transactionHash}</p>
+        </div>
+      )}
     </div>
   );
 };
