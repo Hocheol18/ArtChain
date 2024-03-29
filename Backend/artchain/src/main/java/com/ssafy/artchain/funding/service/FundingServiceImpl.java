@@ -150,7 +150,42 @@ public class FundingServiceImpl implements FundingService {
     }
 
     @Override
-    @Transactional
+    public Long getFundingListByCategoryAndStatusTotalCount(String category, String status, String allowStat) {
+        String UPPER_ALL = "ALL";
+        String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
+
+        List<FundingProgressStatus> statuses;
+        if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || (Stream.of(FundingProgressStatus.values())
+                .noneMatch(ps -> ps.name().equals(status)) && !status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END))) { // 모집 시작 전을 제외한 모든 진행 상태
+            statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
+                    FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
+                    FundingProgressStatus.RECRUITMENT_FAILED);
+        } else if (status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END)) {
+            statuses = List.of(FundingProgressStatus.PENDING_SETTLEMENT,
+                    FundingProgressStatus.RECRUITMENT_FAILED);
+        } else {
+            statuses = List.of(FundingProgressStatus.valueOf(status));
+        }
+
+        List<Boolean> allowStatuses;
+        if (allowStat.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || Stream.of(FundingAllowStatus.values())
+                .noneMatch(als -> als.name().equals(allowStat))) {
+            allowStatuses = List.of(true, false);
+        } else {
+            allowStatuses = List.of(allowStat.toUpperCase(Locale.ROOT).equals("TRUE"));
+        }
+
+        List<Funding> fundingList;
+        if (category.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
+            fundingList = fundingRepository.findAllByProgressStatusInAndIsAllowIn(statuses, allowStatuses);
+        } else {
+            fundingList = fundingRepository.findAllByCategoryAndProgressStatusInAndIsAllowIn(category, statuses, allowStatuses);
+        }
+
+        return fundingList.stream().count();
+    }
+
+    @Override
     public List<FundingListItemDto> getFundingListByCategoryAndStatus(String category, String status, String allowStat, Pageable pageable) {
         String UPPER_ALL = "ALL";
         String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
