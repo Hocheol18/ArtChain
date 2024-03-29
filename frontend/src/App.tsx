@@ -30,6 +30,7 @@ import { Invest } from "./pages/Invest";
 import { Charge } from "./pages/Charge";
 import { Exchange } from "./pages/Exchange";
 import Test from "./pages/Test";
+import { AdminPage } from "./pages/AdminPage";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -265,6 +266,8 @@ function App() {
                       <Exchange />
                     </CommonPage>
                   }></Route>
+                {/* 관리자 페이지 */}
+                <Route path="/admin" element={<AdminPage />}></Route>
                 {/* 메타마스크 테스트 페이지 */}
                 <Route path="/test" element={<Test />}></Route>
               </Routes>
