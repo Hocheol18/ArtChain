@@ -12,6 +12,7 @@ public class FundingResponseDto {
 
     private Long id;
     private Long entId;
+    private String entName;
     private String name;
     private String poster;
     private String category;
@@ -34,9 +35,10 @@ public class FundingResponseDto {
     private List<FundingCostResponseDto> costList;
     private Long investorNum; // 투자자 수(모집 중 ~ 정산 완료)
 
-    public FundingResponseDto(Funding funding, Long investorNum) {
+    public FundingResponseDto(Funding funding, Long investorNum, String entName) {
         this.id = funding.getId();
         this.entId = funding.getEntId();
+        this.entName = entName;
         this.name = funding.getName();
         this.poster = funding.getPoster();
         this.category = funding.getCategory();
@@ -52,7 +54,7 @@ public class FundingResponseDto {
         this.bep = funding.getBep();
         this.progressStatus = funding.getProgressStatus();
         this.isAllow = funding.getIsAllow();
-        this.noticeList = funding.getNoticeList().stream().map(FundingNoticeResponseDto::new)
+        this.noticeList = funding.getNoticeList().stream().map(fundingNotice -> new FundingNoticeResponseDto(fundingNotice, entName))
                 .toList();
         this.scheduleList = funding.getScheduleList().stream().map(FundingScheduleResponseDto::new)
                 .toList();

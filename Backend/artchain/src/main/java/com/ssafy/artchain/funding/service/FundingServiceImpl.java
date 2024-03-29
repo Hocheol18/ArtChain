@@ -137,10 +137,16 @@ public class FundingServiceImpl implements FundingService {
             return null;
         }
 
+        Member ent = memberRepository.findById(funding.getEntId())
+                .orElse(null);
+        if (ent == null) {
+            return null;
+        }
+
         Long investorNum = funding.getProgressStatus().equals(FundingProgressStatus.BEFORE_RECRUITMENT)
                 ? null : investmentLogRepository.countDistinctMemberByFundingId(fundingId);
 
-        return new FundingResponseDto(funding, investorNum);
+        return new FundingResponseDto(funding, investorNum, ent.getName());
     }
 
     @Override
@@ -273,7 +279,13 @@ public class FundingServiceImpl implements FundingService {
             return null;
         }
 
-        return new FundingNoticeResponseDto(fundingNotice);
+        Member ent = memberRepository.findById(fundingNotice.getFunding().getEntId())
+                .orElse(null);
+        if (ent == null) {
+            return null;
+        }
+
+        return new FundingNoticeResponseDto(fundingNotice, ent.getName());
     }
 
     @Override
