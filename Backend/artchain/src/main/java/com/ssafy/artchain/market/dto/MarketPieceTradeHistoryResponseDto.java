@@ -35,7 +35,7 @@ public class MarketPieceTradeHistoryResponseDto {
         this.buyerId = market.getBuyerId();
         this.buyerAddress = null;
         this.status = market.getStatus();
-        if(market.getStatus() == "SOLD"){
+        if(market.getStatus().equals("SOLD")){
             this.historyTime = market.getUpdatedAt();
         } else {
             this.historyTime = market.getCreatedAt();
