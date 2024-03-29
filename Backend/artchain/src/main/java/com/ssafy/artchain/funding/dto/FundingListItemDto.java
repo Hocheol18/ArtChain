@@ -5,6 +5,7 @@ import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 public class FundingListItemDto {
@@ -23,6 +24,8 @@ public class FundingListItemDto {
     private LocalDate settlement;
     private Long investorNum;
     private Integer finalReturnRate;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public FundingListItemDto(Funding funding, Long investorNum, Integer finalReturnRate) {
         this.id = funding.getId();
@@ -40,5 +43,7 @@ public class FundingListItemDto {
         this.settlement = funding.getSettlement();
         this.investorNum = investorNum;
         this.finalReturnRate = finalReturnRate;
+        this.createdAt = funding.getCreatedAt();
+        this.updatedAt = funding.getUpdatedAt();
     }
 }
