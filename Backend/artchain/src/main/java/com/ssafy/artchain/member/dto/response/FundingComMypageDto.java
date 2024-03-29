@@ -17,8 +17,8 @@ public class FundingComMypageDto {
     private String name;
     private FundingProgressStatus progressStatus;
     private String poster;
-    private Long nowCoinCount;
     private Long goalCoinCount;
+    private Long nowCoinCount;
     private LocalDate recruitEnd;
     private SettlementStatus status;
 }
