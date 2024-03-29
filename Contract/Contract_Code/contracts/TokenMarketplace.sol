@@ -5,7 +5,7 @@ import "./IERC20.sol";
 
 contract TokenMarketplace {
     mapping(address => IERC20) public tokenContracts;
-    mapping(address => bool) public isTokenListed;
+    address[] public userTokens; // 사용자가 소유한 토큰 목록
     struct TradePost {
         address seller;
         address tokenAddress;
@@ -15,16 +15,6 @@ contract TokenMarketplace {
     TradePost[] public tradePosts;
     uint256 public tradePostsLength;
     address artCoinAddress = 0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB;
-
-    constructor() {
-        listToken(artCoinAddress);
-    }
-
-    function listToken(address _tokenAddress) public {
-        require(!isTokenListed[_tokenAddress], "Token already listed");
-        isTokenListed[_tokenAddress] = true;
-        tokenContracts[_tokenAddress] = IERC20(_tokenAddress);
-    }
 
     function buyToken(uint256 _tradePostIndex) external {
         require(_tradePostIndex < tradePostsLength, "Invalid trade post index");
@@ -59,24 +49,6 @@ contract TokenMarketplace {
         uint256 _tokenAmount,
         uint256 _price
     ) external {
-        require(isTokenListed[_tokenAddress], "Token not listed");
-        // require(
-        //     // 내가 얼마나 많은 토큰을 인출할 수 있는지를 확인할 수 있음!
-        //     // 즉, 아래의 로직은 스마트 컨트랙트 속에 보관 중인 토큰의 양 중 내가 사용할 수 있는 양이 충분한지 확인
-        //     tokenContracts[_tokenAddress].allowance(
-        //         msg.sender,
-        //         address(this)
-        //     ) >= _tokenAmount*(10**18),
-        //     "Insufficient allowance for token"
-        // );
-        require(
-            tokenContracts[_tokenAddress].approve(
-                address(this),
-                _tokenAmount*(10**18)
-            ),
-            "Insufficient approve for token"
-        );
-
         // Transfer tokens from user to this contract
         require(
             tokenContracts[_tokenAddress].transferFrom(
@@ -91,6 +63,10 @@ contract TokenMarketplace {
             TradePost(msg.sender, _tokenAddress, _tokenAmount, _price)
         );
         tradePostsLength++; // Increment tradePostsLength
+    }
+
+    function getUserTokens() external view returns (address[] memory) {
+        return userTokens;
     }
 
     function getTradePostsLength() external view returns (uint256) {
