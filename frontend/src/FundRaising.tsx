@@ -6,9 +6,11 @@ import IERC20ABI from "./Contract/IERC20.json";
 const FundRaisingPage: React.FC = () => {
   const [account, setAccount] = useState<string>("");
   const [tokenAmount, setTokenAmount] = useState<string>("");
+  const [transactionHash, setTransactionHash] = useState<string>("");
+  const [status, setStatus] = useState<string>('');
   const web3 = new Web3((window as any).ethereum);
   const ReceviceArtCoinContractAddress =
-    "0x304a24F09d13dFe34aDFF767Fa9807111805623b";
+    "0x5CbdFA4496ABd5115072656097c2aD4877322Fb6";
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
   
@@ -84,6 +86,8 @@ useEffect(() => {
           .fundToken(tokenAmount)
           .send({ from: account });
         console.log("토큰 투자 성공", investTx);
+        setStatus('토큰 투자 성공');
+        setTransactionHash(investTx.transactionHash);
       } else {
         console.error("토큰 승인 실패");
       }
@@ -111,6 +115,12 @@ useEffect(() => {
         onChange={(e) => setTokenAmount(e.target.value)}
       />
       <button onClick={invest}>Invest</button>
+      <div>{status}</div>
+          {transactionHash && (
+            <div>
+              <p>트랜잭션 해시: {transactionHash}</p>
+            </div>
+          )}
     </div>
   );
 };
