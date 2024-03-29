@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function Martet() {
   const [statusTopNav, setTopNav] = useState<string>("ALL");
-  const [statusTopSecondNav, setSecondTopNav] = useState<string>("ALL");
+  const [statusTopSecondNav, setSecondTopNav] = useState<string>("최신순");
 
   return (
     <>

@@ -9,22 +9,10 @@ import { getMarketSellingDisplayList } from "../api/market";
 
 export default function MarketDeatil() {
   const id = useParams() as { id: string };
-  const [statusTopSecondNav, setSecondTopNav] = useState<string>("");
+  const [statusTopSecondNav, setSecondTopNav] = useState<string>("최신순");
   const [marketDetails, setMarketDetail] = useState<
     getMarketSellingDisplayListInterface[]
   >([]);
-
-  switch (statusTopSecondNav) {
-    case "ALL":
-      setSecondTopNav("최신순");
-      break;
-    case "PENDING_SETTLEMENT":
-      setSecondTopNav("높은가격순");
-      break;
-    case "SETTLED":
-      setSecondTopNav("가격낮은순");
-      break;
-  }
 
   useEffect(() => {
     getMarketSellingDisplayList({

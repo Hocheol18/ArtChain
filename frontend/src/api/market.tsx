@@ -50,9 +50,17 @@ async function postMarketEnroll(data: postMarketEnrollInterface) {
   return await localAxios.get(url, data);
 }
 
+async function getMarketSoldDetail(marketId:number) {
+  const url = `/market/detail${makeQuerystring({
+    marketId
+  })}`
+  return await localAxios.get(url)
+}
+
 export {
   getMarketMainDisplayList,
   getMarketSellingDisplayList,
   getMarketHistoryDisplayList,
   postMarketEnroll,
+  getMarketSoldDetail
 };
