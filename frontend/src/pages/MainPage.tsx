@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import MainCarousel from "../components/Main/MainCarousel";
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import Poster from "../components/Main/Poster";
@@ -7,6 +7,26 @@ import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 
 export default function MainPage() {
+  // MetaMask 연결 함수
+  const [account, setAccount] = useState<string>("");
+
+  const connectWallet = async () => {
+    if ((window as any).ethereum) {
+      try {
+        const accounts: string[] = await (window as any).ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        setAccount(accounts[0]);
+      } catch (error) {
+        console.error("연결에 실패했습니다.", error);
+      }
+    } else {
+      alert("MetaMask를 설치해주세요!");
+    }
+  };
+
+  console.log(account);
+
   return (
     <>
       <MainCarousel />
@@ -14,6 +34,7 @@ export default function MainPage() {
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>
           진행 중인 투자 작품
         </Text>
+        <button onClick={connectWallet}>MetaMask 연결</button>
       </Box>
       <Poster />
       <Poster />
