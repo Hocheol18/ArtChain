@@ -8,6 +8,10 @@ import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.pieceowner.entity.PieceOwner;
 import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
+import com.ssafy.artchain.sse.dto.SseFundingRecruitEndResultListDto;
+import com.ssafy.artchain.sse.dto.SseFundingRecruitEndResultListItemtDto;
+import com.ssafy.artchain.sse.repository.SseRepository;
+import com.ssafy.artchain.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +35,8 @@ public class CronTable {
     private final FundingRepository fundingRepository;
     private final InvestmentLogRepository investmentLogRepository;
     private final PieceOwnerRepository pieceOwnerRepository;
+    private final SseRepository sseRepository;
+    private final SseService sseService;
 
     @Value("${schedule.funding.progress-status.active}")
     private boolean fundingProgressStatusCronActive;
@@ -88,6 +95,7 @@ public class CronTable {
                         )
                         .toList();
 
+                List<SseFundingRecruitEndResultListItemtDto> sseFundingRecruitEndResultListItemtList = new ArrayList<>();
                 for (Funding funding : fundingList) {
                     BigDecimal goalCoinCount = new BigDecimal(funding.getGoalCoinCount());
                     BigDecimal nowCoinCount = new BigDecimal(funding.getNowCoinCount());
@@ -117,10 +125,17 @@ public class CronTable {
                             );
                         });
 
+                        sseFundingRecruitEndResultListItemtList.add(new SseFundingRecruitEndResultListItemtDto(true, funding.getContractAddress()));
                     } else { // 모집 실패
                         funding.updateProgressStatus(FundingProgressStatus.RECRUITMENT_FAILED);
+
+                        sseFundingRecruitEndResultListItemtList.add(new SseFundingRecruitEndResultListItemtDto(false, funding.getContractAddress()));
                     }
                 }
+
+                String eventId = "ADMIN";
+                sseRepository.findById(eventId)
+                        .ifPresent(sseEmitter -> sseService.send(new SseFundingRecruitEndResultListDto(sseFundingRecruitEndResultListItemtList), eventId, sseEmitter, "fundingProgressStatusCron"));
             }
         } catch (Exception e) {
             log.info("* Batch 시스템이 예기치 않게 종료되었습니다. Message: {}", e.getMessage());
