@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BusinessEnrollInterface } from "../../type/login";
+import { BusinessEnrollInterface } from "../../type/login.interface";
 import { BusinessEnrollAxios } from "../../api/user";
 
 export default function Business() {

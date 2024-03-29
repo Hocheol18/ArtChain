@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import MainCarousel from "../components/Main/MainCarousel";
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import Poster from "../components/Main/Poster";
@@ -6,23 +6,27 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 
-// MetaMask 연결 함수
-const connectWallet = async () => {
-  if ((window as any).ethereum) {
-    try {
-      const accounts: string[] = await (window as any).ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      setAccount(accounts[0]);
-    } catch (error) {
-      console.error("연결에 실패했습니다.", error);
-    }
-  } else {
-    alert("MetaMask를 설치해주세요!");
-  }
-};
-
 export default function MainPage() {
+  // MetaMask 연결 함수
+  const [account, setAccount] = useState<string>("");
+
+  const connectWallet = async () => {
+    if ((window as any).ethereum) {
+      try {
+        const accounts: string[] = await (window as any).ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        setAccount(accounts[0]);
+      } catch (error) {
+        console.error("연결에 실패했습니다.", error);
+      }
+    } else {
+      alert("MetaMask를 설치해주세요!");
+    }
+  };
+
+  console.log(account);
+
   return (
     <>
       <MainCarousel />
@@ -42,7 +46,8 @@ export default function MainPage() {
         fontSize={"sm"}
         bgColor={"blue.100"}
         ml={"0.5rem"}
-        mr={"0.5rem"}>
+        mr={"0.5rem"}
+      >
         <Center color={"blue.400"} as="b" fontSize={"1.1rem"}>
           더 많은 작품 투자하러 가기
         </Center>
@@ -70,7 +75,8 @@ export default function MainPage() {
         bgColor={"blue.100"}
         ml={"0.5rem"}
         mr={"0.5rem"}
-        mb={"4rem"}>
+        mb={"4rem"}
+      >
         <Center color={"blue.400"} as="b" fontSize={"1.1rem"}>
           마켓 보러 가기
         </Center>

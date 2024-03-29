@@ -12,8 +12,8 @@ import {
 import LoginUser from "../assets/loginuser.png";
 import kakao from "../assets/kakaologin.png";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { LoginInterface } from "../type/login";
+import { useState } from "react";
+import { LoginInterface } from "../type/login.interface";
 import { LoginAxios, ProfileAxios } from "../api/user";
 import useUserInfo from "../store/useUserInfo";
 import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
@@ -58,7 +58,7 @@ export const LoginPage = () => {
             </Center>
           </Flex>
         ),
-      })
+      });
       setUserInfo({
         profileUrl: "",
         nickname: res.data.data.memberUserMypageResponseDtoList[0].nickname,
@@ -72,9 +72,38 @@ export const LoginPage = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  const Login = () => {
+    LoginAxios(values)
+      .then((res) => loginDone(res))
+      .catch(() =>
+        toast({
+          duration: 2000,
+          isClosable: true,
+          position: "top",
+          render: () => (
+            <Flex
+              color="white"
+              mt={"50px"}
+              bg="#C70000"
+              p={"1rem"}
+              borderRadius={"0.7rem"}
+              alignItems={"center"}
+            >
+              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+              <Center ml={"1rem"}>
+                <Text as={"b"}>로그인 실패</Text>
+              </Center>
+            </Flex>
+          ),
+        })
+      );
+  };
+
+  const onKeyPress = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      Login();
+    }
+  };
 
   return (
     <Box p={"1rem"}>
@@ -112,7 +141,7 @@ export const LoginPage = () => {
         />
 
         <Input
-        type="password"
+          type="password"
           w={"340px"}
           px={"1rem"}
           py={"0.7rem"}
@@ -125,6 +154,7 @@ export const LoginPage = () => {
           name="password"
           placeholder="비밀번호를 입력하세요"
           onChange={handleSetValue}
+          onKeyDown={onKeyPress}
         />
 
         <Box
@@ -138,36 +168,7 @@ export const LoginPage = () => {
           border={"1px"}
           bgColor={"blue.300"}
           ml={"0.5rem"}
-          onClick={() =>
-            LoginAxios(values)
-              .then((res) => loginDone(res))
-              .catch(() =>
-                toast({
-                  duration: 2000,
-                  isClosable: true,
-                  position: "top",
-                  render: () => (
-                    <Flex
-                      color="white"
-                      mt={"50px"}
-                      bg="#C70000"
-                      p={"1rem"}
-                      borderRadius={"0.7rem"}
-                      alignItems={"center"}
-                    >
-                      <WarningTwoIcon
-                        boxSize={5}
-                        color={"white"}
-                        ml={"0.5rem"}
-                      />
-                      <Center ml={"1rem"}>
-                        <Text as={"b"}>로그인 실패</Text>
-                      </Center>
-                    </Flex>
-                  ),
-                })
-              )
-          }
+          onClick={Login}
         >
           <Center as={"b"} color={"white"}>
             로그인

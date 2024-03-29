@@ -1,7 +1,26 @@
-import { Box, Center, Image, Input, Select, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Image,
+  Input,
+  Select,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import puzzle from "../assets/puzzle.svg";
+import { postMarketEnroll } from "../api/market";
+import { useEffect, useState } from "react";
+import { postMarketEnrollInterface } from "../type/market.interface";
 
 export default function MarketEnroll() {
+  const [values, setValues] = useState<postMarketEnrollInterface[]>([]);
+  const [isFilled, setisFilled] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    postMarketEnroll();
+  }, []);
+
   const total = "880";
   return (
     <>
@@ -41,25 +60,24 @@ export default function MarketEnroll() {
         </Box>
         <Box mt={"1.5rem"}>
           <Text as={"b"} color={"black.100"} fontSize={"1rem"}>
-            총 판매 가격
+            한 조각당 가격
           </Text>
-          
+
           <Input
             type="number"
-            placeholder="판매할 조각의 총 가격을 적어주세요"
+            placeholder="판매할 조각의 조각당 가격을 적어주세요"
             size="md"
             inputMode="numeric"
           />
         </Box>
         <Box mt={"1.5rem"}>
           <Text as={"b"} color={"black.100"} fontSize={"1rem"}>
-            한 조각당 가격
+            총 판매 가격
           </Text>
           <Input bgColor={"gray.400"} disabled placeholder={total} size="md" />
         </Box>
         <input type="number" inputMode="numeric" />
       </Box>
-      
     </>
   );
 }

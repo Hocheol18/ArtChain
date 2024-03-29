@@ -14,7 +14,6 @@ export const BottomNavBar = ({ navType }: Props) => {
   const [myActive, setMyActive] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(navType);
     switch (navType) {
       case "home":
         setHomeActive(true);

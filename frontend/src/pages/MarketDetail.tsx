@@ -1,12 +1,41 @@
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import SellList from "../components/Market/Detail/SellList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SellHistory from "../components/Market/Detail/SellHistory";
 import TopSecondNav from "../components/Market/Main/TopSecondNav";
+import { getMarketSellingDisplayListInterface } from "../type/market.interface";
+import { getMarketSellingDisplayList } from "../api/market";
 
 export default function MarketDeatil() {
   const id = useParams() as { id: string };
+  const [statusTopSecondNav, setSecondTopNav] = useState<string>("");
+  const [marketDetails, setMarketDetail] = useState<
+    getMarketSellingDisplayListInterface[]
+  >([]);
+
+  switch (statusTopSecondNav) {
+    case "ALL":
+      setSecondTopNav("최신순");
+      break;
+    case "PENDING_SETTLEMENT":
+      setSecondTopNav("높은가격순");
+      break;
+    case "SETTLED":
+      setSecondTopNav("가격낮은순");
+      break;
+  }
+
+  useEffect(() => {
+    getMarketSellingDisplayList({
+      fundingId: Number(id.id),
+      sortFlag: statusTopSecondNav,
+      page: 0,
+      size: 6,
+    })
+      .then((res) => setMarketDetail(res.data.data))
+      .catch((err) => console.log(err));
+  }, [statusTopSecondNav]);
 
   const [check, setCheck] = useState("SellList");
 
@@ -31,10 +60,12 @@ export default function MarketDeatil() {
           <Flex justifyContent={"end"}>
             <TopSecondNav
               first="최신순"
-              second="높은 가격 순"
-              third="낮은 가격 순"
+              second="높은가격순"
+              third="낮은가격순"
               forth=""
               isCheck={true}
+              statusTopSecondNav={statusTopSecondNav}
+              setSecondTopNav={setSecondTopNav}
             />
           </Flex>
         </>
@@ -60,19 +91,29 @@ export default function MarketDeatil() {
       )}
 
       {check === "SellList" ? (
-        <Center>
-          <Flex
-            wrap={"wrap"}
-            justifyContent={"flex-start"}
-            ml={"0.5rem"}
-            mt={"1rem"}
-            w={"390px"}
-          >
-            <SellList />
-          </Flex>
-        </Center>
+        <Grid
+          templateColumns="repeat(auto-fill, minmax(160px, 1fr))"
+          mt={"0.5rem"}
+          p={"1rem"}
+        >
+          {marketDetails.map((data: getMarketSellingDisplayListInterface) => {
+            return (
+              <SellList
+                key={data.id}
+                id={data.id}
+                fundingId={data.fundingId}
+                pieceCount={data.pieceCount}
+                totalCoin={data.totalCoin}
+                coinPerPiece={data.coinPerPiece}
+                sellerId={data.sellerId}
+                sellerAddress={data.sellerAddress}
+                status={data.status}
+              />
+            );
+          })}
+        </Grid>
       ) : (
-        <SellHistory />
+        <SellHistory fundingId={Number(id.id)} page={0} size={6} />
       )}
     </>
   );
