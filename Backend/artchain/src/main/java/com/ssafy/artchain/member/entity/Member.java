@@ -2,6 +2,7 @@ package com.ssafy.artchain.member.entity;
 
 import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import com.ssafy.artchain.global.entity.BaseTimeEntity;
+import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -69,8 +70,19 @@ public class Member extends BaseTimeEntity {
     public void updateName(String name) {
         this.name = name;
     }
-    public void updateWalletBalance(BigDecimal walletBalance) {this.walletBalance = walletBalance;}
-    public void updatePermission(Permission permission) {this.permission = permission;}
+
+    public void updateWalletBalance(BigDecimal walletBalance) {
+        this.walletBalance = walletBalance;
+    }
+
+    public void updatePermission(Permission permission) {
+        this.permission = permission;
+    }
+
+    public void updateWalletInfo(MemberWalletInfoRequestDto dto) {
+        this.walletAddress = dto.getWalletAddress();
+        this.walletPassword = dto.getWalletPassword();
+    }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;

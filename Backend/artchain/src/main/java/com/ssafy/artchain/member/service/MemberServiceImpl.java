@@ -7,6 +7,7 @@ import com.ssafy.artchain.market.dto.MarketSellResponseDto;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
+import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
 import com.ssafy.artchain.member.dto.response.*;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.entity.Permission;
@@ -145,7 +146,7 @@ public class MemberServiceImpl implements MemberService {
 
         List<MemberUserMypageResponseDto> list = memberRepository.memberMypage(member.getId());
         int count = 0;
-        for (MemberUserMypageResponseDto dto: list) {
+        for (MemberUserMypageResponseDto dto : list) {
             count += dto.getProgressCount();
         }
 
@@ -194,14 +195,24 @@ public class MemberServiceImpl implements MemberService {
     public void putPermission(Long memberId, String permissionFlag) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
-        if(Permission.valueOf(permissionFlag) == Permission.N){
+        if (Permission.valueOf(permissionFlag) == Permission.N) {
             memberRepository.delete(member);
-        }
-        else {
+        } else {
             member.updatePermission(Permission.valueOf(permissionFlag));
             memberRepository.save(member);
         }
 
+    }
+
+    @Transactional
+    @Override
+    public void putMemberWalletInfo(CustomUserDetails member, MemberWalletInfoRequestDto requestDto) {
+        Member memberEntity = memberRepository.findById(member.getId())
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+
+        memberEntity.updateWalletInfo(requestDto);
+        System.out.println(requestDto);
+        memberRepository.save(memberEntity);
     }
 
     @Transactional
@@ -220,7 +231,7 @@ public class MemberServiceImpl implements MemberService {
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24*60*60);
+        cookie.setMaxAge(24 * 60 * 60);
 //    https에서만 쓰게 할 수 있는 코드, localhost환경에서 개발 중이므로 주석
 //    cookie.setSecure(true);
         cookie.setPath("/api");
