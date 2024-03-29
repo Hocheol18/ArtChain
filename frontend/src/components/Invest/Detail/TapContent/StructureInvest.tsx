@@ -1,7 +1,21 @@
 import { Box, Text, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
-import React from "react";
+import { Cost, Sale } from "../../../../type/invest.interface";
 
-export const StructureInvest = () => {
+interface Props {
+  saleList: Sale[];
+  costList: Cost[];
+  totalBudget: number;
+  unitPrice: number;
+  bep: number;
+}
+
+export const StructureInvest = ({
+  saleList,
+  costList,
+  totalBudget,
+  unitPrice,
+  bep,
+}: Props) => {
   const descstr1: string =
     "프로젝트의 손익(총 매출-총 비용)을 손익배당비율에 따라 배당합니다.";
 
@@ -37,32 +51,25 @@ export const StructureInvest = () => {
             direction={"column"}
           >
             {/* 아래 이 부분 반복할 부분 */}
-            <Flex justifyContent={"space-between"} alignItems={"center"} pb={3}>
-              <Flex direction={"column"}>
-                <Box>극장 매출</Box>
-                <UnorderedList>
-                  <ListItem ml={"10"} fontSize={"14"} py={1}>
-                    티켓 판매
-                  </ListItem>
-                </UnorderedList>
+            {saleList.map((sale) => (
+              <Flex
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                pb={4}
+              >
+                <Flex direction={"column"}>
+                  <Box>{sale.mainVariety}</Box>
+                  <UnorderedList>
+                    <ListItem ml={"10"} fontSize={"14"} py={1}>
+                      {sale.subVariety}
+                    </ListItem>
+                  </UnorderedList>
+                </Flex>
+                <Box fontSize={"15"} fontWeight={"bold"}>
+                  {sale.percentage}%
+                </Box>
               </Flex>
-              <Box fontSize={"15"} fontWeight={"bold"}>
-                65%
-              </Box>
-            </Flex>
-            <Flex justifyContent={"space-between"} alignItems={"center"} pb={3}>
-              <Flex direction={"column"}>
-                <Box>극장 외 매출</Box>
-                <UnorderedList>
-                  <ListItem ml={"10"} fontSize={"14"} py={1}>
-                    VOD 매출 등
-                  </ListItem>
-                </UnorderedList>
-              </Flex>
-              <Box fontSize={"15"} fontWeight={"bold"}>
-                35%
-              </Box>
-            </Flex>
+            ))}
           </Flex>
         </Box>
         <Box>
@@ -77,26 +84,22 @@ export const StructureInvest = () => {
             direction={"column"}
           >
             {/* 아래 이 부분 반복할 부분 */}
-            <Flex justifyContent={"space-between"} alignItems={"center"} pb={3}>
-              <Flex direction={"column"}>
-                <Box>순제작비</Box>
-                <UnorderedList>
-                  <ListItem ml={"10"} fontSize={"14"} py={1}>
-                    영화제작비용
-                  </ListItem>
-                </UnorderedList>
+            {costList.map((item) => (
+              <Flex
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                pb={3}
+              >
+                <Flex direction={"column"}>
+                  <Box>{item.mainVariety}</Box>
+                  <UnorderedList>
+                    <ListItem ml={"10"} fontSize={"14"} py={1}>
+                      {item.subVariety}
+                    </ListItem>
+                  </UnorderedList>
+                </Flex>
               </Flex>
-            </Flex>
-            <Flex justifyContent={"space-between"} alignItems={"center"} pb={3}>
-              <Flex direction={"column"}>
-                <Box>개봉비용+수수료</Box>
-                <UnorderedList>
-                  <ListItem ml={"10"} fontSize={"14"} py={1}>
-                    마케팅 비용, 각종 수수료 및 제세금
-                  </ListItem>
-                </UnorderedList>
-              </Flex>
-            </Flex>
+            ))}
           </Flex>
         </Box>
 
@@ -109,15 +112,15 @@ export const StructureInvest = () => {
         >
           <Flex justifyContent={"space-between"}>
             <Box>총 예산규모</Box>
-            <Box fontWeight={"bold"}>8억</Box>
+            <Box fontWeight={"bold"}>{totalBudget}원</Box>
           </Flex>
           <Flex justifyContent={"space-between"}>
             <Box>객단가</Box>
-            <Box fontWeight={"bold"}>4,600원</Box>
+            <Box fontWeight={"bold"}>{unitPrice}원</Box>
           </Flex>
           <Flex justifyContent={"space-between"}>
             <Box>추정 손익분기점</Box>
-            <Box fontWeight={"bold"}>130,000명</Box>
+            <Box fontWeight={"bold"}>{bep}명</Box>
           </Flex>
         </Flex>
       </Box>

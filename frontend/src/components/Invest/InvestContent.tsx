@@ -1,7 +1,11 @@
 import { Box, Image, Center } from "@chakra-ui/react";
-import tmpImg from "../../assets/invest-poster-tmp-img.jpg";
 
-export const InvestContent = () => {
+interface Props {
+  poster: string;
+  title: string;
+}
+
+export const InvestContent = ({ poster, title }: Props) => {
   return (
     <Box
       display={"flex"}
@@ -13,7 +17,7 @@ export const InvestContent = () => {
       borderColor={"gray.200"}
     >
       <Image
-        src={tmpImg}
+        src={poster}
         objectFit="cover"
         height={140}
         w={200}
@@ -21,7 +25,7 @@ export const InvestContent = () => {
         py={4}
       />
       <Center fontSize={"18"} fontWeight={"bold"} pr={5}>
-        스튜디오 지브리 애니메이션 거장 타카하타 이사오 전시
+        {title}
       </Center>
     </Box>
   );

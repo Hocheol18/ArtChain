@@ -4,9 +4,10 @@ import { useState } from "react";
 interface Props {
   check: string;
   handleCheck: (whatCheck: string) => void;
+  totalNum: number;
 }
 
-export default function TopSecondNav({ check, handleCheck }: Props) {
+export default function TopSecondNav({ check, handleCheck, totalNum }: Props) {
   const handleClick = (whatCheck: string) => {
     handleCheck(whatCheck);
   };
@@ -32,7 +33,7 @@ export default function TopSecondNav({ check, handleCheck }: Props) {
             paddingY={1}
           >
             <Text as={"b"} color={"black.100"}>
-              전체 10
+              전체 {totalNum}
             </Text>
           </Box>
         ) : (
@@ -55,7 +56,7 @@ export default function TopSecondNav({ check, handleCheck }: Props) {
             paddingY={1}
           >
             <Text as={"b"} color={"black.100"}>
-              진행중 10
+              진행중 {totalNum}
             </Text>
           </Box>
         ) : (
@@ -82,7 +83,7 @@ export default function TopSecondNav({ check, handleCheck }: Props) {
             paddingY={1}
           >
             <Text as={"b"} color={"black.100"}>
-              모집종료 100
+              모집종료 {totalNum}
             </Text>
           </Box>
         ) : (
@@ -109,7 +110,7 @@ export default function TopSecondNav({ check, handleCheck }: Props) {
             paddingY={1}
           >
             <Text as={"b"} color={"black.100"}>
-              정산완료 100
+              정산완료 {totalNum}
             </Text>
           </Box>
         ) : (

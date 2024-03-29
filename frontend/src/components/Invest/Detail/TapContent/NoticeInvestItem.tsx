@@ -1,10 +1,24 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { Notice } from "../../../../type/invest.interface";
 
-export const NoticeInvestItem = () => {
+interface Props {
+  notice: Notice;
+}
+
+export const NoticeInvestItem = ({ notice }: Props) => {
+  if (!notice) {
+    return null;
+  }
+
+  const fundingId: number = notice.fundingId;
+  const noticeId: number = notice.id;
+
+  const url = `/invest/${fundingId}/notice/${noticeId}`;
+
   return (
-    <Box as={Link} to="/invest/1/notice/1">
+    <Box as={Link} to={url}>
       <Box px={6}>
         <Flex
           direction={"column"}
@@ -14,12 +28,12 @@ export const NoticeInvestItem = () => {
           borderBottomColor={"gray.400"}
         >
           <Box fontSize={"15"} fontWeight={"bold"}>
-            앙리마티스: 러브 앤 재즈 투자상품 상세정보 공개
+            {notice.title}
           </Box>
 
           <Flex>
             <Box fontSize={"14"} mr={3} textColor={"gray.500"}>
-              2023-05-02
+              {notice.createdAt}
             </Box>
             <Box
               fontSize={"14"}
@@ -28,7 +42,7 @@ export const NoticeInvestItem = () => {
               borderRadius={5}
               px={2}
             >
-              (주)씨씨오씨엠
+              {notice.entName}
             </Box>
           </Flex>
         </Flex>
