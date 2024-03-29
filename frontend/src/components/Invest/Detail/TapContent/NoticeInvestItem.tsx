@@ -33,7 +33,7 @@ export const NoticeInvestItem = ({ notice }: Props) => {
 
           <Flex>
             <Box fontSize={"14"} mr={3} textColor={"gray.500"}>
-              (날짜도주세용)
+              {notice.createdAt}
             </Box>
             <Box
               fontSize={"14"}

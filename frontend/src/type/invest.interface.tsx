@@ -42,6 +42,7 @@ export interface Notice {
   title: string;
   content: string;
   entName: string;
+  createdAt: string;
 }
 
 export interface Schedule {
