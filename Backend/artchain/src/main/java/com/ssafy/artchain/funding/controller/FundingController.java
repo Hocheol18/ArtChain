@@ -5,7 +5,6 @@ import com.ssafy.artchain.funding.response.DefaultResponse;
 import com.ssafy.artchain.funding.response.StatusCode;
 import com.ssafy.artchain.funding.service.FundingService;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
-import com.ssafy.artchain.member.dto.response.MemberPermissionResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static com.ssafy.artchain.funding.response.StatusCode.SUCCESS_FUNDING_PERMISSION_LIST_VIEW;
-import static com.ssafy.polaris.book.response.StatusCode.SUCCESS_PERMISSION_COMPANYS_VIEW;
 
 @RestController
 @RequestMapping("/api/funding")
@@ -87,6 +85,7 @@ public class FundingController {
     public ResponseEntity<DefaultResponse<FundingListResponseDto>> getFundingByStatus(
             @RequestParam String category, @RequestParam String status, @RequestParam String allowStat, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
+        Long totalCount = fundingService.getFundingListByCategoryAndStatusTotalCount(category, status, allowStat);
         List<FundingListItemDto> fundingList = fundingService.getFundingListByCategoryAndStatus(category,
                 status, allowStat, pageable);
 
@@ -100,6 +99,7 @@ public class FundingController {
                     HttpStatus.OK,
                     StatusCode.SUCCESS_FUNDING_LIST_VIEW,
                     new FundingListResponseDto(
+                            totalCount,
                             fundingList
                     )
             );
@@ -353,7 +353,7 @@ public class FundingController {
      * 관리자 권한 확인하는 로직 넣을것
      */
     @GetMapping("/permission")
-    public ResponseEntity<DefaultResponse<List<FundingPermissionResponseDto>>> getComPermissionList(){
+    public ResponseEntity<DefaultResponse<List<FundingPermissionResponseDto>>> getComPermissionList() {
         List<FundingPermissionResponseDto> fundingPermissionResponseDtoList = fundingService.getFundingPermissionList();
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_FUNDING_PERMISSION_LIST_VIEW, fundingPermissionResponseDtoList);
     }

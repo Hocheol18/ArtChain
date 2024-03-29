@@ -1,9 +1,14 @@
 package com.ssafy.artchain.funding.entity;
 
 import com.ssafy.artchain.connectentity.entity.InvestmentLog;
-import java.math.BigDecimal;
+import com.ssafy.artchain.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,9 +17,9 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "funding")
-public class Funding {
+public class Funding extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,7 +74,7 @@ public class Funding {
 
     @Column(name = "is_allow")
     private Boolean isAllow;
-    
+
     @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;
 

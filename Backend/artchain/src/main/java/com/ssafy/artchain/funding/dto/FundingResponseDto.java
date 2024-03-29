@@ -5,6 +5,7 @@ import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -12,6 +13,7 @@ public class FundingResponseDto {
 
     private Long id;
     private Long entId;
+    private String entName;
     private String name;
     private String poster;
     private String category;
@@ -32,10 +34,14 @@ public class FundingResponseDto {
     private List<FundingExpectedReturnResponseDto> expectedReturnList;
     private List<FundingSaleResponseDto> saleList;
     private List<FundingCostResponseDto> costList;
+    private Long investorNum; // 투자자 수(모집 중 ~ 정산 완료)
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public FundingResponseDto(Funding funding) {
+    public FundingResponseDto(Funding funding, Long investorNum, String entName) {
         this.id = funding.getId();
         this.entId = funding.getEntId();
+        this.entName = entName;
         this.name = funding.getName();
         this.poster = funding.getPoster();
         this.category = funding.getCategory();
@@ -51,7 +57,7 @@ public class FundingResponseDto {
         this.bep = funding.getBep();
         this.progressStatus = funding.getProgressStatus();
         this.isAllow = funding.getIsAllow();
-        this.noticeList = funding.getNoticeList().stream().map(FundingNoticeResponseDto::new)
+        this.noticeList = funding.getNoticeList().stream().map(fundingNotice -> new FundingNoticeResponseDto(fundingNotice, entName))
                 .toList();
         this.scheduleList = funding.getScheduleList().stream().map(FundingScheduleResponseDto::new)
                 .toList();
@@ -61,5 +67,8 @@ public class FundingResponseDto {
                 .toList();
         this.costList = funding.getCostList().stream().map(FundingCostResponseDto::new)
                 .toList();
+        this.investorNum = investorNum;
+        this.createdAt = funding.getCreatedAt();
+        this.updatedAt = funding.getUpdatedAt();
     }
 }

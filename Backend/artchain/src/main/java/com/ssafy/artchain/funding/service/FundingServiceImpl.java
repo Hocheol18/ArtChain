@@ -10,6 +10,7 @@ import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
 import com.ssafy.artchain.s3.S3Service;
+import com.ssafy.artchain.settlement.repository.SettlementRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class FundingServiceImpl implements FundingService {
     private final FundingCostRepository fundingCostRepository;
     private final InvestmentLogRepository investmentLogRepository;
     private final MemberRepository memberRepository;
+    private final SettlementRepository settlementRepository;
     private final S3Service s3Service;
     private final EntityManager em;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
@@ -131,16 +133,59 @@ public class FundingServiceImpl implements FundingService {
     public FundingResponseDto getFunding(Long fundingId) {
         Funding funding = fundingRepository.findById(fundingId)
                 .orElse(null);
-
-        if (funding != null) {
-            return new FundingResponseDto(funding);
-        } else {
+        if (funding == null) {
             return null;
         }
+
+        Member ent = memberRepository.findById(funding.getEntId())
+                .orElse(null);
+        if (ent == null) {
+            return null;
+        }
+
+        Long investorNum = funding.getProgressStatus().equals(FundingProgressStatus.BEFORE_RECRUITMENT)
+                ? null : investmentLogRepository.countDistinctMemberByFundingId(fundingId);
+
+        return new FundingResponseDto(funding, investorNum, ent.getName());
     }
 
     @Override
-    @Transactional
+    public Long getFundingListByCategoryAndStatusTotalCount(String category, String status, String allowStat) {
+        String UPPER_ALL = "ALL";
+        String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
+
+        List<FundingProgressStatus> statuses;
+        if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || (Stream.of(FundingProgressStatus.values())
+                .noneMatch(ps -> ps.name().equals(status)) && !status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END))) { // 모집 시작 전을 제외한 모든 진행 상태
+            statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
+                    FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
+                    FundingProgressStatus.RECRUITMENT_FAILED);
+        } else if (status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END)) {
+            statuses = List.of(FundingProgressStatus.PENDING_SETTLEMENT,
+                    FundingProgressStatus.RECRUITMENT_FAILED);
+        } else {
+            statuses = List.of(FundingProgressStatus.valueOf(status));
+        }
+
+        List<Boolean> allowStatuses;
+        if (allowStat.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || Stream.of(FundingAllowStatus.values())
+                .noneMatch(als -> als.name().equals(allowStat))) {
+            allowStatuses = List.of(true, false);
+        } else {
+            allowStatuses = List.of(allowStat.toUpperCase(Locale.ROOT).equals("TRUE"));
+        }
+
+        List<Funding> fundingList;
+        if (category.toUpperCase(Locale.ROOT).equals(UPPER_ALL)) {
+            fundingList = fundingRepository.findAllByProgressStatusInAndIsAllowIn(statuses, allowStatuses);
+        } else {
+            fundingList = fundingRepository.findAllByCategoryAndProgressStatusInAndIsAllowIn(category, statuses, allowStatuses);
+        }
+
+        return fundingList.stream().count();
+    }
+
+    @Override
     public List<FundingListItemDto> getFundingListByCategoryAndStatus(String category, String status, String allowStat, Pageable pageable) {
         String UPPER_ALL = "ALL";
         String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
@@ -175,7 +220,13 @@ public class FundingServiceImpl implements FundingService {
 
         return fundingPage.getContent()
                 .stream()
-                .map(FundingListItemDto::new)
+                .map(funding -> {
+                    Long investorNum = funding.getProgressStatus().equals(FundingProgressStatus.BEFORE_RECRUITMENT)
+                            ? null : investmentLogRepository.countDistinctMemberByFundingId(funding.getId());
+                    Integer finalReturnRate = funding.getProgressStatus().equals(FundingProgressStatus.SETTLED)
+                            ? settlementRepository.findReturnRateByFundingId(funding.getId()) : null;
+                    return new FundingListItemDto(funding, investorNum, finalReturnRate);
+                })
                 .toList();
     }
 
@@ -263,7 +314,13 @@ public class FundingServiceImpl implements FundingService {
             return null;
         }
 
-        return new FundingNoticeResponseDto(fundingNotice);
+        Member ent = memberRepository.findById(fundingNotice.getFunding().getEntId())
+                .orElse(null);
+        if (ent == null) {
+            return null;
+        }
+
+        return new FundingNoticeResponseDto(fundingNotice, ent.getName());
     }
 
     @Override

@@ -15,6 +15,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class SettlementServiceImpl implements SettlemnetService {
     private final S3Service s3Service;
     private final EntityManager entityManager;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
-    private final String ROLE_ADMIN = "ROLD_ADMIN";
+    private final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Override
     public Long createSettlementRequest(MultipartFile file, SettlementRequestDto dto, CustomUserDetails member) {
@@ -85,19 +86,19 @@ public class SettlementServiceImpl implements SettlemnetService {
 
     @Override
     public SettlementResponseDto getSettlement(Long settlementId, CustomUserDetails member) {
-        Settlement settlement = settlementRepository.findById(settlementId)
-                .orElse(null);
+        SettlementResponseDto settlement = settlementRepository.getSettlement(settlementId);
         if (settlement == null ||
                 (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN)) &&
-                        !settlement.getId().equals(member.getId()))
+                        !settlement.getEntId().equals(member.getId()))
         ) {
             return null;
         }
 
-        return new SettlementResponseDto(settlement);
+        return settlement;
     }
 
     @Override
+    @Transactional
     public int updateSettlementStatus(Long settlementId, String status, CustomUserDetails member) {
         if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN))) {
             return -3;
@@ -109,12 +110,19 @@ public class SettlementServiceImpl implements SettlemnetService {
             return -2;
         }
 
+        String upperStatus = status.toUpperCase(Locale.ROOT);
         if (Stream.of(SettlementStatus.values())
-                .noneMatch(sts -> sts.name().equals(status))) {
+                .noneMatch(sts -> sts.name().equals(upperStatus))) {
             return -1;
         }
 
         settlement.updateStatus(SettlementStatus.valueOf(status.toUpperCase(Locale.ROOT)));
+
+        Funding funding = fundingRepository.findById(settlement.getFundingId())
+                .orElse(null);
+        if (funding != null && SettlementStatus.ALLOW.name().equals(upperStatus)) {
+            funding.updateProgressStatus(FundingProgressStatus.SETTLED);
+        }
 
         return 1;
     }
