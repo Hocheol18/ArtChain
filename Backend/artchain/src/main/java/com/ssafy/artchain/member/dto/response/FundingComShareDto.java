@@ -4,6 +4,7 @@ import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.settlement.entity.SettlementStatus;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -11,8 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//기업과 관련된 펀딩 정보를 담는 Dto
-public class FundingComMypageDto {
+public class FundingComShareDto {
     private Long id;
     private String name;
     private FundingProgressStatus progressStatus;
@@ -21,4 +21,18 @@ public class FundingComMypageDto {
     private Long goalCoinCount;
     private LocalDate recruitEnd;
     private SettlementStatus status;
+    private BigDecimal share;
+
+
+    public FundingComShareDto(FundingComMypageDto dto){
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.progressStatus = dto.getProgressStatus();
+        this.poster = dto.getPoster();
+        this.nowCoinCount = dto.getNowCoinCount();
+        this.goalCoinCount = dto.getGoalCoinCount();
+        this.recruitEnd = dto.getRecruitEnd();
+        this.status = dto.getStatus();
+        this.share = null;
+    }
 }
