@@ -7,6 +7,9 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { getMarketChart } from "../../../api/market";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 ChartJS.register(
   LinearScale,
@@ -17,17 +20,31 @@ ChartJS.register(
 );
 
 export default function SellHistoryChart() {
+  const id = useParams() as { id: string };
   const today = new Date();
-  const labels = [];
-  for (let i = 1; i <= 7; i++) {
+  const [values, setValues] = useState<string[]>([]);
+
+  useEffect(() => {
+    getMarketChart(Number(id.id)).then((res) => setValues(res.data.data));
+  }, [id]);
+
+  const labels: number[] = [];
+  for (let i = 1; i <= 8; i++) {
     labels.push(today.getDate() - 7 + i);
   }
+
+  const datas: number[] = [];
+  values.forEach((res: string) => {
+    datas.push(Number(res));
+  });
+
+  console.log(datas);
 
   const datasets = {
     labels: labels,
     datasets: [
       {
-        data: [2, 3, 10, 3, 3, 5, 8],
+        data: [2, 3, 10, 3, 3, 5, 8, 10],
         fill: false,
         borderColor: "#014BA0",
       },
@@ -73,12 +90,11 @@ export default function SellHistoryChart() {
         anchor: "end" as const,
         clamp: true,
         clip: false,
-        align : "end" as const ,
+        align: "end" as const,
         offset: 0,
         formatter: function (value: number) {
           return value + "개";
         },
-        
       },
     },
   };

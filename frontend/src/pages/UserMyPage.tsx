@@ -1,13 +1,5 @@
-import {
-  Box,
-  Button,
-  Text,
-  Image,
-  Flex,
-  Center,
-  useToast,
-} from "@chakra-ui/react";
-import settings from "../assets/setting.svg";
+import { Box, Button, Text, Image, Flex, Center } from "@chakra-ui/react";
+
 import wallet from "../assets/wallet.svg";
 import copy from "../assets/copy.svg";
 import puzzle from "../assets/puzzle.svg";
@@ -16,9 +8,7 @@ import rightarrow from "../assets/rightarrow.svg";
 import BackIcon from "../assets/back-icon.svg";
 import { useNavigate, Link } from "react-router-dom";
 import DoughnutChart from "../components/Mypage/DoughnutChart";
-import { LogoutAxios } from "../api/user";
-import useUserInfo from "../store/useUserInfo";
-import { CheckCircleIcon } from "@chakra-ui/icons";
+
 
 export default function UserMyPage() {
   const num = 100;
@@ -26,43 +16,6 @@ export default function UserMyPage() {
   const handleBack = () => {
     navigate(-1); //뒤로가기
   };
-  const { userInfo, setUserInfo } = useUserInfo();
-  const toast = useToast();
-
-  function clearFunction() {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const clearUserIdStorage = useUserInfo.persist.clearStorage;
-    sessionStorage.removeItem("accessToken");
-    setUserInfo({
-      profileUrl: "",
-      nickname: "",
-      walletBalance: "",
-      isLogin: false,
-      metamask: "",
-    });
-    clearUserIdStorage();
-    toast({
-      duration: 2000,
-      isClosable: true,
-      position: "top",
-      render: () => (
-        <Flex
-          color="white"
-          mt={"50px"}
-          bg="blue.300"
-          p={"1rem"}
-          borderRadius={"0.7rem"}
-          alignItems={"center"}
-        >
-          <CheckCircleIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-          <Center ml={"1rem"}>
-            <Text as={"b"}>로그아웃 성공</Text>
-          </Center>
-        </Flex>
-      ),
-    });
-    navigate("../");
-  }
 
   const handleCharge = () => {
     navigate("/charge");
@@ -87,7 +40,7 @@ export default function UserMyPage() {
           </Button>
         </Box>
         <Box>
-          <Flex mt={"0.5rem"}>
+          {/* <Flex mt={"0.5rem"}>
             <Text as={"b"} fontSize={"1.7rem"} ml={"2rem"}>
               김지은님
             </Text>
@@ -129,7 +82,7 @@ export default function UserMyPage() {
                 }
               />
             ) : null}
-          </Flex>
+          </Flex> */}
           <Flex ml={"1.5rem"}>
             <Image boxSize={"1rem"} src={wallet} ml={"0.5rem"} mt={"0.8rem"} />
             <Text fontSize={"1rem"} ml={"0.8rem"} mt={"0.7rem"}>

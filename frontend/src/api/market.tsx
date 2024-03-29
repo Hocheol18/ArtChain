@@ -57,10 +57,18 @@ async function getMarketSoldDetail(marketId:number) {
   return await localAxios.get(url)
 }
 
+async function getMarketChart(fundingId : number) {
+  const url = `/market/graph${makeQuerystring({
+    fundingId
+  })}`
+  return await localAxios.get(url)
+}
+
 export {
   getMarketMainDisplayList,
   getMarketSellingDisplayList,
   getMarketHistoryDisplayList,
   postMarketEnroll,
-  getMarketSoldDetail
+  getMarketSoldDetail,
+  getMarketChart
 };

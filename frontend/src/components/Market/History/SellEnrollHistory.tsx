@@ -2,6 +2,7 @@ import { Flex, Text, Box, Center } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { getMarketHistoryDisplayListInterface } from "../../../type/market.interface";
 import { formatNumberWithComma } from "../../Common/Comma";
+import formatDate from "../../Common/Datetime";
 
 export default function SellEnrollHistory(
   params: getMarketHistoryDisplayListInterface
@@ -62,7 +63,7 @@ export default function SellEnrollHistory(
         </Center>
         <Center w={"12rem"}>
           <Text as={"b"} color={"black.100"}>
-            {params.historyTime}
+            {formatDate(params.historyTime)}
           </Text>
         </Center>
       </Flex>

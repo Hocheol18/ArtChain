@@ -39,11 +39,16 @@ export const LoginPage = () => {
   const effect = (res: any) => {
     tmp(
       res.data.data.memberUserMypageResponseDtoList[0].name,
-      res.data.data.memberUserMypageResponseDtoList[0].walletBalance
+      res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
+      res.data.data.memberUserMypageResponseDtoList[0].walletAddress
     );
   };
 
-  const tmp = async (nickname: string, walletBalance: string) => {
+  const tmp = async (
+    nickname: string,
+    walletBalance: string,
+    walletAddress: string
+  ) => {
     const res = await MetaMask();
     switch (res) {
       case "MetamaskUninstall":
@@ -141,6 +146,7 @@ export const LoginPage = () => {
             walletBalance: walletBalance,
             isLogin: true,
             metamask: res,
+            walletAddress: walletAddress,
           });
         }, 2000);
         break;

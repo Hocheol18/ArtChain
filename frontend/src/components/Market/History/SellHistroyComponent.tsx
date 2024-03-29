@@ -12,8 +12,6 @@ export default function SellHistoryComponent(
     return;
   }
 
-  formatDate;
-
   return (
     <>
       {/* 판매 */}
@@ -69,7 +67,9 @@ export default function SellHistoryComponent(
           </Text>
         </Center>
         <Center w={"12rem"}>
-          <Text as={"b"} color={"black.100"}></Text>
+          <Text as={"b"} color={"black.100"}>
+            {formatDate(params.historyTime)}
+          </Text>
         </Center>
       </Flex>
     </>

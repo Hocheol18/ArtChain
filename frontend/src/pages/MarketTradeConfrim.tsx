@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getMarketSoldDetail } from "../api/market";
 import { getMarketDetailDisplayInterface } from "../type/market.interface";
 import { formatNumberWithComma } from "../components/Common/Comma";
+import formatDate from "../components/Common/Datetime";
 
 export default function MarketTradeConfirm() {
   const id = useParams() as { id: string };
@@ -77,31 +78,34 @@ export default function MarketTradeConfirm() {
           {" "}
           판매자 지갑
         </Text>
-        <Text fontSize={"1rem"}>
-          {" "}
-          {data?.sellerAddress}
-        </Text>
+        <Text fontSize={"1rem"}> {data?.sellerAddress}</Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
           구매자 지갑
         </Text>
-        <Text fontSize={"1rem"}>
-          {" "}
-          {data?.buyerAddress}
-        </Text>
+        <Text fontSize={"1rem"}> {data?.buyerAddress}</Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
           시간
         </Text>
-        <Text fontSize={"1rem"}> 2024.03.13 14:43:45</Text>
+        <Text fontSize={"1rem"}> {formatDate(data.updatedAt)}</Text>
         <Text as={"b"} fontSize={"1.2rem"} mt={"1rem"}>
           {" "}
-          상세 링크
+          상세 링크 (클릭)
         </Text>
-        <Text fontSize={"1rem"}>
-          {" "}
-          0x0cbd1756693df7874030ab7b92419e0f3953f153d754c49d1f731fc320bd0469
-        </Text>
+        <Box>
+          <Text
+            fontSize={"1rem"}
+            onClick={() =>
+              window.open(
+                `https://sepolia.etherscan.io/tx/${data?.contractAddress}`
+              )
+            }
+          >
+            {" "}
+            {data?.contractAddress}
+          </Text>
+        </Box>
       </Flex>
     </Box>
   );

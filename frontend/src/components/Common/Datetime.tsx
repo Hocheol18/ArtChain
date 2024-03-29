@@ -1,7 +1,5 @@
 export default function formatDate(dateStr: string): string {
     const date = new Date(dateStr);
-  
-
     const pad = (num: number): string => num.toString().padStart(2, '0');
   
     const year = date.getFullYear();
