@@ -7,7 +7,6 @@ import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 
 export default function MainPage() {
-  // MetaMask 연결 함수
 
   return (
     <>
