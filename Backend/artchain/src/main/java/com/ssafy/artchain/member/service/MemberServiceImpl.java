@@ -22,6 +22,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -163,9 +166,30 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         List<FundingComMypageDto> list = memberRepository.comMypage(company.getId());
+        List<FundingComShareDto> fundingComShareDtoList = new ArrayList<>();
 
+        for(FundingComMypageDto dto: list){
+            FundingComShareDto temp = new FundingComShareDto(dto);
+            temp.setShare(calPer(dto.getNowCoinCount(), dto.getGoalCoinCount()));
+            fundingComShareDtoList.add(temp);
+        }
+        return new MemberComMypageResponseDto(comDto, fundingComShareDtoList);
+    }
+    public BigDecimal calPer(Long nowCoinCount, Long goalCoinCount) {
+        // 두 값을 BigDecimal로 변환
+        BigDecimal nowCoinCountBigDecimal = BigDecimal.valueOf(nowCoinCount);
+        BigDecimal goalCoinCountBigDecimal = BigDecimal.valueOf(goalCoinCount);
 
-        return new MemberComMypageResponseDto(comDto, list);
+        // goalCoinCount가 0이 아닐 때만 계산 수행
+        if (goalCoinCount != 0) {
+            return nowCoinCountBigDecimal
+                    .divide(goalCoinCountBigDecimal, 4, RoundingMode.HALF_UP) // 중간 계산에서 소수점 이하 4자리까지 유지
+                    .multiply(BigDecimal.valueOf(100)) // 결과적으로 100을 곱함
+                    .setScale(2, RoundingMode.HALF_UP); // 최종 결과를 소수점 이하 2자리까지 반올림
+        } else {
+            // goalCoinCount가 0인 경우, 적절한 예외 처리나 대체 값 반환
+            return BigDecimal.ZERO; // 예시로 0을 반환하나, 상황에 맞는 처리 필요
+        }
     }
 
     @Override
