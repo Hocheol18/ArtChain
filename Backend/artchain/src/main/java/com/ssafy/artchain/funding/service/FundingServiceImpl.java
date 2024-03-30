@@ -411,8 +411,9 @@ public class FundingServiceImpl implements FundingService {
         if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || (Stream.of(FundingProgressStatus.values())
                 .noneMatch(ps -> ps.name().equals(status)) && !status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END))) { // 모집 시작 전을 제외한 모든 진행 상태
             statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
-                    FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
-                    FundingProgressStatus.RECRUITMENT_FAILED);
+                    FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED
+//                    ,FundingProgressStatus.RECRUITMENT_FAILED
+            );
         } else if (status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END)) {
             statuses = List.of(FundingProgressStatus.PENDING_SETTLEMENT,
                     FundingProgressStatus.RECRUITMENT_FAILED);
