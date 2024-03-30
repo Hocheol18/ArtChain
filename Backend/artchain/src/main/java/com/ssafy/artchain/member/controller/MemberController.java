@@ -5,16 +5,16 @@ import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
-import com.ssafy.artchain.member.dto.response.MemberComMypageResponseDto;
-import com.ssafy.artchain.member.dto.response.MemberMainUserInfoResponseDto;
-import com.ssafy.artchain.member.dto.response.MemberPermissionResponseDto;
-import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
+import com.ssafy.artchain.member.dto.response.*;
 import com.ssafy.artchain.member.defaultResponse.DefaultResponse;
 import com.ssafy.artchain.member.service.MemberServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -66,6 +66,45 @@ public class MemberController {
     public ResponseEntity<DefaultResponse<MemberComMypageResponseDto>> getComMypage(@AuthenticationPrincipal CustomUserDetails company) {
         MemberComMypageResponseDto dto = memberService.getComMypage(company);
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_COMPANY_VIEW, dto);
+    }
+
+    @GetMapping("/myTrade/dropDown")
+    public ResponseEntity<?> getMyTradeDropDownList(@AuthenticationPrincipal CustomUserDetails customMember) {
+        Collection<? extends GrantedAuthority> authorities = customMember.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        GrantedAuthority auth = iterator.next();
+        String authority = auth.getAuthority();
+        if (authority.equals("ROLE_USER")) {
+            List<MemberMyTradeDropDownResponseDto> list = memberService.getMyTradeDropDownList(customMember);
+
+            return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MYTRADE_DROPDOWN_VIEW, list);
+        } else {
+            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
+        }
+    }
+
+    @GetMapping("/myTrade")
+    public ResponseEntity<?> getMyTradeList(@AuthenticationPrincipal CustomUserDetails customMember,
+                                            @RequestParam Long fundingId,
+                                            @RequestParam String filterFlag
+            , @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        try {
+            Collection<? extends GrantedAuthority> authorities = customMember.getAuthorities();
+            Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+            GrantedAuthority auth = iterator.next();
+            String authority = auth.getAuthority();
+            if (authority.equals("ROLE_USER")) {
+                List<MemberMyTradeResponseDto> list = memberService.getMyTradeList(customMember, fundingId, filterFlag, pageable);
+
+                return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MYTRADE_LIST_VIEW, list);
+            } else {
+                return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
+            }
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_WRONG_FILTER_FLAG);
+        }
+
     }
 
     @GetMapping("/permission")

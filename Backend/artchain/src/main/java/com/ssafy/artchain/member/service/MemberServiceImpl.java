@@ -1,9 +1,13 @@
 package com.ssafy.artchain.member.service;
 
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
+import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
+import com.ssafy.artchain.funding.repository.FundingRepository;
 import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.jwt.entity.RefreshToken;
 import com.ssafy.artchain.jwt.repository.RefreshRepository;
-import com.ssafy.artchain.market.dto.MarketSellResponseDto;
+import com.ssafy.artchain.market.entity.Market;
+import com.ssafy.artchain.market.repository.MarketRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
@@ -18,16 +22,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,9 @@ public class MemberServiceImpl implements MemberService {
 
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
+    private final FundingRepository fundingRepository;
+    private final InvestmentLogRepository investmentLogRepository;
+    private final MarketRepository marketRepository;
     private final RefreshRepository refreshRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -168,13 +174,14 @@ public class MemberServiceImpl implements MemberService {
         List<FundingComMypageDto> list = memberRepository.comMypage(company.getId());
         List<FundingComShareDto> fundingComShareDtoList = new ArrayList<>();
 
-        for(FundingComMypageDto dto: list){
+        for (FundingComMypageDto dto : list) {
             FundingComShareDto temp = new FundingComShareDto(dto);
             temp.setShare(calPer(dto.getNowCoinCount(), dto.getGoalCoinCount()));
             fundingComShareDtoList.add(temp);
         }
         return new MemberComMypageResponseDto(comDto, fundingComShareDtoList);
     }
+
     public BigDecimal calPer(Long nowCoinCount, Long goalCoinCount) {
         // 두 값을 BigDecimal로 변환
         BigDecimal nowCoinCountBigDecimal = BigDecimal.valueOf(nowCoinCount);
@@ -237,6 +244,60 @@ public class MemberServiceImpl implements MemberService {
         memberEntity.updateWalletInfo(requestDto);
         System.out.println(requestDto);
         memberRepository.save(memberEntity);
+    }
+
+    @Override
+    public List<MemberMyTradeDropDownResponseDto> getMyTradeDropDownList(CustomUserDetails customMember) {
+        List<MemberMyTradeDropDownResponseDto> list = fundingRepository.findAllByEntIdOrSellerIdOrBuyerId(customMember.getId());
+
+        return list;
+    }
+
+    @Override
+    public List<MemberMyTradeResponseDto> getMyTradeList(CustomUserDetails customMember,
+                                                         Long fundingId, String filterFlag, Pageable pageable) throws Exception {
+        Long memberId = customMember.getId();
+        Page<InvestmentLog> investmentLogPage;
+        Page<Market> marketPage;
+        List<MemberMyTradeResponseDto> list = new ArrayList<>();
+
+        System.out.println("filterFlag : " + filterFlag);
+
+        if (filterFlag.equals("ALL")) {
+            investmentLogPage = investmentLogRepository.findAllByFundingIdAndMemberIdOrderByCreatedAt(fundingId, memberId, pageable);
+            marketPage = marketRepository.findAllMarketHistory(fundingId, memberId, pageable);
+
+            for (InvestmentLog entity : investmentLogPage) {
+                list.add(new MemberMyTradeResponseDto(entity));
+            }
+            for (Market entity : marketPage) {
+                list.add(new MemberMyTradeResponseDto(entity, memberId));
+            }
+            // createdAt 기준으로 내림차순 정렬 (null 안전 포함)
+            Collections.sort(list, Comparator.comparing(MemberMyTradeResponseDto::getCreatedAt, Comparator.nullsLast(Comparator.naturalOrder())).reversed());
+
+        } else if (filterFlag.equals("투자")) {
+            investmentLogPage = investmentLogRepository.findAllByFundingIdAndMemberIdOrderByCreatedAt(fundingId, memberId, pageable);
+
+            for (InvestmentLog entity : investmentLogPage) {
+                list.add(new MemberMyTradeResponseDto(entity));
+            }
+        } else if (filterFlag.equals("거래")) {
+            marketPage = marketRepository.findAllMarketHistory(fundingId, memberId, pageable);
+            for (Market entity : marketPage) {
+                list.add(new MemberMyTradeResponseDto(entity, memberId));
+            }
+        } else if (filterFlag.equals("판매중")) {
+            marketPage = marketRepository.findAllSelling(fundingId, memberId, pageable);
+            for (Market entity : marketPage) {
+                list.add(new MemberMyTradeResponseDto(entity, memberId));
+            }
+        } else {
+            System.out.println("예외나버림");
+            throw new Exception("잘못된 filter Flag입니다.");
+        }
+
+        return list;
     }
 
     @Transactional

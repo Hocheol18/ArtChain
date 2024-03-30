@@ -7,6 +7,7 @@ import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
 import com.ssafy.artchain.member.dto.response.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -32,5 +33,9 @@ public interface MemberService {
     void putPermission(Long memberId, String permissionFlag);
 
     void putMemberWalletInfo(CustomUserDetails member, MemberWalletInfoRequestDto requestDto);
+
+    List<MemberMyTradeDropDownResponseDto> getMyTradeDropDownList(CustomUserDetails customMember);
+
+    List<MemberMyTradeResponseDto> getMyTradeList(CustomUserDetails customMember, Long fundingId, String filterFlag, Pageable pageable) throws Exception;
 
 }

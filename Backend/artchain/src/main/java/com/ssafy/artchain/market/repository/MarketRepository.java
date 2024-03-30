@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,6 +25,13 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
     //    일반 조회
     Page<Market> findAllByFundingIdAndStatus(Long fundingId, String status, Pageable pageable);
     Page<Market> findAllByFundingId(Long fundingId, Pageable pageable);
+
+    @Query("select m from Market m where m.fundingId = :fundingId and (m.sellerId = :memberId or m.buyerId = :memberId) " +
+            "order by m.createdAt DESC")
+    Page<Market> findAllMarketHistory(@Param("fundingId") Long fundingId, @Param("memberId") Long memberId, Pageable pageable);
+    @Query("select m from Market m where m.fundingId = :fundingId and m.sellerId = :memberId and m.buyerId is null " +
+            "order by m.createdAt DESC")
+    Page<Market> findAllSelling(@Param("fundingId") Long fundingId, @Param("memberId") Long memberId, Pageable pageable);
 
 //    marketId와 같은 market을 찾고 이 market안의 sellerId와 같은 member를 찾고,
 //    이 market안의 buyerId와 같은 member를 찾고,

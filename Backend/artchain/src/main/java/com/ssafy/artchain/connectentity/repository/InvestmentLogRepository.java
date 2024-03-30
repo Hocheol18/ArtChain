@@ -4,6 +4,8 @@ import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +27,6 @@ public interface InvestmentLogRepository extends JpaRepository<InvestmentLog, Lo
 
     @Query("SELECT COUNT(DISTINCT il.member) FROM InvestmentLog il WHERE il.funding.id = :fundingId")
     Long countDistinctMemberByFundingId(@Param("fundingId") Long fundingId);
+
+    Page<InvestmentLog> findAllByFundingIdAndMemberIdOrderByCreatedAt(Long fundingId, Long memberId, Pageable pageable);
 }
