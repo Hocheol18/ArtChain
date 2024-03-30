@@ -88,7 +88,7 @@ public class MemberController {
                                             @RequestParam Long fundingId,
                                             @RequestParam String filterFlag
             , @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        try{
+//        try{
             Collection<? extends GrantedAuthority> authorities = customMember.getAuthorities();
             Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
             GrantedAuthority auth = iterator.next();
@@ -100,10 +100,10 @@ public class MemberController {
             } else {
                 return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
             }
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_WRONG_FILTER_FLAG);
-        }
+//        } catch (Exception e) {
+//            log.debug(e.getMessage());
+//            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_WRONG_FILTER_FLAG);
+//        }
 
     }
 
