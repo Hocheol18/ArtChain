@@ -27,6 +27,9 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
     Page<Market> findAllByFundingIdAndStatus(Long fundingId, String status, Pageable pageable);
     Page<Market> findAllByFundingId(Long fundingId, Pageable pageable);
 
+    Page<Market> findAllByFundingIdAndSellerIdOrBuyerIdOrderByCreatedAt(Long fundingId, Long sellerId, Long buyerId, Pageable pageable);
+    Page<Market> findAllByFundingIdAndSellerIdOrderByCreatedAt(Long fundingId, Long sellerId, Pageable pageable);
+
 //    marketId와 같은 market을 찾고 이 market안의 sellerId와 같은 member를 찾고,
 //    이 market안의 buyerId와 같은 member를 찾고,
 //    이 market 안의 fundingId와 같은 funding을 찾고,

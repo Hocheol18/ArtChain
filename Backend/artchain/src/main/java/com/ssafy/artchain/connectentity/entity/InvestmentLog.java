@@ -1,6 +1,7 @@
 package com.ssafy.artchain.connectentity.entity;
 
 import com.ssafy.artchain.funding.entity.Funding;
+import com.ssafy.artchain.global.entity.BaseTimeEntity;
 import com.ssafy.artchain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -19,14 +20,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "investment_log")
-public class InvestmentLog {
+public class InvestmentLog extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

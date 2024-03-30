@@ -1,11 +1,15 @@
 package com.ssafy.artchain.member.service;
 
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
+import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.repository.FundingRepository;
 import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.jwt.entity.RefreshToken;
 import com.ssafy.artchain.jwt.repository.RefreshRepository;
 import com.ssafy.artchain.market.dto.MarketSellResponseDto;
+import com.ssafy.artchain.market.entity.Market;
+import com.ssafy.artchain.market.repository.MarketRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
@@ -20,10 +24,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -38,6 +45,8 @@ public class MemberServiceImpl implements MemberService {
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
     private final FundingRepository fundingRepository;
+    private final InvestmentLogRepository investmentLogRepository;
+    private final MarketRepository marketRepository;
     private final RefreshRepository refreshRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -221,6 +230,51 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberMyTradeDropDownResponseDto> getMyTradeDropDownList(CustomUserDetails customMember) {
         List<MemberMyTradeDropDownResponseDto> list = fundingRepository.findAllByEntIdOrSellerIdOrBuyerId(customMember.getId());
+
+        return list;
+    }
+
+    @Override
+    public List<MemberMyTradeResponseDto> getMyTradeList(CustomUserDetails customMember,
+                    Long fundingId, String filterFlag, Pageable pageable) throws Exception {
+        Long memberId = customMember.getId();
+        Page<InvestmentLog> investmentLogPage;
+        Page<Market> marketPage;
+        List<MemberMyTradeResponseDto> list = new ArrayList<>();
+
+        if(filterFlag.equals("ALL")) {
+            investmentLogPage = investmentLogRepository.findAllByFundingIdAndMemberIdOrderByCreatedAt(fundingId, memberId, pageable);
+            marketPage = marketRepository.findAllByFundingIdAndSellerIdOrBuyerIdOrderByCreatedAt(fundingId, memberId, memberId, pageable);
+
+            for(InvestmentLog entity: investmentLogPage){
+                list.add(new MemberMyTradeResponseDto(entity));
+            }
+            for(Market entity: marketPage){
+                list.add(new MemberMyTradeResponseDto(entity));
+            }
+        }
+        else if(filterFlag.equals("투자")) {
+            investmentLogPage = investmentLogRepository.findAllByFundingIdAndMemberIdOrderByCreatedAt(fundingId, memberId, pageable);
+
+            for(InvestmentLog entity: investmentLogPage) {
+                list.add(new MemberMyTradeResponseDto(entity));
+            }
+        }
+        else if(filterFlag.equals("거래")) {
+            marketPage = marketRepository.findAllByFundingIdAndSellerIdOrBuyerIdOrderByCreatedAt(fundingId, memberId, memberId, pageable);
+            for(Market entity: marketPage){
+                list.add(new MemberMyTradeResponseDto(entity));
+            }
+        }
+        else if(filterFlag.equals("판매중")) {
+            marketPage = marketRepository.findAllByFundingIdAndSellerIdOrderByCreatedAt(fundingId, memberId, pageable);
+            for(Market entity: marketPage){
+                list.add(new MemberMyTradeResponseDto(entity));
+            }
+        }
+        else {
+            throw new Exception("잘못된 filter Flag입니다.");
+        }
 
         return list;
     }
