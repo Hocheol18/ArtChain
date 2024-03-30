@@ -370,9 +370,9 @@ public class FundingController {
      * @param member
      * @return
      */
-    @GetMapping("/my-list")
+    @GetMapping("/my-list/{status}")
     public ResponseEntity<DefaultResponse<MyIntegratedListResponseDto>> getMyIntegratedList(
-            @RequestParam String status, @AuthenticationPrincipal CustomUserDetails member
+            @PathVariable String status, @AuthenticationPrincipal CustomUserDetails member
     ) {
         List<MyIntegratedListItemDto> myIntegratedList = fundingService.getMyIntegratedList(status, member);
 

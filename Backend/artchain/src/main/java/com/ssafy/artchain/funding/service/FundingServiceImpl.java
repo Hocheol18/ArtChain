@@ -7,10 +7,15 @@ import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.funding.entity.*;
 import com.ssafy.artchain.funding.repository.*;
 import com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto;
+import com.ssafy.artchain.market.entity.Market;
+import com.ssafy.artchain.market.repository.MarketRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
+import com.ssafy.artchain.pieceowner.dto.PieceOwnerResponseDto;
+import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
 import com.ssafy.artchain.s3.S3Service;
+import com.ssafy.artchain.settlement.entity.Settlement;
 import com.ssafy.artchain.settlement.repository.SettlementRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +47,8 @@ public class FundingServiceImpl implements FundingService {
     private final InvestmentLogRepository investmentLogRepository;
     private final MemberRepository memberRepository;
     private final SettlementRepository settlementRepository;
+    private final PieceOwnerRepository pieceOwnerRepository;
+    private final MarketRepository marketRepository;
     private final S3Service s3Service;
     private final EntityManager em;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
@@ -441,9 +448,89 @@ public class FundingServiceImpl implements FundingService {
                         )
                 ));
             } else if(st.equals(FundingProgressStatus.PENDING_SETTLEMENT)) {
-                
+                List<PieceOwnerResponseDto> rawList = pieceOwnerRepository.findAllByMemberIdAndFundingProgressStatus(member.getId(), st);
+
+                rawList.forEach(r -> {
+                    Funding funding = fundingRepository.findById(r.getFundingId())
+                            .orElse(null);
+
+                    if(funding != null) {
+                        List<InvestmentLog> investmentLogList = investmentLogRepository.findAllByMemberIdAndFundingId(member.getId(), funding.getId());
+                        Long investPiece = 0L;
+                        for (InvestmentLog investmentLog : investmentLogList) {
+                            investPiece += investmentLog.getPieceCount();
+                        }
+
+                        List<Market> buyList = marketRepository.findAllByFundingIdAndBuyerId(funding.getId(), member.getId());
+                        Long buyPiece = 0L;
+                        Long buyCoin = 0L;
+                        for (Market buy : buyList) {
+                            buyPiece += buy.getPieceCount();
+                            buyCoin += buy.getTotalCoin();
+                        }
+
+                        if(!investPiece.equals(0L) || !buyPiece.equals(0L)) {
+                            myIntegratedList.add(
+                                    new MyIntegratedListItemDto(
+                                            funding.getId(),
+                                            funding.getProgressStatus(),
+                                            funding.getName(),
+                                            funding.getPoster(),
+                                            r.getPieceCount(),
+                                            (new BigDecimal(investPiece).add(new BigDecimal(buyCoin))).divide(new BigDecimal(investPiece).add(new BigDecimal(buyPiece)), 2, RoundingMode.HALF_UP),
+                                            new BigDecimal(r.getPieceCount()).multiply(new BigDecimal("100")).divide(new BigDecimal(funding.getGoalCoinCount()), 2,
+                                                    RoundingMode.HALF_UP),
+                                            funding.getSettlement(),
+                                            null,
+                                            null
+                                    )
+                            );
+                        }
+                    }
+                });
             } else if(st.equals(FundingProgressStatus.SETTLED)) {
-                
+                List<PieceOwnerResponseDto> rawList = pieceOwnerRepository.findAllByMemberIdAndFundingProgressStatus(member.getId(), st);
+
+                rawList.forEach(r -> {
+                    Funding funding = fundingRepository.findById(r.getFundingId())
+                            .orElse(null);
+
+                    if(funding != null) {
+                        List<InvestmentLog> investmentLogList = investmentLogRepository.findAllByMemberIdAndFundingId(member.getId(), funding.getId());
+                        Long investPiece = 0L;
+                        for (InvestmentLog investmentLog : investmentLogList) {
+                            investPiece += investmentLog.getPieceCount();
+                        }
+
+                        List<Market> buyList = marketRepository.findAllByFundingIdAndBuyerId(funding.getId(), member.getId());
+                        Long buyPiece = 0L;
+                        Long buyCoin = 0L;
+                        for (Market buy : buyList) {
+                            buyPiece += buy.getPieceCount();
+                            buyCoin += buy.getTotalCoin();
+                        }
+
+                        Integer returnRate = settlementRepository.findReturnRateByFundingId(funding.getId());
+
+                        if(!investPiece.equals(0L) || !buyPiece.equals(0L)) {
+                            myIntegratedList.add(
+                                    new MyIntegratedListItemDto(
+                                            funding.getId(),
+                                            funding.getProgressStatus(),
+                                            funding.getName(),
+                                            funding.getPoster(),
+                                            r.getPieceCount(),
+                                            (new BigDecimal(investPiece).add(new BigDecimal(buyCoin))).divide(new BigDecimal(investPiece).add(new BigDecimal(buyPiece)), 2, RoundingMode.HALF_UP),
+                                            new BigDecimal(r.getPieceCount()).multiply(new BigDecimal("100")).divide(new BigDecimal(funding.getGoalCoinCount()), 2,
+                                                    RoundingMode.HALF_UP),
+                                            funding.getUpdatedAt().toLocalDate(),
+                                            new BigDecimal(100 + returnRate).multiply(new BigDecimal(r.getPieceCount())).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP),
+                                            returnRate
+                                    )
+                            );
+                        }
+                    }
+                });
             } else if (st.equals(FundingProgressStatus.RECRUITMENT_FAILED)) {
                 List<InvestmentLog> rawList = investmentLogRepository.findAllByMemberIdAndFunding_progressStatus(member.getId(), st);
 
@@ -471,6 +558,6 @@ public class FundingServiceImpl implements FundingService {
             }
         });
 
-        return null;
+        return myIntegratedList;
     }
 }
