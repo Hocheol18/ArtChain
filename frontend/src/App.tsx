@@ -178,7 +178,7 @@ function App() {
                 <Route
                   path="/market/tradenow/:id"
                   element={
-                    <CommonPage topNavType="back" bottomNavType="button">
+                    <CommonPage topNavType="back" bottomNavType="market">
                       <MarketTradeNow />
                     </CommonPage>
                   }
@@ -192,9 +192,9 @@ function App() {
                   }
                 ></Route>
                 <Route
-                  path="/market/enroll"
+                  path="/market/:id/enroll"
                   element={
-                    <CommonPage topNavType="back" bottomNavType="button">
+                    <CommonPage topNavType="back" bottomNavType="">
                       <MarketEnroll />
                     </CommonPage>
                   }

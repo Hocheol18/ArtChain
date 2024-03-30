@@ -1,7 +1,6 @@
 import TopNav from "../components/Market/Main/TopNav";
 import Content from "../components/Market/Main/Content";
 import TopSecondNav from "../components/Market/Main/TopSecondNav";
-import MarketSell from "../components/Market/Main/MarketSell";
 import { useState } from "react";
 
 export default function Martet() {
@@ -20,7 +19,7 @@ export default function Martet() {
         statusTopSecondNav = {statusTopSecondNav}
         setSecondTopNav={setSecondTopNav}
       />
-      <MarketSell />
+      
       <Content first={statusTopNav} second={statusTopSecondNav} />
     </>
   );
