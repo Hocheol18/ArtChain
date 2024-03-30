@@ -29,6 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 @RequiredArgsConstructor
@@ -170,9 +172,31 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         List<FundingComMypageDto> list = memberRepository.comMypage(company.getId());
+        List<FundingComShareDto> fundingComShareDtoList = new ArrayList<>();
 
+        for (FundingComMypageDto dto : list) {
+            FundingComShareDto temp = new FundingComShareDto(dto);
+            temp.setShare(calPer(dto.getNowCoinCount(), dto.getGoalCoinCount()));
+            fundingComShareDtoList.add(temp);
+        }
+        return new MemberComMypageResponseDto(comDto, fundingComShareDtoList);
+    }
 
-        return new MemberComMypageResponseDto(comDto, list);
+    public BigDecimal calPer(Long nowCoinCount, Long goalCoinCount) {
+        // 두 값을 BigDecimal로 변환
+        BigDecimal nowCoinCountBigDecimal = BigDecimal.valueOf(nowCoinCount);
+        BigDecimal goalCoinCountBigDecimal = BigDecimal.valueOf(goalCoinCount);
+
+        // goalCoinCount가 0이 아닐 때만 계산 수행
+        if (goalCoinCount != 0) {
+            return nowCoinCountBigDecimal
+                    .divide(goalCoinCountBigDecimal, 4, RoundingMode.HALF_UP) // 중간 계산에서 소수점 이하 4자리까지 유지
+                    .multiply(BigDecimal.valueOf(100)) // 결과적으로 100을 곱함
+                    .setScale(2, RoundingMode.HALF_UP); // 최종 결과를 소수점 이하 2자리까지 반올림
+        } else {
+            // goalCoinCount가 0인 경우, 적절한 예외 처리나 대체 값 반환
+            return BigDecimal.ZERO; // 예시로 0을 반환하나, 상황에 맞는 처리 필요
+        }
     }
 
     @Override
@@ -231,7 +255,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberMyTradeResponseDto> getMyTradeList(CustomUserDetails customMember,
-                    Long fundingId, String filterFlag, Pageable pageable) {
+                                                         Long fundingId, String filterFlag, Pageable pageable) throws Exception {
         Long memberId = customMember.getId();
         Page<InvestmentLog> investmentLogPage;
         Page<Market> marketPage;
@@ -239,43 +263,39 @@ public class MemberServiceImpl implements MemberService {
 
         System.out.println("filterFlag : " + filterFlag);
 
-        if(filterFlag.equals("ALL")) {
+        if (filterFlag.equals("ALL")) {
             investmentLogPage = investmentLogRepository.findAllByFundingIdAndMemberIdOrderByCreatedAt(fundingId, memberId, pageable);
-            marketPage = marketRepository.findAllMarketHistory(fundingId, memberId,pageable);
+            marketPage = marketRepository.findAllMarketHistory(fundingId, memberId, pageable);
 
-            for(InvestmentLog entity: investmentLogPage){
+            for (InvestmentLog entity : investmentLogPage) {
                 list.add(new MemberMyTradeResponseDto(entity));
             }
-            for(Market entity: marketPage){
+            for (Market entity : marketPage) {
                 list.add(new MemberMyTradeResponseDto(entity, memberId));
             }
             // createdAt 기준으로 내림차순 정렬 (null 안전 포함)
             Collections.sort(list, Comparator.comparing(MemberMyTradeResponseDto::getCreatedAt, Comparator.nullsLast(Comparator.naturalOrder())).reversed());
 
-        }
-        else if(filterFlag.equals("투자")) {
+        } else if (filterFlag.equals("투자")) {
             investmentLogPage = investmentLogRepository.findAllByFundingIdAndMemberIdOrderByCreatedAt(fundingId, memberId, pageable);
 
-            for(InvestmentLog entity: investmentLogPage) {
+            for (InvestmentLog entity : investmentLogPage) {
                 list.add(new MemberMyTradeResponseDto(entity));
             }
-        }
-        else if(filterFlag.equals("거래")) {
+        } else if (filterFlag.equals("거래")) {
             marketPage = marketRepository.findAllMarketHistory(fundingId, memberId, pageable);
-            for(Market entity: marketPage){
+            for (Market entity : marketPage) {
                 list.add(new MemberMyTradeResponseDto(entity, memberId));
             }
-        }
-        else if(filterFlag.equals("판매중")) {
+        } else if (filterFlag.equals("판매중")) {
             marketPage = marketRepository.findAllSelling(fundingId, memberId, pageable);
-            for(Market entity: marketPage){
+            for (Market entity : marketPage) {
                 list.add(new MemberMyTradeResponseDto(entity, memberId));
             }
+        } else {
+            System.out.println("예외나버림");
+            throw new Exception("잘못된 filter Flag입니다.");
         }
-//        else {
-//            System.out.println("예외나버림");
-//            throw new Exception("잘못된 filter Flag입니다.");
-//        }
 
         return list;
     }

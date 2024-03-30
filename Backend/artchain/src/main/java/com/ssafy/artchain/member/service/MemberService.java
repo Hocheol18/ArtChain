@@ -36,7 +36,6 @@ public interface MemberService {
 
     List<MemberMyTradeDropDownResponseDto> getMyTradeDropDownList(CustomUserDetails customMember);
 
-    List<MemberMyTradeResponseDto> getMyTradeList(CustomUserDetails customMember, Long fundingId, String filterFlag, Pageable pageable);
-//    List<MemberMyTradeResponseDto> getMyTradeList(CustomUserDetails customMember, Long fundingId, String filterFlag, Pageable pageable) throws Exception;
+    List<MemberMyTradeResponseDto> getMyTradeList(CustomUserDetails customMember, Long fundingId, String filterFlag, Pageable pageable) throws Exception;
 
 }
