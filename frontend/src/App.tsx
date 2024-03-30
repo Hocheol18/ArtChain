@@ -68,8 +68,9 @@ function App() {
             <BrowserRouter>
               <Routes>
                 {/* 메인페이지 */}
+                {/* 메인 - 홈 */}
                 <Route
-                  path="/"
+                  path="/main"
                   element={
                     <CommonPage topNavType="logo" bottomNavType="home">
                       <MainPage />

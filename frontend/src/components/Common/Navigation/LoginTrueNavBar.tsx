@@ -6,7 +6,6 @@ import {
   Popover,
   PopoverBody,
   PopoverContent,
-  PopoverHeader,
   PopoverTrigger,
   Text,
   useToast,
@@ -62,7 +61,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
         </Flex>
       ),
     });
-    navigate("../");
+    navigate("../main");
   }
 
   const { userInfo, setUserInfo } = useUserInfo();
@@ -127,7 +126,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
           <Flex ml={"1rem"} mt={"0.5rem"}>
             <Image boxSize={"1rem"} src={wallet} mt={"0.8rem"} />
             <Text fontSize={"1rem"} ml={"0.4rem"} mt={"0.7rem"} color={"black"}>
-              {userInfo.walletAddress}...
+              {userInfo.metamask.substring(0, 8)}...
             </Text>
             <Image boxSize={"1rem"} src={copy} ml={"0.5rem"} mt={"1rem"} />
           </Flex>
