@@ -6,12 +6,12 @@ import { EnrollMetamask, LoginAxios, ProfileAxios } from "../../api/user";
 import { LoginInterface } from "../../type/login.interface";
 import useUserInfo from "../../store/useUserInfo";
 
-export const useLoginWithMetamask = (values : LoginInterface) => {
+export const useLoginWithMetamask = (values: LoginInterface) => {
   const toast = useToast();
   const navigate = useNavigate();
-  const { userInfo , setUserInfo } = useUserInfo();
+  const { userInfo, setUserInfo } = useUserInfo();
 
-  console.log(values)
+  console.log(values);
 
   const LoginWithMetamask = () => {
     LoginAxios(values)
@@ -123,12 +123,10 @@ export const useLoginWithMetamask = (values : LoginInterface) => {
         });
         break;
       default:
-        console.log(res)
+        console.log(res);
         if (walletAddress === "") {
-          EnrollMetamask({walletAddress: res, walletPassword: ""})
-        }
-
-        setTimeout(() => {
+          EnrollMetamask({ walletAddress: res, walletPassword: "" });
+        } else if (walletAddress !== res) {
           toast({
             duration: 2000,
             isClosable: true,
@@ -137,28 +135,53 @@ export const useLoginWithMetamask = (values : LoginInterface) => {
               <Flex
                 color="white"
                 mt={"50px"}
-                bg="blue.300"
+                bg="#C70000"
                 p={"1rem"}
                 borderRadius={"0.7rem"}
                 alignItems={"center"}
               >
                 <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
                 <Center ml={"1rem"}>
-                  <Text as={"b"}>메타마스크 연결 성공</Text>
+                  <Text as={"b"}>
+                    처음에 등록한 메타마스크 계정을 연결해주세요
+                  </Text>
                 </Center>
               </Flex>
             ),
           });
-          setUserInfo({
-            profileUrl: "",
-            nickname: nickname,
-            walletBalance: walletBalance,
-            isLogin: true,
-            metamask: res,
-            walletAddress: walletAddress,
-            userId: values.username
-          });
-        }, 2000);
+        } else {
+          setTimeout(() => {
+            toast({
+              duration: 2000,
+              isClosable: true,
+              position: "top",
+              render: () => (
+                <Flex
+                  color="white"
+                  mt={"50px"}
+                  bg="blue.300"
+                  p={"1rem"}
+                  borderRadius={"0.7rem"}
+                  alignItems={"center"}
+                >
+                  <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+                  <Center ml={"1rem"}>
+                    <Text as={"b"}>메타마스크 연결 성공</Text>
+                  </Center>
+                </Flex>
+              ),
+            });
+            setUserInfo({
+              profileUrl: "",
+              nickname: nickname,
+              walletBalance: walletBalance,
+              isLogin: true,
+              metamask: res,
+              walletAddress: walletAddress,
+              userId: values.username,
+            });
+          }, 2000);
+        }
         break;
     }
   };
