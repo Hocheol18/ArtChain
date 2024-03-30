@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import ContentEnd from "./ContentEnd";
 import ContentShow from "./ContentShow";
 import { getMarketMainDisplayList } from "../../../api/market";
@@ -15,6 +15,18 @@ export default function Content({ first, second }: Props) {
     []
   );
 
+  switch (second) {
+    case "최신순":
+      second = 'ALL'
+      break
+    case "높은가격순":
+      second = "PENDING_SETTLEMENT"
+      break
+    case '낮은가격순':
+      second = "SETTLED";
+      break;
+  }
+
   useEffect(() => {
     getMarketMainDisplayList({
       category: first,
@@ -28,13 +40,14 @@ export default function Content({ first, second }: Props) {
 
   return (
     <>
-      <SimpleGrid
+      {contents.length >= 1 ? <SimpleGrid
         spacing="10"
         p="6"
         textAlign="center"
         rounded="lg"
         color="gray.400"
       >
+
         {contents.map((data: getMarketMainDisplayListInterface) => {
           const renderContent = () => {
             if (data.status === "PENDING_SETTLEMENT") {
@@ -68,7 +81,9 @@ export default function Content({ first, second }: Props) {
 
           return renderContent();
         })}
-      </SimpleGrid>
+      </SimpleGrid> : <Center h={"500px"}><Text fontSize={"1.5rem"}>현재 판매중인 상품이 없습니다</Text></Center>
+      }
+
     </>
   );
 }

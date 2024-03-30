@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Grid, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import SellList from "../components/Market/Detail/SellList";
 import { useEffect, useState } from "react";
@@ -26,6 +26,10 @@ export default function MarketDeatil() {
   }, [statusTopSecondNav]);
 
   const [check, setCheck] = useState("SellList");
+
+  useEffect(() => {
+    console.log(marketDetails)
+  }, [marketDetails])
 
   return (
     <>
@@ -78,29 +82,32 @@ export default function MarketDeatil() {
         </Box>
       )}
 
-      {check === "SellList" ? (
-        <Grid
-          templateColumns="repeat(auto-fill, minmax(160px, 1fr))"
-          mt={"0.5rem"}
-          p={"1rem"}
-        >
-          {marketDetails.map((data: getMarketSellingDisplayListInterface) => {
-            return (
-              <SellList
-                key={data.id}
-                id={data.id}
-                fundingId={data.fundingId}
-                pieceCount={data.pieceCount}
-                totalCoin={data.totalCoin}
-                coinPerPiece={data.coinPerPiece}
-                sellerId={data.sellerId}
-                sellerAddress={data.sellerAddress}
-                status={data.status}
-              />
-            );
-          })}
-        </Grid>
-      ) : (
+      {check === "SellList" ? (<>
+        {
+          marketDetails.length >= 1 ? <Grid
+            templateColumns="repeat(auto-fill, minmax(160px, 1fr))"
+            mt={"0.5rem"}
+            p={"1rem"}
+          >
+            {marketDetails.map((data: getMarketSellingDisplayListInterface) => {
+              return (
+                <SellList
+                  key={data.id}
+                  id={data.id}
+                  fundingId={data.fundingId}
+                  pieceCount={data.pieceCount}
+                  totalCoin={data.totalCoin}
+                  coinPerPiece={data.coinPerPiece}
+                  sellerId={data.sellerId}
+                  sellerAddress={data.sellerAddress}
+                  status={data.status}
+                />
+              );
+            })}
+          </Grid> : <Center h={"500px"}><Text fontSize={"1.5rem"}>현재 판매중인 상품이 없습니다</Text></Center>
+        }
+
+      </>) : (
         <SellHistory fundingId={Number(id.id)} page={0} size={6} />
       )}
     </>
