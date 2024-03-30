@@ -139,11 +139,6 @@ public class MarketController {
                     HttpStatus.OK,
                     STATUS_IS_NOT_POSSIBLE_BUY
             );
-        } else if (result == 0) {
-            return DefaultResponse.emptyResponse(
-                    HttpStatus.OK,
-                    FAIL_SELLER_NOT_OWNER
-            );
         }
 
         return DefaultResponse.emptyResponse(
