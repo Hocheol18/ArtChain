@@ -65,7 +65,7 @@ export default function Normal() {
         </Flex>
       ),
     });
-    navigate("../");
+    navigate("../main");
   };
 
   useEffect(() => {

@@ -1,9 +1,38 @@
 import { Box, Flex, Text, Image, Center, Input } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Business from "../assets/business.png";
+import { LoginInterface } from "../type/login.interface";
+import { useEffect, useState } from "react";
+import { useLoginWithMetamask } from "../components/Common/LoginWithMetamask";
+
 
 export default function LoginBusiness() {
   const navigate = useNavigate();
+  const [values, setValues] = useState<LoginInterface>({
+    username: "",
+    password: "",
+  })
+  const { LoginWithMetamask } = useLoginWithMetamask();
+
+
+  const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      LoginWithMetamask(values);
+    }
+  };
+
+  useEffect(() => {
+    console.log(values)
+  }, [values])
+
   return (
     <Box p={"1rem"}>
       <Flex direction={"column"}>
@@ -31,6 +60,8 @@ export default function LoginBusiness() {
           borderColor={"gray.300"}
           ml={"0.5rem"}
           placeholder="아이디를 입력하세요"
+          onChange={handleSetValue}
+          name="username"
         />
 
         <Input
@@ -45,6 +76,9 @@ export default function LoginBusiness() {
           borderColor={"gray.300"}
           ml={"0.5rem"}
           placeholder="비밀번호를 입력하세요"
+          onChange={handleSetValue}
+          name="password"
+          onKeyDown={onKeyPress}
         />
 
         <Box
@@ -58,6 +92,7 @@ export default function LoginBusiness() {
           border={"1px"}
           bgColor={"blue.300"}
           ml={"0.5rem"}
+          onClick={() => LoginWithMetamask(values)}
         >
           <Center as={"b"} color={"white"}>
             로그인

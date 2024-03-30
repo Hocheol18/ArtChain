@@ -17,9 +17,9 @@ export default function MarketEnroll() {
   const [isFilled, setisFilled] = useState(false);
   const toast = useToast();
 
-  useEffect(() => {
-    postMarketEnroll();
-  }, []);
+  // useEffect(() => {
+  //   postMarketEnroll();
+  // }, []);
 
   const total = "880";
   return (

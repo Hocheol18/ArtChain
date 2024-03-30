@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BusinessEnrollInterface } from "../../type/login.interface";
-import { BusinessEnrollAxios } from "../../api/user";
+import { BusinessEnrollAxios, IsEnrollAxios } from "../../api/user";
 
 export default function Business() {
   const navigate = useNavigate();
@@ -82,8 +82,56 @@ export default function Business() {
         </Flex>
       ),
     });
-    navigate("../");
+    navigate("../main");
   };
+
+
+  const success = (res: any) => {
+    if (res.data.status === 200) {
+      toast({
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        render: () => (
+          <Flex
+            color="white"
+            mt={"50px"}
+            bg="blue.300"
+            p={"1rem"}
+            borderRadius={"0.7rem"}
+            alignItems={"center"}
+          >
+            <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+            <Center ml={"1rem"}>
+              <Text as={"b"}>사용 가능한 아이디입니다</Text>
+            </Center>
+          </Flex>
+        ),
+      });
+    } else {
+      toast({
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+        render: () => (
+          <Flex
+            color="white"
+            mt={"50px"}
+            bg="#C70000"
+            p={"1rem"}
+            borderRadius={"0.7rem"}
+            alignItems={"center"}
+          >
+            <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
+            <Center ml={"1rem"}>
+              <Text as={"b"}>이미 가입되어 있는 회원입니다</Text>
+            </Center>
+          </Flex>
+        ),
+      });
+    }
+  };
+
 
   return (
     <Box p={"1rem"}>
@@ -116,6 +164,11 @@ export default function Business() {
               colorScheme="blue"
               variant="outline"
               mt={"0.5rem"}
+              onClick={() => IsEnrollAxios(values.memberId)
+                .then((res) => {
+                  success(res);
+                })
+                .catch((err) => console.log(err))}
             >
               확인
             </Button>
@@ -224,7 +277,7 @@ export default function Business() {
               <option value="option3">LGU+</option>
             </Select>
             <Input
-            type="number"
+              type="number"
               minW={"200px"}
               px={"1rem"}
               py={"0.4rem"}
@@ -244,7 +297,7 @@ export default function Business() {
             사업자등록번호*
           </Text>
           <Input
-          type="number"
+            type="number"
             px={"1rem"}
             py={"0.4rem"}
             rounded={"0.7rem"}

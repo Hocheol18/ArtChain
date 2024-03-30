@@ -73,4 +73,7 @@ export interface getMarketDetailDisplayInterface {
   sellerAddress: string;
   status: string;
   totalCoin: number;
+  createdAt : string;
+  updatedAt : string;
 }
+

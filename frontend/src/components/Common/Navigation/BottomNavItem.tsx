@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import HomeIcon from "../../../assets/home-icon.svg";
@@ -37,7 +37,7 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
     switch (text) {
       case "홈":
         setImgIcon(HomeIcon);
-        setToLink("/");
+        setToLink("/main");
         break;
       case "투자":
         setImgIcon(InvestIcon);
