@@ -28,6 +28,7 @@ export default function Business() {
     bankAccount: "",
     tel: "",
     businessRegistrationNumber: "",
+    isConfirm: false,
   });
 
   const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +56,8 @@ export default function Business() {
       values.name.length >= 1 &&
       values.password.length >= 4 &&
       values.tel.length >= 1 &&
-      values.businessRegistrationNumber.length >= 1
+      values.businessRegistrationNumber.length >= 1 &&
+      values.isConfirm
     ) {
       setisFilled(true);
     }
@@ -85,9 +87,12 @@ export default function Business() {
     navigate("../main");
   };
 
-
   const success = (res: any) => {
     if (res.data.status === 200) {
+      setValues((prev) => ({
+        ...prev,
+        isConfirm: true,
+      }));
       toast({
         duration: 2000,
         isClosable: true,
@@ -132,7 +137,6 @@ export default function Business() {
     }
   };
 
-
   return (
     <Box p={"1rem"}>
       <Flex direction={"column"}>
@@ -164,11 +168,13 @@ export default function Business() {
               colorScheme="blue"
               variant="outline"
               mt={"0.5rem"}
-              onClick={() => IsEnrollAxios(values.memberId)
-                .then((res) => {
-                  success(res);
-                })
-                .catch((err) => console.log(err))}
+              onClick={() =>
+                IsEnrollAxios(values.memberId)
+                  .then((res) => {
+                    success(res);
+                  })
+                  .catch((err) => console.log(err))
+              }
             >
               확인
             </Button>
