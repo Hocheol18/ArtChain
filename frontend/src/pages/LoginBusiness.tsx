@@ -12,7 +12,7 @@ export default function LoginBusiness() {
     username: "",
     password: "",
   })
-  const { LoginWithMetamask } = useLoginWithMetamask();
+  const { LoginWithMetamask } = useLoginWithMetamask(values);
 
 
   const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +25,7 @@ export default function LoginBusiness() {
 
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      LoginWithMetamask(values);
+      LoginWithMetamask();
     }
   };
 
@@ -92,7 +92,7 @@ export default function LoginBusiness() {
           border={"1px"}
           bgColor={"blue.300"}
           ml={"0.5rem"}
-          onClick={() => LoginWithMetamask(values)}
+          onClick={() => LoginWithMetamask()}
         >
           <Center as={"b"} color={"white"}>
             로그인

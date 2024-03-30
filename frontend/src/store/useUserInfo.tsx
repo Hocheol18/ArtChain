@@ -9,6 +9,7 @@ interface userInfoType {
   isLogin: boolean;
   metamask: string;
   walletAddress : string;
+  userId : string | undefined;
 }
 
 interface UserInfoState {
@@ -26,7 +27,8 @@ const defaultState = {
   walletBalance: "",
   isLogin: false,
   metamask: "",
-  walletAddress : ""
+  walletAddress : "",
+  userId : "",
 };
 
 const useUserInfo = create<UserInfoState & UserInfoActions>()(
