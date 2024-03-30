@@ -120,11 +120,11 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
         borderColor={"blue.200"}
         bgGradient={"linear(to-r, #16d9e3 0%, #30c7ec 50%, #46aef7 90%)"}
         w="390px"
-        h={"160px"}
+        h={"200px"}
         color="white"
       >
         <PopoverBody>
-          <Flex ml={"1rem"}>
+          <Flex ml={"1rem"} mt={"0.5rem"}>
             <Image boxSize={"1rem"} src={wallet} mt={"0.8rem"} />
             <Text fontSize={"1rem"} ml={"0.4rem"} mt={"0.7rem"} color={"black"}>
               {userInfo.walletAddress}...
@@ -174,8 +174,8 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
               />
             ) : null}
           </Flex>
-          <Flex>
-            <Box h={"40px"} ml={"1rem"} w={"170px"}>
+          <Flex mt={"0.5rem"}>
+            <Box h={"40px"} ml={"1rem"} w={"170px"} >
               <Text as={"b"} fontSize={"2rem"} color={"black"}>
                 {formatNumberWithComma(Number(userInfo.walletBalance))}
               </Text>

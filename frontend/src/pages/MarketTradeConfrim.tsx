@@ -14,10 +14,6 @@ export default function MarketTradeConfirm() {
     getMarketSoldDetail(Number(id.id)).then((res) => setDatas(res.data.data));
   }, [id]);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   if (data?.pieceCount === undefined) {
     return;
   }

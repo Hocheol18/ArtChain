@@ -34,17 +34,15 @@ export default function SellHistoryChart() {
   }
 
   const datas: number[] = [];
-  values.forEach((res: string) => {
-    datas.push(Number(res));
+  values.forEach((res: any) => {
+    datas.push(res.avgCoinPerPiece);
   });
-
-  console.log(datas);
 
   const datasets = {
     labels: labels,
     datasets: [
       {
-        data: [2, 3, 10, 3, 3, 5, 8, 10],
+        data: datas,
         fill: false,
         borderColor: "#014BA0",
       },
@@ -93,7 +91,7 @@ export default function SellHistoryChart() {
         align: "end" as const,
         offset: 0,
         formatter: function (value: number) {
-          return value + "개";
+          return value 
         },
       },
     },
