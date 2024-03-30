@@ -29,6 +29,7 @@ import { MyPiece } from "./pages/MyPiece";
 import { Invest } from "./pages/Invest";
 import { Charge } from "./pages/Charge";
 import { Exchange } from "./pages/Exchange";
+import FirstMainPage from "./pages/FirstMainPage";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -68,6 +69,14 @@ function App() {
             <BrowserRouter>
               <Routes>
                 {/* 메인페이지 */}
+                <Route
+                  path="/"
+                  element={
+                    <CommonPage topNavType="logo" bottomNavType="">
+                      <FirstMainPage />
+                    </CommonPage>
+                  }
+                ></Route>
                 {/* 메인 - 홈 */}
                 <Route
                   path="/main"

@@ -39,6 +39,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
       isLogin: false,
       metamask: "",
       walletAddress: "",
+      userId : ""
     });
     clearUserIdStorage();
     toast({

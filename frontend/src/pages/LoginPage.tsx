@@ -17,9 +17,6 @@ import { useLoginWithMetamask } from "../components/Common/LoginWithMetamask";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { LoginWithMetamask } = useLoginWithMetamask();
-
-
   const [values, setValues] = useState<LoginInterface>({
     username: "",
     password: "",
@@ -31,10 +28,11 @@ export const LoginPage = () => {
       [name]: value,
     }));
   };
+  const { LoginWithMetamask } = useLoginWithMetamask(values);
 
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      LoginWithMetamask(values);
+      LoginWithMetamask();
     }
   };
 
@@ -101,7 +99,7 @@ export const LoginPage = () => {
           border={"1px"}
           bgColor={"blue.300"}
           ml={"0.5rem"}
-          onClick={() => LoginWithMetamask(values)}
+          onClick={() => LoginWithMetamask()}
         >
           <Center as={"b"} color={"white"}>
             로그인
