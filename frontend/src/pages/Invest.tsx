@@ -12,6 +12,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
@@ -23,13 +24,14 @@ import { useParams } from "react-router-dom";
 import { GetFundingResponse } from "../type/invest.interface";
 import { FundRaisingPage } from "../FundRaising";
 
+import Spinner from "../assets/spinner.gif";
+
 export const Invest = () => {
   //투자하기 누르면 실행될 함수
   const handleInvest = async () => {
-    onOpen();
-    console.log(userInfo.metamask);
     //0이 아니고 숫자라면
     if (!isNaN(value) && value !== 0) {
+      onOpen();
       try {
         //transactionHash
         const transactionHash = await FundRaisingPage({
@@ -39,11 +41,14 @@ export const Invest = () => {
         });
         if (transactionHash) {
           setTransactionHashCode(transactionHash);
+          onClose();
         } else {
+          onClose();
           alert("조각 구매 중 에러가 발생하였습니다. 다시 시도해주세요.");
         }
       } catch (err) {
         //트랜잭션 에러
+        onClose();
         alert("조각 구매 중 에러가 발생하였습니다. 다시 시도해주세요.");
       }
     } else {
@@ -103,19 +108,32 @@ export const Invest = () => {
             몇조각을 구매할까요?
           </Center>
 
-          <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+          {/* 모달 */}
+          <Modal
+            closeOnOverlayClick={false}
+            isOpen={isOpen}
+            onClose={onClose}
+            isCentered={true}
+          >
             <ModalOverlay />
-            <ModalContent bg={"white"} w="80%" h="50%">
-              <ModalHeader>Create your account</ModalHeader>
+            <ModalContent bg={"white"} w="60%">
+              {/* <ModalHeader>조각을 만드는 중입니다...</ModalHeader> */}
 
-              <ModalBody pb={6}>"ㄴㅇㄹㄴㅇㄹ"</ModalBody>
+              <ModalBody pb={6}>
+                <Center display={"flex"} flexDirection={"column"}>
+                  <Box py={5} fontWeight={"bold"}>
+                    조각을 만드는 중입니다...
+                  </Box>
+                  <Image src={Spinner} />
+                </Center>
+              </ModalBody>
 
-              <ModalFooter>
+              {/* <ModalFooter>
                 <Button colorScheme="blue" mr={3}>
                   Save
                 </Button>
                 <Button onClick={onClose}>Cancel</Button>
-              </ModalFooter>
+              </ModalFooter> */}
             </ModalContent>
           </Modal>
 
