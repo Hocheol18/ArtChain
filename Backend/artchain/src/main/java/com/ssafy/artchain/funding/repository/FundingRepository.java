@@ -3,6 +3,7 @@ package com.ssafy.artchain.funding.repository;
 import com.ssafy.artchain.funding.dto.FundingPermissionResponseDto;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
+import com.ssafy.artchain.member.dto.response.MemberMyTradeDropDownResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,4 +33,9 @@ public interface FundingRepository extends JpaRepository<Funding, Long> {
             "from Funding f join Member m on f.entId = m.id " +
             "where f.isAllow is null ")
     List<FundingPermissionResponseDto> findAllByIsAllowIsNullAndComName();
+
+    @Query("select new com.ssafy.artchain.member.dto.response.MemberMyTradeDropDownResponseDto(f.id, f.name, f.poster) " +
+            "from Funding f where f.id in ( select m.fundingId as id from Market m where m.sellerId = :memberId or m.buyerId = :memberId) " +
+            "Or f.id in ( select i.funding.id as id from InvestmentLog i where i.member.id = :memberId)")
+    List<MemberMyTradeDropDownResponseDto> findAllByEntIdOrSellerIdOrBuyerId(Long memberId);
 }

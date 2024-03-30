@@ -5,10 +5,7 @@ import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
-import com.ssafy.artchain.member.dto.response.MemberComMypageResponseDto;
-import com.ssafy.artchain.member.dto.response.MemberMainUserInfoResponseDto;
-import com.ssafy.artchain.member.dto.response.MemberPermissionResponseDto;
-import com.ssafy.artchain.member.dto.response.MemberUserMypageResponseListDto;
+import com.ssafy.artchain.member.dto.response.*;
 import com.ssafy.artchain.member.defaultResponse.DefaultResponse;
 import com.ssafy.artchain.member.service.MemberServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -66,6 +63,13 @@ public class MemberController {
     public ResponseEntity<DefaultResponse<MemberComMypageResponseDto>> getComMypage(@AuthenticationPrincipal CustomUserDetails company) {
         MemberComMypageResponseDto dto = memberService.getComMypage(company);
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_COMPANY_VIEW, dto);
+    }
+
+    @GetMapping("/myTrade/dropDown")
+    public ResponseEntity<?> getMyTradeDropDownList(@AuthenticationPrincipal CustomUserDetails customMember) {
+        List<MemberMyTradeDropDownResponseDto> list = memberService.getMyTradeDropDownList(customMember);
+
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MYTRADE_DROPDOWN_VIEW, list);
     }
 
     @GetMapping("/permission")

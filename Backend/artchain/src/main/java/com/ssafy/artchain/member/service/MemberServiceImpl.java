@@ -1,5 +1,7 @@
 package com.ssafy.artchain.member.service;
 
+import com.ssafy.artchain.funding.entity.Funding;
+import com.ssafy.artchain.funding.repository.FundingRepository;
 import com.ssafy.artchain.jwt.JwtUtil;
 import com.ssafy.artchain.jwt.entity.RefreshToken;
 import com.ssafy.artchain.jwt.repository.RefreshRepository;
@@ -35,6 +37,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
+    private final FundingRepository fundingRepository;
     private final RefreshRepository refreshRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -213,6 +216,13 @@ public class MemberServiceImpl implements MemberService {
         memberEntity.updateWalletInfo(requestDto);
         System.out.println(requestDto);
         memberRepository.save(memberEntity);
+    }
+
+    @Override
+    public List<MemberMyTradeDropDownResponseDto> getMyTradeDropDownList(CustomUserDetails customMember) {
+        List<MemberMyTradeDropDownResponseDto> list = fundingRepository.findAllByEntIdOrSellerIdOrBuyerId(customMember.getId());
+
+        return list;
     }
 
     @Transactional

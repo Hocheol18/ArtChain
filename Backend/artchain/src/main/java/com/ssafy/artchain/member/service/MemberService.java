@@ -33,4 +33,6 @@ public interface MemberService {
 
     void putMemberWalletInfo(CustomUserDetails member, MemberWalletInfoRequestDto requestDto);
 
+    List<MemberMyTradeDropDownResponseDto> getMyTradeDropDownList(CustomUserDetails customMember);
+
 }
