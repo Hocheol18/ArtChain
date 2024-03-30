@@ -2,14 +2,14 @@ import { Center, Flex, useToast, Text } from "@chakra-ui/react";
 import MetaMask from "../Login/Metamask";
 import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import { LoginAxios, ProfileAxios } from "../../api/user";
+import { EnrollMetamask, LoginAxios, ProfileAxios } from "../../api/user";
 import { LoginInterface } from "../../type/login.interface";
 import useUserInfo from "../../store/useUserInfo";
 
 export const useLoginWithMetamask = (values : LoginInterface) => {
   const toast = useToast();
   const navigate = useNavigate();
-  const { setUserInfo } = useUserInfo();
+  const { userInfo , setUserInfo } = useUserInfo();
 
   console.log(values)
 
@@ -123,6 +123,11 @@ export const useLoginWithMetamask = (values : LoginInterface) => {
         });
         break;
       default:
+        console.log(res)
+        if (walletAddress === "") {
+          EnrollMetamask({walletAddress: res, walletPassword: ""})
+        }
+
         setTimeout(() => {
           toast({
             duration: 2000,
