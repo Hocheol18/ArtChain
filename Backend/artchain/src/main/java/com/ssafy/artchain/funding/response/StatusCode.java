@@ -12,6 +12,7 @@ public enum StatusCode {
     SUCCESS_FUNDING_LIST_VIEW(200, "펀딩 목록 조회 성공"),
     SUCCESS_FUNDING_NOTICE_VIEW(200, "펀딩 공지사항 조회 성공"),
     SUCCESS_FUNDING_PERMISSION_LIST_VIEW(200, "관리자 페이지 펀딩 승인 대기 리스트 조회 성공"),
+    SUCCESS_MY_INTEGRATED_LIST_VIEW(200, "나의 투자(직접 투자 + 거래) 내역 조회 성공"),
 
     // 201 CREATED : 새로운 리소스 생성
     SUCCESS_CREATE_FUNDING(201, "새로운 펀딩 생성 성공"),
@@ -37,7 +38,7 @@ public enum StatusCode {
     ALLOW_ONLY_ADMIN(403, "관리자에 허용된 요청"),
     ALLOW_ONLY_FUNDING_COMPANY(403, "펀딩 기업에 허용된 요청"),
     ALLOW_OVER_FUNDING_COMPANY(403, "펀딩 기업 또는 관리자에 허용된 요청"),
-    ALLOW_ONLY_USER(403, "개인 회원만 투자 가능"),
+    ALLOW_ONLY_USER(403, "개인 회원에 허용된 요청"),
 
     // 404 NOT FOUND
     FAIL_FUNDING_VIEW(404, "펀딩 조회 실패"),

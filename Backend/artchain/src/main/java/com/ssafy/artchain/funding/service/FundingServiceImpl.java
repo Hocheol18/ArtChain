@@ -6,6 +6,7 @@ import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.funding.entity.*;
 import com.ssafy.artchain.funding.repository.*;
+import com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
@@ -21,10 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -46,6 +47,8 @@ public class FundingServiceImpl implements FundingService {
     private final String ROLE_COMPANY = "ROLE_COMPANY";
     private final String ROLE_ADMIN = "ROLE_ADMIN";
     private final String ROLE_USER = "ROLE_USER";
+    private final String UPPER_ALL = "ALL";
+    private final String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
 
     @Override
     @Transactional
@@ -187,9 +190,6 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     public List<FundingListItemDto> getFundingListByCategoryAndStatus(String category, String status, String allowStat, Pageable pageable) {
-        String UPPER_ALL = "ALL";
-        String RECRUITMENT_END = "RECRUITMENT_END"; // 모집 종료(모집 성공(정산 대기), 모집 실패)
-
         List<FundingProgressStatus> statuses;
         if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || (Stream.of(FundingProgressStatus.values())
                 .noneMatch(ps -> ps.name().equals(status)) && !status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END))) { // 모집 시작 전을 제외한 모든 진행 상태
@@ -392,5 +392,85 @@ public class FundingServiceImpl implements FundingService {
                         .build()
         );
         return savedInvestmentLog.getId();
+    }
+
+    @Override
+    public List<MyIntegratedListItemDto> getMyIntegratedList(String status, CustomUserDetails member) {
+        if(member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
+            return null;
+        }
+
+        List<FundingProgressStatus> statuses;
+        if (status.toUpperCase(Locale.ROOT).equals(UPPER_ALL) || (Stream.of(FundingProgressStatus.values())
+                .noneMatch(ps -> ps.name().equals(status)) && !status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END))) { // 모집 시작 전을 제외한 모든 진행 상태
+            statuses = List.of(FundingProgressStatus.RECRUITMENT_STATUS,
+                    FundingProgressStatus.PENDING_SETTLEMENT, FundingProgressStatus.SETTLED,
+                    FundingProgressStatus.RECRUITMENT_FAILED);
+        } else if (status.toUpperCase(Locale.ROOT).equals(RECRUITMENT_END)) {
+            statuses = List.of(FundingProgressStatus.PENDING_SETTLEMENT,
+                    FundingProgressStatus.RECRUITMENT_FAILED);
+        } else {
+            statuses = List.of(FundingProgressStatus.valueOf(status));
+        }
+
+        List<MyIntegratedListItemDto> myIntegratedList = new ArrayList<>();
+        statuses.forEach(st -> {
+            if(st.equals(FundingProgressStatus.RECRUITMENT_STATUS)) {
+                List<InvestmentLog> rawList = investmentLogRepository.findAllByMemberIdAndFunding_progressStatus(member.getId(), st);
+
+                // 해당 회원의 펀딩별 조각의 합
+                Map<Funding, Long> summaryMap = rawList.stream()
+                        .collect(Collectors.groupingBy(
+                                InvestmentLog::getFunding,
+                                Collectors.summingLong(InvestmentLog::getPieceCount)
+                        ));
+
+                summaryMap.forEach((funding, pieceCount) -> myIntegratedList.add(
+                        new MyIntegratedListItemDto(
+                                funding.getId(),
+                                st,
+                                funding.getName(),
+                                funding.getPoster(),
+                                pieceCount,
+                                new BigDecimal("1"),
+                                new BigDecimal(pieceCount).multiply(new BigDecimal("100")).divide(new BigDecimal(funding.getGoalCoinCount()), 2,
+                                        RoundingMode.HALF_UP),
+                                funding.getSettlement(),
+                                null,
+                                null
+                        )
+                ));
+            } else if(st.equals(FundingProgressStatus.PENDING_SETTLEMENT)) {
+                
+            } else if(st.equals(FundingProgressStatus.SETTLED)) {
+                
+            } else if (st.equals(FundingProgressStatus.RECRUITMENT_FAILED)) {
+                List<InvestmentLog> rawList = investmentLogRepository.findAllByMemberIdAndFunding_progressStatus(member.getId(), st);
+
+                // 해당 회원의 펀딩별 조각의 합
+                Map<Funding, Long> summaryMap = rawList.stream()
+                        .collect(Collectors.groupingBy(
+                                InvestmentLog::getFunding,
+                                Collectors.summingLong(InvestmentLog::getPieceCount)
+                        ));
+
+                summaryMap.forEach((funding, pieceCount) -> myIntegratedList.add(
+                        new MyIntegratedListItemDto(
+                                funding.getId(),
+                                st,
+                                funding.getName(),
+                                funding.getPoster(),
+                                pieceCount,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                        )
+                ));
+            }
+        });
+
+        return null;
     }
 }

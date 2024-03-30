@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.ssafy.artchain.funding.response.StatusCode.SUCCESS_FUNDING_PERMISSION_LIST_VIEW;
+import static com.ssafy.artchain.funding.response.StatusCode.*;
 
 @RestController
 @RequestMapping("/api/funding")
@@ -356,5 +356,37 @@ public class FundingController {
     public ResponseEntity<DefaultResponse<List<FundingPermissionResponseDto>>> getComPermissionList() {
         List<FundingPermissionResponseDto> fundingPermissionResponseDtoList = fundingService.getFundingPermissionList();
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_FUNDING_PERMISSION_LIST_VIEW, fundingPermissionResponseDtoList);
+    }
+
+    /**
+     * 나의 투자(직접 투자 + 거래) 내역
+     *
+     * 진행 중: 지분율, 보유 조각수, 1조각 평단가, 정산일
+     * 모집 성공(정산 대기): 지분율, 보유 조각수, 1조각 평단가, 정산일
+     * 모집 실패: 구매했던 조각수
+     * 정산 완료: 지분율, 보유 조각수, 1조각 평단가, 정산완료일(펀딩 갱신일), 정산 후 받은 코인, 최종수익률
+     *
+     * @param status
+     * @param member
+     * @return
+     */
+    @GetMapping("/my-list")
+    public ResponseEntity<DefaultResponse<MyIntegratedListResponseDto>> getMyIntegratedList(
+            @RequestParam String status, @AuthenticationPrincipal CustomUserDetails member
+    ) {
+        List<MyIntegratedListItemDto> myIntegratedList = fundingService.getMyIntegratedList(status, member);
+
+        if(myIntegratedList == null) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    ALLOW_ONLY_USER
+            );
+        }
+
+        return DefaultResponse.toResponseEntity(
+                HttpStatus.OK,
+                SUCCESS_MY_INTEGRATED_LIST_VIEW,
+                new MyIntegratedListResponseDto(myIntegratedList)
+        );
     }
 }
