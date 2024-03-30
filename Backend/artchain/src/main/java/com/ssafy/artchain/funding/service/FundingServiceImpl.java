@@ -559,6 +559,8 @@ public class FundingServiceImpl implements FundingService {
             }
         });
 
+        myIntegratedList.sort((o1, o2) -> o2.getFundingId().compareTo(o1.getFundingId()));
+
         return myIntegratedList;
     }
 }
