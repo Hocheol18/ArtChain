@@ -104,3 +104,22 @@ export interface GetNoticeParams {
   fundingId: string | undefined;
   fundingNoticeId: string | undefined;
 }
+
+// 투자하기 Params
+export interface PostFundingParams {
+  fundingRequest: PostFundingRequest;
+  fundingId: string | undefined;
+}
+
+//투자하기 request
+export interface PostFundingRequest {
+  transactionHash: string;
+  transactiontime: string;
+  coinCount: number;
+  pieceCount: number;
+}
+
+// 투자하기 Response
+export interface PostFundingResponse {
+  id: number;
+}
