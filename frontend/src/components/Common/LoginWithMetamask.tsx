@@ -1,43 +1,20 @@
-import { Center, Flex, useToast, Text } from "@chakra-ui/react";
 import MetaMask from "../Login/Metamask";
-import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
+
 import { useNavigate } from "react-router-dom";
-import { LoginAxios, ProfileAxios } from "../../api/user";
+import { EnrollMetamask, LoginAxios, ProfileAxios } from "../../api/user";
 import { LoginInterface } from "../../type/login.interface";
 import useUserInfo from "../../store/useUserInfo";
+import { useCustomToast } from "./Toast";
 
-export const useLoginWithMetamask = (values : LoginInterface) => {
-  const toast = useToast();
+export const useLoginWithMetamask = (values: LoginInterface) => {
   const navigate = useNavigate();
   const { setUserInfo } = useUserInfo();
-
-  console.log(values)
+  const toastFunction = useCustomToast()
 
   const LoginWithMetamask = () => {
     LoginAxios(values)
       .then((res) => loginDone(res))
-      .catch(() =>
-        toast({
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-          render: () => (
-            <Flex
-              color="white"
-              mt={"50px"}
-              bg="#C70000"
-              p={"1rem"}
-              borderRadius={"0.7rem"}
-              alignItems={"center"}
-            >
-              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-              <Center ml={"1rem"}>
-                <Text as={"b"}>로그인 실패</Text>
-              </Center>
-            </Flex>
-          ),
-        })
-      );
+      .catch(() => toastFunction("로그인 실패 다시 시도해주세요", false));
   };
 
   const effect = (res: any) => {
@@ -56,104 +33,54 @@ export const useLoginWithMetamask = (values : LoginInterface) => {
     const res = await MetaMask();
     switch (res) {
       case "MetamaskUninstall":
-        toast({
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-          render: () => (
-            <Flex
-              color="white"
-              mt={"50px"}
-              bg="#C70000"
-              p={"1rem"}
-              borderRadius={"0.7rem"}
-              alignItems={"center"}
-            >
-              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-              <Center ml={"1rem"}>
-                <Text as={"b"}>메타마스크를 설치해주세요</Text>
-              </Center>
-            </Flex>
-          ),
-        });
+        toastFunction("메타마스크 지갑을 설치해주세요", false);
         navigate("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
         break;
       case "MetamaskRejct":
-        toast({
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-          render: () => (
-            <Flex
-              color="white"
-              mt={"50px"}
-              bg="#C70000"
-              p={"1rem"}
-              borderRadius={"0.7rem"}
-              alignItems={"center"}
-            >
-              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-              <Center ml={"1rem"}>
-                <Text as={"b"}>사용자 거절</Text>
-              </Center>
-            </Flex>
-          ),
-        });
+        toastFunction("사용자 거절 다시 시도해주세요", false);
         break;
       case "MetamaskAccountNotFound":
-        toast({
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-          render: () => (
-            <Flex
-              color="white"
-              mt={"50px"}
-              bg="#C70000"
-              p={"1rem"}
-              borderRadius={"0.7rem"}
-              alignItems={"center"}
-            >
-              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-              <Center ml={"1rem"}>
-                <Text as={"b"}>계정을 찾을 수 없습니다</Text>
-              </Center>
-            </Flex>
-          ),
-        });
+        toastFunction("다른 계정을 선택해주세요", false);
         break;
       default:
-        setTimeout(() => {
-          toast({
-            duration: 2000,
-            isClosable: true,
-            position: "top",
-            render: () => (
-              <Flex
-                color="white"
-                mt={"50px"}
-                bg="blue.300"
-                p={"1rem"}
-                borderRadius={"0.7rem"}
-                alignItems={"center"}
-              >
-                <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-                <Center ml={"1rem"}>
-                  <Text as={"b"}>메타마스크 연결 성공</Text>
-                </Center>
-              </Flex>
-            ),
-          });
-          setUserInfo({
-            profileUrl: "",
-            nickname: nickname,
-            walletBalance: walletBalance,
-            isLogin: true,
-            metamask: res,
-            walletAddress: walletAddress,
-            userId: values.username
-          });
-        }, 2000);
+        if (walletAddress === null) {
+          EnrollMetamask({ walletAddress: res, walletPassword: "" }).then(
+            () => {
+              setTimeout(() => {
+                toastFunction("메타마스크 연결 성공", true);
+                setUserInfo({
+                  profileUrl: "",
+                  nickname: nickname,
+                  walletBalance: walletBalance,
+                  isLogin: true,
+                  metamask: res,
+                  walletAddress: walletAddress,
+                  userId: values.username,
+                });
+              }, 2000);
+            }
+          );
+        } else if (walletAddress.toLowerCase() !== res.toLowerCase()) {
+          setTimeout(() => {
+            toastFunction(
+              "처음에 등록한 메타마스크 계정을 연결해주세요",
+              false
+            );
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            toastFunction("메타마스크 연결 성공", true);
+            setUserInfo({
+              profileUrl: "",
+              nickname: nickname,
+              walletBalance: walletBalance,
+              isLogin: true,
+              metamask: res,
+              walletAddress: walletAddress,
+              userId: values.username,
+            });
+          }, 2000);
+        }
         break;
     }
   };
@@ -162,26 +89,7 @@ export const useLoginWithMetamask = (values : LoginInterface) => {
     sessionStorage.setItem("accessToken", res.headers.authorization);
     try {
       await ProfileAxios().then((res) => effect(res));
-      toast({
-        duration: 2000,
-        isClosable: true,
-        position: "top",
-        render: () => (
-          <Flex
-            color="white"
-            mt={"50px"}
-            bg="blue.300"
-            p={"1rem"}
-            borderRadius={"0.7rem"}
-            alignItems={"center"}
-          >
-            <CheckCircleIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-            <Center ml={"1rem"}>
-              <Text as={"b"}>로그인 성공</Text>
-            </Center>
-          </Flex>
-        ),
-      });
+      toastFunction("로그인 성공", true)
 
       navigate("../main");
     } catch (err) {

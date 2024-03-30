@@ -26,6 +26,7 @@ export default function Normal() {
     email: "",
     bankName: "",
     bankAccount: "",
+    isConfirm : false
   });
 
   const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +76,8 @@ export default function Normal() {
       values.email.length >= 1 &&
       values.memberId.length >= 1 &&
       values.name.length >= 1 &&
-      values.password.length >= 4
+      values.password.length >= 4 &&
+      values.isConfirm
     ) {
       setisFilled(true);
     }
@@ -83,6 +85,10 @@ export default function Normal() {
 
   const success = (res: any) => {
     if (res.data.status === 200) {
+      setValues((prev) => ({
+        ...prev,
+        isConfirm : true
+      }))
       toast({
         duration: 2000,
         isClosable: true,

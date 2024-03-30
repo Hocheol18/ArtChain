@@ -14,6 +14,7 @@ const refreshurl = "/member/refresh";
 const logouturl = "/member/logout";
 const IsEnrollurl = "/member/checkId";
 const businessEnrollurl = "/member/enterprise/join";
+const enrollMetamaskurl = "/member/walletInfo"
 
 // 프로필 함수
 async function ProfileAxios() {
@@ -59,6 +60,10 @@ async function BusinessEnrollAxios(data: BusinessEnrollInterface) {
   return await localAxios.post(businessEnrollurl, data);
 }
 
+async function EnrollMetamask(data : {walletAddress : string, walletPassword : string}) {
+  return await localAxios.put(enrollMetamaskurl, data)
+}
+
 export {
   LoginAxios,
   ProfileAxios,
@@ -67,4 +72,5 @@ export {
   LogoutAxios,
   IsEnrollAxios,
   BusinessEnrollAxios,
+  EnrollMetamask,
 };

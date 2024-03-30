@@ -10,6 +10,7 @@ export interface UserErnollInterface {
   email: string;
   bankName: string;
   bankAccount: string;
+  isConfirm : boolean
 }
 
 export interface BusinessEnrollInterface {
@@ -21,4 +22,5 @@ export interface BusinessEnrollInterface {
   bankAccount: string;
   tel : string;
   businessRegistrationNumber : string;
+  isConfirm : boolean
 }
