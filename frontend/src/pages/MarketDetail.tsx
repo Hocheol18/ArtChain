@@ -6,6 +6,8 @@ import SellHistory from "../components/Market/Detail/SellHistory";
 import TopSecondNav from "../components/Market/Main/TopSecondNav";
 import { getMarketSellingDisplayListInterface } from "../type/market.interface";
 import { getMarketSellingDisplayList } from "../api/market";
+import MarketSell from "../components/Market/Main/MarketSell";
+import useUserInfo from "../store/useUserInfo";
 
 export default function MarketDeatil() {
   const id = useParams() as { id: string };
@@ -13,6 +15,7 @@ export default function MarketDeatil() {
   const [marketDetails, setMarketDetail] = useState<
     getMarketSellingDisplayListInterface[]
   >([]);
+  const { userInfo } = useUserInfo();
 
   useEffect(() => {
     getMarketSellingDisplayList({
@@ -27,12 +30,9 @@ export default function MarketDeatil() {
 
   const [check, setCheck] = useState("SellList");
 
-  useEffect(() => {
-    console.log(marketDetails)
-  }, [marketDetails])
-
   return (
     <>
+      
       {check === "SellList" ? (
         <>
           <Box p={"1rem"} position={"sticky"} left={"1px"}>
@@ -49,6 +49,7 @@ export default function MarketDeatil() {
               조각 거래 내역
             </Text>
           </Box>
+          
           <Flex justifyContent={"end"}>
             <TopSecondNav
               first="최신순"
@@ -60,6 +61,8 @@ export default function MarketDeatil() {
               setSecondTopNav={setSecondTopNav}
             />
           </Flex>
+          {userInfo.isLogin ? <MarketSell /> : null }
+          
         </>
       ) : (
         <Box p={"1rem"} position={"sticky"} left={"1px"}>
@@ -82,32 +85,39 @@ export default function MarketDeatil() {
         </Box>
       )}
 
-      {check === "SellList" ? (<>
-        {
-          marketDetails.length >= 1 ? <Grid
-            templateColumns="repeat(auto-fill, minmax(160px, 1fr))"
-            mt={"0.5rem"}
-            p={"1rem"}
-          >
-            {marketDetails.map((data: getMarketSellingDisplayListInterface) => {
-              return (
-                <SellList
-                  key={data.id}
-                  id={data.id}
-                  fundingId={data.fundingId}
-                  pieceCount={data.pieceCount}
-                  totalCoin={data.totalCoin}
-                  coinPerPiece={data.coinPerPiece}
-                  sellerId={data.sellerId}
-                  sellerAddress={data.sellerAddress}
-                  status={data.status}
-                />
-              );
-            })}
-          </Grid> : <Center h={"500px"}><Text fontSize={"1.5rem"}>현재 판매중인 상품이 없습니다</Text></Center>
-        }
-
-      </>) : (
+      {check === "SellList" ? (
+        <>
+          {marketDetails.length >= 1 ? (
+            <Grid
+              templateColumns="repeat(auto-fill, minmax(160px, 1fr))"
+              
+              p={"0.8rem"}
+            >
+              {marketDetails.map(
+                (data: getMarketSellingDisplayListInterface) => {
+                  return (
+                    <SellList
+                      key={data.id}
+                      id={data.id}
+                      fundingId={data.fundingId}
+                      pieceCount={data.pieceCount}
+                      totalCoin={data.totalCoin}
+                      coinPerPiece={data.coinPerPiece}
+                      sellerId={data.sellerId}
+                      sellerAddress={data.sellerAddress}
+                      status={data.status}
+                    />
+                  );
+                }
+              )}
+            </Grid>
+          ) : (
+            <Center h={"500px"}>
+              <Text fontSize={"1.5rem"}>현재 판매중인 상품이 없습니다</Text>
+            </Center>
+          )}
+        </>
+      ) : (
         <SellHistory fundingId={Number(id.id)} page={0} size={6} />
       )}
     </>

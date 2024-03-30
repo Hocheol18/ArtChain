@@ -47,7 +47,7 @@ async function getMarketHistoryDisplayList(
 
 async function postMarketEnroll(data: postMarketEnrollInterface) {
   const url = "/market";
-  return await localAxios.get(url, data);
+  return await localAxios.post(url, data);
 }
 
 async function getMarketSoldDetail(marketId:number) {

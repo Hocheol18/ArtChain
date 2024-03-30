@@ -26,6 +26,9 @@ export const BottomButtonNavbar = ({ text, category, hanldeButton }: Props) => {
       case "complete":
         setColor("gray.400");
         break;
+      case "goingOn":
+        setColor("blue.300");
+        break;
     }
   }, [category]);
 

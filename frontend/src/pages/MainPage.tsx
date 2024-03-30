@@ -4,8 +4,10 @@ import Poster from "../components/Main/Poster";
 import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
+  const navigate = useNavigate();
   return (
     <>
       <MainCarousel />
@@ -26,7 +28,14 @@ export default function MainPage() {
         ml={"0.5rem"}
         mr={"0.5rem"}
       >
-        <Center color={"blue.400"} as="b" fontSize={"1.1rem"}>
+        <Center
+          color={"blue.400"}
+          as="b"
+          fontSize={"1.1rem"}
+          onClick={() => {
+            navigate("../invest-list");
+          }}
+        >
           더 많은 작품 투자하러 가기
         </Center>
       </Box>
@@ -55,7 +64,14 @@ export default function MainPage() {
         mr={"0.5rem"}
         mb={"4rem"}
       >
-        <Center color={"blue.400"} as="b" fontSize={"1.1rem"}>
+        <Center
+          color={"blue.400"}
+          as="b"
+          fontSize={"1.1rem"}
+          onClick={() => {
+            navigate("../market");
+          }}
+        >
           마켓 보러 가기
         </Center>
       </Box>
