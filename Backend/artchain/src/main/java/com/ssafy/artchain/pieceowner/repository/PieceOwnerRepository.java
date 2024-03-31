@@ -1,6 +1,7 @@
 package com.ssafy.artchain.pieceowner.repository;
 
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
+import com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto;
 import com.ssafy.artchain.pieceowner.dto.PieceOwnerResponseDto;
 import com.ssafy.artchain.pieceowner.entity.PieceOwner;
 import org.springframework.data.domain.Pageable;
@@ -51,4 +52,15 @@ public interface PieceOwnerRepository extends JpaRepository<PieceOwner, Long> {
     List<PieceOwnerResponseDto> findAllByMemberIdAndFundingProgressStatus(@Param("memberId") Long memberId,
                                                                @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus);
 
+    @Query("select " +
+            "new com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto (" +
+            "po.id, " +
+            "fd.name, " +
+            "po.pieceCount ) " +
+            "from PieceOwner po " +
+            "join Funding fd on po.fundingId = fd.id " +
+            "where po.memberId = :memberId " +
+            "and fd.progressStatus = :fundingProgressStatus")
+    List<MarketRegistFundingNameResponseDto> findMarketRegistFundingNameResponseDto(@Param("memberId") Long memberId,
+                                             @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus);
 }
