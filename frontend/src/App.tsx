@@ -279,8 +279,6 @@ function App() {
                   }></Route>
                 {/* 관리자 페이지 */}
                 <Route path="/admin" element={<AdminPage />}></Route>
-                {/* 메타마스크 테스트 페이지 */}
-                <Route path="/test" element={<Test />}></Route>
               </Routes>
             </BrowserRouter>
           </div>
