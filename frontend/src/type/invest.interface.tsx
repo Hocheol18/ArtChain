@@ -137,6 +137,12 @@ export interface PutFundingNoticeRequest {
   notice: FundingNoticeParam;
 }
 
+// 투자 공지 삭제 request
+export interface DeleteFundingNoticeRequest {
+  fundingId: string | undefined;
+  fundingNoticeId: string | undefined;
+}
+
 // 투자 공지 내용 param
 export interface FundingNoticeParam {
   title: string;

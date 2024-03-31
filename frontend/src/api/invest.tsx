@@ -9,6 +9,7 @@ import {
   PostFundingResponse,
   PostFundingNoticeRequest,
   PutFundingNoticeRequest,
+  DeleteFundingNoticeRequest,
 } from "../type/invest.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios } from "./https";
@@ -91,6 +92,19 @@ export const PutFundingNotice = async (
   const url = `/funding/${fundingId}/notice/${fundingNoticeId}`;
 
   const response = await localAxios.put(url, notice);
+
+  return response.data;
+};
+
+// 펀딩 공지사항 삭제(기업)
+export const DeleteFundingNotice = async (
+  params: DeleteFundingNoticeRequest
+): Promise<DeleteFundingNoticeRequest> => {
+  const { fundingId, fundingNoticeId } = params;
+
+  const url = `/funding/${fundingId}/notice/${fundingNoticeId}`;
+
+  const response = await localAxios.delete(url);
 
   return response.data;
 };
