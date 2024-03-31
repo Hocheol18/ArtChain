@@ -9,6 +9,14 @@ export const localAxios: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
+export const imageAxios: AxiosInstance = axios.create({
+  baseURL: "/api",
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+  withCredentials: true,
+});
+
 // Interceptors > 요청 전에 accessToken 찾아서 넣어줌
 localAxios.interceptors.request.use(
   (config) => {
@@ -43,10 +51,10 @@ localAxios.interceptors.response.use(
     }
 
     if (originConfig.retryCount >= retryLimit) {
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
 
-    originConfig.retryCount += 1
+    originConfig.retryCount += 1;
 
     try {
       const at: string | null = sessionStorage.getItem("accessToken");
