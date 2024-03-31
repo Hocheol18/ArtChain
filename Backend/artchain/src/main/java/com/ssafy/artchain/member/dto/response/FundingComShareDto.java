@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -29,7 +30,7 @@ public class FundingComShareDto {
         this.name = dto.getName();
         this.progressStatus = dto.getProgressStatus();
         this.poster = dto.getPoster();
-        this.nowCoinCount = dto.getNowCoinCount();
+        this.nowCoinCount = Optional.ofNullable(dto.getNowCoinCount()).orElse(0L);
         this.goalCoinCount = dto.getGoalCoinCount();
         this.recruitEnd = dto.getRecruitEnd();
         this.status = dto.getStatus();

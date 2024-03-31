@@ -64,8 +64,14 @@ public class MemberController {
 
     @GetMapping("/enterprise")
     public ResponseEntity<DefaultResponse<MemberComMypageResponseDto>> getComMypage(@AuthenticationPrincipal CustomUserDetails company) {
-        MemberComMypageResponseDto dto = memberService.getComMypage(company);
-        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_COMPANY_VIEW, dto);
+        try {
+            MemberComMypageResponseDto dto = memberService.getComMypage(company);
+            return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_COMPANY_VIEW, dto);
+
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+            return DefaultResponse.emptyResponse(HttpStatus.OK, NO_CONTENT_IN_FUNDING_MYPAGE_VIEW);
+        }
     }
 
     @GetMapping("/myTrade/dropDown")

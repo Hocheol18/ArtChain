@@ -25,6 +25,7 @@ public enum StatusCode {
 
 	// 204 NO CONTENT : 성공하였으나, 반환할 값이 없음
 //	NO_CONTENT_IN_LIBRARY_VIEW(204, "서재에 도서가 없음"),
+	NO_CONTENT_IN_FUNDING_MYPAGE_VIEW(204, "관련된 펀딩 정보가 없음"),
 
 	// 400 BAD REQUEST : 잘못된 요청 - 요청 구문이 잘못되었음
 //	FAIL_USER_BOOK_DELETE(400, "잘못된 요청으로 인한 사용자 도서 삭제 실패"),
