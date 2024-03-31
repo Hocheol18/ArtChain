@@ -54,7 +54,8 @@ public interface PieceOwnerRepository extends JpaRepository<PieceOwner, Long> {
 
     @Query("select " +
             "new com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto (" +
-            "po.id, " +
+            "po.id, "+
+            "fd.id, "+
             "fd.name, " +
             "po.pieceCount ) " +
             "from PieceOwner po " +
