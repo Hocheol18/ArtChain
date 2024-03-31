@@ -18,13 +18,14 @@ export default function SellHistoryComponent(
       <Flex mt={"0.7rem"} w={"800px"}>
         <Box mr={"1.2rem"}>
           <Box
+          w={"50px"}
             px={"0.6rem"}
             py={"0.1rem"}
             rounded={"0.7rem"}
             fontSize={"sm"}
             bg={"blue.300"}
           >
-            <Text
+            <Center
               as={"b"}
               color={"white.100"}
               onClick={() => {
@@ -32,7 +33,7 @@ export default function SellHistoryComponent(
               }}
             >
               보기
-            </Text>
+            </Center>
           </Box>
         </Box>
 
