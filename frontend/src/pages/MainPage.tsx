@@ -15,6 +15,7 @@ export default function MainPage() {
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>
           진행 중인 투자 작품
         </Text>
+        <button onClick={() => navigate("/admin")}>ADMIN</button>
       </Box>
       <Poster />
       <Poster />
@@ -26,16 +27,14 @@ export default function MainPage() {
         fontSize={"sm"}
         bgColor={"blue.100"}
         ml={"0.5rem"}
-        mr={"0.5rem"}
-      >
+        mr={"0.5rem"}>
         <Center
           color={"blue.400"}
           as="b"
           fontSize={"1.1rem"}
           onClick={() => {
             navigate("../invest-list");
-          }}
-        >
+          }}>
           더 많은 작품 투자하러 가기
         </Center>
       </Box>
@@ -62,16 +61,14 @@ export default function MainPage() {
         bgColor={"blue.100"}
         ml={"0.5rem"}
         mr={"0.5rem"}
-        mb={"4rem"}
-      >
+        mb={"4rem"}>
         <Center
           color={"blue.400"}
           as="b"
           fontSize={"1.1rem"}
           onClick={() => {
             navigate("../market");
-          }}
-        >
+          }}>
           마켓 보러 가기
         </Center>
       </Box>

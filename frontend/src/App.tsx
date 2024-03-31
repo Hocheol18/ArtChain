@@ -30,6 +30,7 @@ import { Invest } from "./pages/Invest";
 import { Charge } from "./pages/Charge";
 import { Exchange } from "./pages/Exchange";
 import FirstMainPage from "./pages/FirstMainPage";
+import { AdminPage } from "./pages/AdminPage";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -53,8 +54,7 @@ function App() {
                 margin: "0 auto",
                 backgroundColor: "white",
                 height: "100dvh",
-              }}
-            >
+              }}>
               데스크탑
             </div>
           </div>
@@ -75,8 +75,7 @@ function App() {
                     <CommonPage topNavType="logo" bottomNavType="">
                       <FirstMainPage />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 {/* 메인 - 홈 */}
                 <Route
                   path="/main"
@@ -93,16 +92,14 @@ function App() {
                     <CommonPage topNavType="back" bottomNavType="">
                       <LoginPage />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 <Route
                   path="/loginbusiness"
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <LoginBusiness />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 {/* 회원 가입 페이지 */}
                 <Route
                   path="/signupoauth"
@@ -110,24 +107,21 @@ function App() {
                     <CommonPage topNavType="back" bottomNavType="">
                       <UserEnrollWithOauth />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 <Route
                   path="/signupnormal"
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <UserENrollWIthNormal />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 <Route
                   path="/businessenroll"
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <BusinessEnroll />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
 
                 {/* 투자리스트 */}
                 <Route
@@ -165,40 +159,35 @@ function App() {
                     <CommonPage topNavType="logo" bottomNavType="market">
                       <Market />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 <Route
                   path="/market/:id"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="market">
                       <MarketDetail />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 <Route
                   path="/market/tradenow/:id"
                   element={
                     <CommonPage topNavType="back" bottomNavType="market">
                       <MarketTradeNow />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 <Route
                   path="/market/tradeconfirm/:id"
                   element={
                     <CommonPage topNavType="back" bottomNavType="market">
                       <MarketTradeConfirm />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 <Route
                   path="/market/:id/enroll"
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <MarketEnroll />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 {/* 마이페이지 */}
                 <Route
                   path="/mypage"
@@ -206,8 +195,7 @@ function App() {
                     <CommonPage topNavType="logo" bottomNavType="my">
                       <UserMyPage />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
 
                 {/* 나의 조각-나의 투자 */}
                 {/* <Route
@@ -246,16 +234,14 @@ function App() {
                     <CommonPage topNavType="back" bottomNavType="my">
                       <BusinessMyPage />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
                 <Route
                   path="/businessconfirm/:id"
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <FundConfirm />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
 
                 <Route
                   path="/businessproject"
@@ -263,8 +249,7 @@ function App() {
                     <CommonPage topNavType="back" bottomNavType="">
                       <BusinessProjectEnroll />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
 
                 {/* 투자하기 페이지 */}
                 <Route
@@ -273,8 +258,7 @@ function App() {
                     <CommonPage topNavType="back" bottomNavType="">
                       <Invest />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
 
                 {/* 충전하기 페이지 */}
                 <Route
@@ -283,8 +267,7 @@ function App() {
                     <CommonPage topNavType="back" bottomNavType="">
                       <Charge />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
 
                 {/* 환전하기 페이지 */}
                 <Route
@@ -293,8 +276,11 @@ function App() {
                     <CommonPage topNavType="back" bottomNavType="">
                       <Exchange />
                     </CommonPage>
-                  }
-                ></Route>
+                  }></Route>
+                {/* 관리자 페이지 */}
+                <Route path="/admin" element={<AdminPage />}></Route>
+                {/* 메타마스크 테스트 페이지 */}
+                <Route path="/test" element={<Test />}></Route>
               </Routes>
             </BrowserRouter>
           </div>
