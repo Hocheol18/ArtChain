@@ -69,7 +69,8 @@ export const ArtCharge = () => {
       return {
         ...prevUserInfo, // 이전 상태의 모든 속성을 유지합니다.
         walletBalance: (
-          parseInt(prevUserInfo.walletBalance) + price
+          parseInt(prevUserInfo.walletBalance) +
+          price / 1000
         ).toString(), // 지갑 잔액을 업데이트합니다.
       };
     };
