@@ -2,14 +2,14 @@ import { create } from "zustand";
 import { createJSONStorage, devtools } from "zustand/middleware";
 import { persist } from "zustand/middleware";
 
-interface userInfoType {
+export interface userInfoType {
   profileUrl: string;
   nickname: string;
   walletBalance: string;
   isLogin: boolean;
   metamask: string;
-  walletAddress : string;
-  userId : string | undefined;
+  walletAddress: string;
+  userId: string | undefined;
 }
 
 interface UserInfoState {
@@ -27,8 +27,8 @@ const defaultState = {
   walletBalance: "",
   isLogin: false,
   metamask: "",
-  walletAddress : "",
-  userId : "",
+  walletAddress: "",
+  userId: "",
 };
 
 const useUserInfo = create<UserInfoState & UserInfoActions>()(
