@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SettlementServiceImpl implements SettlemnetService {
+public class SettlementServiceImpl implements SettlementService {
 
     private final SettlementRepository settlementRepository;
     private final FundingRepository fundingRepository;

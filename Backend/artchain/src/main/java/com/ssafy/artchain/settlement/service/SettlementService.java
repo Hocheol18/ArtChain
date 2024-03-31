@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public interface SettlemnetService {
+public interface SettlementService {
     Long createSettlementRequest(MultipartFile file, SettlementRequestDto dto, CustomUserDetails member);
 
     List<SettlementListItemDto> getSettlementRequestList(CustomUserDetails member);
