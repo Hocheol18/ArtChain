@@ -6,6 +6,7 @@ import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -44,6 +45,7 @@ public class Member extends BaseTimeEntity {
     private String walletPassword;
 
     @Column(name = "WALLET_BALANCE", precision = 19, scale = 2)
+    @ColumnDefault("0.00")
     private BigDecimal walletBalance;
 
     @Column(name = "AUTHORITY")
