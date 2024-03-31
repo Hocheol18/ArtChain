@@ -1,9 +1,17 @@
 import { Box, Flex, Image, Center } from "@chakra-ui/react";
-import { MyTransactionTap } from "./MyTransactionTap";
+import { PieceCommonTap } from "../PieceCommonTap";
 import { MyTransactionItem } from "./MyTransactionItem";
 import TmpImg from "../../../../assets/invest-poster-tmp-img.jpg";
+import { useState } from "react";
 
 export const MyTransaction = () => {
+  //탭 선택한 거
+  const [check, setCheck] = useState<string>("total");
+
+  const handleCheck = (whatCheck: string) => {
+    setCheck(whatCheck);
+  };
+
   //임시
   const title = "스튜디오 지브리 애니메이션 거장 타카하타 이사오 전시";
 
@@ -17,6 +25,25 @@ export const MyTransaction = () => {
 
   //result: 구매/판매
   const result = "buy";
+
+  const tapArr = [
+    {
+      name: "전체",
+      check: "total",
+    },
+    {
+      name: "투자",
+      check: "invest",
+    },
+    {
+      name: "거래",
+      check: "transaction",
+    },
+    {
+      name: "판매중",
+      check: "sell",
+    },
+  ];
 
   return (
     <>
@@ -41,7 +68,7 @@ export const MyTransaction = () => {
         </Center>
       </Center>
 
-      <MyTransactionTap />
+      <PieceCommonTap tapArr={tapArr} handleCheck={handleCheck} check={check} />
       <Box my={7}>
         {/* map으로 돌리는 부분 */}
         <MyTransactionItem

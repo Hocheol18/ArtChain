@@ -1,9 +1,9 @@
 node_modules
-package-lock
 .env
 artifacts
 # Hardhat files
 /cache
+/artifacts
 
 # TypeChain files
 /typechain

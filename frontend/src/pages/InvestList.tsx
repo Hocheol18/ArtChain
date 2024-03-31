@@ -4,14 +4,17 @@ import { InvestListItem } from "../components/Invest/InvestList/InvestListItem";
 import TopNav from "../components/Invest/InvestList/TopNav";
 import TopSecondNav from "../components/Invest/InvestList/TopSecondNav";
 import { getFunddingList } from "../api/invest";
-import { GetFunddingListResponse } from "../type/invest.interface";
+import {
+  FunddingList,
+  GetFunddingListResponse,
+} from "../type/invest.interface";
 import { useEffect, useState } from "react";
 
 export const InvestList = () => {
   const isDesktop = useMediaQuery({ minWidth: 501 });
 
   //받아오는 펀딩 리스트 배열
-  const [fundArr, setFundArr] = useState<GetFunddingListResponse[]>();
+  const [fundArr, setFundArr] = useState<GetFunddingListResponse>();
   const [message, setMessage] = useState<string>("");
 
   //카테고리
@@ -22,29 +25,31 @@ export const InvestList = () => {
 
   //진행상황
   const [status, setStatus] = useState("ALL");
-  const handleStatus = (whatCategory: string) => {
-    setStatus(whatCategory);
+  const handleStatus = (whatStatus: string) => {
+    setStatus(whatStatus);
   };
 
   //펀딩리스트 조회
   const funddingList = async () => {
-    getFunddingList({
-      category: category,
-      status: status,
-      allowStat: "TRUE",
-      page: 0,
-      size: 10,
-    })
-      .then((res) => {
-        // console.log(res);
-        if (Array.isArray(res)) {
-          setMessage("");
-          setFundArr(res);
-        } else {
-          setMessage(res);
-        }
-      })
-      .catch((err) => console.log(err));
+    try {
+      const res = await getFunddingList({
+        category: category,
+        status: status,
+        allowStat: "TRUE",
+        page: 0,
+        size: 10,
+      });
+
+      if (typeof res === "string") {
+        setMessage(res); // 문자열일 경우 메시지로 설정
+        setFundArr(undefined); // 펀딩 리스트 초기화
+      } else {
+        setMessage(""); // 문자열이 아닌 경우 메시지 초기화
+        setFundArr(res); // 펀딩 리스트 설정
+      }
+    } catch (error) {
+      console.error("Error fetching fundding list:", error);
+    }
   };
 
   //처음 실행시 조회리스트 다 들고 와!
@@ -56,24 +61,14 @@ export const InvestList = () => {
     funddingList();
   }, [category, status]);
 
-  //조회 목록 바뀌 때
-  useEffect(() => {
-    console.log(fundArr);
-  }, [fundArr]);
-
-  //카테고리 바뀔 때
-  useEffect(() => {
-    // console.log(category);
-  }, [category]);
-
-  useEffect(() => {
-    console.log(message);
-  }, [message]);
-
   return (
     <Box>
       <TopNav check={category} handleCheck={handleCategory} />
-      <TopSecondNav check={status} handleCheck={handleStatus} />
+      <TopSecondNav
+        check={status}
+        handleCheck={handleStatus}
+        totalNum={fundArr ? fundArr.totalCount : 0}
+      />
       <SimpleGrid spacing={10} padding={7}>
         {message !== "" ? (
           <Center my={16} color={"gray.400"}>
@@ -81,7 +76,7 @@ export const InvestList = () => {
           </Center>
         ) : (
           <>
-            {fundArr?.map((item, index) => {
+            {fundArr?.fundingList?.map((item, index) => {
               return (
                 <Box key={index}>
                   <InvestListItem
@@ -97,6 +92,8 @@ export const InvestList = () => {
                     recruitStart={item.recruitStart}
                     settlement={item.settlement}
                     progressStatus={item.progressStatus}
+                    investorNum={item.investorNum}
+                    finalReturnRate={item.finalReturnRate}
                   />
                 </Box>
               );

@@ -1,17 +1,38 @@
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Grid, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import SellList from "../components/Market/Detail/SellList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SellHistory from "../components/Market/Detail/SellHistory";
 import TopSecondNav from "../components/Market/Main/TopSecondNav";
+import { getMarketSellingDisplayListInterface } from "../type/market.interface";
+import { getMarketSellingDisplayList } from "../api/market";
+import MarketSell from "../components/Market/Main/MarketSell";
+import useUserInfo from "../store/useUserInfo";
 
 export default function MarketDeatil() {
   const id = useParams() as { id: string };
+  const [statusTopSecondNav, setSecondTopNav] = useState<string>("최신순");
+  const [marketDetails, setMarketDetail] = useState<
+    getMarketSellingDisplayListInterface[]
+  >([]);
+  const { userInfo } = useUserInfo();
+
+  useEffect(() => {
+    getMarketSellingDisplayList({
+      fundingId: Number(id.id),
+      sortFlag: statusTopSecondNav,
+      page: 0,
+      size: 6,
+    })
+      .then((res) => setMarketDetail(res.data.data))
+      .catch((err) => console.log(err));
+  }, [statusTopSecondNav]);
 
   const [check, setCheck] = useState("SellList");
 
   return (
     <>
+      
       {check === "SellList" ? (
         <>
           <Box p={"1rem"} position={"sticky"} left={"1px"}>
@@ -28,15 +49,20 @@ export default function MarketDeatil() {
               조각 거래 내역
             </Text>
           </Box>
+          
           <Flex justifyContent={"end"}>
             <TopSecondNav
               first="최신순"
-              second="높은 가격 순"
-              third="낮은 가격 순"
+              second="높은가격순"
+              third="낮은가격순"
               forth=""
               isCheck={true}
+              statusTopSecondNav={statusTopSecondNav}
+              setSecondTopNav={setSecondTopNav}
             />
           </Flex>
+          {userInfo.isLogin ? <MarketSell /> : null }
+          
         </>
       ) : (
         <Box p={"1rem"} position={"sticky"} left={"1px"}>
@@ -60,19 +86,39 @@ export default function MarketDeatil() {
       )}
 
       {check === "SellList" ? (
-        <Center>
-          <Flex
-            wrap={"wrap"}
-            justifyContent={"flex-start"}
-            ml={"0.5rem"}
-            mt={"1rem"}
-            w={"390px"}
-          >
-            <SellList />
-          </Flex>
-        </Center>
+        <>
+          {marketDetails.length >= 1 ? (
+            <Grid
+              templateColumns="repeat(auto-fill, minmax(160px, 1fr))"
+              
+              p={"0.8rem"}
+            >
+              {marketDetails.map(
+                (data: getMarketSellingDisplayListInterface) => {
+                  return (
+                    <SellList
+                      key={data.id}
+                      id={data.id}
+                      fundingId={data.fundingId}
+                      pieceCount={data.pieceCount}
+                      totalCoin={data.totalCoin}
+                      coinPerPiece={data.coinPerPiece}
+                      sellerId={data.sellerId}
+                      sellerAddress={data.sellerAddress}
+                      status={data.status}
+                    />
+                  );
+                }
+              )}
+            </Grid>
+          ) : (
+            <Center h={"500px"}>
+              <Text fontSize={"1.5rem"}>현재 판매중인 상품이 없습니다</Text>
+            </Center>
+          )}
+        </>
       ) : (
-        <SellHistory />
+        <SellHistory fundingId={Number(id.id)} page={0} size={6} />
       )}
     </>
   );

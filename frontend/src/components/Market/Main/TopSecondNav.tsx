@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
 
 interface Props {
   first: string;
@@ -7,6 +6,8 @@ interface Props {
   third: string;
   forth: string;
   isCheck: boolean;
+  statusTopSecondNav: string;
+  setSecondTopNav: (statusTopSecondNav: string) => void;
 }
 
 export default function TopSecondNav({
@@ -15,14 +16,14 @@ export default function TopSecondNav({
   third,
   forth,
   isCheck,
+  statusTopSecondNav,
+  setSecondTopNav,
 }: Props) {
-  const [check, checkFounder] = useState("total");
-
   return (
     <>
       {isCheck ? (
         <Flex justifyContent={"center"} mt={"0.5rem"} mr={"0.5rem"}>
-          {check === "total" ? (
+          {statusTopSecondNav === "최신순" ? (
             <Box
               px={"0.8rem"}
               py={"0.2rem"}
@@ -33,7 +34,7 @@ export default function TopSecondNav({
               borderColor={"gray.300"}
               ml={"0.5rem"}
             >
-              <Text as={"b"} color={"black.100"}>
+              <Text as={"b"} color={"blue.400"}>
                 {first}
               </Text>
             </Box>
@@ -52,14 +53,14 @@ export default function TopSecondNav({
                 as={"b"}
                 color={"gray.400"}
                 onClick={() => {
-                  checkFounder("total");
+                  setSecondTopNav("최신순");
                 }}
               >
                 {first}
               </Text>
             </Box>
           )}
-          {check === "past" ? (
+          {statusTopSecondNav === "높은가격순" ? (
             <Box
               px={"0.8rem"}
               py={"0.2rem"}
@@ -70,7 +71,7 @@ export default function TopSecondNav({
               borderColor={"gray.300"}
               ml={"0.5rem"}
             >
-              <Text as={"b"} color={"black.100"}>
+              <Text as={"b"} color={"blue.400"}>
                 {second}
               </Text>
             </Box>
@@ -88,14 +89,14 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => checkFounder("past")}
+                onClick={() => setSecondTopNav("높은가격순")}
               >
                 {second}
               </Text>
             </Box>
           )}
 
-          {check === "confirm" ? (
+          {statusTopSecondNav === "낮은가격순" ? (
             <Box
               px={"0.8rem"}
               py={"0.2rem"}
@@ -106,7 +107,7 @@ export default function TopSecondNav({
               borderColor={"gray.300"}
               ml={"0.5rem"}
             >
-              <Text as={"b"} color={"black.100"}>
+              <Text as={"b"} color={"blue.400"}>
                 {third}
               </Text>
             </Box>
@@ -124,7 +125,7 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => checkFounder("confirm")}
+                onClick={() => setSecondTopNav("낮은가격순")}
               >
                 {third}
               </Text>
@@ -133,7 +134,7 @@ export default function TopSecondNav({
         </Flex>
       ) : (
         <Flex justifyContent={"center"} mr={"0.5rem"}>
-          {check === "total" ? (
+          {statusTopSecondNav === "ALL" ? (
             <Box
               px={"0.8rem"}
               py={"0.2rem"}
@@ -163,14 +164,14 @@ export default function TopSecondNav({
                 as={"b"}
                 color={"gray.400"}
                 onClick={() => {
-                  checkFounder("total");
+                  setSecondTopNav("ALL");
                 }}
               >
                 {first}
               </Text>
             </Box>
           )}
-          {check === "past" ? (
+          {statusTopSecondNav === "PENDING_SETTLEMENT" ? (
             <Box
               px={"0.8rem"}
               py={"0.2rem"}
@@ -199,14 +200,14 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => checkFounder("past")}
+                onClick={() => setSecondTopNav("PENDING_SETTLEMENT")}
               >
                 {second}
               </Text>
             </Box>
           )}
 
-          {check === "confirm" ? (
+          {statusTopSecondNav === "SETTLED" ? (
             <Box
               px={"0.8rem"}
               py={"0.2rem"}
@@ -235,13 +236,13 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => checkFounder("confirm")}
+                onClick={() => setSecondTopNav("SETTLED")}
               >
                 {third}
               </Text>
             </Box>
           )}
-          {check === "fundconfirm" ? (
+          {statusTopSecondNav === "FundSETTLED" ? (
             <Box
               px={"0.8rem"}
               py={"0.2rem"}
@@ -270,7 +271,7 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => checkFounder("fundconfirm")}
+                onClick={() => setSecondTopNav("FundSETTLED")}
               >
                 {forth}
               </Text>

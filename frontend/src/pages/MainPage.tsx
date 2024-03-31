@@ -1,4 +1,3 @@
-import React from "react";
 import MainCarousel from "../components/Main/MainCarousel";
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import Poster from "../components/Main/Poster";
@@ -9,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
   const navigate = useNavigate();
-
   return (
     <>
       <MainCarousel />
@@ -17,7 +15,6 @@ export default function MainPage() {
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>
           진행 중인 투자 작품
         </Text>
-        <button onClick={() => navigate("/test")}>TEST GAZA</button>
         <button onClick={() => navigate("/admin")}>ADMIN</button>
       </Box>
       <Poster />
@@ -31,7 +28,13 @@ export default function MainPage() {
         bgColor={"blue.100"}
         ml={"0.5rem"}
         mr={"0.5rem"}>
-        <Center color={"blue.400"} as="b" fontSize={"1.1rem"}>
+        <Center
+          color={"blue.400"}
+          as="b"
+          fontSize={"1.1rem"}
+          onClick={() => {
+            navigate("../invest-list");
+          }}>
           더 많은 작품 투자하러 가기
         </Center>
       </Box>
@@ -59,7 +62,13 @@ export default function MainPage() {
         ml={"0.5rem"}
         mr={"0.5rem"}
         mb={"4rem"}>
-        <Center color={"blue.400"} as="b" fontSize={"1.1rem"}>
+        <Center
+          color={"blue.400"}
+          as="b"
+          fontSize={"1.1rem"}
+          onClick={() => {
+            navigate("../market");
+          }}>
           마켓 보러 가기
         </Center>
       </Box>

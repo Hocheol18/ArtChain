@@ -1,23 +1,43 @@
-import React from "react";
-import TopSecondNav from "../../../Market/Main/TopSecondNav";
+import { useState } from "react";
 import MyInvestDetail from "./MyInvestDetail";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import { PieceCommonTap } from "../PieceCommonTap";
 
 export const MyInvest = () => {
+  //탭 선택한 거
+  const [check, setCheck] = useState<string>("total");
+
+  const handleCheck = (whatCheck: string) => {
+    setCheck(whatCheck);
+  };
+
+  const tapArr = [
+    {
+      name: "전체",
+      check: "total",
+    },
+    {
+      name: "진행중",
+      check: "ing",
+    },
+    {
+      name: "모집종료",
+      check: "end",
+    },
+    {
+      name: "정산완료",
+      check: "complete",
+    },
+  ];
+
   return (
     <>
-      <TopSecondNav
-        first="전체"
-        second="진행중"
-        third="모집종료"
-        forth="정산완료"
-        isCheck={false}
-      />
-      <Box mt={"2rem"}>
+      <PieceCommonTap tapArr={tapArr} handleCheck={handleCheck} check={check} />
+      <Flex mt={5} direction={"column"} gap={4}>
         <MyInvestDetail isNow="now" />
         <MyInvestDetail isNow="wait" />
         <MyInvestDetail isNow="end" />
-      </Box>
+      </Flex>
     </>
   );
 };

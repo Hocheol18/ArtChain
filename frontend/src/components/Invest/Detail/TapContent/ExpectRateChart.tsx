@@ -12,6 +12,7 @@ import {
   LineElement,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { ExpectedReturn } from "../../../../type/invest.interface";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,7 +23,11 @@ ChartJS.register(
   LineElement
 );
 
-export const ExpectRateChart = () => {
+interface Props {
+  expectedReturnList: ExpectedReturn[];
+}
+
+export const ExpectRateChart = ({ expectedReturnList }: Props) => {
   //임시 데이터
   const data = [
     { expectRate: 7, audienceNum: "6만명 미만" },
@@ -31,20 +36,22 @@ export const ExpectRateChart = () => {
   ];
 
   //maxValue: 최대값
-  const maxValue = Math.max(...data.map((item) => item.expectRate));
+  const maxValue = Math.max(
+    ...expectedReturnList.map((item) => item.expectedReturn)
+  );
 
   //배경색
   const backgroundColor = ["#7B9FC9", "#4882C4", "#024CA1"];
 
   //차트 데이터
   const chartData = {
-    labels: data.map((item) => item.audienceNum),
+    labels: expectedReturnList.map((item) => item.spectatorNum + "명 이상"),
     datasets: [
       {
         yAxisID: "y",
         type: "bar" as const,
         label: "예상 수익률" as const,
-        data: data.map((item) => item.expectRate),
+        data: expectedReturnList.map((item) => item.expectedReturn),
         backgroundColor: backgroundColor,
         borderColor: backgroundColor,
         borderWidth: 1,
@@ -73,7 +80,8 @@ export const ExpectRateChart = () => {
       datalabels: {
         formatter: (value: any, context: any) => {
           // 현재 데이터 포인트의 인덱스를 사용하여 time_count 값을 찾음
-          const timeCount = data[context.dataIndex].expectRate;
+          const timeCount =
+            expectedReturnList[context.dataIndex].expectedReturn;
           return timeCount + "%";
         },
 

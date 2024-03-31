@@ -1,4 +1,5 @@
 import { Box, Button, Flex, SimpleGrid } from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
   artNum: number;
@@ -6,6 +7,12 @@ interface Props {
 }
 
 export const InvestArt = ({ artNum, value }: Props) => {
+  const navigate = useNavigate();
+
+  const handleCharge = () => {
+    navigate(`/charge`);
+  };
+
   return (
     <div>
       <Box
@@ -35,6 +42,7 @@ export const InvestArt = ({ artNum, value }: Props) => {
               px={3}
               backgroundColor="blue.300"
               color={"white"}
+              onClick={handleCharge}
             >
               충전
             </Button>
