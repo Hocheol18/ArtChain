@@ -59,7 +59,6 @@ function App() {
                 height: "100dvh",
               }}
             >
-              데스크탑
               <BrowserRouter>
                 <Routes>
                   {/* 메인페이지 */}
