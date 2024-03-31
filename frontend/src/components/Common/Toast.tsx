@@ -7,7 +7,6 @@ export const useCustomToast = () => {
   const toast = useToast();
 
   const toastFunction = (contents: string, isState: boolean) => {
-    console.log(isState)
     {
       isState
         ? toast({
