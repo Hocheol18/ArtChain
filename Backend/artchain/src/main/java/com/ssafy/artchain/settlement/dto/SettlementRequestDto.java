@@ -11,6 +11,6 @@ public class SettlementRequestDto {
     private Long fundingId;
     private Long settlementPrice;
     private Integer returnRate;
-    private LocalDate depositeDate;
+    private LocalDate depositDate;
     private String settlementFile;
 }

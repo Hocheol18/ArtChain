@@ -18,7 +18,7 @@ public class SettlementResponseDto {
     private String fundingTitle;
     private Long settlementPrice;
     private Integer returnRate;
-    private LocalDate depositeDate;
+    private LocalDate depositDate;
     private String settlementFile;
     private SettlementStatus status;
 }
