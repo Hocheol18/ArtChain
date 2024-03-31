@@ -9,26 +9,36 @@ import Moralis from "moralis";
 const web3 = new Web3((window as any).ethereum);
 
 const TokenMarketplaceContractAddress =
-  "0xe9FdF6B6d31652863f384cB128D8F414a8023d9c"; // TokenMarketplace 스마트 계약 주소
+  "0x77A6C65AD9530482fBC59751545Fd9E7cabfCD75"; // TokenMarketplace 스마트 계약 주소
 let myTokens: any;
 
 const App: React.FC = () => {
   const [account, setAccount] = useState<string>("");
   const [accountInitialized, setAccountInitialized] = useState<boolean>(false);
   const [postList, setPostList] = useState<
-    { address: string; price: string; amount: string }[]
+    {
+      seller: string;
+      address: string;
+      price: string;
+      amount: string;
+      completed: boolean;
+    }[]
   >([]);
   const [selectedTradePostIndex, setSelectedTradePostIndex] = useState<
     number | null
   >(null);
   const [newTradePostData, setNewTradePostData] = useState<{
+    tradeSellerAddress: string;
     tokenAddress: string;
     tokenAmount: string;
     price: string;
+    completed: boolean;
   }>({
+    tradeSellerAddress: "",
     tokenAddress: "",
     tokenAmount: "",
     price: "",
+    completed: false,
   });
   const [tokens, setTokens] = useState<any[]>([]);
 
@@ -108,7 +118,7 @@ const App: React.FC = () => {
         TokenMarketplaceContractAddress
       );
       const artTokenContractAddress =
-        "0x1FF521585e776df3140AA92Bf1Cd6EaD4231dAd7"; // ART 토큰의 스마트 계약 주소
+        "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
       const artTokenContract = new web3.eth.Contract(
         IERC20ABI.abi,
         artTokenContractAddress
@@ -132,6 +142,8 @@ const App: React.FC = () => {
           .buyToken(selectedTradePostIndex)
           .send({ from: account });
         console.log("토큰 구매 성공", buyTokenTx);
+
+        fetchTradePosts();
       } else {
         console.error("토큰 승인 실패");
       }
@@ -142,9 +154,9 @@ const App: React.FC = () => {
 
   // 거래 게시글 추가
   const addTradePost = async (newTradePostData: {
-    tokenAddress: string,
-    tokenAmount: string,
-    price: string
+    tokenAddress: string;
+    tokenAmount: string;
+    price: string;
   }) => {
     try {
       const marketplaceContract = new web3.eth.Contract(
@@ -154,7 +166,7 @@ const App: React.FC = () => {
       const { tokenAddress, tokenAmount, price } = newTradePostData;
       // console.log(`${tokenAddress} - ${tokenAmount} - ${price}`);
 
-      console.log('토큰 주소 : ' + tokenAddress);
+      console.log("토큰 주소 : " + tokenAddress);
       // 토큰 주소가 올바른 형식인지 확인
       if (!web3.utils.isAddress(tokenAddress)) {
         console.error("유효하지 않은 토큰 주소입니다.");
@@ -181,17 +193,26 @@ const App: React.FC = () => {
       if (!approveTxReceipt.status) {
         console.error("토큰 승인에 실패했습니다.");
         return;
+      } else {
+        console.log(
+          `토큰 승인에 성공하였습니다. ${approveTxReceipt.transactionHash}`
+        );
       }
       console.log(`
         보내는 정보
+        - 지갑 : ${account}
         - 주소 : ${tokenAddress}
         - 수량 : ${integerTokenAmount}
+        - 타입 : ${typeof integerTokenAmount}
         - 가격 : ${integerPrice}
-      `)
+        - 타입 : ${typeof integerPrice}
+      `);
       // 거래 게시글 추가
       await marketplaceContract.methods
         .addTradePost(tokenAddress, integerTokenAmount, integerPrice)
         .send({ from: account });
+
+      fetchTradePosts();
     } catch (error) {
       console.error("거래 게시글을 추가하는 중 오류가 발생했습니다.", error);
     }
@@ -206,6 +227,24 @@ const App: React.FC = () => {
     return integerValue;
   };
 
+  const unListToken = async () => {
+    if (selectedTradePostIndex === null) return;
+    const selectedTradePost = postList[selectedTradePostIndex];
+    // try {
+    const marketplaceContract = new web3.eth.Contract(
+      TokenMarketplaceABI.abi,
+      TokenMarketplaceContractAddress
+    );
+
+    // 토큰 구매 트랜잭션 보내기
+    const unListTx = await marketplaceContract.methods
+      .unListPost(selectedTradePostIndex)
+      .send({ from: account });
+    console.log("토큰 취소 성공", unListTx);
+
+    fetchTradePosts();
+  };
+
   // 거래 글 가져오기
   const fetchTradePosts = async () => {
     try {
@@ -214,22 +253,28 @@ const App: React.FC = () => {
         TokenMarketplaceContractAddress
       );
       const tradePosts: {
+        seller: string;
         tokenAddress: string;
         tokenAmount: BigInt;
         price: BigInt;
+        completed: boolean;
       }[] = await marketplaceContract.methods.getAllPosts().call();
       const tokenListData: {
+        seller: string;
         address: string;
         amount: string;
         price: string;
+        completed: boolean;
       }[] = [];
       for (let i = 0; i < tradePosts.length; i++) {
         const tradePost = tradePosts[i];
 
         tokenListData.push({
+          seller: tradePost.seller,
           address: tradePost.tokenAddress,
           amount: tradePost.tokenAmount.toString(),
           price: tradePost.price.toString(),
+          completed: tradePost.completed,
         });
       }
       setPostList(tokenListData);
@@ -246,9 +291,11 @@ const App: React.FC = () => {
     );
     if (selectedToken) {
       setNewTradePostData({
+        tradeSellerAddress: account,
         tokenAddress: selectedToken.token_address,
-        tokenAmount: "0",
-        price: "0"
+        tokenAmount: "",
+        price: "",
+        completed: false,
         // 가격 정보가 없으므로 가격은 임시로 설정하지 않음
       });
 
@@ -268,11 +315,36 @@ const App: React.FC = () => {
         <div>
           <h2>마켓플레이스에 올라온 게시글들</h2>
           <ul>
-            {postList.map((tradePost, index) => (
-              <li key={index}>
-                토큰 주소: {tradePost.address}, 토큰 양: {tradePost.amount}, 가격: {tradePost.price}
-              </li>
-            ))}
+            {postList.map(
+              (tradePost, index) =>
+                !tradePost.completed && (
+                  <li key={index}>
+                    판매자 지갑 주소 : {tradePost.seller}
+                    토큰 주소: {tradePost.address}, 토큰 양: {tradePost.amount},
+                    가격: {tradePost.price}
+                    {tradePost.seller.toLowerCase() !== account && (
+                      <button
+                        onClick={() => {
+                          selectTradePost(index);
+                          buyToken();
+                        }}
+                      >
+                        구매하기
+                      </button>
+                    )}
+                    {tradePost.seller.toLowerCase() === account && (
+                      <button
+                        onClick={() => {
+                          selectTradePost(index);
+                          unListToken();
+                        }}
+                      >
+                        취소하기
+                      </button>
+                    )}
+                  </li>
+                )
+            )}
           </ul>
         </div>
         {/* 새 거래 게시글 추가 양식 */}
@@ -284,7 +356,7 @@ const App: React.FC = () => {
             {tokens.length > 0 &&
               tokens.map((token: any, index: number) => (
                 <option key={index} value={token.token_address}>
-                  {token.name} - {token.balance / (10 ** 18)}
+                  {token.name} - {token.balance / 10 ** 18}
                 </option>
               ))}
           </select>
@@ -310,27 +382,21 @@ const App: React.FC = () => {
               })
             }
           />
-          <button
-            onClick={() =>
-              addTradePost(newTradePostData)
-            }
-          >
+          <button onClick={() => addTradePost(newTradePostData)}>
             거래 게시글 추가
           </button>
-    </div>
-        {
-    selectedTradePostIndex !== null && (
-      <div>
-        <h3>선택된 거래 게시글</h3>
-        <button onClick={buyToken}>거래하기</button>
-      </div>
-    )
-  }
-  {/* FundRaisingPage 컴포넌트 */ }
+        </div>
+        {/* {selectedTradePostIndex !== null && (
+          <div>
+            <h3>선택된 거래 게시글</h3>
+            <button onClick={buyToken}>거래하기</button>
+          </div>
+        )} */}
+        {/* FundRaisingPage 컴포넌트 */}
         <FundRaisingPage />
         <TokenManagementComponent />)
-      </header >
-    </div >
+      </header>
+    </div>
   );
 };
 
