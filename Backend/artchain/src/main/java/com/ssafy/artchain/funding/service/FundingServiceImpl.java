@@ -370,10 +370,14 @@ public class FundingServiceImpl implements FundingService {
     @Override
     @Transactional
     public Long createInvestmentLog(Long fundingId, InvestmentRequestDto dto, CustomUserDetails member) {
+        BigDecimal investCoinCount = new BigDecimal(dto.getCoinCount());
         Member memberInfo = memberRepository.findById(member.getId())
                 .orElse(null);
         if (memberInfo == null || member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
             return -2L;
+        }
+        if(investCoinCount.compareTo(memberInfo.getWalletBalance()) > 0) {
+            return -3L;
         }
 
         Funding funding = fundingRepository.findById(fundingId)
@@ -384,6 +388,8 @@ public class FundingServiceImpl implements FundingService {
         if (!funding.getProgressStatus().equals(FundingProgressStatus.RECRUITMENT_STATUS)) {
             return 0L;
         }
+
+        memberInfo.updateWalletBalance(memberInfo.getWalletBalance().subtract(investCoinCount));
 
         funding.renewNowCoinCount(funding.getNowCoinCount() + dto.getCoinCount());
 

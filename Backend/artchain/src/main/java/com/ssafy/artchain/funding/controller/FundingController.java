@@ -339,6 +339,11 @@ public class FundingController {
                     HttpStatus.OK,
                     StatusCode.FAIL_INVEST_BY_STATUS
             );
+        } else if (result.equals(-3L)) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    FAIL_INVEST_BY_COIN_COUNT
+            );
         }
 
         return DefaultResponse.toResponseEntity(
