@@ -38,9 +38,11 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
         break;
       case "MetamaskRejct":
         toastFunction("사용자 거절 다시 시도해주세요", false);
+        navigate("../main");
         break;
       case "MetamaskAccountNotFound":
         toastFunction("다른 계정을 선택해주세요", false);
+        navigate("../main");
         break;
       default:
         if (walletAddress === null) {
@@ -81,6 +83,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
             });
           }, 2000);
         }
+        navigate("../main");
         break;
     }
   };
@@ -91,7 +94,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
       await ProfileAxios().then((res) => effect(res));
       toastFunction("로그인 성공", true)
 
-      navigate("../main");
+      
     } catch (err) {
       console.log(err);
     }
