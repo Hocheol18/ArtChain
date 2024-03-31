@@ -32,6 +32,7 @@ public enum StatusCode {
     NOT_EXIST_PROGRESS_STATUS(400, "해당하는 진행 상태 값이 없음"),
     FAIL_CREATE_FUNDING_NOTICE(400, "잘못된 요청으로 펀딩 공지사항이 생성되지 않음"),
     FAIL_INVEST_BY_STATUS(400, "펀딩 모집이 진행 중인 경우 투자 가능"),
+    FAIL_INVEST_BY_COIN_COUNT(400, "보유한 코인량에 한해 투자 가능"),
 
     // 403 FORBIDDEN : 요청에 대한 권한 없음
     ALLOW_ONLY_COMPANY(403, "기업 회원에 허용된 요청"),
