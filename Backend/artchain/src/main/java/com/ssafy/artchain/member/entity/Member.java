@@ -45,7 +45,6 @@ public class Member extends BaseTimeEntity {
     private String walletPassword;
 
     @Column(name = "WALLET_BALANCE", precision = 19, scale = 2)
-    @ColumnDefault("0.00")
     private BigDecimal walletBalance;
 
     @Column(name = "AUTHORITY")
