@@ -6,8 +6,6 @@ import SellHistory from "../components/Market/Detail/SellHistory";
 import TopSecondNav from "../components/Market/Main/TopSecondNav";
 import { getMarketSellingDisplayListInterface } from "../type/market.interface";
 import { getMarketSellingDisplayList } from "../api/market";
-import MarketSell from "../components/Market/Main/MarketSell";
-import useUserInfo from "../store/useUserInfo";
 
 export default function MarketDeatil() {
   const id = useParams() as { id: string };
@@ -15,7 +13,7 @@ export default function MarketDeatil() {
   const [marketDetails, setMarketDetail] = useState<
     getMarketSellingDisplayListInterface[]
   >([]);
-  const { userInfo } = useUserInfo();
+  
 
   useEffect(() => {
     getMarketSellingDisplayList({
@@ -61,7 +59,7 @@ export default function MarketDeatil() {
               setSecondTopNav={setSecondTopNav}
             />
           </Flex>
-          {userInfo.isLogin ? <MarketSell /> : null }
+          
           
         </>
       ) : (
