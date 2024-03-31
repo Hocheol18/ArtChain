@@ -70,12 +70,12 @@ export const MyTransaction = () => {
               <Image
                 src={TmpImg}
                 objectFit="cover"
-                height={70}
-                w={100}
+                w={"80px"}
+                h={"90px"}
                 px={5}
                 py={4}
               />
-              <Center fontSize={"18"} fontWeight={"bold"} pr={5}>
+              <Center w={"70%"} fontSize={"15"} fontWeight={"bold"} pr={5}>
                 {title}
               </Center>
             </Center>
@@ -83,12 +83,12 @@ export const MyTransaction = () => {
               <Image
                 src={TmpImg}
                 objectFit="cover"
-                height={140}
-                w={200}
+                w={"80px"}
+                h={"90px"}
                 px={5}
                 py={4}
               />
-              <Center fontSize={"18"} fontWeight={"bold"} pr={5}>
+              <Center w={"70%"} fontSize={"15"} fontWeight={"bold"} pr={5}>
                 {title}
               </Center>
             </Center>
@@ -105,7 +105,14 @@ export const MyTransaction = () => {
             borderColor={"gray.200"}
             onClick={handleDropDown}
           >
-            <Image src={TmpImg} objectFit="cover" w={90} px={5} py={4} />
+            <Image
+              src={TmpImg}
+              objectFit="cover"
+              w={"80px"}
+              h={"90px"}
+              px={5}
+              py={4}
+            />
             <Center w={"70%"} fontSize={"15"} fontWeight={"bold"} pr={5}>
               {title}
             </Center>
