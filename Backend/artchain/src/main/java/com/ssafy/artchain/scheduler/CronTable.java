@@ -9,7 +9,7 @@ import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.pieceowner.entity.PieceOwner;
 import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
 import com.ssafy.artchain.sse.dto.SseFundingRecruitEndResultListDto;
-import com.ssafy.artchain.sse.dto.SseFundingRecruitEndResultListItemtDto;
+import com.ssafy.artchain.sse.dto.SseFundingRecruitEndResultListItemDto;
 import com.ssafy.artchain.sse.repository.SseRepository;
 import com.ssafy.artchain.sse.service.SseService;
 import lombok.RequiredArgsConstructor;
@@ -95,7 +95,7 @@ public class CronTable {
                         )
                         .toList();
 
-                List<SseFundingRecruitEndResultListItemtDto> sseFundingRecruitEndResultListItemtList = new ArrayList<>();
+                List<SseFundingRecruitEndResultListItemDto> sseFundingRecruitEndResultListItemList = new ArrayList<>();
                 for (Funding funding : fundingList) {
                     BigDecimal goalCoinCount = new BigDecimal(funding.getGoalCoinCount());
                     BigDecimal nowCoinCount = new BigDecimal(funding.getNowCoinCount());
@@ -125,17 +125,17 @@ public class CronTable {
                             );
                         });
 
-                        sseFundingRecruitEndResultListItemtList.add(new SseFundingRecruitEndResultListItemtDto(true, funding.getContractAddress()));
+                        sseFundingRecruitEndResultListItemList.add(new SseFundingRecruitEndResultListItemDto(true, funding.getContractAddress()));
                     } else { // 모집 실패
                         funding.updateProgressStatus(FundingProgressStatus.RECRUITMENT_FAILED);
 
-                        sseFundingRecruitEndResultListItemtList.add(new SseFundingRecruitEndResultListItemtDto(false, funding.getContractAddress()));
+                        sseFundingRecruitEndResultListItemList.add(new SseFundingRecruitEndResultListItemDto(false, funding.getContractAddress()));
                     }
                 }
 
                 String eventId = "ADMIN";
                 sseRepository.findById(eventId)
-                        .ifPresent(sseEmitter -> sseService.send(new SseFundingRecruitEndResultListDto(sseFundingRecruitEndResultListItemtList), eventId, sseEmitter, "fundingProgressStatusCron"));
+                        .ifPresent(sseEmitter -> sseService.send(new SseFundingRecruitEndResultListDto(sseFundingRecruitEndResultListItemList), eventId, sseEmitter, "fundingProgressStatusCron"));
             }
         } catch (Exception e) {
             log.info("* Batch 시스템이 예기치 않게 종료되었습니다. Message: {}", e.getMessage());

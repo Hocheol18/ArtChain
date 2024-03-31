@@ -35,7 +35,7 @@ public interface SettlementRepository extends JpaRepository<Settlement, Long> {
             "fd.name," +
             "st.settlementPrice," +
             "st.returnRate," +
-            "st.depositeDate," +
+            "st.depositDate," +
             "st.settlementFile," +
             "st.status ) " +
             "from Settlement st " +

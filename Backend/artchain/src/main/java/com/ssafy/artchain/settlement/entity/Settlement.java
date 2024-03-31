@@ -31,8 +31,8 @@ public class Settlement {
     @Column(name = "return_rate", nullable = false)
     private Integer returnRate;
 
-    @Column(name = "deposite_date", nullable = false)
-    private LocalDate depositeDate;
+    @Column(name = "deposit_date", nullable = false)
+    private LocalDate depositDate;
 
     @Column(name = "settlement_file", nullable = false)
     private String settlementFile;

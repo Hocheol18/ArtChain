@@ -6,9 +6,9 @@ import java.util.List;
 
 @Getter
 public class SseFundingRecruitEndResultListDto {
-    private final List<SseFundingRecruitEndResultListItemtDto> fundingRecruitResultList;
+    private final List<SseFundingRecruitEndResultListItemDto> fundingRecruitResultList;
 
-    public SseFundingRecruitEndResultListDto(List<SseFundingRecruitEndResultListItemtDto> fundingRecruitResultList) {
+    public SseFundingRecruitEndResultListDto(List<SseFundingRecruitEndResultListItemDto> fundingRecruitResultList) {
         this.fundingRecruitResultList = fundingRecruitResultList;
     }
 }

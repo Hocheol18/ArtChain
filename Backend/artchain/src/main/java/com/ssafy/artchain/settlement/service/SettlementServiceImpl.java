@@ -70,7 +70,7 @@ public class SettlementServiceImpl implements SettlemnetService {
                 .fundingId(funding.getId())
                 .settlementPrice(dto.getSettlementPrice())
                 .returnRate(dto.getReturnRate())
-                .depositeDate(dto.getDepositeDate())
+                .depositDate(dto.getDepositDate())
                 .settlementFile(dto.getSettlementFile())
                 .status(SettlementStatus.REQUEST)
                 .build());
