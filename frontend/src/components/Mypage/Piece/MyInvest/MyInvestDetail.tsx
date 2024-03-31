@@ -59,7 +59,7 @@ export default function MyInvestDetail({ isNow }: Props) {
         pb={5}
       >
         <Flex py={4}>
-          <Image src={TmpImg} h={100} w={65} />
+          <Image src={TmpImg} h={100} w={65} objectFit="cover" />
 
           <Flex direction={"column"} pl={3} gap={0.5}>
             <Flex>

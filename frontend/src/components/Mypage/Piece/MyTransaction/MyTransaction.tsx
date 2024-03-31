@@ -45,28 +45,73 @@ export const MyTransaction = () => {
     },
   ];
 
+  const [isDropDown, setIsDropDown] = useState(false);
+
+  const handleDropDown = () => {
+    setIsDropDown(!isDropDown);
+  };
+
   return (
     <>
-      <Center
-        display={"flex"}
-        border={"1px solid"}
-        mb={5}
-        boxShadow={"lg"}
-        borderRadius={"lg"}
-        borderColor={"gray.200"}
-      >
-        <Image
-          src={TmpImg}
-          objectFit="cover"
-          height={140}
-          w={200}
-          px={5}
-          py={4}
-        />
-        <Center fontSize={"18"} fontWeight={"bold"} pr={5}>
-          {title}
-        </Center>
-      </Center>
+      {isDropDown ? (
+        <>
+          <Center
+            display={"flex"}
+            border={"1px solid"}
+            mb={5}
+            boxShadow={"lg"}
+            borderRadius={"lg"}
+            borderColor={"gray.200"}
+            flexDirection={"column"}
+            onClick={handleDropDown}
+            backgroundColor={"white"}
+          >
+            <Center>
+              <Image
+                src={TmpImg}
+                objectFit="cover"
+                height={70}
+                w={100}
+                px={5}
+                py={4}
+              />
+              <Center fontSize={"18"} fontWeight={"bold"} pr={5}>
+                {title}
+              </Center>
+            </Center>
+            <Center>
+              <Image
+                src={TmpImg}
+                objectFit="cover"
+                height={140}
+                w={200}
+                px={5}
+                py={4}
+              />
+              <Center fontSize={"18"} fontWeight={"bold"} pr={5}>
+                {title}
+              </Center>
+            </Center>
+          </Center>
+        </>
+      ) : (
+        <>
+          <Center
+            display={"flex"}
+            border={"1px solid"}
+            mb={5}
+            boxShadow={"lg"}
+            borderRadius={"lg"}
+            borderColor={"gray.200"}
+            onClick={handleDropDown}
+          >
+            <Image src={TmpImg} objectFit="cover" w={90} px={5} py={4} />
+            <Center w={"70%"} fontSize={"15"} fontWeight={"bold"} pr={5}>
+              {title}
+            </Center>
+          </Center>
+        </>
+      )}
 
       <PieceCommonTap tapArr={tapArr} handleCheck={handleCheck} check={check} />
       <Box my={7}>
