@@ -71,10 +71,10 @@ export const MyTransaction = () => {
               marginBottom: "5px",
               boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.2)",
               borderRadius: "10px",
-              borderColor: "gray.200",
+              borderColor: "#EEF0F3",
               flexDirection: "column",
               backgroundColor: "white",
-              maxHeight: "200px",
+              maxHeight: "180px",
               overflowY: "scroll",
             }}
           >
