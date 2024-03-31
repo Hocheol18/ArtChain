@@ -153,18 +153,9 @@ public class MemberController {
 
     @PutMapping("/walletInfo")
     public ResponseEntity<?> putMemberWalletInfo(@AuthenticationPrincipal CustomUserDetails member, @RequestBody MemberWalletInfoRequestDto walletInfo) {
-        Collection<? extends GrantedAuthority> authorities = member.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        GrantedAuthority auth = iterator.next();
-        String authority = auth.getAuthority();
 
-//        회사 자격은 지갑 등록 못함
-        if (authority.equals("ROLE_COMPANY")) {
-            return DefaultResponse.emptyResponse(HttpStatus.OK, FAIL_NOT_ALLOW);
-        } else {
-            memberService.putMemberWalletInfo(member, walletInfo);
-            return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_USER_WALLET_PUT);
-        }
+        memberService.putMemberWalletInfo(member, walletInfo);
+        return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_USER_WALLET_PUT);
     }
 
     @PostMapping("/refresh")
