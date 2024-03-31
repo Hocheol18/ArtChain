@@ -72,7 +72,7 @@ public class FundingServiceImpl implements FundingService {
         }
 
         Funding funding = fundingRepository.save(Funding.builder()
-                .entId(data.getEntId())
+                .entId(member.getId())
                 .name(data.getName())
                 .poster(data.getPoster())
                 .category(data.getCategory())
