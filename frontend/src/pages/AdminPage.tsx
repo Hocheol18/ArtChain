@@ -12,7 +12,7 @@ import {
 export const AdminPage = () => {
   return (
     <div>
-      {/* <Box>
+      <Box>
         <Flex justifyContent={"space-between"} px={"10%"} py={5}>
           <Text
             as={"b"}
@@ -21,7 +21,7 @@ export const AdminPage = () => {
             borderBottom={"2px"}
             backgroundColor={"white"}>
             {" "}
-            기업 승입
+            기업 승인
           </Text>
           <Text
             as={"b"}
@@ -146,7 +146,7 @@ export const AdminPage = () => {
             color={"gray.400"}
             backgroundColor={"white"}>
             {" "}
-            기업 승입
+            기업 승인
           </Text>
           <Text
             as={"b"}
@@ -244,7 +244,7 @@ export const AdminPage = () => {
             color={"gray.400"}
             backgroundColor={"white"}>
             {" "}
-            기업 승입
+            기업 승인
           </Text>
           <Text
             as={"b"}
@@ -353,9 +353,9 @@ export const AdminPage = () => {
             보기
           </Button>
         </GridItem>
-      </Grid> */}
+      </Grid>
 
-      <Box>
+      {/* <Box>
         <Flex justifyContent={"space-between"} px={"10%"} py={5}>
           <Text
             as={"b"}
@@ -363,7 +363,7 @@ export const AdminPage = () => {
             color={"gray.400"}
             backgroundColor={"white"}>
             {" "}
-            기업 승입
+            기업 승인
           </Text>
           <Text
             as={"b"}
@@ -447,7 +447,7 @@ export const AdminPage = () => {
           <option value="option1">승인</option>
           <option value="option2">반려</option>
         </Select>
-      </Flex>
+      </Flex> */}
     </div>
   );
 };

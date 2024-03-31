@@ -18,6 +18,7 @@ export default function MainPage() {
           진행 중인 투자 작품
         </Text>
         <button onClick={() => navigate("/test")}>TEST GAZA</button>
+        <button onClick={() => navigate("/admin")}>ADMIN</button>
       </Box>
       <Poster />
       <Poster />
