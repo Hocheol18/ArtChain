@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import TokenMarketplaceABI from "./Contract/TokenMarketplace.json";
+import InitializeBankContractABI from "./Contract/InitializeBankContract.json";
 import IERC20ABI from "./Contract/IERC20.json";
 import FundRaisingPage from "./FundRaising";
 import TokenManagementComponent from "./MintTokenComponent";
@@ -11,6 +12,9 @@ const web3 = new Web3((window as any).ethereum);
 const TokenMarketplaceContractAddress =
   "0x77A6C65AD9530482fBC59751545Fd9E7cabfCD75"; // TokenMarketplace 스마트 계약 주소
 let myTokens: any;
+
+const InitializeBankContractAddress =
+  "0xFF526F84b74D4b7898A6AF9a7015830B14AC1026";
 
 const App: React.FC = () => {
   const [account, setAccount] = useState<string>("");
@@ -41,6 +45,7 @@ const App: React.FC = () => {
     completed: false,
   });
   const [tokens, setTokens] = useState<any[]>([]);
+  const [newMember, setNewMember] = useState<string>("");
 
   useEffect(() => {
     // MetaMask 계정 연결 확인
@@ -302,6 +307,28 @@ const App: React.FC = () => {
       console.log(selectedToken.token_address);
     }
   };
+
+  const sendEther = async () => {
+    const initializeBankContract = new web3.eth.Contract(
+      InitializeBankContractABI.abi,
+      InitializeBankContractAddress
+    );
+    try {
+      // 스마트 컨트랙트의 sendEther 함수를 호출하여 이더를 전송
+      await initializeBankContract.methods.sendEther(newMember).send({
+        from: account,
+        value: web3.utils.toWei("0.01", "ether"), // 0.01 ETH를 전송
+      });
+      console.log("토큰 송금 성공!");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleInputChange = (e: any) => {
+    setNewMember(e.target.value); // input 값이 변경될 때마다 newMember 상태 업데이트
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -395,6 +422,15 @@ const App: React.FC = () => {
         {/* FundRaisingPage 컴포넌트 */}
         <FundRaisingPage />
         <TokenManagementComponent />)
+        <div>
+          <input
+            type="text"
+            placeholder="보내고 싶은 사람의 주소"
+            value={newMember}
+            onChange={handleInputChange}
+          />
+          <button onClick={sendEther}>보내기</button>
+        </div>
       </header>
     </div>
   );
