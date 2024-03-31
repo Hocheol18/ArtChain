@@ -48,6 +48,9 @@ public class CoinServiceImpl implements CoinService{
         try {
             Member memberEntity = memberRepository.findById(member.getId())
                     .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+            if(memberEntity.getWalletBalance() == null){
+                memberEntity.updateWalletBalance(BigDecimal.ZERO);
+            }
 //        충전이라면 여기
             if (coinRegistRequestDto.getInoutFlag().equals(InoutFlag.충전)) {
 //        충전한 코인 개수만큼 원래 있던 잔고에 더해서 save

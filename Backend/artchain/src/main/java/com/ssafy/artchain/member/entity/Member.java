@@ -6,6 +6,7 @@ import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.List;
