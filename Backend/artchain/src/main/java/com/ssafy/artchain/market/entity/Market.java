@@ -59,4 +59,8 @@ public class Market extends BaseTimeEntity {
         this.buyerId = buyerId;
         this.status = status;
     }
+
+    public void updateStatus(String status) {
+        this.status = status;
+    }
 }

@@ -63,4 +63,6 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
 
     List<Market> findAllByFundingIdAndBuyerId(Long fundingId, Long buyerId);
 
+    List<Market> findAllByFundingIdAndStatus(Long fundingId, String status);
+
 }
