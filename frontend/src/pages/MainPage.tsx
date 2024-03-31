@@ -5,7 +5,7 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
-import { GetSettlementDetail } from "../api/Settlement";
+import { PutSettlementStatus } from "../api/Settlement";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -15,10 +15,11 @@ export default function MainPage() {
       // PostFundingNotice 함수 호출 시 필요한 파라미터를 구성합니다.
       const params = {
         settlementId: 2,
+        status: "ALLOW",
       };
 
       // 구성한 파라미터를 전달하여 함수를 호출합니다.
-      const responseData = await GetSettlementDetail(params);
+      const responseData = await PutSettlementStatus(params);
       console.log("Received Response:", responseData);
       navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
     } catch (error) {

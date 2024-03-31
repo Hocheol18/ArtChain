@@ -12,7 +12,13 @@ export interface PostSettlementRequest {
   dto: SettlementParam;
 }
 
-// 정산 신청 Request(기업/관리자)
+// 정산 신청 상세보기 Request(기업/관리자)
 export interface GetSettlementDetailRequest {
   settlementId: number;
+}
+
+// 정산 승인/거절(관리자)
+export interface PutSettlementStatusRequest {
+  settlementId: number;
+  status: string;
 }

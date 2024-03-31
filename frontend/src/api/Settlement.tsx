@@ -1,8 +1,8 @@
 import {
   PostSettlementRequest,
   GetSettlementDetailRequest,
+  PutSettlementStatusRequest,
 } from "../type/settlement.interface";
-import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios } from "./https";
 
 // 정산 신청(기업)
@@ -24,6 +24,27 @@ export const GetSettlementDetail = async (
   const url = `/settlement/${settlementId}`;
 
   const response = await localAxios.get(url);
+
+  return response.data.data;
+};
+
+// 정산 신청 리스트 보기(관리자)
+export const GetSettlementList = async () => {
+  const url = `/settlement/list`;
+
+  const response = await localAxios.get(url);
+
+  return response.data.data;
+};
+
+// 정산 승인/거절(관리자)
+export const PutSettlementStatus = async (
+  params: PutSettlementStatusRequest
+): Promise<PutSettlementStatusRequest> => {
+  const { settlementId, status } = params;
+  const url = `/settlement/${settlementId}/allow/${status}`;
+
+  const response = await localAxios.put(url);
 
   return response.data.data;
 };
