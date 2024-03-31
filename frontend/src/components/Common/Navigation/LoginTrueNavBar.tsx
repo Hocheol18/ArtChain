@@ -20,6 +20,7 @@ import wallet from "../../../assets/wallet.svg";
 import copy from "../../../assets/copy.svg";
 import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { formatNumberWithComma } from "../Comma";
+import { useCustomToast } from "../Toast";
 
 interface Prop {
   userCoin: number;
@@ -27,6 +28,7 @@ interface Prop {
 
 export const LoginTrueNavBar = ({ userCoin }: Prop) => {
   const navigate = useNavigate();
+  const toastFunction = useCustomToast() 
 
   function clearFunction() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -63,6 +65,11 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
       ),
     });
     navigate("../main");
+  }
+
+  const copyClipboard = () => {
+    navigator.clipboard.writeText(userInfo.metamask);
+    toastFunction("복사되었습니다", true)
   }
 
   const { userInfo, setUserInfo } = useUserInfo();
@@ -127,9 +134,9 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
           <Flex ml={"1rem"} mt={"0.5rem"}>
             <Image boxSize={"1rem"} src={wallet} mt={"0.8rem"} />
             <Text fontSize={"1rem"} ml={"0.4rem"} mt={"0.7rem"} color={"black"}>
-              {userInfo.metamask.substring(0, 8)}...
+              {userInfo.metamask.substring(0,12)}...
             </Text>
-            <Image boxSize={"1rem"} src={copy} ml={"0.5rem"} mt={"1rem"} />
+            <Image boxSize={"1rem"} src={copy} ml={"0.5rem"} mt={"1rem"} onClick={copyClipboard} />
           </Flex>
           <Flex mt={"0.5rem"}>
             <Text color={"black"} as={"b"} fontSize={"1.7rem"} ml={"1rem"}>

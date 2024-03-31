@@ -33,6 +33,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
     const res = await MetaMask();
     switch (res) {
       case "MetamaskUninstall":
+        sessionStorage.removeItem("accessToken");
         setTimeout(() => {
           toastFunction("메타마스크 지갑을 설치해주세요", false);
           window.open("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
@@ -40,6 +41,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
 
         break;
       case "MetamaskRejct":
+        sessionStorage.removeItem("accessToken");
         setTimeout(() => {
           toastFunction("사용자 거절 다시 시도해주세요", false);
           navigate("../main");
@@ -47,6 +49,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
 
         break;
       case "MetamaskAccountNotFound":
+        sessionStorage.removeItem("accessToken");
         setTimeout(() => {
           toastFunction("다른 계정을 선택해주세요", false);
           navigate("../main");
@@ -72,6 +75,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
             }
           );
         } else if (walletAddress.toLowerCase() !== res.toLowerCase()) {
+          sessionStorage.removeItem("accessToken");
           setTimeout(() => {
             toastFunction(
               "처음에 등록한 메타마스크 계정을 연결해주세요",
