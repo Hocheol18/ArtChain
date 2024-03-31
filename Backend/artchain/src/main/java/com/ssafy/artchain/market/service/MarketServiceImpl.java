@@ -37,7 +37,6 @@ public class MarketServiceImpl implements MarketService {
     private final MarketRepository marketRepository;
     private final FundingRepository fundingRepository;
     private final MemberRepository memberRepository;
-    private final InvestmentLogRepository investmentLogRepository;
     private final PieceOwnerRepository pieceOwnerRepository;
     private final String ROLE_USER = "ROLE_USER";
 
@@ -129,7 +128,7 @@ public class MarketServiceImpl implements MarketService {
 //        정산 대기 중인 놈들만 조각 거래 가능함
         String PENDING_SETTLEMENT = "PENDING_SETTLEMENT";
         FundingProgressStatus state = FundingProgressStatus.valueOf(PENDING_SETTLEMENT);
-        List<MarketRegistFundingNameResponseDto> fundingNameList = investmentLogRepository.findFundingNamesByMemberId(memberId, state);
+        List<MarketRegistFundingNameResponseDto> fundingNameList = pieceOwnerRepository.findMarketRegistFundingNameResponseDto(memberId, state);
         return fundingNameList;
     }
 
