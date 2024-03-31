@@ -21,7 +21,7 @@ export const MyPiece = ({ type }: Props) => {
       <Box position={"sticky"} top={0}>
         <MypieceTopNav onCheck={handleCheck} check={check} />
       </Box>
-      <Box px={"6%"} mt={5} overflowY={"auto"}>
+      <Box px={"6%"} mt={5} overflowY={"auto"} height={"auto"}>
         {check === "invest" ? <MyInvest /> : <MyTransaction />}
       </Box>
     </>

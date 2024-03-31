@@ -8,8 +8,17 @@ export const MyTransaction = () => {
   //탭 선택한 거
   const [check, setCheck] = useState<string>("total");
 
+  //작품 선택하는 거
+  const [selectedItem, setSelectedItem] = useState<string>("");
+
   const handleCheck = (whatCheck: string) => {
     setCheck(whatCheck);
+  };
+
+  //클릭하면 선택됨
+  const handleItemClick = (item: string) => {
+    setSelectedItem(item); // 선택된 항목 업데이트
+    setIsDropDown(false); // 드롭다운 닫기
   };
 
   //임시
@@ -55,44 +64,41 @@ export const MyTransaction = () => {
     <>
       {isDropDown ? (
         <>
-          <Center
-            display={"flex"}
-            border={"1px solid"}
-            mb={5}
-            boxShadow={"lg"}
-            borderRadius={"lg"}
-            borderColor={"gray.200"}
-            flexDirection={"column"}
-            onClick={handleDropDown}
-            backgroundColor={"white"}
+          <div
+            style={{
+              display: "flex",
+              border: "1px solid",
+              marginBottom: "5px",
+              boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.2)",
+              borderRadius: "10px",
+              borderColor: "gray.200",
+              flexDirection: "column",
+              backgroundColor: "white",
+              maxHeight: "200px",
+              overflowY: "scroll",
+            }}
           >
-            <Center>
-              <Image
-                src={TmpImg}
-                objectFit="cover"
-                w={"80px"}
-                h={"90px"}
-                px={5}
-                py={4}
-              />
-              <Center w={"70%"} fontSize={"15"} fontWeight={"bold"} pr={5}>
-                {title}
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
+              <Center
+                key={item}
+                w={"100%"}
+                height={"100px"}
+                onClick={() => handleItemClick(`Item ${item}`)}
+              >
+                <Image
+                  src={TmpImg}
+                  objectFit="cover"
+                  w={"80px"}
+                  h={"90px"}
+                  px={5}
+                  py={4}
+                />
+                <Center w={"70%"} fontSize={"15"} fontWeight={"bold"} pr={5}>
+                  {item}
+                </Center>
               </Center>
-            </Center>
-            <Center>
-              <Image
-                src={TmpImg}
-                objectFit="cover"
-                w={"80px"}
-                h={"90px"}
-                px={5}
-                py={4}
-              />
-              <Center w={"70%"} fontSize={"15"} fontWeight={"bold"} pr={5}>
-                {title}
-              </Center>
-            </Center>
-          </Center>
+            ))}
+          </div>
         </>
       ) : (
         <>
@@ -114,7 +120,7 @@ export const MyTransaction = () => {
               py={4}
             />
             <Center w={"70%"} fontSize={"15"} fontWeight={"bold"} pr={5}>
-              {title}
+              {selectedItem || title}
             </Center>
           </Center>
         </>
