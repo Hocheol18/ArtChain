@@ -5,6 +5,7 @@ import { EnrollMetamask, LoginAxios, ProfileAxios } from "../../api/user";
 import { LoginInterface } from "../../type/login.interface";
 import useUserInfo from "../../store/useUserInfo";
 import { useCustomToast } from "./Toast";
+import { redirect } from "react-router-dom";
 
 export const useLoginWithMetamask = (values: LoginInterface) => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
     switch (res) {
       case "MetamaskUninstall":
         toastFunction("메타마스크 지갑을 설치해주세요", false);
-        navigate("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
+        redirect("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
         break;
       case "MetamaskRejct":
         toastFunction("사용자 거절 다시 시도해주세요", false);
@@ -93,8 +94,6 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
     try {
       await ProfileAxios().then((res) => effect(res));
       toastFunction("로그인 성공", true)
-
-      
     } catch (err) {
       console.log(err);
     }
