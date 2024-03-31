@@ -118,7 +118,7 @@ export default function MarketEnroll() {
     try {
       const marketplaceContract = new web3.eth.Contract(
         TokenMarketPlaceABI.abi,
-        "0x77A6C65AD9530482fBC59751545Fd9E7cabfCD75"
+        "0x77A6C65AD9530482fBC59751545Fd9E7cabfCD75" // 마켓 컨트랙트 주소
       );
       const { metamaskwallet, tokenAddress, tokenAmount, price } =
         newTradePostData;
