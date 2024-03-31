@@ -29,4 +29,8 @@ public interface InvestmentLogRepository extends JpaRepository<InvestmentLog, Lo
     Long countDistinctMemberByFundingId(@Param("fundingId") Long fundingId);
 
     Page<InvestmentLog> findAllByFundingIdAndMemberIdOrderByCreatedAt(Long fundingId, Long memberId, Pageable pageable);
+    
+    List<InvestmentLog> findAllByMemberIdAndFunding_progressStatus(Long memberId, FundingProgressStatus fundingProgressStatus);
+
+    List<InvestmentLog> findAllByMemberIdAndFundingId(Long memberId, Long fundingId);
 }

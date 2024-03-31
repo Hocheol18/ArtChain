@@ -134,6 +134,7 @@ public class MarketServiceImpl implements MarketService {
     }
 
     @Override
+    @Transactional
     public void createMarketRegist(CustomUserDetails member, MarketRegistRequestDto dto) {
         Market market = Market.builder()
                 .fundingId(dto.getFundingId())
@@ -147,6 +148,14 @@ public class MarketServiceImpl implements MarketService {
                 .buyerId(null)
                 .status("LISTED")
                 .build();
+
+        PieceOwner sellerPieceInfo = pieceOwnerRepository
+                .findPieceOwnerByMemberIdAndFundingId(market.getSellerId(), market.getFundingId());
+        if (sellerPieceInfo == null || (sellerPieceInfo.getPieceCount() < market.getPieceCount())) {
+            return;
+        } else {
+            sellerPieceInfo.updatePieceCount(sellerPieceInfo.getPieceCount() - market.getPieceCount());
+        }
 
         marketRepository.save(market);
     }
@@ -171,17 +180,8 @@ public class MarketServiceImpl implements MarketService {
         market.updateBuyerAndStatus(member.getId(), "SOLD");
 
         // 판매 조각에 대해 조각 코인 소유자 이전
-        PieceOwner sellerPieceInfo = pieceOwnerRepository
-                .findPieceOwnerByMemberIdAndFundingId(market.getSellerId(), market.getFundingId());
         PieceOwner buyerPieceInfo = pieceOwnerRepository
                 .findPieceOwnerByMemberIdAndFundingId(member.getId(), market.getFundingId());
-
-        if (sellerPieceInfo == null || (sellerPieceInfo.getPieceCount() < market.getPieceCount())) {
-            return 0;
-        } else {
-            sellerPieceInfo.updatePieceCount(sellerPieceInfo.getPieceCount() - market.getPieceCount());
-        }
-
         if (buyerPieceInfo == null) {
             pieceOwnerRepository.save(PieceOwner.builder()
                     .memberId(member.getId())

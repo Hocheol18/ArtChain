@@ -61,6 +61,6 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
     List<MarketGraphResponseDto> findAvgCoinPerPiecePerDay(Long fundingId, LocalDateTime startDate, LocalDateTime endDate);
 
 
-
+    List<Market> findAllByFundingIdAndBuyerId(Long fundingId, Long buyerId);
 
 }

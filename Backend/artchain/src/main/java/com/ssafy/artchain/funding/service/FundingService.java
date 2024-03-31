@@ -32,4 +32,6 @@ public interface FundingService {
     List<FundingPermissionResponseDto> getFundingPermissionList();
 
     Long getFundingListByCategoryAndStatusTotalCount(String category, String status, String allowStat);
+
+    List<MyIntegratedListItemDto> getMyIntegratedList(String status, CustomUserDetails member);
 }
