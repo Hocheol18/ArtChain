@@ -69,13 +69,11 @@ async function EnrollMetamask(data: {
 }
 
 // 기업 마이페이지
-// async function BusinessMyPageAxios() {
-//   const response = await localAxios.post(businessMyPageurl);
+async function BusinessMyPageAxios() {
+  const response = await localAxios.get(businessMyPageurl);
 
-//   console.log(response.data);
-
-//   return response.data.data;
-// }
+  return response.data.data;
+}
 
 export {
   LoginAxios,
@@ -86,5 +84,5 @@ export {
   IsEnrollAxios,
   BusinessEnrollAxios,
   EnrollMetamask,
-  // BusinessMyPageAxios,
+  BusinessMyPageAxios,
 };

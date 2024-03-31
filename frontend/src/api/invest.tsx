@@ -7,6 +7,7 @@ import {
   Notice,
   PostFundingParams,
   PostFundingResponse,
+  PostFundingNoticeRequest,
 } from "../type/invest.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios } from "./https";
@@ -65,4 +66,17 @@ export const PostInvest = async (
   const response = await localAxios.post(url, fundingRequest);
 
   return response.data.data.id;
+};
+
+// 펀딩 공지사항 작성(기업)
+export const PostFundingNotice = async (
+  params: PostFundingNoticeRequest
+): Promise<PostFundingNoticeRequest> => {
+  const { fundingId, notice } = params;
+
+  const url = `/funding/${fundingId}/notice`;
+
+  const response = await localAxios.post(url, notice);
+
+  return response.data;
 };

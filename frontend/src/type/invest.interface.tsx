@@ -123,3 +123,15 @@ export interface PostFundingRequest {
 export interface PostFundingResponse {
   id: number;
 }
+
+// 투자 공지 작성 request
+export interface PostFundingNoticeRequest {
+  fundingId: string | undefined;
+  notice: FundingNoticeParam;
+}
+
+// 투자 공지 내용 param
+export interface FundingNoticeParam {
+  title: string;
+  content: string;
+}
