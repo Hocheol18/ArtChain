@@ -5,7 +5,7 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
-import { PostFundingNotice } from "../api/invest";
+import { PutFundingNotice } from "../api/invest";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -15,15 +15,16 @@ export default function MainPage() {
       // PostFundingNotice 함수 호출 시 필요한 파라미터를 구성합니다.
       const params = {
         fundingId: "1", // 예시 ID, 실제 값으로 대체해야 합니다.
+        fundingNoticeId: "4",
         notice: {
           // 예시 notice 객체, 실제 값으로 구성해야 합니다.
-          title: "새로운 공지사항",
-          content: "펀딩에 대한 새로운 공지사항입니다.",
+          title: "다시 수정된 공지사항",
+          content: "펀딩에 대한 다시 수정된 공지사항입니다.",
         },
       };
 
       // 구성한 파라미터를 전달하여 함수를 호출합니다.
-      const responseData = await PostFundingNotice(params);
+      const responseData = await PutFundingNotice(params);
       console.log("Received Response:", responseData);
       navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
     } catch (error) {

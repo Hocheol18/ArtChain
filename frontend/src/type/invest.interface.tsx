@@ -130,6 +130,13 @@ export interface PostFundingNoticeRequest {
   notice: FundingNoticeParam;
 }
 
+// 투자 공지 수정 request
+export interface PutFundingNoticeRequest {
+  fundingId: string | undefined;
+  fundingNoticeId: string | undefined;
+  notice: FundingNoticeParam;
+}
+
 // 투자 공지 내용 param
 export interface FundingNoticeParam {
   title: string;
