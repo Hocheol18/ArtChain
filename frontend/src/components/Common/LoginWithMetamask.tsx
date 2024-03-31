@@ -5,7 +5,6 @@ import { EnrollMetamask, LoginAxios, ProfileAxios } from "../../api/user";
 import { LoginInterface } from "../../type/login.interface";
 import useUserInfo from "../../store/useUserInfo";
 import { useCustomToast } from "./Toast";
-import { redirect } from "react-router-dom";
 
 export const useLoginWithMetamask = (values: LoginInterface) => {
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
       case "MetamaskUninstall":
         setTimeout(() => {
           toastFunction("메타마스크 지갑을 설치해주세요", false);
-          redirect("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
+          window.open("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
         }, 2000);
 
         break;
