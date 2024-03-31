@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 public class MarketRegistFundingNameResponseDto {
     private Long id;
+    private Long fundingId;
     private String name;
     private Long pieceCount;
 }
