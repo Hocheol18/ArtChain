@@ -54,7 +54,7 @@ export interface getMarketHistoryDisplayListInterface {
 }
 
 export interface postMarketEnrollInterface {
-  fundingId: number;
+  fundingId: number | undefined;
   contractAddress: string;
   pieceCount: number;
   totalCoin: number;
