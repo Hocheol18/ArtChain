@@ -5,9 +5,21 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
+import { BusinessMyPageAxios } from "../api/user";
 
 export default function MainPage() {
   const navigate = useNavigate();
+
+  // const handleButtonClick = async () => {
+  //   try {
+  //     const responseData = await BusinessMyPageAxios(); // 함수를 호출하고 응답을 받습니다.
+  //     console.log("Received Response:", responseData);
+  //     navigate("/admin"); // 응답을 받은 후 navigate를 실행합니다.
+  //   } catch (error) {
+  //     console.error("Error fetching business page data:", error);
+  //   }
+  // };
+
   return (
     <>
       <MainCarousel />
@@ -16,6 +28,7 @@ export default function MainPage() {
           진행 중인 투자 작품
         </Text>
         <button onClick={() => navigate("/admin")}>ADMIN</button>
+        {/* <button onClick={handleButtonClick}>Axios Test</button> */}
       </Box>
       <Poster />
       <Poster />

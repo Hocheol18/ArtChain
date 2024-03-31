@@ -14,7 +14,8 @@ const refreshurl = "/member/refresh";
 const logouturl = "/member/logout";
 const IsEnrollurl = "/member/checkId";
 const businessEnrollurl = "/member/enterprise/join";
-const enrollMetamaskurl = "/member/walletInfo"
+const enrollMetamaskurl = "/member/walletInfo";
+const businessMyPageurl = "/member/enterprise";
 
 // 프로필 함수
 async function ProfileAxios() {
@@ -50,7 +51,7 @@ async function LoginAxios(data: LoginInterface) {
 async function IsEnrollAxios(checkId: string) {
   const url = `${IsEnrollurl}${makeQuerystring({
     checkId,
-  })}`
+  })}`;
 
   return await localAxios.get(url);
 }
@@ -60,9 +61,21 @@ async function BusinessEnrollAxios(data: BusinessEnrollInterface) {
   return await localAxios.post(businessEnrollurl, data);
 }
 
-async function EnrollMetamask(data : {walletAddress : string, walletPassword : string}) {
-  return await localAxios.put(enrollMetamaskurl, data)
+async function EnrollMetamask(data: {
+  walletAddress: string;
+  walletPassword: string;
+}) {
+  return await localAxios.put(enrollMetamaskurl, data);
 }
+
+// 기업 마이페이지
+// async function BusinessMyPageAxios() {
+//   const response = await localAxios.post(businessMyPageurl);
+
+//   console.log(response.data);
+
+//   return response.data.data;
+// }
 
 export {
   LoginAxios,
@@ -73,4 +86,5 @@ export {
   IsEnrollAxios,
   BusinessEnrollAxios,
   EnrollMetamask,
+  // BusinessMyPageAxios,
 };
