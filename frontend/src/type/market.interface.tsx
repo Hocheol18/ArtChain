@@ -77,3 +77,10 @@ export interface getMarketDetailDisplayInterface {
   updatedAt : string;
 }
 
+export interface getMarketMyTokenInterface {
+  id : number;
+  fundingId : number;
+  name : string;
+  pieceCount : number;
+}
+
