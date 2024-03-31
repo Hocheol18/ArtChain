@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Text, Flex, } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 import BusinessApprove from "../components/Admin/BusinessApprove";
 import ProjectApporve from "../components/Admin/ProjectApprove";
 import SettlementApprove from "../components/Admin/SettlementApprove";
@@ -67,7 +67,6 @@ export const AdminPage = () => {
                 color={"blue.400"}
                 borderBottom={"2px"}
                 backgroundColor={"white"}
-                
               >
                 프로젝트 승인
               </Text>

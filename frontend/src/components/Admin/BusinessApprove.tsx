@@ -1,14 +1,14 @@
-import { Button, Grid, GridItem, Select } from "@chakra-ui/react";
+import { Grid, GridItem, Select } from "@chakra-ui/react";
 import React from "react";
 
 export default function BusinessApprove() {
   return (
     <>
-      <Grid templateColumns="1.5fr 2.5fr 1fr 1fr" gap={3}>
+      <Grid templateColumns="1.5fr 3fr 0.5fr 0.5fr" gap={3}>
         <GridItem
           w="100%"
           h="10"
-          fontSize={"medium"}
+          fontSize={"xs"}
           as={"b"}
           borderY={"1px solid"}
           borderColor={"gray.200"}
@@ -21,7 +21,7 @@ export default function BusinessApprove() {
         <GridItem
           w="100%"
           h="10"
-          fontSize={"medium"}
+          fontSize={"xs"}
           as={"b"}
           borderY={"1px solid"}
           borderColor={"gray.200"}
@@ -34,7 +34,7 @@ export default function BusinessApprove() {
         <GridItem
           w="100%"
           h="10"
-          fontSize={"medium"}
+          fontSize={"xs"}
           as={"b"}
           borderY={"1px solid"}
           borderColor={"gray.200"}
@@ -47,7 +47,7 @@ export default function BusinessApprove() {
         <GridItem
           w="100%"
           h="10"
-          fontSize={"medium"}
+          fontSize={"xs"}
           as={"b"}
           borderY={"1px solid"}
           borderColor={"gray.200"}
@@ -64,6 +64,7 @@ export default function BusinessApprove() {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          fontSize={"xs"}
         >
           대원미디어
         </GridItem>
@@ -73,6 +74,7 @@ export default function BusinessApprove() {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          fontSize={"xs"}
         >
           123-45-67890
         </GridItem>
@@ -82,6 +84,7 @@ export default function BusinessApprove() {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          fontSize={"xs"}
         >
           2024.03.14
         </GridItem>
@@ -91,22 +94,18 @@ export default function BusinessApprove() {
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          p={4}
+          fontSize={"xs"}
         >
-          <Select placeholder="선택" width={"20"}>
+          <Select
+            placeholder="선택"
+            width={"20"}
+            h={"30px"}
+            borderColor={"blue.300"}
+            mr={"0.2rem"}
+          >
             <option value="option1">승인</option>
             <option value="option2">반려</option>
           </Select>
-          <Button
-            bgColor={"blue.300"}
-            textColor={"white"}
-            p={2}
-            _hover={{ bg: "blue.400" }} // 마우스 오버 시 색상
-            _active={{ bg: "blue.500", borderColor: "blue.500" }} // 클릭 시 색상
-            _focus={{ boxShadow: "none" }} // 클릭 후 포커스 상태 제거
-          >
-            확인
-          </Button>
         </GridItem>
       </Grid>
     </>
