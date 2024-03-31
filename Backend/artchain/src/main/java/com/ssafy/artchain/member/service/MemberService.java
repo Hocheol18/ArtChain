@@ -22,7 +22,7 @@ public interface MemberService {
 
     MemberUserMypageResponseListDto getUserMypage(CustomUserDetails customMember);
 
-    MemberComMypageResponseDto getComMypage(CustomUserDetails customCompany);
+    MemberComMypageResponseDto getComMypage(CustomUserDetails customCompany) throws Exception ;
 
     MemberMainUserInfoResponseDto getMainLoginUserInfo(CustomUserDetails member);
 

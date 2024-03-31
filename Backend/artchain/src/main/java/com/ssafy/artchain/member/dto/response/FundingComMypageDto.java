@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 //기업과 관련된 펀딩 정보를 담는 Dto
 public class FundingComMypageDto {
     private Long id;

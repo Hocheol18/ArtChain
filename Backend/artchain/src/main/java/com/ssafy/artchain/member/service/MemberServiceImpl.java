@@ -163,7 +163,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberComMypageResponseDto getComMypage(CustomUserDetails customCompany) {
+    public MemberComMypageResponseDto getComMypage(CustomUserDetails customCompany) throws Exception {
         Member company = memberRepository.findByMemberId(customCompany.getUsername())
                 .orElseThrow(() -> new NoSuchElementException("COMPANY NOT FOUND"));
         MemberComMypageDto comDto = MemberComMypageDto.builder()
@@ -171,7 +171,15 @@ public class MemberServiceImpl implements MemberService {
                 .name(company.getName())
                 .build();
 
-        List<FundingComMypageDto> list = memberRepository.comMypage(company.getId());
+
+        // comMypage 메소드의 결과가 null일 경우를 고려한 처리
+        List<FundingComMypageDto> list = Optional.ofNullable(memberRepository.comMypage(company.getId()))
+                .orElseGet(Collections::emptyList); // 결과가 null이면 빈 리스트 반환
+
+        if(list.isEmpty()){
+            throw new Exception("연관된 펀딩 정보가 없습니다.");
+        }
+
         List<FundingComShareDto> fundingComShareDtoList = new ArrayList<>();
 
         for (FundingComMypageDto dto : list) {
