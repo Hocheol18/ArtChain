@@ -3,7 +3,11 @@ package com.ssafy.artchain.settlement.service;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
+import com.ssafy.artchain.market.entity.Market;
+import com.ssafy.artchain.market.repository.MarketRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
+import com.ssafy.artchain.pieceowner.entity.PieceOwner;
+import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
 import com.ssafy.artchain.s3.S3Service;
 import com.ssafy.artchain.settlement.dto.SettlementListItemDto;
 import com.ssafy.artchain.settlement.dto.SettlementRequestDto;
@@ -30,6 +34,8 @@ public class SettlementServiceImpl implements SettlemnetService {
 
     private final SettlementRepository settlementRepository;
     private final FundingRepository fundingRepository;
+    private final MarketRepository marketRepository;
+    private final PieceOwnerRepository pieceOwnerRepository;
     private final S3Service s3Service;
     private final EntityManager entityManager;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
@@ -121,6 +127,17 @@ public class SettlementServiceImpl implements SettlemnetService {
         Funding funding = fundingRepository.findById(settlement.getFundingId())
                 .orElse(null);
         if (funding != null && SettlementStatus.ALLOW.name().equals(upperStatus)) {
+            List<Market> listedMarketList = marketRepository.findAllByFundingIdAndStatus(funding.getId(), "LISTED");
+
+            listedMarketList.forEach(item -> {
+                PieceOwner sellerPieceInfo = pieceOwnerRepository.findPieceOwnerByMemberIdAndFundingId(item.getSellerId(), funding.getId());
+                if(sellerPieceInfo != null) {
+                    sellerPieceInfo.updatePieceCount(sellerPieceInfo.getPieceCount() + item.getPieceCount());
+                }
+
+                item.updateStatus("UNLISTED");
+            });
+
             funding.updateProgressStatus(FundingProgressStatus.SETTLED);
         }
 
