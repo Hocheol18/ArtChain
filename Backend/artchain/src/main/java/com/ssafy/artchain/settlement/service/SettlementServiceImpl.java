@@ -87,7 +87,7 @@ public class SettlementServiceImpl implements SettlementService {
             return null;
         }
 
-        return settlementRepository.getSettlementList(SettlementStatus.REQUEST.name());
+        return settlementRepository.getSettlementList(SettlementStatus.REQUEST);
     }
 
     @Override

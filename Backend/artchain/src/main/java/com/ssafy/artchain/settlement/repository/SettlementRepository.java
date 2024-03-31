@@ -3,6 +3,7 @@ package com.ssafy.artchain.settlement.repository;
 import com.ssafy.artchain.settlement.dto.SettlementListItemDto;
 import com.ssafy.artchain.settlement.dto.SettlementResponseDto;
 import com.ssafy.artchain.settlement.entity.Settlement;
+import com.ssafy.artchain.settlement.entity.SettlementStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,7 +25,7 @@ public interface SettlementRepository extends JpaRepository<Settlement, Long> {
             "join Funding fd on st.fundingId = fd.id " +
             "where st.status = :status "
     )
-    List<SettlementListItemDto> getSettlementList(@Param("status") String status);
+    List<SettlementListItemDto> getSettlementList(@Param("status") SettlementStatus status);
 
     @Query(value = "select " +
             "new com.ssafy.artchain.settlement.dto.SettlementResponseDto ( " +
