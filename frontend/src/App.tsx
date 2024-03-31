@@ -203,41 +203,41 @@ function App() {
                 <Route
                   path="/mypage"
                   element={
-                    <CommonPage topNavType="" bottomNavType="my">
+                    <CommonPage topNavType="logo" bottomNavType="my">
                       <UserMyPage />
                     </CommonPage>
                   }
                 ></Route>
 
                 {/* 나의 조각-나의 투자 */}
-                <Route
+                {/* <Route
                   path="/mypiece/:userId"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="my">
                       <MyPiece type="invest" />
                     </CommonPage>
                   }
-                ></Route>
+                ></Route> */}
 
                 {/* 나의 조각-나의 거래 리스트 */}
-                <Route
+                {/* <Route
                   path="/mypiece/:userId/transaction-list"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="my">
                       <MyPiece type="transaction-list" />
                     </CommonPage>
                   }
-                ></Route>
+                ></Route> */}
 
                 {/* 나의 조각-나의 거래 리스트 항목 */}
-                <Route
+                {/* <Route
                   path="/mypiece/:userId/transaction/:transactionId"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="my">
                       <MyPiece type="transaction" />
                     </CommonPage>
                   }
-                ></Route>
+                ></Route> */}
 
                 {/* 기업 마이페이지 */}
                 <Route

@@ -11,11 +11,6 @@ export const MypieceTopNav = ({ onCheck, check }: Props) => {
   const { userId } = useParams();
   const handleClick = (whatCheck: string) => {
     onCheck(whatCheck);
-    if (whatCheck === "transaction") {
-      navigate(`/mypiece/${userId}/transaction-list`); // 해당 경로로 이동
-    } else if (whatCheck === "invest") {
-      navigate(`/mypiece/${userId}`);
-    }
   };
 
   return (
