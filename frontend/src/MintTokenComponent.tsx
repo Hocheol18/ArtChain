@@ -59,6 +59,26 @@ const TokenManagementComponent: React.FC = () => {
     }
   };
 
+  const handleBurnTokens = async () => {
+    try {
+      const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
+      const artTokenContract = new web3.eth.Contract(
+          IERC20ABI.abi,
+          artTokenContractAddress
+      );
+      // 토큰 민트
+      const transaction = await artTokenContract.methods
+        .burnTokens(parseInt(tokenAmount))
+        .send({ from: account });
+
+      setStatus('토큰 소각 성공');
+      setTransactionHash(transaction.transactionHash);
+    } catch (error) {
+      console.error('토큰 소각 중 오류 발생:', error);
+      setStatus('토큰 소각 실패');
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -85,7 +105,23 @@ const TokenManagementComponent: React.FC = () => {
               <p>트랜잭션 해시: {transactionHash}</p>
             </div>
           )}
+          <div>
+            <label>토큰 양:</label>
+            <input
+              type="number"
+              value={tokenAmount}
+              onChange={(e) => setTokenAmount(e.target.value)}
+            />
+          </div>
+          <button onClick={handleBurnTokens}>토큰 소각</button>
+          <div>{status}</div>
+          {transactionHash && (
+            <div>
+              <p>트랜잭션 해시: {transactionHash}</p>
+            </div>
+          )}
         </div>
+        
       </header>
     </div>
   );
