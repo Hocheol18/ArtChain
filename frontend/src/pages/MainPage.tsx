@@ -5,27 +5,15 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
-import { getMyPieceDropDown,getMyPieceList,getMyInvestmentHistory,getMyPieceCount } from "../api/mypage";
+import {
+  getMyPieceDropDown,
+  getMyPieceList,
+  getMyInvestmentHistory,
+  getMyPieceCount,
+} from "../api/mypage";
 
 export default function MainPage() {
   const navigate = useNavigate();
-
-  const handleButtonClick = async () => {
-    try {
-      // PostFundingNotice 함수 호출 시 필요한 파라미터를 구성합니다.
-      // const params = {
-      //   settlementId: 2,
-      //   status: "ALLOW",
-      // };
-
-      // 구성한 파라미터를 전달하여 함수를 호출합니다.
-      const responseData = await getMyPieceCount();
-      console.log("Received Response:", responseData);
-      navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
-    } catch (error) {
-      console.error("Error fetching business page data:", error);
-    }
-  };
 
   return (
     <>
@@ -34,8 +22,6 @@ export default function MainPage() {
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>
           진행 중인 투자 작품
         </Text>
-        <button onClick={() => navigate("/admin")}>ADMIN</button>
-        <button onClick={handleButtonClick}>Axios Test</button>
       </Box>
       <Poster />
       <Poster />
