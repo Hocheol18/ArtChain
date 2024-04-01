@@ -1,16 +1,4 @@
-import {
-  Box,
-  Input,
-  Center,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  Button,
-  Image,
-  Link,
-} from "@chakra-ui/react";
+import { Box, Input, Center, useDisclosure } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 import { InvestContent } from "../components/Invest/InvestContent";
