@@ -11,10 +11,6 @@ export const Charge = () => {
     setCheck(whatCheck);
   };
 
-  useEffect(() => {
-    console.log(check);
-  }, [check]);
-
   return (
     <div>
       <CommonTopBox

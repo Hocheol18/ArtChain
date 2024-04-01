@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { CommonnTopNav } from "./CommonTopNav";
 import useUserInfo from "../../store/useUserInfo";
 import { useEffect } from "react";
+import { formatNumberWithComma } from "../Common/Comma";
 
 interface Props {
   text1: string;
@@ -21,7 +22,7 @@ export const CommonTopBox = ({ text1, text2, handleCheck, check }: Props) => {
         </Box>
         <Flex>
           <Box fontWeight={"bold"} fontSize={"22"}>
-            {userInfo.walletBalance}
+            {formatNumberWithComma(Number(userInfo.walletBalance))}
           </Box>
           <Box fontSize={"22"} ml={3}>
             아트
