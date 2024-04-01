@@ -26,34 +26,6 @@ contract ReceiveArtCoinContract is FundRaisingContract {
 
     event NewCoinsUpdated(address indexed _from, uint256 _amount);
 
-    // ts에서 실행, button 이벤트를 주어야 실행가능함.
-    // function fundToken(uint256 _amount) external {
-    //     require(block.timestamp < finishTime, "Time Over");
-    //     require(_amount > 0, "You need to donate a positive amount of tokens");
-    //     require(
-    //         _amount*(10**18) + raisedAmount <= initialSupply,
-    //         "Exceeds initial supply"
-    //     );
-    //     bool success = fundingToken.transferFrom(
-    //         msg.sender,
-    //         mainWalletaddress,
-    //         _amount*(10**18)
-    //     );
-
-    //     fundingToken.approve(contributor, _amount*(10**18));
-
-    //     require(success, "Token transfer failed");
-    //     raisedAmount += _amount*(10**18);
-    //     newCoins[msg.sender] += _amount*(10**18);
-    //     refunds[msg.sender] += _amount*(10**18);
-    //     if (!hasContributed[msg.sender]) {
-    //         listOfContributors.push(msg.sender);
-    //         hasContributed[msg.sender] = true;
-    //     }
-
-    //     emit NewCoinsUpdated(msg.sender, _amount*(10**18));
-    // }
-
     function fundToken(uint256 _amount) external {
         require(block.timestamp < finishTime, "Fundraising time is over");
         require(_amount > 0, "You need to donate a positive amount of tokens");
