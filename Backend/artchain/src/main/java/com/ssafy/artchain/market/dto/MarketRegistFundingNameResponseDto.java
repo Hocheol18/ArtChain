@@ -13,4 +13,5 @@ public class MarketRegistFundingNameResponseDto {
     private Long fundingId;
     private String name;
     private Long pieceCount;
+    private String contractAddress;
 }

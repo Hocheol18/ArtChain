@@ -35,6 +35,7 @@ public interface PieceOwnerRepository extends JpaRepository<PieceOwner, Long> {
     List<PieceOwnerResponseDto> findTop3ByMemberIdAndFundingProgressStatus(@Param("memberId") Long memberId,
                                                                            @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus,
                                                                            Pageable pageable);
+
     @Query(value = "select " +
             "new com.ssafy.artchain.pieceowner.dto.PieceOwnerResponseDto ( " +
             "po.id, " +
@@ -50,18 +51,19 @@ public interface PieceOwnerRepository extends JpaRepository<PieceOwner, Long> {
             "and fd.progressStatus = :fundingProgressStatus "
     )
     List<PieceOwnerResponseDto> findAllByMemberIdAndFundingProgressStatus(@Param("memberId") Long memberId,
-                                                               @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus);
+                                                                          @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus);
 
     @Query("select " +
             "new com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto (" +
-            "po.id, "+
-            "fd.id, "+
+            "po.id, " +
+            "fd.id, " +
             "fd.name, " +
-            "po.pieceCount ) " +
+            "po.pieceCount, " +
+            "fd.contractAddress ) " +
             "from PieceOwner po " +
             "join Funding fd on po.fundingId = fd.id " +
             "where po.memberId = :memberId " +
             "and fd.progressStatus = :fundingProgressStatus")
     List<MarketRegistFundingNameResponseDto> findMarketRegistFundingNameResponseDto(@Param("memberId") Long memberId,
-                                             @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus);
+                                                                                    @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus);
 }
