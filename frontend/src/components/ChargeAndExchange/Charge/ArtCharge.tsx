@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { BottomButtonNavbar } from "../../Common/Navigation/BottomButtonNavbar";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "axios"
 import { handleMintTokens } from "../../../MintTokenComponent";
 import { PostCharge } from "../../../api/coin";
 import useUserInfo, { userInfoType } from "../../../store/useUserInfo";

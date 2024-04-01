@@ -28,7 +28,7 @@ export const LoginPage = () => {
       [name]: value,
     }));
   };
-  const { LoginWithMetamask } = useLoginWithMetamask(values);
+  const { LoginWithMetamask } = useLoginWithMetamask(values, false);
 
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {

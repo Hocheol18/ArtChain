@@ -1,4 +1,3 @@
-import React from "react";
 import MetaMask from "../Login/Metamask";
 
 export default async function MetamaskValidation(walletAddress: string) {
