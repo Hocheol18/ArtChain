@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyInvestDetail from "./MyInvestDetail";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, useEditable } from "@chakra-ui/react";
 import { PieceCommonTap } from "../PieceCommonTap";
+import { getMyInvestmentHistory } from "../../../../api/mypage";
+import { GetMyIntegratedList } from "../../../../type/mypage.interface";
 
 export const MyInvest = () => {
   //탭 선택한 거
@@ -30,13 +32,45 @@ export const MyInvest = () => {
     },
   ];
 
+  const getMyInvestList = async (check: string) => {
+    const res = await getMyInvestmentHistory({ status: check });
+    console.log(res.myIntegratedList);
+    setMyIntegratedList(res.myIntegratedList);
+  };
+
+  const [checkParam, setCheckParam] = useState<string>("ALL");
+  const [myIntegratedList, setMyIntegratedList] = useState<
+    GetMyIntegratedList[]
+  >([]);
+
+  useEffect(() => {
+    switch (check) {
+      case "total":
+        setCheckParam("ALL");
+        getMyInvestList("ALL");
+        break;
+      case "ing":
+        setCheckParam("RECRUITMENT_STATUS");
+        getMyInvestList("RECRUITMENT_STATUS");
+        break;
+      case "end":
+        setCheckParam("PENDING_SETTLEMENT");
+        getMyInvestList("PENDING_SETTLEMENT");
+        break;
+      case "complete":
+        setCheckParam("SETTLED");
+        getMyInvestList("SETTLED");
+        break;
+    }
+  }, [check]);
+
   return (
     <>
       <PieceCommonTap tapArr={tapArr} handleCheck={handleCheck} check={check} />
       <Flex mt={5} direction={"column"} gap={4}>
-        <MyInvestDetail isNow="now" />
-        <MyInvestDetail isNow="wait" />
-        <MyInvestDetail isNow="end" />
+        {myIntegratedList.map((item) => (
+          <MyInvestDetail myIntegratedData={item} />
+        ))}
       </Flex>
     </>
   );

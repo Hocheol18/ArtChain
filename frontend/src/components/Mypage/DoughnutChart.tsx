@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { GetMyPieceCountList } from "../../type/mypage.interface";
 
 ChartJS.register(
   LinearScale,
@@ -20,13 +21,8 @@ ChartJS.register(
   Legend
 );
 
-interface dataType {
-  title: string;
-  percent: number;
-}
-
 interface Props {
-  data: dataType[];
+  data: GetMyPieceCountList[];
 }
 
 export default function DoughnutChart({ data }: Props) {
@@ -61,10 +57,10 @@ export default function DoughnutChart({ data }: Props) {
     },
   };
   const Data = {
-    labels: data.map((item) => item.title),
+    labels: data.map((item) => item.fundingTitle),
     datasets: [
       {
-        data: data.map((item) => item.percent),
+        data: data.map((item) => item.pieceCount),
         backgroundColor: ["#013878", "#014BA0", "#B0C7E2", "#DBDDE0"],
         borderColor: ["#013878", "#014BA0", "#B0C7E2", "#DBDDE0"],
       },
