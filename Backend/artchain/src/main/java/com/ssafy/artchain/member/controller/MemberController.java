@@ -112,6 +112,13 @@ public class MemberController {
         }
 
     }
+//    market에 대해 삭제 요청이 들어오면 UNLISTED처리한다
+    @DeleteMapping("/myTrade")
+    public ResponseEntity<?> deleteMyTrade(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                           @RequestParam Long marketId) {
+        memberService.deleteMyTrade(marketId);
+        return DefaultResponse.emptyResponse(HttpStatus.OK, SUCCESS_MYTRADE_DELETE);
+    }
 
     @GetMapping("/permission")
     public ResponseEntity<DefaultResponse<List<MemberPermissionResponseDto>>> getComPermissionList(@AuthenticationPrincipal CustomUserDetails admin) {

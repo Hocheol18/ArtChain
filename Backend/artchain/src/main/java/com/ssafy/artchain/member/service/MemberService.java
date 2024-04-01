@@ -38,4 +38,5 @@ public interface MemberService {
 
     List<MemberMyTradeResponseDto> getMyTradeList(CustomUserDetails customMember, Long fundingId, String filterFlag, Pageable pageable) throws Exception;
 
+    void deleteMyTrade(Long marketId);
 }
