@@ -23,7 +23,7 @@ export const MyTransaction = () => {
   //클릭하면 선택됨
   const handleItemClick = (item: GetMyPieceDropDown) => {
     setSelectedItem(item); // 선택된 항목 업데이트
-
+    myPieceList("ALL", item);
     setIsDropDown(false); // 드롭다운 닫기
   };
 
@@ -194,9 +194,15 @@ export const MyTransaction = () => {
       <PieceCommonTap tapArr={tapArr} handleCheck={handleCheck} check={check} />
       <Box my={7}>
         {/* map으로 돌리는 부분 */}
-        {transactionList.map((item, index) => (
-          <MyTransactionItem transaction={item} />
-        ))}
+        {transactionList.length !== 0 ? (
+          transactionList.map((item, index) => (
+            <MyTransactionItem transaction={item} />
+          ))
+        ) : (
+          <Center py={"20%"} textColor={"gray.400"}>
+            내역이 없습니다.
+          </Center>
+        )}
       </Box>
     </>
   );
