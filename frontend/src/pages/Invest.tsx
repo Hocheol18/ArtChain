@@ -3,13 +3,6 @@ import {
   Input,
   Center,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  Button,
-  Image,
-  Link,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
@@ -20,10 +13,6 @@ import { PostInvest, getFundding } from "../api/invest";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetFundingResponse } from "../type/invest.interface";
 import { FundRaisingPage } from "../FundRaising";
-
-import Spinner from "../assets/spinner.gif";
-import { CheckCircleIcon } from "@chakra-ui/icons";
-import PuzzleIcon from "../assets/puzzle.svg";
 import { LoadingModal } from "../components/Common/LoadingModal";
 
 export const Invest = () => {

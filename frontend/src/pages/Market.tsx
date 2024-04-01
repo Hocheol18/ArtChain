@@ -4,6 +4,7 @@ import TopSecondNav from "../components/Market/Main/TopSecondNav";
 import { useState } from "react";
 import MarketSell from "../components/Market/Main/MarketSell";
 import useUserInfo from "../store/useUserInfo";
+import { Box } from "@chakra-ui/react";
 
 export default function Martet() {
   const [statusTopNav, setTopNav] = useState<string>("ALL");
@@ -19,10 +20,11 @@ export default function Martet() {
         third="정산완료"
         forth=""
         isCheck={true}
-        statusTopSecondNav = {statusTopSecondNav}
+        statusTopSecondNav={statusTopSecondNav}
         setSecondTopNav={setSecondTopNav}
       />
-      {userInfo.isLogin ? <MarketSell /> : null }
+      <Box mt={"0.8rem"}>{userInfo.isLogin ? <MarketSell /> : null}</Box>
+
       <Content first={statusTopNav} second={statusTopSecondNav} />
     </>
   );

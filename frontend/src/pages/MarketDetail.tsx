@@ -6,6 +6,8 @@ import SellHistory from "../components/Market/Detail/SellHistory";
 import TopSecondNav from "../components/Market/Main/TopSecondNav";
 import { getMarketSellingDisplayListInterface } from "../type/market.interface";
 import { getMarketSellingDisplayList } from "../api/market";
+import useUserInfo from "../store/useUserInfo";
+import MarketSell from "../components/Market/Main/MarketSell";
 
 export default function MarketDeatil() {
   const id = useParams() as { id: string };
@@ -13,7 +15,7 @@ export default function MarketDeatil() {
   const [marketDetails, setMarketDetail] = useState<
     getMarketSellingDisplayListInterface[]
   >([]);
-  
+  const { userInfo } = useUserInfo();
 
   useEffect(() => {
     getMarketSellingDisplayList({
@@ -28,27 +30,43 @@ export default function MarketDeatil() {
 
   const [check, setCheck] = useState("SellList");
 
+  useEffect(() => {
+    console.log(marketDetails);
+  }, [marketDetails]);
+
   return (
     <>
-      
       {check === "SellList" ? (
         <>
-          <Box p={"1rem"} position={"sticky"} left={"1px"}>
-            <Text as={"b"} fontSize={"lg"} onClick={() => setCheck("SellList")}>
-              판매 리스트
-            </Text>
-            <Text
-              as={"b"}
-              fontSize={"lg"}
-              color={"gray.400"}
-              ml={"1rem"}
-              onClick={() => setCheck("SellHistory")}
-            >
-              조각 거래 내역
-            </Text>
-          </Box>
-          
-          <Flex justifyContent={"end"}>
+          <Flex
+            ml={"1rem"}
+            mt={"1rem"}
+            position={"sticky"}
+            left={"1px"}
+            justifyContent={"space-between"}
+          >
+            <Box>
+              <Text
+                as={"b"}
+                fontSize={"lg"}
+                onClick={() => setCheck("SellList")}
+              >
+                판매 리스트
+              </Text>
+              <Text
+                as={"b"}
+                fontSize={"lg"}
+                color={"gray.400"}
+                ml={"1rem"}
+                onClick={() => setCheck("SellHistory")}
+              >
+                조각 거래 내역
+              </Text>
+            </Box>
+            <Box>{userInfo.isLogin ? <MarketSell /> : null}</Box>
+          </Flex>
+
+          <Flex justifyContent={"end"} mt={"0.5rem"}>
             <TopSecondNav
               first="최신순"
               second="높은가격순"
@@ -59,8 +77,6 @@ export default function MarketDeatil() {
               setSecondTopNav={setSecondTopNav}
             />
           </Flex>
-          
-          
         </>
       ) : (
         <Box p={"1rem"} position={"sticky"} left={"1px"}>
@@ -88,24 +104,25 @@ export default function MarketDeatil() {
           {marketDetails.length >= 1 ? (
             <Grid
               templateColumns="repeat(auto-fill, minmax(160px, 1fr))"
-              
               p={"0.8rem"}
             >
               {marketDetails.map(
                 (data: getMarketSellingDisplayListInterface) => {
-                  return (
-                    <SellList
-                      key={data.id}
-                      id={data.id}
-                      fundingId={data.fundingId}
-                      pieceCount={data.pieceCount}
-                      totalCoin={data.totalCoin}
-                      coinPerPiece={data.coinPerPiece}
-                      sellerId={data.sellerId}
-                      sellerAddress={data.sellerAddress}
-                      status={data.status}
-                    />
-                  );
+                  if (data.status !== "SOLD") {
+                    return (
+                      <SellList
+                        key={data.id}
+                        id={data.id}
+                        fundingId={data.fundingId}
+                        pieceCount={data.pieceCount}
+                        totalCoin={data.totalCoin}
+                        coinPerPiece={data.coinPerPiece}
+                        sellerId={data.sellerId}
+                        sellerAddress={data.sellerAddress}
+                        status={data.status}
+                      />
+                    );
+                  }
                 }
               )}
             </Grid>
