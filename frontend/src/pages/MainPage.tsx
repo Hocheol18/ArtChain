@@ -1,3 +1,4 @@
+import { useState } from "react";
 import MainCarousel from "../components/Main/MainCarousel";
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import Poster from "../components/Main/Poster";
@@ -5,26 +6,61 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
-import { DeleteSettlement } from "../api/Settlement";
+import { PutFundingStatus } from "../api/invest";
 
 export default function MainPage() {
   const navigate = useNavigate();
 
   const handleButtonClick = async () => {
     try {
-      // PostFundingNotice 함수 호출 시 필요한 파라미터를 구성합니다.
       const params = {
-        settlementId: 3,
+        fundingId: 19,
+        allowStatus: "true",
       };
 
-      // 구성한 파라미터를 전달하여 함수를 호출합니다.
-      const responseData = await DeleteSettlement(params);
+      const responseData = await PutFundingStatus(params); // 수정된 formData를 전달
       console.log("Received Response:", responseData);
       navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
     } catch (error) {
       console.error("Error fetching business page data:", error);
     }
   };
+  // const [file, setFile] = useState<File>();
+  // const navigate = useNavigate();
+
+  // const handleButtonClick = async () => {
+  //   try {
+  //     if (!file) {
+  //       throw new Error("파일이 첨부되지 않았습니다.");
+  //     }
+
+  //     const params = {
+  //       fundingId: 19,
+  //       settlementPrice: 1000000,
+  //       returnRate: 5,
+  //       depositDate: "20240315",
+  //     };
+
+  //     const formData = new FormData();
+  //     formData.append("file", file); // 파일 추가
+  //     formData.append("dto", JSON.stringify(params)); // dto 키에 JSON 문자열로 변환된 params 추가
+
+  //     const responseData = await PostSettlement(formData); // 수정된 formData를 전달
+  //     console.log("Received Response:", responseData);
+  //     navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
+  //   } catch (error) {
+  //     console.error("Error fetching business page data:", error);
+  //   }
+  // };
+
+  // const onChangeImg = (e) => {
+  //   e.preventDefault();
+
+  //   if (e.target.files) {
+  //     const uploadFile = e.target.files[0];
+  //     setFile(uploadFile);
+  //   }
+  // };
 
   return (
     <>
@@ -34,6 +70,7 @@ export default function MainPage() {
           진행 중인 투자 작품
         </Text>
         <button onClick={() => navigate("/admin")}>ADMIN</button>
+        {/* <input type="file" name="file" id="" onChange={onChangeImg} /> */}
         <button onClick={handleButtonClick}>Axios Test</button>
       </Box>
       <Poster />

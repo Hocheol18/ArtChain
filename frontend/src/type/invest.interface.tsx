@@ -148,3 +148,9 @@ export interface FundingNoticeParam {
   title: string;
   content: string;
 }
+
+// 투자 승인/거절 request
+export interface FundingStatusRequest {
+  fundingId: number;
+  allowStatus: string;
+}

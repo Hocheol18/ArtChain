@@ -10,6 +10,7 @@ import {
   PostFundingNoticeRequest,
   PutFundingNoticeRequest,
   DeleteFundingNoticeRequest,
+  FundingStatusRequest,
 } from "../type/invest.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios } from "./https";
@@ -105,6 +106,19 @@ export const DeleteFundingNotice = async (
   const url = `/funding/${fundingId}/notice/${fundingNoticeId}`;
 
   const response = await localAxios.delete(url);
+
+  return response.data;
+};
+
+// 펀딩 승인/거절(관리자)
+export const PutFundingStatus = async (
+  params: FundingStatusRequest
+): Promise<FundingStatusRequest> => {
+  const { fundingId, allowStatus } = params;
+
+  const url = `/funding/${fundingId}/allow/${allowStatus}`;
+
+  const response = await localAxios.put(url);
 
   return response.data;
 };

@@ -9,6 +9,7 @@ export const localAxios: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
+// 사진 전송
 export const imageAxios: AxiosInstance = axios.create({
   baseURL: "/api",
   headers: {

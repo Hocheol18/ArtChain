@@ -3,15 +3,15 @@ import {
   GetSettlementDetailRequest,
   PutSettlementStatusRequest,
 } from "../type/settlement.interface";
-import { localAxios } from "./https";
+import { localAxios, imageAxios } from "./https";
 
 // 정산 신청(기업)
 export const PostSettlement = async (
-  params: PostSettlementRequest
+  params: FormData
 ): Promise<PostSettlementRequest> => {
   const url = `/settlement`;
 
-  const response = await localAxios.post(url, params);
+  const response = await imageAxios.post(url, params);
 
   return response.data.data;
 };
