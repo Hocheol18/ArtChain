@@ -22,6 +22,13 @@ export interface getMarketSellingDisplayListAxiosInterface {
   size: number;
 }
 
+export interface buyContractCallInterfece {
+  seller : string;
+  tokenAddress : string;
+  tokenAmount : number;
+  price : number;
+}
+
 export interface getMarketSellingDisplayListInterface {
   id: number;
   fundingId: number;
@@ -82,6 +89,7 @@ export interface getMarketMyTokenInterface {
   fundingId: number;
   name: string;
   pieceCount: number;
+  contractAddress : string;
 }
 
 export interface buyMarketTokenInterface {
@@ -91,3 +99,5 @@ export interface buyMarketTokenInterface {
   amount: string;
   completed: boolean;
 }
+
+

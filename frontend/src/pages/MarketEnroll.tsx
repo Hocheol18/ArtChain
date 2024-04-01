@@ -1,4 +1,12 @@
-import { Box, Center, Image, Input, Select, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Image,
+  Input,
+  Select,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import puzzle from "../assets/puzzle.svg";
 import { getMarketMyToken, postMarketEnroll } from "../api/market";
 import { useEffect, useState } from "react";
@@ -14,6 +22,8 @@ import { convertToInteger } from "../components/Common/convertToInteger";
 import TokenMarketPlaceABI from "../Contract/TokenMarketplace.json";
 import IERC20ABI from "../Contract/IERC20.json";
 import { useCustomToast } from "../components/Common/Toast";
+import MetamaskValidation from "../components/Common/MetamaskValidation";
+import { LoadingModal } from "../components/Common/LoadingModal";
 
 export default function MarketEnroll() {
   const [total, setTotal] = useState<number>(0);
@@ -27,13 +37,18 @@ export default function MarketEnroll() {
     totalCoin: 0,
     coinPerPiece: 0,
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [tokens, setTokens] = useState<getMarketMyTokenInterface[]>([]);
   const [isFilled, setisFilled] = useState(false);
+  const [tokensIndex, setTokenIndex] = useState<number>(0);
+  const [value, setValue] = useState<number>(0);
+  const [url, setUrl] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "pieceCount") {
-      const numValue = Math.min(Number(value), total);
+      const numValue = Math.min(Math.trunc(Number(value)), total);
 
       setValues((prev) => ({
         ...prev,
@@ -78,15 +93,27 @@ export default function MarketEnroll() {
     );
   };
 
-  const successList = (res: any) => {
-    toastFunction("거래글이 등록되었습니다", true);
-    setValues((prev) => ({
-      ...prev,
-      contractAddress: res.transactionHash,
-    }));
-    // TODO : Navigate to market
+  const Validation = async () => {
+    const res = await MetamaskValidation(userInfo.metamask);
+    if (res === "메마오류") {
+      toastFunction("처음 등록한 계정으로 연결해주세요", false);
+    } else {
+      onOpen();
+      addTradePost({
+        metamaskwallet: userInfo.metamask,
+        tokenAmount: values.pieceCount.toString(),
+      });
+    }
+  };
+
+  const successList = (res: any, integerTokenAmount: number) => {
+    const tmp = values;
+    tmp.contractAddress = res.transactionHash;
+    setValue(integerTokenAmount);
+    setUrl(`https://sepolia.etherscan.io/tx/${res.transactionHash}`);
+    setIsSuccess(true);
     postMarketEnroll(values)
-      .then((res) => console.log(res))
+      .then(() => {})
       .catch((err) => console.log(err));
   };
 
@@ -101,6 +128,12 @@ export default function MarketEnroll() {
       totalCoin: 0,
     }));
     setisFilled(false);
+
+    // 인덱스 찾는 함수
+    const index = tokens.findIndex((res) => res.fundingId === Number(value));
+    setTokenIndex(index);
+
+    // 펀딩아이디 매칭
     tokens.forEach((res) => {
       if (res.fundingId === Number(value)) {
         setTotal(res.pieceCount);
@@ -110,30 +143,29 @@ export default function MarketEnroll() {
 
   const addTradePost = async (newTradePostData: {
     metamaskwallet: string;
-    tokenAddress: string;
     tokenAmount: string;
-    price: string;
   }) => {
     const web3 = new Web3((window as any).ethereum);
     try {
       const marketplaceContract = new web3.eth.Contract(
         TokenMarketPlaceABI.abi,
-        "0x77A6C65AD9530482fBC59751545Fd9E7cabfCD75" // 마켓 컨트랙트 주소
+        "0x749d167DC58e496CA017cAafD1FBc12C2c394527" // 마켓 컨트랙트 주소
       );
-      const { metamaskwallet, tokenAddress, tokenAmount, price } =
-        newTradePostData;
+      const { metamaskwallet, tokenAmount } = newTradePostData;
 
       // 사용자가 입력한 값을 그대로 사용
-      const integerPrice = price;
       const integerTokenAmount = tokenAmount;
 
       // 토큰 컨트랙트 생성
-      const tokenContract = new web3.eth.Contract(IERC20ABI.abi, tokenAddress);
+      const tokenContract = new web3.eth.Contract(
+        IERC20ABI.abi,
+        tokens[tokensIndex].contractAddress
+      );
 
       // 거래 게시글 추가 전에 사용자가 특정 양의 토큰을 스마트 계약에 대해 승인하도록 요청
       const approveTx = await tokenContract.methods
         .approve(
-          "0x77A6C65AD9530482fBC59751545Fd9E7cabfCD75",
+          "0x749d167DC58e496CA017cAafD1FBc12C2c394527", // 마켓 컨트랙트 주소
           convertToInteger(integerTokenAmount)
         )
         .send({ from: metamaskwallet });
@@ -148,19 +180,33 @@ export default function MarketEnroll() {
       }
       // 거래 게시글 추가
       await marketplaceContract.methods
-        .addTradePost(tokenAddress, integerTokenAmount, integerPrice)
+        .addTradePost(tokens[tokensIndex].contractAddress, integerTokenAmount)
         .send({ from: metamaskwallet })
-        .then((res) => successList(res));
+        .then((res) => successList(res, Number(integerTokenAmount)));
     } catch (error) {
-      toastFunction(
-        "게시글을 등록하는데 실패했습니다 다시 시도해주세요",
-        false
-      );
+      toastFunction("실패했습니다 다시 시도해주세요", false);
     }
+  };
+
+  const handleGo = () => {
+    navigate(-1);
+    onClose();
   };
 
   return (
     <>
+      <LoadingModal
+        headerText="등록 완료"
+        successNum={value}
+        successText="조각"
+        isSuccess={isSuccess}
+        isOpen={isOpen}
+        onClose={onClose}
+        url={url}
+        handleGoWhere={() => {
+          handleGo();
+        }}
+      />
       <Center h={"100px"}>
         <Image boxSize={"2.5rem"} src={puzzle}></Image>
         <Text as={"b"} color={"black.100"} fontSize={"1.5rem"} ml={"0.2rem"}>
@@ -246,12 +292,7 @@ export default function MarketEnroll() {
           text="판매"
           category="goingOn"
           hanldeButton={() => {
-            addTradePost({
-              metamaskwallet: userInfo.metamask,
-              tokenAddress: "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB",
-              tokenAmount: values.pieceCount.toString(),
-              price: values.totalCoin.toString(),
-            });
+            Validation();
           }}
         />
       ) : (

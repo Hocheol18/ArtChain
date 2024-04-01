@@ -68,6 +68,10 @@ async function getMarketMyToken() {
   return await localAxios.get('/market/registForm')
 }
 
+async function putMarketToken(marketId : number) {
+  return await localAxios.put(`/market/buy/${marketId}`)
+}
+
 export {
   getMarketMainDisplayList,
   getMarketSellingDisplayList,
@@ -75,5 +79,6 @@ export {
   postMarketEnroll,
   getMarketSoldDetail,
   getMarketChart,
-  getMarketMyToken
+  getMarketMyToken,
+  putMarketToken
 };
