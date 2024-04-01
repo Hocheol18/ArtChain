@@ -165,7 +165,7 @@ public class SettlementServiceImpl implements SettlementService {
 
             String eventId = "ADMIN";
             sseRepository.findById(eventId)
-                    .ifPresent(sseEmitter -> sseService.send(new SseSettlementAllowResultListDto(funding.getContractAddress(), pieceOwnerInfoList), eventId, sseEmitter, "settlementAllow"));
+                    .ifPresent(sseEmitter -> sseService.send(new SseSettlementAllowResultListDto(funding.getContractAddress(), funding.getNowCoinCount(), pieceOwnerInfoList), eventId, sseEmitter, "settlementAllow"));
         }
 
         return 1;
