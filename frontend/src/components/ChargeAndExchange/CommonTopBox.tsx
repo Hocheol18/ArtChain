@@ -1,5 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { CommonnTopNav } from "./CommonTopNav";
+import useUserInfo from "../../store/useUserInfo";
+import { useEffect } from "react";
 
 interface Props {
   text1: string;
@@ -9,6 +11,8 @@ interface Props {
 }
 
 export const CommonTopBox = ({ text1, text2, handleCheck, check }: Props) => {
+  const { userInfo } = useUserInfo();
+
   return (
     <>
       <Flex px={6} pt={5} pb={1} justifyContent={"space-between"}>
@@ -17,7 +21,7 @@ export const CommonTopBox = ({ text1, text2, handleCheck, check }: Props) => {
         </Box>
         <Flex>
           <Box fontWeight={"bold"} fontSize={"22"}>
-            12391
+            {userInfo.walletBalance}
           </Box>
           <Box fontSize={"22"} ml={3}>
             아트

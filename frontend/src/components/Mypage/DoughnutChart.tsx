@@ -20,7 +20,16 @@ ChartJS.register(
   Legend
 );
 
-export default function DoughnutChart() {
+interface dataType {
+  title: string;
+  percent: number;
+}
+
+interface Props {
+  data: dataType[];
+}
+
+export default function DoughnutChart({ data }: Props) {
   const Options = {
     responsive: true,
     interaction: {
@@ -33,9 +42,9 @@ export default function DoughnutChart() {
       },
       tooltip: {
         enabled: true,
-        titleFont: { size: 20 },
+
         bodyFont: {
-          size: 20,
+          size: 15,
         },
       },
       datalabels: {
@@ -52,12 +61,12 @@ export default function DoughnutChart() {
     },
   };
   const Data = {
-    labels: ["모집 중", "정산 대기", "정산 완료", "모집 실패"],
+    labels: data.map((item) => item.title),
     datasets: [
       {
-        data: [40, 20, 35, 4],
-        backgroundColor: ["#E7EFF8", "#B0C7E2", "#014BA0", "#DBDDE0"],
-        borderColor: ["#E7EFF8", "#B0C7E2", "#014BA0", "#DBDDE0"],
+        data: data.map((item) => item.percent),
+        backgroundColor: ["#013878", "#014BA0", "#B0C7E2", "#DBDDE0"],
+        borderColor: ["#013878", "#014BA0", "#B0C7E2", "#DBDDE0"],
       },
     ],
   };

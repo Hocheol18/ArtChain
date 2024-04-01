@@ -15,7 +15,7 @@ export const Exchange = () => {
   };
 
   useEffect(() => {
-    console.log(check);
+    console.log("wefw");
   }, [check]);
 
   return (

@@ -1,12 +1,14 @@
 import TopNav from "../components/Market/Main/TopNav";
 import Content from "../components/Market/Main/Content";
 import TopSecondNav from "../components/Market/Main/TopSecondNav";
-import MarketSell from "../components/Market/Main/MarketSell";
 import { useState } from "react";
+import MarketSell from "../components/Market/Main/MarketSell";
+import useUserInfo from "../store/useUserInfo";
 
 export default function Martet() {
   const [statusTopNav, setTopNav] = useState<string>("ALL");
-  const [statusTopSecondNav, setSecondTopNav] = useState<string>("ALL");
+  const [statusTopSecondNav, setSecondTopNav] = useState<string>("최신순");
+  const { userInfo } = useUserInfo();
 
   return (
     <>
@@ -20,7 +22,7 @@ export default function Martet() {
         statusTopSecondNav = {statusTopSecondNav}
         setSecondTopNav={setSecondTopNav}
       />
-      <MarketSell />
+      {userInfo.isLogin ? <MarketSell /> : null }
       <Content first={statusTopNav} second={statusTopSecondNav} />
     </>
   );

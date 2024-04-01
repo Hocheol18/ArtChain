@@ -47,7 +47,21 @@ async function getMarketHistoryDisplayList(
 
 async function postMarketEnroll(data: postMarketEnrollInterface) {
   const url = "/market";
-  return await localAxios.get(url, data);
+  return await localAxios.post(url, data);
+}
+
+async function getMarketSoldDetail(marketId:number) {
+  const url = `/market/detail${makeQuerystring({
+    marketId
+  })}`
+  return await localAxios.get(url)
+}
+
+async function getMarketChart(fundingId : number) {
+  const url = `/market/graph${makeQuerystring({
+    fundingId
+  })}`
+  return await localAxios.get(url)
 }
 
 export {
@@ -55,4 +69,6 @@ export {
   getMarketSellingDisplayList,
   getMarketHistoryDisplayList,
   postMarketEnroll,
+  getMarketSoldDetail,
+  getMarketChart
 };

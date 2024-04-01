@@ -10,39 +10,19 @@ interface Props {
 }
 
 export const MyPiece = ({ type }: Props) => {
-  const [check, setCheck] = useState("invest");
+  const [check, setCheck] = useState(type);
 
   const handleCheck = (whatCheck: string) => {
     setCheck(whatCheck);
   };
 
-  useEffect(() => {
-    switch (type) {
-      case "invest":
-        setCheck("invest");
-        break;
-      case "transaction-list":
-        setCheck("transaction");
-        break;
-      case "transaction":
-        setCheck("transaction");
-        break;
-    }
-  }, [type]);
-
   return (
     <>
-      <Box position={"fixed"} w={"100%"}>
+      <Box position={"sticky"} top={0}>
         <MypieceTopNav onCheck={handleCheck} check={check} />
       </Box>
-      <Box px={"6%"} mt={20} overflowY={"auto"}>
-        {type === "invest" ? (
-          <MyInvest />
-        ) : type === "transaction-list" ? (
-          <MyTransactionList />
-        ) : (
-          <MyTransaction />
-        )}
+      <Box px={"6%"} mt={5} overflowY={"auto"} height={"auto"}>
+        {check === "invest" ? <MyInvest /> : <MyTransaction />}
       </Box>
     </>
   );

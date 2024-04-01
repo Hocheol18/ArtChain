@@ -23,6 +23,8 @@ localAxios.interceptors.request.use(
   }
 );
 
+const retryLimit = 2;
+
 // 응답이 200 에러 아닌 경우 sessionStorage를 삭제 이후 다시 axios 요청
 localAxios.interceptors.response.use(
   async (response) => {
@@ -35,6 +37,17 @@ localAxios.interceptors.response.use(
     return response;
   },
   async (error) => {
+    const originConfig = error.config;
+    if (!originConfig.retryCount) {
+      originConfig.retryCount = 0;
+    }
+
+    if (originConfig.retryCount >= retryLimit) {
+      return Promise.reject(error)
+    }
+
+    originConfig.retryCount += 1
+
     try {
       const at: string | null = sessionStorage.getItem("accessToken");
       sessionStorage.removeItem("accessToken");
@@ -43,9 +56,9 @@ localAxios.interceptors.response.use(
           sessionStorage.setItem("accessToken", res.headers.authorization)
         );
       }
+      return localAxios.request(originConfig);
     } catch (error) {
-      console.error("Error refreshing token:", error);
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
   }
 );

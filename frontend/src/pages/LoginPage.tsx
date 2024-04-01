@@ -7,22 +7,16 @@ import {
   AbsoluteCenter,
   Center,
   Input,
-  useToast,
 } from "@chakra-ui/react";
 import LoginUser from "../assets/loginuser.png";
 import kakao from "../assets/kakaologin.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LoginInterface } from "../type/login.interface";
-import { LoginAxios, ProfileAxios } from "../api/user";
-import useUserInfo from "../store/useUserInfo";
-import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
+import { useLoginWithMetamask } from "../components/Common/LoginWithMetamask";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { setUserInfo } = useUserInfo();
-  const toast = useToast();
-
   const [values, setValues] = useState<LoginInterface>({
     username: "",
     password: "",
@@ -34,74 +28,11 @@ export const LoginPage = () => {
       [name]: value,
     }));
   };
+  const { LoginWithMetamask } = useLoginWithMetamask(values);
 
-  const loginDone = async (res: any) => {
-    sessionStorage.setItem("accessToken", res.headers.authorization);
-    try {
-      const res = await ProfileAxios();
-      toast({
-        duration: 2000,
-        isClosable: true,
-        position: "top",
-        render: () => (
-          <Flex
-            color="white"
-            mt={"50px"}
-            bg="blue.300"
-            p={"1rem"}
-            borderRadius={"0.7rem"}
-            alignItems={"center"}
-          >
-            <CheckCircleIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-            <Center ml={"1rem"}>
-              <Text as={"b"}>로그인 성공</Text>
-            </Center>
-          </Flex>
-        ),
-      });
-      setUserInfo({
-        profileUrl: "",
-        nickname: res.data.data.memberUserMypageResponseDtoList[0].nickname,
-        walletBalance:
-          res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
-        isLogin: true,
-      });
-      navigate("../");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const Login = () => {
-    LoginAxios(values)
-      .then((res) => loginDone(res))
-      .catch(() =>
-        toast({
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-          render: () => (
-            <Flex
-              color="white"
-              mt={"50px"}
-              bg="#C70000"
-              p={"1rem"}
-              borderRadius={"0.7rem"}
-              alignItems={"center"}
-            >
-              <WarningTwoIcon boxSize={5} color={"white"} ml={"0.5rem"} />
-              <Center ml={"1rem"}>
-                <Text as={"b"}>로그인 실패</Text>
-              </Center>
-            </Flex>
-          ),
-        })
-      );
-  };
-
-  const onKeyPress = (e: KeyboardEvent) => {
+  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      Login();
+      LoginWithMetamask();
     }
   };
 
@@ -168,7 +99,7 @@ export const LoginPage = () => {
           border={"1px"}
           bgColor={"blue.300"}
           ml={"0.5rem"}
-          onClick={Login}
+          onClick={() => LoginWithMetamask()}
         >
           <Center as={"b"} color={"white"}>
             로그인

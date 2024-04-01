@@ -9,10 +9,44 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { BottomButtonNavbar } from "../../Common/Navigation/BottomButtonNavbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { handleMintTokens } from "../../../MintTokenComponent";
+import { PostCharge } from "../../../api/coin";
+import useUserInfo, { userInfoType } from "../../../store/useUserInfo";
 
 export const ArtCharge = () => {
+  const [account, setAccount] = useState<string>("");
+  //코인 가져오기
+  const { userInfo, setUserInfo } = useUserInfo();
+
+  useEffect(() => {
+    if ((window as any).ethereum) {
+      (window as any).ethereum
+        .request({ method: "eth_accounts" })
+        .then((accounts: string[]) => {
+          if (accounts.length > 0) {
+            setAccount(accounts[0]);
+          }
+        });
+    }
+  }, []);
+
+  //코인 충전 axios
+  const coinCharge = async (
+    coinAmount: number,
+    transactionHash: string,
+    inoutFlag: string,
+    currencyFlow: number
+  ) => {
+    await PostCharge({
+      coinAmount: coinAmount,
+      transactionHash: transactionHash,
+      inoutFlag: inoutFlag,
+      currencyFlow: currencyFlow,
+    });
+  };
+
   //충전 인덱스
   const [value, setValue] = useState<string>("");
 
@@ -29,11 +63,23 @@ export const ArtCharge = () => {
       ? parseInt(selectedItem.money.replace(/,/g, ""), 10)
       : 0;
 
+    //코인 업데이트
+    const updateUserBalance = (prevUserInfo: userInfoType): userInfoType => {
+      // 이전 상태(prevUserInfo)를 기반으로 새로운 상태를 반환합니다.
+      return {
+        ...prevUserInfo, // 이전 상태의 모든 속성을 유지합니다.
+        walletBalance: (
+          parseInt(prevUserInfo.walletBalance) +
+          price / 1000
+        ).toString(), // 지갑 잔액을 업데이트합니다.
+      };
+    };
+
     IMP.request_pay(
       {
         pg: "kakaopay.TC0ONETIME",
         pay_method: "card", // 생략가
-        merchant_uid: `ORD${new Date().getUTCMilliseconds()}`, // 상점에서 생성한 고유 주문번호
+        merchant_uid: `ORD${crypto.randomUUID()}`, // 상점에서 생성한 고유 주문번호
         name: "Artchain 아트 구매",
         amount: price,
         buyer_email: "4pjttest@gmail.com",
@@ -42,25 +88,31 @@ export const ArtCharge = () => {
       },
       async function (rsp) {
         // callback
-        if (rsp.success) {
-          // 결제 성공시
-          // 1. 컨트랙트 실행해야함
-          // 2. axios 날려서 db에 저장해야함
 
-          if (rsp.status == 200) {
-            // DB저장 성공시
-            alert("결제 완료!");
-            window.location.reload();
-          } else {
-            // 결제완료 후 DB저장 실패시
-            alert(
-              `error:[${rsp.status}]\n결제요청이 승인된 경우 관리자에게 문의바랍니다.`
-            );
-            // DB저장 실패시 status에 따라 추가적인 작업 가능성
-          }
-        } else if (rsp.success == false) {
-          // 결제 실패시
-          alert(rsp.error_msg);
+        if (rsp.success === true) {
+          // 결제 성공
+          alert("결제 성공~!!!");
+
+          // 1. 컨트랙트 실행해야함
+          handleMintTokens({
+            tokenAmount: price / 1000,
+            account: account, // 여기에 사용자의 이더리움 주소를 추가하세요.
+            onMintSuccess: (transactionHash) => {
+              alert(`민트 성공, 트랜잭션 해시: ${transactionHash}`);
+              // 여기에 성공시의 로직을 추가하세요.
+              coinCharge(price / 1000, transactionHash, "충전", price);
+
+              console.log(updateUserBalance(userInfo));
+              setUserInfo(updateUserBalance(userInfo));
+            },
+            onMintError: (error) => {
+              alert(`민트 실패 : ${error}`);
+              // 여기에 에러 처리 로직을 추가하세요.
+            },
+          });
+        } else {
+          //결제 실패
+          alert(`결제 실패, 에러 내용 : ${rsp.error_msg}`);
         }
       }
     );
@@ -112,7 +164,8 @@ export const ArtCharge = () => {
                 borderTopColor={"gray.200"}
                 borderBottomColor={"gray.200"}
                 px={4}
-                py={2}>
+                py={2}
+              >
                 <Center w={"50%"} fontWeight={"bold"}>
                   아트
                 </Center>
@@ -124,7 +177,8 @@ export const ArtCharge = () => {
                 <GridItem
                   w={"100%"}
                   borderRadius={"3xl"}
-                  backgroundColor={value === item.art ? "blue.100" : "white"}>
+                  backgroundColor={value === item.art ? "blue.100" : "white"}
+                >
                   <Radio px={4} py={3} value={item.art}>
                     <Flex w={"85vw"}>
                       <Center fontWeight={"bold"} w={"50%"}>

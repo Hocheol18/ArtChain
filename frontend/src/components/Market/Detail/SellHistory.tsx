@@ -26,10 +26,6 @@ export default function SellHistory(
     getMarketHistoryDisplayListInterface[]
   >([]);
 
-  useEffect(() => {
-    console.log(contents);
-  }, [contents]);
-
   return (
     <>
       <Box position={"sticky"} left={"1px"}>
@@ -88,8 +84,48 @@ export default function SellHistory(
             </Center>
           </Flex>
         </Box>
-        <SellHistoryComponent />
-        <SellEnrollHistory />
+        {contents.length >= 1 ?
+          <>
+            {contents.map((data: getMarketHistoryDisplayListInterface) => {
+              if (data.status === "SOLD") {
+                return (
+                  <SellHistoryComponent
+                    key={data.id}
+                    id={data.id}
+                    fundingId={data.fundingId}
+                    pieceCount={data.pieceCount}
+                    totalCoin={data.totalCoin}
+                    coinPerPiece={data.coinPerPiece}
+                    sellerId={data.sellerId}
+                    sellerAddress={data.sellerAddress}
+                    buyerId={data.buyerId}
+                    buyerAddress={data.buyerAddress}
+                    status={data.status}
+                    historyTime={data.historyTime}
+                  />
+                );
+              } else if (data.status === "LISTED") {
+                return (
+                  <SellEnrollHistory
+                    key={data.id}
+                    id={data.id}
+                    fundingId={data.fundingId}
+                    pieceCount={data.pieceCount}
+                    totalCoin={data.totalCoin}
+                    coinPerPiece={data.coinPerPiece}
+                    sellerId={data.sellerId}
+                    sellerAddress={data.sellerAddress}
+                    buyerId={data.buyerId}
+                    buyerAddress={data.buyerAddress}
+                    status={data.status}
+                    historyTime={data.historyTime}
+                  />
+                );
+              }
+            })
+            }</> : <Center h={"300px"}><Text fontSize={"1.5rem"}>거래내역이 없습니다</Text></Center>}
+
+
       </Box>
     </>
   );
