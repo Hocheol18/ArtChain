@@ -237,7 +237,7 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional
-    public int allowFunding(Long fundingId, String allowStatus, FundingContractAddressRequestDto contractAddress, CustomUserDetails member) {
+    public int allowFunding(Long fundingId, String allowStatus, CustomUserDetails member) {
         Funding funding = fundingRepository.findById(fundingId)
                 .orElse(null);
         if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN))) {
@@ -249,15 +249,30 @@ public class FundingServiceImpl implements FundingService {
         if (funding.getIsAllow() != null) {
             return 0;
         }
-        if (FundingAllowStatus.TRUE.name().equals(allowStatus.toUpperCase(Locale.ROOT)) &&
-                (contractAddress == null || contractAddress.getContractAddress() == null)) {
+
+        funding.allowFunding(FundingAllowStatus.TRUE.name().equals(allowStatus.toUpperCase(Locale.ROOT)));
+        return 1;
+    }
+
+    @Override
+    @Transactional
+    public int updateContractAddress(Long fundingId, FundingContractAddressRequestDto dto, CustomUserDetails member) {
+        Funding funding = fundingRepository.findById(fundingId)
+                .orElse(null);
+        if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN))) {
+            return -4;
+        }
+        if (funding == null) {
             return -3;
         }
+        if (!funding.getIsAllow()) {
+            return -2;
+        }
+        if (dto.getContractAddress() == null) {
+            return -1;
+        }
 
-        funding.allowFunding(
-                FundingAllowStatus.TRUE.name().equals(allowStatus.toUpperCase(Locale.ROOT)),
-                contractAddress == null ? null : contractAddress.getContractAddress()
-        );
+        funding.updateContractAddress(dto.getContractAddress());
         return 1;
     }
 

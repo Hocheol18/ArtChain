@@ -115,10 +115,9 @@ public class FundingController {
     @PutMapping("/{fundingId}/allow/{allowStatus}")
     public ResponseEntity<DefaultResponse<Void>> allowFunding(
             @PathVariable Long fundingId, @PathVariable String allowStatus,
-            @RequestBody(required = false) FundingContractAddressRequestDto contractAddress,
             @AuthenticationPrincipal CustomUserDetails member) {
         // -2: 관리자가 아님, -1: 해당하는 펀딩 없음, 0: 이미 승인 또는 거절된 펀딩, 1: 펀딩 승인 또는 거절.
-        int result = fundingService.allowFunding(fundingId, allowStatus, contractAddress, member);
+        int result = fundingService.allowFunding(fundingId, allowStatus, member);
 
         if (result == -2) {
             return DefaultResponse.emptyResponse(
@@ -135,7 +134,44 @@ public class FundingController {
                     HttpStatus.OK,
                     StatusCode.ALREADY_CHANGE_FUNDING_ALLOW_STATUS
             );
+        }
+
+        return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.SUCCESS_CHANGE_FUNDING_ALLOW_STATUS
+        );
+    }
+
+    /**
+     * 관리자가 승인된 펀딩에 대해 컨트랙트 주소 업데이트.
+     *
+     * @param fundingId
+     * @param dto
+     * @param member
+     * @return
+     */
+    @PutMapping("/{fundingId}/contract-address")
+    public ResponseEntity<DefaultResponse<Void>> updateContractAddress(
+            @PathVariable Long fundingId, @RequestBody FundingContractAddressRequestDto dto,
+            @AuthenticationPrincipal CustomUserDetails member
+    ) {
+        int result = fundingService.updateContractAddress(fundingId, dto, member);
+        if (result == -4) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    ALLOW_ONLY_ADMIN
+            );
         } else if (result == -3) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    FAIL_FUNDING_VIEW
+            );
+        } else if (result == -2) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    NOT_ALLOWED_FUNDING
+            );
+        } else if (result == -1) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     CONTRACT_ADDRESS_IS_REQUIRED
@@ -144,7 +180,7 @@ public class FundingController {
 
         return DefaultResponse.emptyResponse(
                 HttpStatus.OK,
-                StatusCode.SUCCESS_CHANGE_FUNDING_ALLOW_STATUS
+                SUCCESS_PUT_CONTRACT_ADDRESS
         );
     }
 

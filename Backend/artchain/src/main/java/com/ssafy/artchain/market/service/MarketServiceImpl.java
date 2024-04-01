@@ -202,6 +202,10 @@ public class MarketServiceImpl implements MarketService {
         // 구매자 지갑 잔액 차감
         buyer.updateWalletBalance(buyer.getWalletBalance().subtract(new BigDecimal(market.getTotalCoin())));
 
+        // 판매자 지갑 잔액 증가
+        memberRepository.findById(market.getSellerId())
+                .ifPresent(seller -> seller.updateWalletBalance(seller.getWalletBalance().add(new BigDecimal(market.getTotalCoin()))));
+
         // 구매자 기록 및 상태 변경
         market.updateBuyerAndStatus(member.getId(), "SOLD");
 
@@ -218,11 +222,9 @@ public class MarketServiceImpl implements MarketService {
             buyerPieceInfo.updatePieceCount(buyerPieceInfo.getPieceCount() + market.getPieceCount());
         }
 
-        Member memberEntity = memberRepository.findById(member.getId())
-                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
         MarketLog marketLog = MarketLog.builder()
                 .market(market)
-                .member(memberEntity)
+                .member(buyer)
                 .transactionHash(transactionHash)
                 .marketFlag(MarketFlag.구매)
                 .build();
