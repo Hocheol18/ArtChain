@@ -55,6 +55,12 @@ public class MarketController {
     @GetMapping("/sellList")
     public ResponseEntity<DefaultResponse<List<MarketSellResponseDto>>> getMarketSellList(@RequestParam Long fundingId, @RequestParam String sortFlag, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         List<MarketSellResponseDto> list = marketService.getMarketSellList(fundingId, sortFlag, pageable);
+        if (list == null) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    FAIL_FUNDING_VIEW
+            );
+        }
 
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_MAIN_VIEW, list);
     }
@@ -141,6 +147,11 @@ public class MarketController {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     STATUS_IS_NOT_POSSIBLE_BUY
+            );
+        } else if (result == 0) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    BUYER_COIN_IS_NOT_ENOUGH
             );
         }
 

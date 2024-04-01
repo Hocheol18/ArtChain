@@ -6,6 +6,7 @@ import com.ssafy.artchain.funding.repository.FundingRepository;
 import com.ssafy.artchain.market.entity.Market;
 import com.ssafy.artchain.market.repository.MarketRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
+import com.ssafy.artchain.member.repository.MemberRepository;
 import com.ssafy.artchain.pieceowner.entity.PieceOwner;
 import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
 import com.ssafy.artchain.s3.S3Service;
@@ -15,6 +16,10 @@ import com.ssafy.artchain.settlement.dto.SettlementResponseDto;
 import com.ssafy.artchain.settlement.entity.Settlement;
 import com.ssafy.artchain.settlement.entity.SettlementStatus;
 import com.ssafy.artchain.settlement.repository.SettlementRepository;
+import com.ssafy.artchain.sse.dto.SseSettlementAllowResultListDto;
+import com.ssafy.artchain.sse.dto.SseSettlementAllowResultListItemDto;
+import com.ssafy.artchain.sse.repository.SseRepository;
+import com.ssafy.artchain.sse.service.SseService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -35,7 +43,10 @@ public class SettlementServiceImpl implements SettlementService {
     private final SettlementRepository settlementRepository;
     private final FundingRepository fundingRepository;
     private final MarketRepository marketRepository;
+    private final MemberRepository memberRepository;
     private final PieceOwnerRepository pieceOwnerRepository;
+    private final SseRepository sseRepository;
+    private final SseService sseService;
     private final S3Service s3Service;
     private final EntityManager entityManager;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
@@ -131,7 +142,7 @@ public class SettlementServiceImpl implements SettlementService {
 
             listedMarketList.forEach(item -> {
                 PieceOwner sellerPieceInfo = pieceOwnerRepository.findPieceOwnerByMemberIdAndFundingId(item.getSellerId(), funding.getId());
-                if(sellerPieceInfo != null) {
+                if (sellerPieceInfo != null) {
                     sellerPieceInfo.updatePieceCount(sellerPieceInfo.getPieceCount() + item.getPieceCount());
                 }
 
@@ -139,6 +150,22 @@ public class SettlementServiceImpl implements SettlementService {
             });
 
             funding.updateProgressStatus(FundingProgressStatus.SETTLED);
+
+            List<PieceOwner> pieceOwnerList = pieceOwnerRepository.findAllByFundingId(funding.getId());
+
+            List<SseSettlementAllowResultListItemDto> pieceOwnerInfoList = new ArrayList<>();
+            pieceOwnerList.forEach(po -> {
+                BigDecimal resultCoinCount = new BigDecimal(po.getPieceCount())
+                        .multiply(new BigDecimal(100 + settlement.getReturnRate()))
+                        .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+                memberRepository.findById(po.getMemberId()).ifPresent(owner ->
+                        pieceOwnerInfoList.add(new SseSettlementAllowResultListItemDto(owner.getWalletAddress(), resultCoinCount))
+                );
+            });
+
+            String eventId = "ADMIN";
+            sseRepository.findById(eventId)
+                    .ifPresent(sseEmitter -> sseService.send(new SseSettlementAllowResultListDto(funding.getContractAddress(), funding.getNowCoinCount(), pieceOwnerInfoList), eventId, sseEmitter, "settlementAllow"));
         }
 
         return 1;

@@ -93,8 +93,9 @@ public class Funding extends BaseTimeEntity {
     @OneToMany(mappedBy = "funding", cascade = CascadeType.ALL)
     private List<FundingCost> costList;
 
-    public void allowFunding(Boolean isAllow) {
+    public void allowFunding(Boolean isAllow, String contractAddress) {
         this.isAllow = isAllow;
+        this.contractAddress = contractAddress;
     }
 
     public void renewNowCoinCount(Long nowCoinCount) {

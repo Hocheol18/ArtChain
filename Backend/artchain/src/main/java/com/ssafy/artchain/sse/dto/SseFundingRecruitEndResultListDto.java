@@ -1,14 +1,9 @@
 package com.ssafy.artchain.sse.dto;
 
-import lombok.Getter;
-
 import java.util.List;
 
-@Getter
-public class SseFundingRecruitEndResultListDto {
-    private final List<SseFundingRecruitEndResultListItemDto> fundingRecruitResultList;
-
-    public SseFundingRecruitEndResultListDto(List<SseFundingRecruitEndResultListItemDto> fundingRecruitResultList) {
-        this.fundingRecruitResultList = fundingRecruitResultList;
-    }
+/**
+ * @param fundingRecruitResultList 모집 완료에 따른 SSE 반환에 사용되는 리스트.
+ */
+public record SseFundingRecruitEndResultListDto(List<SseFundingRecruitEndResultListItemDto> fundingRecruitResultList) {
 }

@@ -1,6 +1,5 @@
 package com.ssafy.artchain.market.service;
 
-import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
@@ -26,7 +25,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Stream;
@@ -84,9 +82,15 @@ public class MarketServiceImpl implements MarketService {
             marketPage = marketRepository.findAllByFundingIdAndStatus(fundingId, LISTED, pageable);
         }
 
+        Funding funding = fundingRepository.findById(fundingId)
+                .orElse(null);
+        if (funding == null) {
+            return null;
+        }
+
         List<MarketSellResponseDto> marketSellResponseDtoList = marketPage.getContent()
                 .stream()
-                .map(MarketSellResponseDto::new)
+                .map(item -> new MarketSellResponseDto(item, funding))
                 .toList();
 
 //        판매자 ID로 member 객체를 찾고, 그 안에 있는 지갑 주소를 넣어준다.
@@ -177,7 +181,9 @@ public class MarketServiceImpl implements MarketService {
     @Override
     @Transactional
     public int buyMarketItem(String transactionHash, Long marketId, CustomUserDetails member) {
-        if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
+        Member buyer = memberRepository.findById(member.getId())
+                .orElse(null);
+        if (buyer == null || member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
             return -3;
         }
 
@@ -189,7 +195,13 @@ public class MarketServiceImpl implements MarketService {
         if (!market.getStatus().equals("LISTED")) {
             return -1;
         }
-        
+        if (new BigDecimal(market.getTotalCoin()).compareTo(buyer.getWalletBalance()) > 0) {
+            return 0;
+        }
+
+        // 구매자 지갑 잔액 차감
+        buyer.updateWalletBalance(buyer.getWalletBalance().subtract(new BigDecimal(market.getTotalCoin())));
+
         // 구매자 기록 및 상태 변경
         market.updateBuyerAndStatus(member.getId(), "SOLD");
 
@@ -220,7 +232,7 @@ public class MarketServiceImpl implements MarketService {
         return 1;
     }
 
-//    테스트가 더 필요하긴 함
+    //    테스트가 더 필요하긴 함
     @Override
     public List<MarketGraphResponseDto> getGraphList(Long fundingId) {
 

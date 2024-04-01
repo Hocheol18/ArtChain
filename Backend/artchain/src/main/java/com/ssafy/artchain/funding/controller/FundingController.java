@@ -113,9 +113,12 @@ public class FundingController {
      * @return
      */
     @PutMapping("/{fundingId}/allow/{allowStatus}")
-    public ResponseEntity<DefaultResponse<Void>> allowFunding(@PathVariable Long fundingId, @PathVariable String allowStatus, @AuthenticationPrincipal CustomUserDetails member) {
+    public ResponseEntity<DefaultResponse<Void>> allowFunding(
+            @PathVariable Long fundingId, @PathVariable String allowStatus,
+            @RequestBody(required = false) FundingContractAddressRequestDto contractAddress,
+            @AuthenticationPrincipal CustomUserDetails member) {
         // -2: 관리자가 아님, -1: 해당하는 펀딩 없음, 0: 이미 승인 또는 거절된 펀딩, 1: 펀딩 승인 또는 거절.
-        int result = fundingService.allowFunding(fundingId, allowStatus, member);
+        int result = fundingService.allowFunding(fundingId, allowStatus, contractAddress, member);
 
         if (result == -2) {
             return DefaultResponse.emptyResponse(
@@ -132,12 +135,17 @@ public class FundingController {
                     HttpStatus.OK,
                     StatusCode.ALREADY_CHANGE_FUNDING_ALLOW_STATUS
             );
-        } else {
+        } else if (result == -3) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
-                    StatusCode.SUCCESS_CHANGE_FUNDING_ALLOW_STATUS
+                    CONTRACT_ADDRESS_IS_REQUIRED
             );
         }
+
+        return DefaultResponse.emptyResponse(
+                HttpStatus.OK,
+                StatusCode.SUCCESS_CHANGE_FUNDING_ALLOW_STATUS
+        );
     }
 
     /**
@@ -344,6 +352,11 @@ public class FundingController {
                     HttpStatus.OK,
                     FAIL_INVEST_BY_COIN_COUNT
             );
+        } else if (result.equals(-4L)) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    FAIL_INVEST_BY_NOT_TO_OVER_GOAL
+            );
         }
 
         return DefaultResponse.toResponseEntity(
@@ -365,7 +378,7 @@ public class FundingController {
 
     /**
      * 나의 투자(직접 투자 + 거래) 내역
-     *
+     * <p>
      * 진행 중: 지분율, 보유 조각수, 1조각 평단가, 정산일
      * 모집 성공(정산 대기): 지분율, 보유 조각수, 1조각 평단가, 정산일
      * 모집 실패: 구매했던 조각수
@@ -381,7 +394,7 @@ public class FundingController {
     ) {
         List<MyIntegratedListItemDto> myIntegratedList = fundingService.getMyIntegratedList(status, member);
 
-        if(myIntegratedList == null) {
+        if (myIntegratedList == null) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     ALLOW_ONLY_USER

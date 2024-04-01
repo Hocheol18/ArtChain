@@ -36,6 +36,19 @@ public interface PieceOwnerRepository extends JpaRepository<PieceOwner, Long> {
                                                                            @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus,
                                                                            Pageable pageable);
 
+    @Query(value = "select SUM(po.pieceCount) " +
+            "from PieceOwner po " +
+            "join Member mb on po.memberId = mb.id " +
+            "join Funding fd on po.fundingId = fd.id " +
+            "where po.memberId = :memberId " +
+            "and fd.progressStatus = :fundingProgressStatus " +
+            "and fd.id NOT IN :excludedFundingIdList")
+    Long sumPieceCountByMemberIdAndFundingProgressStatusExcludingFundingIds(
+            @Param("memberId") Long memberId,
+            @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus,
+            @Param("excludedFundingIdList") List<Long> excludedFundingIdList);
+
+
     @Query(value = "select " +
             "new com.ssafy.artchain.pieceowner.dto.PieceOwnerResponseDto ( " +
             "po.id, " +
@@ -66,4 +79,6 @@ public interface PieceOwnerRepository extends JpaRepository<PieceOwner, Long> {
             "and fd.progressStatus = :fundingProgressStatus")
     List<MarketRegistFundingNameResponseDto> findMarketRegistFundingNameResponseDto(@Param("memberId") Long memberId,
                                                                                     @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus);
+
+    List<PieceOwner> findAllByFundingId(Long fundingId);
 }
