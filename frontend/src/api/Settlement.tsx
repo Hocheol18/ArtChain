@@ -1,17 +1,19 @@
 import {
-  PostSettlementRequest,
+  // PostSettlementRequest,
   GetSettlementDetailRequest,
   PutSettlementStatusRequest,
 } from "../type/settlement.interface";
 import { localAxios, imageAxios } from "./https";
 
 // 정산 신청(기업)
-export const PostSettlement = async (
-  params: FormData
-): Promise<PostSettlementRequest> => {
+export const PostSettlement = async (params: FormData): Promise<FormData> => {
   const url = `/settlement`;
 
-  const response = await imageAxios.post(url, params);
+  const response = await imageAxios.post(url, params, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
   return response.data.data;
 };

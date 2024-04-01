@@ -18,6 +18,20 @@ export const imageAxios: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
+// imageAxios 인스턴스에 대한 요청 인터셉터 추가
+imageAxios.interceptors.request.use(
+  (config) => {
+    const token = sessionStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Interceptors > 요청 전에 accessToken 찾아서 넣어줌
 localAxios.interceptors.request.use(
   (config) => {
