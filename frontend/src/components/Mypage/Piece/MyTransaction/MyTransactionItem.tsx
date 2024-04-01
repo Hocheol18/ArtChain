@@ -18,7 +18,7 @@ export const MyTransactionItem = ({ transaction }: Props) => {
       case "투자":
         setCategory("투자");
         break;
-      case "거래":
+      case "마켓":
         setCategory("마켓");
         break;
       case "판매중":

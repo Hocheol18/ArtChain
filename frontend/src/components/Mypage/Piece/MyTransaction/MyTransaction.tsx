@@ -87,7 +87,7 @@ export const MyTransaction = () => {
         myPieceList("투자", selectedItem);
         break;
       case "transaction":
-        myPieceList("마켓", selectedItem);
+        myPieceList("거래", selectedItem);
         break;
       case "sell":
         myPieceList("판매중", selectedItem);
