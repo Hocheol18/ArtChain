@@ -1,8 +1,15 @@
-import { Box, Button, Center, Flex, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Image,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import puzzle from "../../../assets/puzzle.svg";
 import {
   buyContractCallInterfece,
-  buyMarketTokenInterface,
   getMarketSellingDisplayListInterface,
 } from "../../../type/market.interface";
 import { convertToInteger } from "../../Common/convertToInteger";
@@ -10,16 +17,39 @@ import Web3 from "web3";
 import TokenMarketplaceABI from "../../../Contract/TokenMarketplace.json";
 import IERC20ABI from "../../../Contract/IERC20.json";
 import useUserInfo from "../../../store/useUserInfo";
-import { useState } from "react";
 import { putMarketToken } from "../../../api/market";
+import MetamaskValidation from "../../Common/MetamaskValidation";
+import { useCustomToast } from "../../Common/Toast";
+import { LoadingModal } from "../../Common/LoadingModal";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function SellList(params: getMarketSellingDisplayListInterface) {
   const { userInfo } = useUserInfo();
   const web3 = new Web3((window as any).ethereum);
-  const [selectedTradePostIndex, setSelectedTradePostIndex] = useState<
-    number | undefined
-  >();
-  const [postList, setPostList] = useState<buyMarketTokenInterface[]>([]);
+  const toastFunction = useCustomToast();
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [url, setUrl] = useState<string | undefined>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [value, setValue] = useState<number>(0);
+
+  // 메타마스크 유효성 검사
+  const Validation = async () => {
+    const res = await MetamaskValidation(userInfo.metamask);
+    if (res === "메마오류") {
+      toastFunction("처음 등록한 계정으로 연결해주세요", false);
+    } else {
+      onOpen();
+      buyToken({
+        seller: params.sellerAddress,
+        // 마켓 컨트랙트
+        tokenAddress: "0xfDe370f3358c73A99D7e91a5F633E3FE22128966",
+        tokenAmount: params.pieceCount,
+        price: params.totalCoin,
+      });
+    }
+  };
 
   // 토큰 구매
   const buyToken = async (data: buyContractCallInterfece) => {
@@ -47,7 +77,7 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
         approveTx.transactionHash
       );
       if (approveTxReceipt.status) {
-        console.log("토큰 승인 완료");
+        toastFunction("토큰 승인에 성공했습니다", true);
 
         // 토큰 구매 트랜잭션 보내기
         marketplaceContract.methods
@@ -58,21 +88,28 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
             data.price
           )
           .send({ from: userInfo.metamask })
-          .then(() =>
-            putMarketToken(params.id)
+          .then((res) =>
+            putMarketToken(params.id, res.transactionHash)
               .then(() => {
-                window.location.reload();
+                setUrl(
+                  `https://sepolia.etherscan.io/tx/${res.transactionHash}`
+                );
+                setValue(data.tokenAmount);
+                setIsSuccess(true);
+
+                toastFunction("구매 성공", true);
               })
               .catch((err) => console.log(err))
           );
       } else {
-        console.error("토큰 승인 실패");
+        toastFunction("토큰 승인에 실패하였습니다 다시 시도해주세요", false);
       }
     } catch (error) {
-      console.error("거래 처리 중 오류가 발생했습니다.", error);
+      toastFunction("거래 처리 중 오류가 발생하였습니다.", false);
     }
   };
 
+  // 등록 취소 함수
   const unListToken = async (data: buyContractCallInterfece) => {
     const marketplaceContract = new web3.eth.Contract(
       TokenMarketplaceABI.abi,
@@ -84,8 +121,25 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
     console.log("토큰 취소 성공", unListTx);
   };
 
+  const handleGo = () => {
+    window.location.reload();
+    onClose();
+  };
+
   return (
     <>
+      <LoadingModal
+        headerText="구매 완료"
+        successNum={value}
+        successText="조각"
+        isSuccess={isSuccess}
+        isOpen={isOpen}
+        onClose={onClose}
+        url={url}
+        handleGoWhere={() => {
+          handleGo();
+        }}
+      />
       <Center>
         <Button
           onClick={() => {
@@ -167,13 +221,7 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
                 textAlign={"center"}
                 bgColor={"blue.300"}
                 onClick={() => {
-                  buyToken({
-                    seller: params.sellerAddress,
-                    // 마켓 컨트랙트
-                    tokenAddress: "0xfDe370f3358c73A99D7e91a5F633E3FE22128966",
-                    tokenAmount: params.pieceCount,
-                    price: params.totalCoin,
-                  });
+                  Validation();
                 }}
               >
                 <Text as={"b"} fontSize={"0.8rem"} color={"white"}>

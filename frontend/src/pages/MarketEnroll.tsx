@@ -36,6 +36,7 @@ export default function MarketEnroll() {
     pieceCount: 0,
     totalCoin: 0,
     coinPerPiece: 0,
+    transactionHash: "",
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [tokens, setTokens] = useState<getMarketMyTokenInterface[]>([]);
@@ -53,6 +54,11 @@ export default function MarketEnroll() {
       setValues((prev) => ({
         ...prev,
         [name]: numValue,
+      }));
+    } else if (name === "coinPerPiece") {
+      setValues((prev) => ({
+        ...prev,
+        [name]: Number(value),
       }));
     } else {
       setValues((prev) => ({
@@ -107,13 +113,16 @@ export default function MarketEnroll() {
   };
 
   const successList = (res: any, integerTokenAmount: number) => {
-    const tmp = values;
-    tmp.contractAddress = res.transactionHash;
+    const tmp: postMarketEnrollInterface = values;
+    tmp.transactionHash = res.transactionHash;
     setValue(integerTokenAmount);
     setUrl(`https://sepolia.etherscan.io/tx/${res.transactionHash}`);
     setIsSuccess(true);
-    postMarketEnroll(values)
-      .then(() => {})
+
+    postMarketEnroll(tmp)
+      .then((res) => {
+        console.log(res);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -121,11 +130,12 @@ export default function MarketEnroll() {
     const { name, value } = e.target;
     setValues((prev) => ({
       ...prev,
-      contractAddress: "",
+      contractAddress: tokens[tokensIndex].contractAddress,
       coinPerPiece: 0,
       pieceCount: 0,
       [name]: Number(value),
       totalCoin: 0,
+      transactionHash: "",
     }));
     setisFilled(false);
 

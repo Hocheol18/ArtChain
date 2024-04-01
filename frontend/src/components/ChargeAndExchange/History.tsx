@@ -3,17 +3,20 @@ import { useEffect, useState } from "react";
 import { ReadHistory } from "../../api/coin";
 import { ReadHistoryResponse } from "../../type/coin.interface";
 import { formatNumberWithComma } from "../Common/Comma";
+import useUserInfo from "../../store/useUserInfo";
 
 interface Props {
   type: string;
 }
 
 export const History = ({ type }: Props) => {
+  const { userInfo } = useUserInfo();
   const [artHistory, setArtHistory] = useState<ReadHistoryResponse[]>();
 
   //history 내역 가져오기
   const getHistoryData = async () => {
     const res = await ReadHistory({ inoutFlag: type, page: 0, size: 10 });
+
     setArtHistory(res);
   };
 
@@ -34,6 +37,11 @@ export const History = ({ type }: Props) => {
       >
         <Box>이더스캔에서 자세히 보기</Box>
         <button
+          onClick={() =>
+            window.open(
+              `https://sepolia.etherscan.io/address/${userInfo.metamask}`
+            )
+          }
           style={{
             padding: "5px 10px",
             backgroundColor: "#014BA0",
@@ -58,6 +66,7 @@ export const History = ({ type }: Props) => {
                 borderBottom={"1px solid"}
                 borderBottomColor={"gray.100"}
                 key={index}
+                onClick={() => window.open(`https://sepolia.etherscan.io/tx/`)}
               >
                 <Flex justifyContent={"space-between"} alignItems={"center"}>
                   <Flex direction={"column"}>
