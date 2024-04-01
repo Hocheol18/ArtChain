@@ -3,8 +3,11 @@ import settings from "../assets/setting.svg";
 import BusinessProjectDetail from "../components/Mypage/Business/BusinessProjectDetail";
 import { BusinessMyPageAxios } from "../api/user";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function BusinessMyPage() {
+  const navigate = useNavigate();
+
   const getBusinessMyList = async () => {
     const res = await BusinessMyPageAxios();
 
@@ -36,6 +39,9 @@ export default function BusinessMyPage() {
             fontSize={"xs"}
             ml={"0.5rem"}
             bgColor={"blue.300"}
+            onClick={() => {
+              navigate("/businessproject");
+            }}
           >
             <Flex
             // onClick={() => {
