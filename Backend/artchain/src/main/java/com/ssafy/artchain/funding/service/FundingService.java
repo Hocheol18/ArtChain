@@ -15,7 +15,7 @@ public interface FundingService {
 
     List<FundingListItemDto> getFundingListByCategoryAndStatus(String category, String status, String allowStat, Pageable pageable);
 
-    int allowFunding(Long fundingId, String allowStatus, FundingContractAddressRequestDto contractAddress, CustomUserDetails member);
+    int allowFunding(Long fundingId, String allowStatus, CustomUserDetails member);
 
     int createNotice(Long fundingId, FundingNoticeRequestDto dto, CustomUserDetails member);
 
@@ -34,4 +34,6 @@ public interface FundingService {
     Long getFundingListByCategoryAndStatusTotalCount(String category, String status, String allowStat);
 
     List<MyIntegratedListItemDto> getMyIntegratedList(String status, CustomUserDetails member);
+
+    int updateContractAddress(Long fundingId, FundingContractAddressRequestDto dto, CustomUserDetails member);
 }

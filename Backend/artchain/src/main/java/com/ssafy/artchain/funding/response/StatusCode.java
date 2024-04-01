@@ -25,6 +25,7 @@ public enum StatusCode {
     SUCCESS_UPDATE_FUNDING_PROGRESS_STATUS(204, "펀딩 진행 상태 수정 완료"),
     SUCCESS_MODIFY_FUNDING_NOTICE(204, "펀딩 공지사항 수정 완료"),
     SUCCESS_DELETE_FUNDING_NOTICE(204, "펀딩 공지사항 삭제 완료"),
+    SUCCESS_PUT_CONTRACT_ADDRESS(204, "컨트랙트 주소 삽입 성공"),
 
     // 400 BAD REQUEST : 잘못된 요청 - 요청 구문이 잘못되었음
     FAIL_CREATE_FUNDING(400, "잘못된 요청으로 펀딩이 생성되지 않음"),
@@ -35,6 +36,7 @@ public enum StatusCode {
     FAIL_INVEST_BY_COIN_COUNT(400, "보유한 코인량에 한해 투자 가능"),
     FAIL_INVEST_BY_NOT_TO_OVER_GOAL(400, "펀딩의 목표 코인량 초과"),
     CONTRACT_ADDRESS_IS_REQUIRED(400, "컨트랙트 주소 필요"),
+    NOT_ALLOWED_FUNDING(400, "승인되지 않은 펀딩"),
 
     // 403 FORBIDDEN : 요청에 대한 권한 없음
     ALLOW_ONLY_COMPANY(403, "기업 회원에 허용된 요청"),
