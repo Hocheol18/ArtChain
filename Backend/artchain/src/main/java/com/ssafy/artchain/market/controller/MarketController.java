@@ -121,9 +121,12 @@ public class MarketController {
      * @param member
      * @return
      */
-    @PutMapping("/buy/{marketId}")
-    public ResponseEntity<DefaultResponse<Void>> buyMarketItem(@PathVariable Long marketId, @AuthenticationPrincipal CustomUserDetails member) {
-        int result = marketService.buyMarketItem(marketId, member);
+    @PutMapping("/buy/{marketId}/{transactionHash}")
+    public ResponseEntity<DefaultResponse<Void>> buyMarketItem(
+            @PathVariable Long marketId,
+            @PathVariable String transactionHash,
+            @AuthenticationPrincipal CustomUserDetails member) {
+        int result = marketService.buyMarketItem(transactionHash, marketId, member);
         if (result == -3) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,

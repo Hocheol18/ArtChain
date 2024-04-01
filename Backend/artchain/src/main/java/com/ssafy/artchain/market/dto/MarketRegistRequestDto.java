@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 public class MarketRegistRequestDto {
     private Long fundingId;
+    private String transactionHash;
     private String contractAddress;
     private Long pieceCount;
     private Long totalCoin;

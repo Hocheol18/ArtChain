@@ -19,7 +19,7 @@ public interface MarketService {
 
     void createMarketRegist(CustomUserDetails member, MarketRegistRequestDto dto);
 
-    int buyMarketItem(Long marketId, CustomUserDetails member);
+    int buyMarketItem(String transactionHash, Long marketId, CustomUserDetails member);
 
     List<MarketGraphResponseDto> getGraphList(Long fundingId);
 }
