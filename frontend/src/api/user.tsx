@@ -3,6 +3,7 @@ import {
   BusinessEnrollInterface,
   LoginInterface,
   UserErnollInterface,
+  SignUpPermissionInterface,
 } from "../type/login.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
 
@@ -16,6 +17,7 @@ const IsEnrollurl = "/member/checkId";
 const businessEnrollurl = "/member/enterprise/join";
 const enrollMetamaskurl = "/member/walletInfo";
 const businessMyPageurl = "/member/enterprise";
+const SignUpPermissionurl = "/member/permission";
 
 // 프로필 함수
 async function ProfileAxios() {
@@ -75,6 +77,25 @@ async function BusinessMyPageAxios() {
   return response.data.data;
 }
 
+// 기업 회원가입 승인 대기 리스트(관리자)
+async function SignUpPermissionListAxios() {
+  const response = await localAxios.get(SignUpPermissionurl);
+
+  return response.data.data;
+}
+
+// 기업 회원가입 승인(관리자)
+async function PutSignUpPermissionAxios(data: SignUpPermissionInterface) {
+  const { memberId, permissionFlag } = data;
+  const url = `${SignUpPermissionurl}${makeQuerystring({
+    memberId,
+    permissionFlag,
+  })}`;
+  const response = await localAxios.put(url, data);
+
+  return response.data.data;
+}
+
 export {
   LoginAxios,
   ProfileAxios,
@@ -85,4 +106,6 @@ export {
   BusinessEnrollAxios,
   EnrollMetamask,
   BusinessMyPageAxios,
+  SignUpPermissionListAxios,
+  PutSignUpPermissionAxios,
 };
