@@ -18,11 +18,27 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
   };
 
   const effect = (res: any) => {
-    tmp(
-      res.data.data.memberUserMypageResponseDtoList[0].name,
-      res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
-      res.data.data.memberUserMypageResponseDtoList[0].walletAddress
-    );
+    if (res.data.data.memberUserMypageResponseDtoList[0].name === "관리자") {
+      setTimeout(() => {
+        toastFunction("관리자입니다", true);
+        setUserInfo({
+          profileUrl: "",
+          nickname: "관리자",
+          walletBalance: "",
+          isLogin: true,
+          metamask: "",
+          walletAddress: "",
+          userId: "artAdmin",
+        });
+        navigate("../admin")
+      }, 2000);
+    } else {
+      tmp(
+        res.data.data.memberUserMypageResponseDtoList[0].name,
+        res.data.data.memberUserMypageResponseDtoList[0].walletBalance,
+        res.data.data.memberUserMypageResponseDtoList[0].walletAddress
+      );
+    }
   };
 
   const tmp = async (
