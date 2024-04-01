@@ -160,3 +160,52 @@ export interface FundingStatusRequest {
   fundingId: number;
   progressStatus: string;
 }
+
+// 투자 공고 등록 request
+export interface PostFundingRequest {
+  poster: File;
+  descriptionImg: File;
+  dto: PostFundingRequestParam;
+}
+
+// 투자 공고 등록 request
+export interface PostFundingRequestParam {
+  name: string;
+  category: string;
+  recruitStart: string;
+  recruitEnd: string;
+  settlement: string;
+  goalCoinCount: number;
+  totalBudget: number;
+  unitPrice: number;
+  bep: number;
+  scheduleList: ScheduleParam[];
+  expectedReturnList: ExpectedReturnParam[];
+  saleList: SaleParam[];
+  costList: CostParam[];
+}
+
+// schedule param
+export interface ScheduleParam {
+  scheduleName: string;
+  scheduleDate: string;
+}
+
+// schedule param
+export interface ExpectedReturnParam {
+  spectatorNum: number;
+  expectedReturn: number;
+}
+
+// schedule param
+export interface SaleParam {
+  mainVariety: string;
+  subVariety: string;
+  percentage: number;
+}
+
+// schedule param
+export interface CostParam {
+  mainVariety: string;
+  subVariety: string;
+}

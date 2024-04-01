@@ -9,11 +9,7 @@ import { localAxios, imageAxios } from "./https";
 export const PostSettlement = async (params: FormData): Promise<FormData> => {
   const url = `/settlement`;
 
-  const response = await imageAxios.post(url, params, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await imageAxios.post(url, params);
 
   return response.data.data;
 };

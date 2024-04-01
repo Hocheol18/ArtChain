@@ -14,7 +14,7 @@ import {
   FundingStatusRequest,
 } from "../type/invest.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
-import { localAxios } from "./https";
+import { localAxios, imageAxios } from "./https";
 
 //투자 리스트 보기
 export const getFunddingList = async (
@@ -72,7 +72,7 @@ export const PostInvest = async (
   return response.data.data.id;
 };
 
-// 펀딩 공지사항 작성(기업)
+// 투자 공지사항 작성(기업)
 export const PostFundingNotice = async (
   params: PostFundingNoticeRequest
 ): Promise<PostFundingNoticeRequest> => {
@@ -85,7 +85,7 @@ export const PostFundingNotice = async (
   return response.data;
 };
 
-// 펀딩 공지사항 수정(기업)
+// 투자 공지사항 수정(기업)
 export const PutFundingNotice = async (
   params: PutFundingNoticeRequest
 ): Promise<PutFundingNoticeRequest> => {
@@ -98,7 +98,7 @@ export const PutFundingNotice = async (
   return response.data;
 };
 
-// 펀딩 공지사항 삭제(기업)
+// 투자 공지사항 삭제(기업)
 export const DeleteFundingNotice = async (
   params: DeleteFundingNoticeRequest
 ): Promise<DeleteFundingNoticeRequest> => {
@@ -111,7 +111,7 @@ export const DeleteFundingNotice = async (
   return response.data;
 };
 
-// 펀딩 승인/거절(관리자)
+// 투자 승인/거절(관리자)
 export const PutFundingAllow = async (
   params: FundingAllowRequest
 ): Promise<FundingAllowRequest> => {
@@ -124,7 +124,7 @@ export const PutFundingAllow = async (
   return response.data;
 };
 
-// 펀딩 진행 상태 수정(관리자)
+// 투자 진행 상태 수정(관리자)
 export const PutFundingStatus = async (
   params: FundingStatusRequest
 ): Promise<FundingStatusRequest> => {
@@ -135,4 +135,13 @@ export const PutFundingStatus = async (
   const response = await localAxios.put(url);
 
   return response.data;
+};
+
+// 투자 공고 등록(기업)
+export const PostFunding = async (params: FormData): Promise<FormData> => {
+  const url = `/funding`;
+
+  const response = await imageAxios.post(url, params);
+
+  return response.data.data;
 };

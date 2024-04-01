@@ -6,8 +6,8 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
-// import { PutFundingStatus } from "../api/invest";
-import { PostSettlement } from "../api/settlement";
+import { PostFunding } from "../api/invest";
+// import { PostSettlement } from "../api/settlement";
 
 export default function MainPage() {
   // const navigate = useNavigate();
@@ -27,20 +27,41 @@ export default function MainPage() {
   //   }
   // };
   const navigate = useNavigate();
-  const [file, setFile] = useState<File>();
+  const [poster, setPoster] = useState<File>();
+  const [description, setDescription] = useState<File>();
 
   const handleButtonClick = async () => {
     try {
       const params = {
-        fundingId: 5,
-        settlementPrice: 1000000,
-        returnRate: 5,
-        depositDate: "2024-04-01",
+        name: "아메리칸 팝아트 거장전",
+        category: "EXHIBITION",
+        recruitStart: "2024-01-01",
+        recruitEnd: "2024-04-01",
+        settlement: "2024-05-01",
+        goalCoinCount: 2000,
+        totalBudget: 20000000,
+        unitPrice: 10000,
+        bep: 20000000,
+        scheduleList: [
+          { scheduleName: "1차 어쩌구", scheduleDate: "2024-03-01" },
+        ],
+        expectedReturnList: [
+          { spectatorNum: 10000, expectedReturn: 3 },
+          { spectatorNum: 20000, expectedReturn: 5 },
+          { spectatorNum: 30000, expectedReturn: 7 },
+        ],
+        saleList: [
+          { mainVariety: "티켓 비용", subVariety: "전시회", percentage: 80 },
+        ],
+        costList: [{ mainVariety: "대관료", subVariety: "인사동" }],
       };
 
       const formData = new FormData();
-      if (file) {
-        formData.append("file", file);
+      if (poster) {
+        formData.append("poster", poster);
+      }
+      if (description) {
+        formData.append("descriptionImg", description);
       }
       // 먼저 dto를 formData에 추가해야 합니다.
       const json = JSON.stringify(params);
@@ -48,7 +69,7 @@ export default function MainPage() {
       formData.append("dto", blob);
 
       // 수정된 formData를 PostSettlement 함수에 전달
-      const responseData = await PostSettlement(formData);
+      const responseData = await PostFunding(formData);
 
       console.log("Received Response:", responseData);
       navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
@@ -57,12 +78,20 @@ export default function MainPage() {
     }
   };
 
-  const onChangeImg = (e) => {
+  const onChangePoster = (e) => {
     e.preventDefault();
 
     if (e.target.files) {
       const uploadFile = e.target.files[0];
-      setFile(uploadFile);
+      setPoster(uploadFile);
+    }
+  };
+  const onChangeDescription = (e) => {
+    e.preventDefault();
+
+    if (e.target.files) {
+      const uploadFile = e.target.files[0];
+      setDescription(uploadFile);
     }
   };
 
@@ -74,7 +103,13 @@ export default function MainPage() {
           진행 중인 투자 작품
         </Text>
         <button onClick={() => navigate("/admin")}>ADMIN</button>
-        <input type="file" name="file" id="" onChange={onChangeImg} />
+        <input type="file" name="poster" id="" onChange={onChangePoster} />
+        <input
+          type="file"
+          name="description"
+          id=""
+          onChange={onChangeDescription}
+        />
         <button onClick={handleButtonClick}>Axios Test</button>
       </Box>
       <Poster />
