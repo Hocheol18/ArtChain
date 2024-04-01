@@ -48,3 +48,15 @@ export const PutSettlementStatus = async (
 
   return response.data.data;
 };
+
+// 정산 신청 삭제(관리자)
+export const DeleteSettlement = async (
+  params: GetSettlementDetailRequest
+): Promise<GetSettlementDetailRequest> => {
+  const { settlementId } = params;
+  const url = `/settlement/${settlementId}`;
+
+  const response = await localAxios.delete(url);
+
+  return response.data.data;
+};
