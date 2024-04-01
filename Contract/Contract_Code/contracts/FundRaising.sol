@@ -4,6 +4,7 @@
 pragma solidity ^0.8.20;
 
 import "./ERC20MintBurnTransfer.sol";
+
 // import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract FundRaisingContract is ERC20MintBurnTransferContract {
@@ -16,11 +17,17 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
     mapping(address => uint256) public refunds; // 환불 address 1:1로 맵핑
     mapping(address => uint256) public newCoins; // 새로운 소각 1:1로 맵핑
 
+    struct FundInfo {
+        address investor;
+        uint256 amount;
+    }
+
     address public owner; // 컨트랙트 호출자
     uint256 public raisedAmount; // 총 모금 발행량 갯수
     uint256 public finishTime; // 마감 시간
     address[] public listOfContributors; // ArtCoin 넣은 사람 address
     address public artTokenAddress = 0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB;
+
     constructor(
         string memory name,
         string memory symbol,
@@ -51,7 +58,7 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
         uint256 balance = artToken.balanceOf(address(this));
         require(balance > 0, "No ART tokens to distribute");
         artToken.transfer(owner, balance);
-        
+
         for (uint256 i = 0; i < listOfContributors.length; i++) {
             address contributor = listOfContributors[i];
             uint256 amount = newCoins[contributor];
@@ -65,26 +72,44 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
 
     // 환불 함수
     function refundContributors() external {
-    require(msg.sender == owner, "Only owner can call this function");
-    require(block.timestamp > finishTime, "Fundraising is not over yet");
-    require(raisedAmount < (initialSupply * 4) / 5, "80% fundraising goal has been reached");
+        require(msg.sender == owner, "Only owner can call this function");
+        require(block.timestamp > finishTime, "Fundraising is not over yet");
+        require(
+            raisedAmount < (initialSupply * 4) / 5,
+            "80% fundraising goal has been reached"
+        );
 
-    // ART 토큰 컨트랙트의 인스턴스 생성
-    IERC20 artToken = IERC20(artTokenAddress);
+        // ART 토큰 컨트랙트의 인스턴스 생성
+        IERC20 artToken = IERC20(artTokenAddress);
 
-    for (uint256 i = 0; i < listOfContributors.length; i++) {
-        address contributor = listOfContributors[i];
-        uint256 amount = refunds[contributor];
+        for (uint256 i = 0; i < listOfContributors.length; i++) {
+            address contributor = listOfContributors[i];
+            uint256 amount = refunds[contributor];
 
-        if (amount > 0) {
-            // 컨트랙트 내의 ART 토큰을 contributor에게 환불
-            artToken.transfer(contributor, amount);
-            // 환불된 금액을 0으로 설정
-            refunds[contributor] = 0;
+            if (amount > 0) {
+                // 컨트랙트 내의 ART 토큰을 contributor에게 환불
+                artToken.transfer(contributor, amount);
+                // 환불된 금액을 0으로 설정
+                refunds[contributor] = 0;
+            }
         }
     }
-}
 
+    function settlement(
+        address _contractAddress,
+        uint256 _totalInvested,
+        FundInfo[] memory fundInfos
+    ) external {
+        IERC20 artToken = IERC20(artTokenAddress);
+        ERC20 fundToken = ERC20(_contractAddress);
+
+        for (uint256 i = 0; i < fundInfos.length; i++) {
+            artToken.transfer(
+                fundInfos[i].investor,
+                fundInfos[i].amount * (10 ** 18)
+            );
+        }
+    }
 
     function getAllContributor() public view returns (address[] memory) {
         uint256 length = listOfContributors.length;

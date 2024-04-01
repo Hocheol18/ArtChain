@@ -7,30 +7,71 @@ const FundRaisingPage: React.FC = () => {
   const [account, setAccount] = useState<string>("");
   const [tokenAmount, setTokenAmount] = useState<string>("");
   const [transactionHash, setTransactionHash] = useState<string>("");
-  const [status, setStatus] = useState<string>('');
+  const [status, setStatus] = useState<string>("");
   const web3 = new Web3((window as any).ethereum);
+
+  interface FundInfo {
+    investor: string;
+    amount: number;
+  }
+
+  // 현재는 하드코딩 되어 있으나, 내일 24.04.02에는 props로 변경하자!
+  const fundInfos: FundInfo[] = [
+    {
+      investor: "0x8c568b58C1D07A9C02137f481a1e0DD91dcE6ae2",
+      amount: 3,
+    },
+    {
+      investor: "0x1F3B4d4aa94cF19a212F959402685ac4cF9ff837",
+      amount: 7,
+    },
+  ];
+
   const ReceviceArtCoinContractAddress =
-    "0x94E2Dc83093531e2b2e7171cE2243B2750A04482";
+    "0x2386d3DD22A3D07D69A8BD7757161865EC3a083f";
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
-  
-useEffect(() => {
-  // MetaMask 계정 연결 확인
-  if ((window as any).ethereum) {
+  useEffect(() => {
+    // MetaMask 계정 연결 확인
+    if ((window as any).ethereum) {
       (window as any).ethereum
-          .request({ method: "eth_requestAccounts" })
-          .then((accounts: string[]) => {
-              if (accounts.length > 0) {
-                  setAccount(accounts[0]);
-                }
-            })
-          .catch((error: any) => {
-              // 사용자가 거절할 경우 또는 오류가 발생한 경우 처리
-              console.error("MetaMask 계정 연결 요청에 실패했습니다.", error);
-          });
-  }
-}, []);
+        .request({ method: "eth_requestAccounts" })
+        .then((accounts: string[]) => {
+          if (accounts.length > 0) {
+            setAccount(accounts[0]);
+          }
+        })
+        .catch((error: any) => {
+          // 사용자가 거절할 경우 또는 오류가 발생한 경우 처리
+          console.error("MetaMask 계정 연결 요청에 실패했습니다.", error);
+        });
+    }
+  }, []);
+  // 정산하기 기능 구현한 함수
+  const settlement = async () => {
+    const fundingContract = new web3.eth.Contract(
+      ReceiveArtCoinContractABI.abi,
+      ReceviceArtCoinContractAddress
+    );
+    const artTokenContract = new web3.eth.Contract(
+      IERC20ABI.abi,
+      artTokenContractAddress
+    );
 
+    // need to props
+    for (let i = 0; i < fundInfos.length; i++) {
+      await artTokenContract.methods
+        .approve(
+          fundInfos[i].investor,
+          convertToInteger(fundInfos[i].amount.toString())
+        )
+        .send({ from: account });
+    }
+
+    await fundingContract.methods
+      .settlement(ReceviceArtCoinContractAddress, 10, fundInfos)
+      .send({ from: account });
+  };
   // MetaMask와 연결
   const connectWallet = async () => {
     if ((window as any).ethereum) {
@@ -80,13 +121,15 @@ useEffect(() => {
         // 토큰이 승인되었다면 이제 fundRaising 컨트랙트의 메서드를 호출해서
         // fund를 진행한다.
         // 내가 지불할 양에 (10**18)을 곱해서 정수로 맞춰준 후 펀딩을 진행한다.
-        console.log(`tokenAmount type : ${typeof(tokenAmount)} val : ${tokenAmount}`);
-        console.log(`account type : ${typeof(account)} val : ${account}`);
+        console.log(
+          `tokenAmount type : ${typeof tokenAmount} val : ${tokenAmount}`
+        );
+        console.log(`account type : ${typeof account} val : ${account}`);
         const investTx = await fundingContract.methods
           .fundToken(tokenAmount)
           .send({ from: account });
         console.log("토큰 투자 성공", investTx);
-        setStatus('토큰 투자 성공');
+        setStatus("토큰 투자 성공");
         setTransactionHash(investTx.transactionHash);
       } else {
         console.error("토큰 승인 실패");
@@ -116,11 +159,18 @@ useEffect(() => {
       />
       <button onClick={invest}>Invest</button>
       <div>{status}</div>
-          {transactionHash && (
-            <div>
-              <p>트랜잭션 해시: {transactionHash}</p>
-            </div>
-          )}
+      {transactionHash && (
+        <div>
+          <p>트랜잭션 해시: {transactionHash}</p>
+        </div>
+      )}
+      <button onClick={settlement}>Settlement</button>
+      <div>{status}</div>
+      {transactionHash && (
+        <div>
+          <p>트랜잭션 해시: {transactionHash}</p>
+        </div>
+      )}
     </div>
   );
 };
