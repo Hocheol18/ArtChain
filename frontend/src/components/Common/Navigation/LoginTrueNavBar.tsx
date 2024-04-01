@@ -178,9 +178,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
                   src={settings}
                   ml={"1rem"}
                   mt={"0.8rem"}
-                  onClick={() =>
-                    navigate("../admin")
-                  }
+                  onClick={() => navigate("../admin")}
                 />{" "}
               </>
             )}
