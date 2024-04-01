@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -165,7 +166,9 @@ public class MarketServiceImpl implements MarketService {
     @Override
     @Transactional
     public int buyMarketItem(Long marketId, CustomUserDetails member) {
-        if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
+        Member buyer = memberRepository.findById(member.getId())
+                .orElse(null);
+        if (buyer == null || member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
             return -3;
         }
 
@@ -177,6 +180,12 @@ public class MarketServiceImpl implements MarketService {
         if (!market.getStatus().equals("LISTED")) {
             return -1;
         }
+        if (new BigDecimal(market.getTotalCoin()).compareTo(buyer.getWalletBalance()) > 0) {
+            return 0;
+        }
+
+        // 구매자 지갑 잔액 차감
+        buyer.updateWalletBalance(buyer.getWalletBalance().subtract(new BigDecimal(market.getTotalCoin())));
 
         // 구매자 기록 및 상태 변경
         market.updateBuyerAndStatus(member.getId(), "SOLD");

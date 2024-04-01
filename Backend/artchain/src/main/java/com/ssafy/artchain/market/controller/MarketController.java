@@ -145,6 +145,11 @@ public class MarketController {
                     HttpStatus.OK,
                     STATUS_IS_NOT_POSSIBLE_BUY
             );
+        } else if (result == 0) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    BUYER_COIN_IS_NOT_ENOUGH
+            );
         }
 
         return DefaultResponse.emptyResponse(

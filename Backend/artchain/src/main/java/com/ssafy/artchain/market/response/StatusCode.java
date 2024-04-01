@@ -23,6 +23,7 @@ public enum StatusCode {
 
     // 400 BAD REQUEST : 잘못된 요청 - 요청 구문이 잘못되었음
     STATUS_IS_NOT_POSSIBLE_BUY(400, "구매 가능한 상태가 아님"),
+    BUYER_COIN_IS_NOT_ENOUGH(400, "상품 구매에 필요한 아트코인 부족"),
 
     // 403 FORBIDDEN : 요청에 대한 권한 없음
     ALLOW_ONLY_USER(403, "개인 회원만 거래 가능"),
