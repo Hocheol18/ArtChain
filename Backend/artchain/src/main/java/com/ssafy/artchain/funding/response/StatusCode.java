@@ -34,6 +34,7 @@ public enum StatusCode {
     FAIL_INVEST_BY_STATUS(400, "펀딩 모집이 진행 중인 경우 투자 가능"),
     FAIL_INVEST_BY_COIN_COUNT(400, "보유한 코인량에 한해 투자 가능"),
     FAIL_INVEST_BY_NOT_TO_OVER_GOAL(400, "펀딩의 목표 코인량 초과"),
+    CONTRACT_ADDRESS_IS_REQUIRED(400, "컨트랙트 주소 필요"),
 
     // 403 FORBIDDEN : 요청에 대한 권한 없음
     ALLOW_ONLY_COMPANY(403, "기업 회원에 허용된 요청"),

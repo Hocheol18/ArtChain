@@ -237,19 +237,28 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional
-    public int allowFunding(Long fundingId, String allowStatus, CustomUserDetails member) {
+    public int allowFunding(Long fundingId, String allowStatus, FundingContractAddressRequestDto contractAddress, CustomUserDetails member) {
         Funding funding = fundingRepository.findById(fundingId)
                 .orElse(null);
         if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_ADMIN))) {
             return -2;
-        } else if (funding == null) {
-            return -1;
-        } else if (funding.getIsAllow() != null) {
-            return 0;
-        } else {
-            funding.allowFunding(FundingAllowStatus.TRUE.name().equals(allowStatus.toUpperCase(Locale.ROOT)));
-            return 1;
         }
+        if (funding == null) {
+            return -1;
+        }
+        if (funding.getIsAllow() != null) {
+            return 0;
+        }
+        if (FundingAllowStatus.TRUE.name().equals(allowStatus.toUpperCase(Locale.ROOT)) &&
+                (contractAddress == null || contractAddress.getContractAddress() == null)) {
+            return -3;
+        }
+
+        funding.allowFunding(
+                FundingAllowStatus.TRUE.name().equals(allowStatus.toUpperCase(Locale.ROOT)),
+                contractAddress == null ? null : contractAddress.getContractAddress()
+        );
+        return 1;
     }
 
     @Override
