@@ -9,7 +9,7 @@ import {
   GetMyPieceCountResponse
 } from "../type/mypage.interface";
 
-
+// [개인] 나의 조각 드롭다운 조회
 export const getMyPieceDropDown = async () : Promise<GetMyPieceDropDown []> => {
     const url = `/member/myTrade/dropDown`;
     console.log(url);
@@ -17,6 +17,7 @@ export const getMyPieceDropDown = async () : Promise<GetMyPieceDropDown []> => {
     return response.data.data;
 }
 
+// [개인] 나의 조각 리스트 조회
 export const getMyPieceList = async(
     params : GetMyPieceListParams
 ): Promise<GetMyPieceListResponse> => {
@@ -32,6 +33,7 @@ export const getMyPieceList = async(
     return response.data.data;
 }
 
+// 나의 투자(직접 투자 + 거래) 내역
 export const getMyInvestmentHistory = async (
     params: GetMyInvestmentHistoryParams
 ): Promise<GetMyInvestmentHistoryResponse> => {
@@ -43,6 +45,7 @@ export const getMyInvestmentHistory = async (
     return response.data.data;
 }
 
+// 나의 조각 보유량 TOP3 투자 확인
 export const getMyPieceCount = async (): Promise<GetMyPieceCountResponse> => {
     const url = `/pieceowner/podium`;
     console.log(url);
@@ -50,48 +53,3 @@ export const getMyPieceCount = async (): Promise<GetMyPieceCountResponse> => {
     const response = await localAxios.get(url);
     return response.data.data;
 }
-
-// export const getFundding = async (
-//     params: GetFundingParams
-//   ): Promise<GetFundingResponse> => {
-//     const { fundingId } = params;
-//     const url = `/funding/${fundingId}`;
-//     console.log(url);
-  
-//     const response = await localAxios.get(url);
-  
-//     return response.data.data;
-//   };
-
-
-//투자 리스트 보기
-// export const getFunddingList = async (
-//     params: GetFunddingListParams
-//   ): Promise<GetFunddingListResponse | string> => {
-//     const { category, status, allowStat, page, size } = params;
-//     const url = `/funding/list${makeQuerystring({
-//       category,
-//       status,
-//       allowStat,
-//       page,
-//       size,
-//     })}`;
-//     console.log(url);
-//     const response = await localAxios.get(url);
-  
-//     if (response.data.data && response.data.data.fundingList) {
-//       return response.data.data;
-//     } else {
-//       return response.data.message;
-//     }
-//   };
-
-
-
-//   async function getMarketChart(fundingId : number) {
-//     const url = `/market/graph${makeQuerystring({
-//       fundingId
-//     })}`
-//     return await localAxios.get(url)
-//   }
-

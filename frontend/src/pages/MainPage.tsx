@@ -18,10 +18,6 @@ export default function MainPage() {
       //   status: "ALLOW",
       // };
 
-      // const params = {
-      //   status : "ALL"
-      // };
-
       // 구성한 파라미터를 전달하여 함수를 호출합니다.
       const responseData = await getMyPieceCount();
       console.log("Received Response:", responseData);
