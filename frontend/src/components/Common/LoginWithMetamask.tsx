@@ -53,7 +53,10 @@ export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean
         sessionStorage.removeItem("accessToken");
         setTimeout(() => {
           toastFunction("메타마스크 지갑을 설치해주세요", false);
-          window.open("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
+          setTimeout(() => {
+            window.open("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
+          },1000)
+          
         }, 2000);
 
         break;
