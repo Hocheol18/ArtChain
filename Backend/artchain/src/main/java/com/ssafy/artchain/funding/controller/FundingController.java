@@ -344,6 +344,11 @@ public class FundingController {
                     HttpStatus.OK,
                     FAIL_INVEST_BY_COIN_COUNT
             );
+        } else if (result.equals(-4L)) {
+            return DefaultResponse.emptyResponse(
+                    HttpStatus.OK,
+                    FAIL_INVEST_BY_NOT_TO_OVER_GOAL
+            );
         }
 
         return DefaultResponse.toResponseEntity(
@@ -365,7 +370,7 @@ public class FundingController {
 
     /**
      * 나의 투자(직접 투자 + 거래) 내역
-     *
+     * <p>
      * 진행 중: 지분율, 보유 조각수, 1조각 평단가, 정산일
      * 모집 성공(정산 대기): 지분율, 보유 조각수, 1조각 평단가, 정산일
      * 모집 실패: 구매했던 조각수
@@ -381,7 +386,7 @@ public class FundingController {
     ) {
         List<MyIntegratedListItemDto> myIntegratedList = fundingService.getMyIntegratedList(status, member);
 
-        if(myIntegratedList == null) {
+        if (myIntegratedList == null) {
             return DefaultResponse.emptyResponse(
                     HttpStatus.OK,
                     ALLOW_ONLY_USER

@@ -6,7 +6,6 @@ import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.funding.dto.*;
 import com.ssafy.artchain.funding.entity.*;
 import com.ssafy.artchain.funding.repository.*;
-import com.ssafy.artchain.market.dto.MarketRegistFundingNameResponseDto;
 import com.ssafy.artchain.market.entity.Market;
 import com.ssafy.artchain.market.repository.MarketRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
@@ -15,7 +14,6 @@ import com.ssafy.artchain.member.repository.MemberRepository;
 import com.ssafy.artchain.pieceowner.dto.PieceOwnerResponseDto;
 import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
 import com.ssafy.artchain.s3.S3Service;
-import com.ssafy.artchain.settlement.entity.Settlement;
 import com.ssafy.artchain.settlement.repository.SettlementRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -376,7 +374,7 @@ public class FundingServiceImpl implements FundingService {
         if (memberInfo == null || member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
             return -2L;
         }
-        if(investCoinCount.compareTo(memberInfo.getWalletBalance()) > 0) {
+        if (investCoinCount.compareTo(memberInfo.getWalletBalance()) > 0) {
             return -3L;
         }
 
@@ -387,6 +385,9 @@ public class FundingServiceImpl implements FundingService {
         }
         if (!funding.getProgressStatus().equals(FundingProgressStatus.RECRUITMENT_STATUS)) {
             return 0L;
+        }
+        if ((new BigDecimal(funding.getNowCoinCount()).add(investCoinCount)).compareTo(new BigDecimal(funding.getGoalCoinCount())) > 0) {
+            return -4L;
         }
 
         memberInfo.updateWalletBalance(memberInfo.getWalletBalance().subtract(investCoinCount));
@@ -409,7 +410,7 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     public List<MyIntegratedListItemDto> getMyIntegratedList(String status, CustomUserDetails member) {
-        if(member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
+        if (member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
             return null;
         }
 
@@ -429,7 +430,7 @@ public class FundingServiceImpl implements FundingService {
 
         List<MyIntegratedListItemDto> myIntegratedList = new ArrayList<>();
         statuses.forEach(st -> {
-            if(st.equals(FundingProgressStatus.RECRUITMENT_STATUS)) {
+            if (st.equals(FundingProgressStatus.RECRUITMENT_STATUS)) {
                 List<InvestmentLog> rawList = investmentLogRepository.findAllByMemberIdAndFunding_progressStatus(member.getId(), st);
 
                 // 해당 회원의 펀딩별 조각의 합
@@ -454,14 +455,14 @@ public class FundingServiceImpl implements FundingService {
                                 null
                         )
                 ));
-            } else if(st.equals(FundingProgressStatus.PENDING_SETTLEMENT)) {
+            } else if (st.equals(FundingProgressStatus.PENDING_SETTLEMENT)) {
                 List<PieceOwnerResponseDto> rawList = pieceOwnerRepository.findAllByMemberIdAndFundingProgressStatus(member.getId(), st);
 
                 rawList.forEach(r -> {
                     Funding funding = fundingRepository.findById(r.getFundingId())
                             .orElse(null);
 
-                    if(funding != null) {
+                    if (funding != null) {
                         List<InvestmentLog> investmentLogList = investmentLogRepository.findAllByMemberIdAndFundingId(member.getId(), funding.getId());
                         Long investPiece = 0L;
                         for (InvestmentLog investmentLog : investmentLogList) {
@@ -476,7 +477,7 @@ public class FundingServiceImpl implements FundingService {
                             buyCoin += buy.getTotalCoin();
                         }
 
-                        if(!investPiece.equals(0L) || !buyPiece.equals(0L)) {
+                        if (!investPiece.equals(0L) || !buyPiece.equals(0L)) {
                             myIntegratedList.add(
                                     new MyIntegratedListItemDto(
                                             funding.getId(),
@@ -495,14 +496,14 @@ public class FundingServiceImpl implements FundingService {
                         }
                     }
                 });
-            } else if(st.equals(FundingProgressStatus.SETTLED)) {
+            } else if (st.equals(FundingProgressStatus.SETTLED)) {
                 List<PieceOwnerResponseDto> rawList = pieceOwnerRepository.findAllByMemberIdAndFundingProgressStatus(member.getId(), st);
 
                 rawList.forEach(r -> {
                     Funding funding = fundingRepository.findById(r.getFundingId())
                             .orElse(null);
 
-                    if(funding != null) {
+                    if (funding != null) {
                         List<InvestmentLog> investmentLogList = investmentLogRepository.findAllByMemberIdAndFundingId(member.getId(), funding.getId());
                         Long investPiece = 0L;
                         for (InvestmentLog investmentLog : investmentLogList) {
@@ -519,7 +520,7 @@ public class FundingServiceImpl implements FundingService {
 
                         Integer returnRate = settlementRepository.findReturnRateByFundingId(funding.getId());
 
-                        if(!investPiece.equals(0L) || !buyPiece.equals(0L)) {
+                        if (!investPiece.equals(0L) || !buyPiece.equals(0L)) {
                             myIntegratedList.add(
                                     new MyIntegratedListItemDto(
                                             funding.getId(),
