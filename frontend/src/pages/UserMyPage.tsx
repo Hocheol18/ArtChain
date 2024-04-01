@@ -32,13 +32,13 @@ export default function UserMyPage() {
         </Box>
         <Flex alignItems={"center"}>
           <Flex justifyContent={"center"} boxSize={"35%"} mx={6}>
-            {investTop3Data?.length === 0 ? (
+            {investTop3Data?.length === 1 ? (
               <Box>정산 대기 중인 작품이 없습니다.</Box>
             ) : (
               <DoughnutChart data={investTop3Data} />
             )}
           </Flex>
-          {investTop3Data.length === 0 ? (
+          {investTop3Data.length === 1 ? (
             <Flex justifyContent={"flex-end"} mx={"auto"}>
               <Box
                 as={Link}
