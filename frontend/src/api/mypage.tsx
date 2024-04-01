@@ -3,7 +3,10 @@ import { localAxios } from "./https";
 import {
   GetMyPieceDropDown,
   GetMyPieceListResponse,
-  GetMyPieceListParams
+  GetMyPieceListParams,
+  GetMyInvestmentHistoryResponse,
+  GetMyInvestmentHistoryParams,
+  GetMyPieceCountResponse
 } from "../type/mypage.interface";
 
 
@@ -28,6 +31,37 @@ export const getMyPieceList = async(
     const response = await localAxios.get(url);
     return response.data.data;
 }
+
+export const getMyInvestmentHistory = async (
+    params: GetMyInvestmentHistoryParams
+): Promise<GetMyInvestmentHistoryResponse> => {
+    const {status} = params;
+    const url = `/funding/my-list/${status}`;
+    console.log(url);
+
+    const response = await localAxios.get(url);
+    return response.data.data;
+}
+
+export const getMyPieceCount = async (): Promise<GetMyPieceCountResponse> => {
+    const url = `/pieceowner/podium`;
+    console.log(url);
+
+    const response = await localAxios.get(url);
+    return response.data.data;
+}
+
+// export const getFundding = async (
+//     params: GetFundingParams
+//   ): Promise<GetFundingResponse> => {
+//     const { fundingId } = params;
+//     const url = `/funding/${fundingId}`;
+//     console.log(url);
+  
+//     const response = await localAxios.get(url);
+  
+//     return response.data.data;
+//   };
 
 
 //투자 리스트 보기
