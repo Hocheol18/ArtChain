@@ -23,12 +23,14 @@ public enum StatusCode {
 
     // 400 BAD REQUEST : 잘못된 요청 - 요청 구문이 잘못되었음
     STATUS_IS_NOT_POSSIBLE_BUY(400, "구매 가능한 상태가 아님"),
+    BUYER_COIN_IS_NOT_ENOUGH(400, "상품 구매에 필요한 아트코인 부족"),
 
     // 403 FORBIDDEN : 요청에 대한 권한 없음
     ALLOW_ONLY_USER(403, "개인 회원만 거래 가능"),
 
     // 404 NOT FOUND
     FAIL_MARKET_MAIN_VIEW(404, "마켓 메인화면 조회 실패"),
+    FAIL_FUNDING_VIEW(404, "해당 펀딩 정보 없음"),
     FAIL_MARKET_SELL_LIST_VIEW(404, "마켓 판매 리스트 조회 실패"),
     FAIL_MARKET_PIECE_TRADE_HISTORY_VIEW(404, "마켓 조각 거래 내역 조회 실패"),
     FAIL_FIND_MARKET_ITEM(404, "마켓에 해당 판매글 없음"),

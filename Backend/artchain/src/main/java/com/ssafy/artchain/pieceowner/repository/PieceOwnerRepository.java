@@ -66,4 +66,6 @@ public interface PieceOwnerRepository extends JpaRepository<PieceOwner, Long> {
             "and fd.progressStatus = :fundingProgressStatus")
     List<MarketRegistFundingNameResponseDto> findMarketRegistFundingNameResponseDto(@Param("memberId") Long memberId,
                                                                                     @Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus);
+
+    List<PieceOwner> findAllByFundingId(Long fundingId);
 }
