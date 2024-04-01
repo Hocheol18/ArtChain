@@ -6,6 +6,9 @@ import com.ssafy.artchain.funding.repository.FundingRepository;
 import com.ssafy.artchain.market.dto.*;
 import com.ssafy.artchain.market.entity.Market;
 import com.ssafy.artchain.market.repository.MarketRepository;
+import com.ssafy.artchain.marketlog.entity.MarketFlag;
+import com.ssafy.artchain.marketlog.entity.MarketLog;
+import com.ssafy.artchain.marketlog.repository.MarketLogRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
@@ -36,6 +39,7 @@ public class MarketServiceImpl implements MarketService {
     private final FundingRepository fundingRepository;
     private final MemberRepository memberRepository;
     private final PieceOwnerRepository pieceOwnerRepository;
+    private final MarketLogRepository marketLogRepository;
     private final String ROLE_USER = "ROLE_USER";
 
     @Override
@@ -91,7 +95,8 @@ public class MarketServiceImpl implements MarketService {
 
 //        판매자 ID로 member 객체를 찾고, 그 안에 있는 지갑 주소를 넣어준다.
         for (MarketSellResponseDto dto : marketSellResponseDtoList) {
-            Member member = memberRepository.findById(dto.getSellerId()).orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+            Member member = memberRepository.findById(dto.getSellerId())
+                    .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
             dto.setSellerAddress(member.getWalletAddress());
         }
 
@@ -145,7 +150,7 @@ public class MarketServiceImpl implements MarketService {
                 .pieceCount(dto.getPieceCount())
                 .totalCoin(dto.getTotalCoin())
                 .coinPerPiece(dto.getCoinPerPiece())
-                .transactionHash(null)
+                .transactionHash(dto.getTransactionHash())
                 .transactionTime(null)
                 .sellerId(member.getId())
                 .buyerId(null)
@@ -159,13 +164,23 @@ public class MarketServiceImpl implements MarketService {
         } else {
             sellerPieceInfo.updatePieceCount(sellerPieceInfo.getPieceCount() - market.getPieceCount());
         }
-
         marketRepository.save(market);
+
+        Member memberEntity = memberRepository.findById(member.getId())
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+        MarketLog marketLog = MarketLog.builder()
+                .market(market)
+                .member(memberEntity)
+                .transactionHash(dto.getTransactionHash())
+                .marketFlag(MarketFlag.판매)
+                .build();
+
+        marketLogRepository.save(marketLog);
     }
 
     @Override
     @Transactional
-    public int buyMarketItem(Long marketId, CustomUserDetails member) {
+    public int buyMarketItem(String transactionHash, Long marketId, CustomUserDetails member) {
         Member buyer = memberRepository.findById(member.getId())
                 .orElse(null);
         if (buyer == null || member.getAuthorities().stream().noneMatch(au -> au.getAuthority().equals(ROLE_USER))) {
@@ -202,6 +217,17 @@ public class MarketServiceImpl implements MarketService {
         } else {
             buyerPieceInfo.updatePieceCount(buyerPieceInfo.getPieceCount() + market.getPieceCount());
         }
+
+        Member memberEntity = memberRepository.findById(member.getId())
+                .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
+        MarketLog marketLog = MarketLog.builder()
+                .market(market)
+                .member(memberEntity)
+                .transactionHash(transactionHash)
+                .marketFlag(MarketFlag.구매)
+                .build();
+
+        marketLogRepository.save(marketLog);
 
         return 1;
     }

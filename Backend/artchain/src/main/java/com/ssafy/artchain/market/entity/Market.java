@@ -1,6 +1,8 @@
 package com.ssafy.artchain.market.entity;
 
+import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import com.ssafy.artchain.global.entity.BaseTimeEntity;
+import com.ssafy.artchain.marketlog.entity.MarketLog;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -54,6 +57,9 @@ public class Market extends BaseTimeEntity {
 
     @Column(name = "buyer_id")
     private Long buyerId;
+
+    @OneToMany(mappedBy = "market", cascade = CascadeType.ALL)
+    private List<MarketLog> marketLogs;
 
     public void updateBuyerAndStatus(Long buyerId, String status) {
         this.buyerId = buyerId;

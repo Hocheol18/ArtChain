@@ -8,6 +8,8 @@ import com.ssafy.artchain.jwt.entity.RefreshToken;
 import com.ssafy.artchain.jwt.repository.RefreshRepository;
 import com.ssafy.artchain.market.entity.Market;
 import com.ssafy.artchain.market.repository.MarketRepository;
+import com.ssafy.artchain.marketlog.entity.MarketLog;
+import com.ssafy.artchain.marketlog.repository.MarketLogRepository;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.dto.request.CompanyMemberRegistRequestDto;
 import com.ssafy.artchain.member.dto.request.MemberRegistRequestDto;
@@ -46,6 +48,7 @@ public class MemberServiceImpl implements MemberService {
     private final MarketRepository marketRepository;
     private final RefreshRepository refreshRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MarketLogRepository marketLogRepository;
 
     @Transactional
     @Override
@@ -267,19 +270,21 @@ public class MemberServiceImpl implements MemberService {
         Long memberId = customMember.getId();
         Page<InvestmentLog> investmentLogPage;
         Page<Market> marketPage;
+        Page<MarketLog> marketLogPage;
         List<MemberMyTradeResponseDto> list = new ArrayList<>();
 
         System.out.println("filterFlag : " + filterFlag);
 
         if (filterFlag.equals("ALL")) {
             investmentLogPage = investmentLogRepository.findAllByFundingIdAndMemberIdOrderByCreatedAt(fundingId, memberId, pageable);
-            marketPage = marketRepository.findAllMarketHistory(fundingId, memberId, pageable);
+
+            marketLogPage = marketLogRepository.findByMember_IdAndMarket_FundingIdOrderByCreatedAt(memberId, fundingId, pageable);
 
             for (InvestmentLog entity : investmentLogPage) {
                 list.add(new MemberMyTradeResponseDto(entity));
             }
-            for (Market entity : marketPage) {
-                list.add(new MemberMyTradeResponseDto(entity, memberId));
+            for (MarketLog entity : marketLogPage) {
+                list.add(new MemberMyTradeResponseDto(entity));
             }
             // createdAt 기준으로 내림차순 정렬 (null 안전 포함)
             Collections.sort(list, Comparator.comparing(MemberMyTradeResponseDto::getCreatedAt, Comparator.nullsLast(Comparator.naturalOrder())).reversed());
@@ -291,9 +296,9 @@ public class MemberServiceImpl implements MemberService {
                 list.add(new MemberMyTradeResponseDto(entity));
             }
         } else if (filterFlag.equals("거래")) {
-            marketPage = marketRepository.findAllMarketHistory(fundingId, memberId, pageable);
-            for (Market entity : marketPage) {
-                list.add(new MemberMyTradeResponseDto(entity, memberId));
+            marketLogPage = marketLogRepository.findByMember_IdAndMarket_FundingIdOrderByCreatedAt(memberId, fundingId, pageable);
+            for(MarketLog entity: marketLogPage) {
+                list.add(new MemberMyTradeResponseDto(entity));
             }
         } else if (filterFlag.equals("판매중")) {
             marketPage = marketRepository.findAllSelling(fundingId, memberId, pageable);
