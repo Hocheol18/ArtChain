@@ -59,7 +59,7 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
         console.log(userInfo.userId);
 
         if (userInfo.isLogin) {
-          if (userInfo.userId === "artCom") {
+          if (userInfo.isBusiness) {
             setToLink("/businesspage");
           } else {
             setToLink("/mypage");
@@ -69,7 +69,7 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
         }
         break;
     }
-  }, [text, userInfo.isLogin, userInfo.userId]);
+  }, [text, userInfo.isLogin, userInfo.isBusiness]);
 
   const handleToast = () => {
     if (text === "마이" && userInfo.isLogin === false) {
