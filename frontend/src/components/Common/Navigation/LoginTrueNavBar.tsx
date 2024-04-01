@@ -20,6 +20,7 @@ import wallet from "../../../assets/wallet.svg";
 import copy from "../../../assets/copy.svg";
 import { CheckCircleIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { formatNumberWithComma } from "../Comma";
+import { useCustomToast } from "../Toast";
 
 interface Prop {
   userCoin: number;
@@ -27,6 +28,7 @@ interface Prop {
 
 export const LoginTrueNavBar = ({ userCoin }: Prop) => {
   const navigate = useNavigate();
+  const toastFunction = useCustomToast();
 
   function clearFunction() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -39,7 +41,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
       isLogin: false,
       metamask: "",
       walletAddress: "",
-      userId : ""
+      userId: "",
     });
     clearUserIdStorage();
     toast({
@@ -64,6 +66,11 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
     });
     navigate("../main");
   }
+
+  const copyClipboard = () => {
+    navigator.clipboard.writeText(userInfo.metamask);
+    toastFunction("복사되었습니다", true);
+  };
 
   const { userInfo, setUserInfo } = useUserInfo();
   const toast = useToast();
@@ -127,55 +134,57 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
           <Flex ml={"1rem"} mt={"0.5rem"}>
             <Image boxSize={"1rem"} src={wallet} mt={"0.8rem"} />
             <Text fontSize={"1rem"} ml={"0.4rem"} mt={"0.7rem"} color={"black"}>
-              {userInfo.metamask.substring(0, 8)}...
+              {userInfo.metamask.substring(0, 12)}...
             </Text>
-            <Image boxSize={"1rem"} src={copy} ml={"0.5rem"} mt={"1rem"} />
+            <Image
+              boxSize={"1rem"}
+              src={copy}
+              ml={"0.5rem"}
+              mt={"1rem"}
+              onClick={copyClipboard}
+            />
           </Flex>
           <Flex mt={"0.5rem"}>
             <Text color={"black"} as={"b"} fontSize={"1.7rem"} ml={"1rem"}>
               {userInfo.nickname}님
             </Text>
-            {userInfo.isLogin ? (
+            {userInfo.nickname !== "관리자" ? (
               <Image
                 boxSize={"1rem"}
                 src={settings}
-                ml={"0.5rem"}
+                ml={"0.8rem"}
                 mt={"0.8rem"}
                 onClick={() =>
                   LogoutAxios()
                     .then(() => clearFunction())
-                    .catch(() =>
-                      toast({
-                        duration: 2000,
-                        isClosable: true,
-                        position: "top",
-                        render: () => (
-                          <Flex
-                            color="white"
-                            mt={"50px"}
-                            bg="#C70000"
-                            p={"1rem"}
-                            borderRadius={"0.7rem"}
-                            alignItems={"center"}
-                          >
-                            <WarningTwoIcon
-                              boxSize={5}
-                              color={"white"}
-                              ml={"0.5rem"}
-                            />
-                            <Center ml={"1rem"}>
-                              <Text as={"b"}>로그아웃 실패</Text>
-                            </Center>
-                          </Flex>
-                        ),
-                      })
-                    )
+                    .catch(() => toastFunction("로그아웃 성공", true))
                 }
               />
-            ) : null}
+            ) : (
+              <>
+                <Image
+                  boxSize={"1rem"}
+                  src={settings}
+                  ml={"0.8rem"}
+                  mt={"0.8rem"}
+                  onClick={() =>
+                    LogoutAxios()
+                      .then(() => clearFunction())
+                      .catch(() => toastFunction("로그아웃 성공", true))
+                  }
+                />{" "}
+                <Image
+                  boxSize={"1rem"}
+                  src={settings}
+                  ml={"1rem"}
+                  mt={"0.8rem"}
+                  onClick={() => navigate("../admin")}
+                />{" "}
+              </>
+            )}
           </Flex>
           <Flex mt={"0.5rem"}>
-            <Box h={"40px"} ml={"1rem"} w={"170px"} >
+            <Box h={"40px"} ml={"1rem"} w={"170px"}>
               <Text as={"b"} fontSize={"2rem"} color={"black"}>
                 {formatNumberWithComma(Number(userInfo.walletBalance))}
               </Text>

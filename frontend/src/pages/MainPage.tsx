@@ -5,8 +5,12 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
-// import { PostSettlement } from "../api/settlement";
-// import { PutSignUpPermissionAxios } from "../api/user";
+import {
+  getMyPieceDropDown,
+  getMyPieceList,
+  getMyInvestmentHistory,
+  getMyPieceCount,
+} from "../api/mypage";
 
 export default function MainPage() {
   const navigate = useNavigate();

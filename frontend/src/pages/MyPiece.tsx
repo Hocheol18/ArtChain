@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { MypieceTopNav } from "../components/Mypage/Piece/MypieceTopNav";
 import { MyInvest } from "../components/Mypage/Piece/MyInvest/MyInvest";
-import { MyTransactionList } from "../components/Mypage/Piece/MyTransaction/MyTransactionList";
 import { MyTransaction } from "../components/Mypage/Piece/MyTransaction/MyTransaction";
 
 interface Props {
@@ -18,10 +17,11 @@ export const MyPiece = ({ type }: Props) => {
 
   return (
     <>
+      {/* 나의 투자/ 나의 거래 탭 */}
       <Box position={"sticky"} top={0}>
         <MypieceTopNav onCheck={handleCheck} check={check} />
       </Box>
-      <Box px={"6%"} mt={5} overflowY={"auto"}>
+      <Box px={"6%"} mt={5} overflowY={"auto"} height={"auto"}>
         {check === "invest" ? <MyInvest /> : <MyTransaction />}
       </Box>
     </>
