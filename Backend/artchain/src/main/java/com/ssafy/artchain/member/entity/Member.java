@@ -2,6 +2,7 @@ package com.ssafy.artchain.member.entity;
 
 import com.ssafy.artchain.connectentity.entity.InvestmentLog;
 import com.ssafy.artchain.global.entity.BaseTimeEntity;
+import com.ssafy.artchain.marketlog.entity.MarketLog;
 import com.ssafy.artchain.member.dto.request.MemberWalletInfoRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -87,5 +88,8 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<InvestmentLog> investmentLogs;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<MarketLog> marketLogs;
 
 }
