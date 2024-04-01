@@ -32,7 +32,5 @@ export const ReadHistory = async (
 
   const response = await localAxios.get(url);
 
-  console.log(response.data.data);
-
   return response.data.data;
 };

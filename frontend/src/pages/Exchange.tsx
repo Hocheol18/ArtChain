@@ -14,10 +14,6 @@ export const Exchange = () => {
     setCheck(whatCheck);
   };
 
-  useEffect(() => {
-    console.log("wefw");
-  }, [check]);
-
   return (
     <Box>
       <CommonTopBox
@@ -27,7 +23,7 @@ export const Exchange = () => {
         check={check}
       />
 
-      {check === "one" ? <ArtExchange /> : <History type="exchange" />}
+      {check === "one" ? <ArtExchange /> : <History type="환전" />}
 
       <BottomButtonNavbar
         text="환전하기"

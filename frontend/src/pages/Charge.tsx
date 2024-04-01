@@ -20,11 +20,7 @@ export const Charge = () => {
         check={check}
       />
 
-      {check === "one" ? (
-        <ArtCharge check={check} />
-      ) : (
-        <History type="charge" />
-      )}
+      {check === "one" ? <ArtCharge check={check} /> : <History type="충전" />}
     </div>
   );
 };
