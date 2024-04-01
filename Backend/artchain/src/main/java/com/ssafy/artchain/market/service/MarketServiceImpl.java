@@ -1,6 +1,5 @@
 package com.ssafy.artchain.market.service;
 
-import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
@@ -19,11 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Stream;
@@ -80,9 +77,15 @@ public class MarketServiceImpl implements MarketService {
             marketPage = marketRepository.findAllByFundingIdAndStatus(fundingId, LISTED, pageable);
         }
 
+        Funding funding = fundingRepository.findById(fundingId)
+                .orElse(null);
+        if (funding == null) {
+            return null;
+        }
+
         List<MarketSellResponseDto> marketSellResponseDtoList = marketPage.getContent()
                 .stream()
-                .map(MarketSellResponseDto::new)
+                .map(item -> new MarketSellResponseDto(item, funding))
                 .toList();
 
 //        판매자 ID로 member 객체를 찾고, 그 안에 있는 지갑 주소를 넣어준다.
@@ -174,7 +177,7 @@ public class MarketServiceImpl implements MarketService {
         if (!market.getStatus().equals("LISTED")) {
             return -1;
         }
-        
+
         // 구매자 기록 및 상태 변경
         market.updateBuyerAndStatus(member.getId(), "SOLD");
 
@@ -194,7 +197,7 @@ public class MarketServiceImpl implements MarketService {
         return 1;
     }
 
-//    테스트가 더 필요하긴 함
+    //    테스트가 더 필요하긴 함
     @Override
     public List<MarketGraphResponseDto> getGraphList(Long fundingId) {
 

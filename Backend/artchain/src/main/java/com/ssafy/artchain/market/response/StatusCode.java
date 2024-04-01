@@ -29,6 +29,7 @@ public enum StatusCode {
 
     // 404 NOT FOUND
     FAIL_MARKET_MAIN_VIEW(404, "마켓 메인화면 조회 실패"),
+    FAIL_FUNDING_VIEW(404, "해당 펀딩 정보 없음"),
     FAIL_MARKET_SELL_LIST_VIEW(404, "마켓 판매 리스트 조회 실패"),
     FAIL_MARKET_PIECE_TRADE_HISTORY_VIEW(404, "마켓 조각 거래 내역 조회 실패"),
     FAIL_FIND_MARKET_ITEM(404, "마켓에 해당 판매글 없음"),
