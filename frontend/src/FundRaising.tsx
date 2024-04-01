@@ -5,9 +5,14 @@ import IERC20ABI from "./Contract/IERC20.json";
 interface Props {
   account: string;
   tokenAmount: string;
+  coinContractAddress: string;
 }
 
-export const FundRaisingPage = async ({ account, tokenAmount }: Props) => {
+export const FundRaisingPage = async ({
+  account,
+  tokenAmount,
+  coinContractAddress,
+}: Props) => {
   //account: 구매하는 (개인) 계정
   // const [account, setAccount] = useState<string>("");
 
@@ -22,9 +27,8 @@ export const FundRaisingPage = async ({ account, tokenAmount }: Props) => {
 
   const web3 = new Web3((window as any).ethereum);
 
-  // 투자를 하고자하는 펀딩의 주소 (기업이 가지고 있는 주소) (임시)
-  const ReceviceArtCoinContractAddress =
-    "0x94E2Dc83093531e2b2e7171cE2243B2750A04482";
+  // 투자를 하고자하는 펀딩의 주소 (컨트랙트 주소) (임시)
+  const ReceviceArtCoinContractAddress = coinContractAddress;
 
   // 아트코인의 주소(안 변함)
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";

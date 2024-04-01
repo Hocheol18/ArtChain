@@ -4,42 +4,28 @@ import MarketIcon from "../../../../assets/market-icon.svg";
 import InvestIcon from "../../../../assets/invest-icon.svg";
 import ArtCoinIcon from "../../../../assets/artcoin-icon.svg";
 import PieceIcon from "../../../../assets/my-icon.svg";
+import { GetMyPieceListResponse } from "../../../../type/mypage.interface";
 
 interface Props {
-  type: string;
-  piece: number;
-  artCoin: number;
-  result: string;
+  transaction: GetMyPieceListResponse;
 }
 
-export const MyTransactionItem = ({ type, piece, artCoin, result }: Props) => {
+export const MyTransactionItem = ({ transaction }: Props) => {
   const [category, setCategory] = useState<string>("");
-  const [resultType, setResultType] = useState<string>();
 
   useEffect(() => {
-    switch (type) {
-      case "invest":
+    switch (transaction.transactionType) {
+      case "투자":
         setCategory("투자");
         break;
-      case "market":
+      case "마켓":
         setCategory("마켓");
         break;
-      case "ing":
+      case "판매중":
         setCategory("마켓");
         break;
     }
-  }, [type]);
-
-  useEffect(() => {
-    switch (result) {
-      case "buy":
-        setResultType("구매");
-        break;
-      case "sell":
-        setResultType("판매");
-        break;
-    }
-  }, [result]);
+  }, [transaction]);
 
   return (
     <>
@@ -69,7 +55,7 @@ export const MyTransactionItem = ({ type, piece, artCoin, result }: Props) => {
               alignItems={"center"}
             >
               <Box w={17}>
-                {type === "invest" ? (
+                {transaction.tradeFlag === "투자" ? (
                   <Image
                     src={InvestIcon}
                     filter="invert(29%) sepia(3%) saturate(1413%) hue-rotate(169deg) brightness(94%) contrast(85%)}"
@@ -82,23 +68,23 @@ export const MyTransactionItem = ({ type, piece, artCoin, result }: Props) => {
                 {category}
               </Box>
             </Box>
-            {resultType === "구매" ? (
+            {transaction.tradeFlag === "구매" ? (
               <Box
                 borderRadius={"15"}
                 color={"#D90000"}
                 paddingX={2}
                 paddingY={1}
               >
-                {resultType}
+                {transaction.tradeFlag}
               </Box>
-            ) : resultType === "판매" ? (
+            ) : transaction.tradeFlag === "판매" ? (
               <Box
                 borderRadius={"15"}
                 color={"blue.300"}
                 paddingX={2}
                 paddingY={1}
               >
-                {resultType}
+                {transaction.tradeFlag}
               </Box>
             ) : null}
           </Flex>
@@ -114,7 +100,9 @@ export const MyTransactionItem = ({ type, piece, artCoin, result }: Props) => {
             >
               상세보기
             </button>
-            {type === "ing" ? <CloseButton ml={1} size={"sm"} /> : null}
+            {transaction.transactionType === "판매중" ? (
+              <CloseButton ml={1} size={"sm"} />
+            ) : null}
           </Flex>
         </Flex>
         <Flex justifyContent={"space-between"}>
@@ -128,16 +116,19 @@ export const MyTransactionItem = ({ type, piece, artCoin, result }: Props) => {
                 w={25}
                 h={25}
               />
-              <Box fontSize={15}>{piece}</Box>
+              <Box fontSize={15}>{transaction.pieceCount}</Box>
               <Box fontSize={15}>조각</Box>
             </Box>
             <Box display={"flex"} flex={1} alignItems={"center"}>
               <Image src={ArtCoinIcon} w={27} />
-              <Box fontSize={15}>{artCoin}</Box>
+              <Box fontSize={15}>{transaction.coinCount}</Box>
               <Box fontSize={15}>코인</Box>
             </Box>
           </Flex>
-          <Box>2023.03.12 14:52:54</Box>
+          <Box fontSize={"14"}>
+            {transaction.createdAt.slice(0, 10)}{" "}
+            {transaction.createdAt.slice(11, 19)}
+          </Box>
         </Flex>
       </Box>
     </>

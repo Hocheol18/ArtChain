@@ -1,9 +1,4 @@
-import {
-  Box,
-  Input,
-  Center,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Input, Center, useDisclosure } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 import { InvestContent } from "../components/Invest/InvestContent";
@@ -13,6 +8,7 @@ import { PostInvest, getFundding } from "../api/invest";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetFundingResponse } from "../type/invest.interface";
 import { FundRaisingPage } from "../FundRaising";
+
 import { LoadingModal } from "../components/Common/LoadingModal";
 
 export const Invest = () => {
@@ -25,27 +21,31 @@ export const Invest = () => {
       setIsSuccess(false);
       onOpen();
       try {
-        //transactionHash
-        const transactionHash = await FundRaisingPage({
-          // account: "0x9630b4B3d0593C02A91836b4B985f1802757eBF4",
-          account: userInfo.metamask,
-          tokenAmount: value.toString(),
-        });
-        if (transactionHash) {
-          //트랜잭션 성공 시간
-          const transactionTime = new Date().toISOString().slice(0, -5);
-          //date 받아오고
+        if (fundingData !== undefined) {
+          //transactionHash
+          const transactionHash = await FundRaisingPage({
+            coinContractAddress: fundingData?.contractAddress,
+            account: userInfo.metamask,
+            tokenAmount: value.toString(),
+          });
+          if (transactionHash) {
+            //트랜잭션 성공 시간
+            const transactionTime = new Date().toISOString().slice(0, -5);
+            //date 받아오고
 
-          setUrl(`https://sepolia.etherscan.io/tx/${transactionHash}`);
+            setUrl(`https://sepolia.etherscan.io/tx/${transactionHash}`);
 
-          // 여기 axios 날릴 곳
-          handlePostInvest(transactionTime, transactionHash);
+            // 여기 axios 날릴 곳
+            handlePostInvest(transactionTime, transactionHash);
 
-          //성공하면 띄워짐
-          setIsSuccess(true);
+            //성공하면 띄워짐
+            setIsSuccess(true);
+          } else {
+            onClose();
+            alert("조각 구매 중 에러가 발생하였습니다. 다시 시도해주세요.");
+          }
         } else {
-          onClose();
-          alert("조각 구매 중 에러가 발생하였습니다. 다시 시도해주세요.");
+          alert("투자 작품 정보가 없습니다.");
         }
       } catch (err) {
         //트랜잭션 에러

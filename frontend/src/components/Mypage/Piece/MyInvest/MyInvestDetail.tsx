@@ -19,12 +19,14 @@ import TmpImg from "../../../../assets/invest-poster-tmp-img.jpg";
 import puzzle from "../../../../assets/puzzle.svg";
 import CommonNotice from "../../Business/CommonNotice";
 import { useEffect, useState } from "react";
+import { GetMyIntegratedList } from "../../../../type/mypage.interface";
+import { Link } from "react-router-dom";
 
 interface Props {
-  isNow: string;
+  myIntegratedData: GetMyIntegratedList;
 }
 
-export default function MyInvestDetail({ isNow }: Props) {
+export default function MyInvestDetail({ myIntegratedData }: Props) {
   // statusBadge: 진행중, 모집종료, 정산완료
   const [statusBadge, setStatusBadge] = useState("");
   // 색깔
@@ -32,21 +34,21 @@ export default function MyInvestDetail({ isNow }: Props) {
 
   //상태가 바뀔 때마다
   useEffect(() => {
-    switch (isNow) {
-      case "now":
+    switch (myIntegratedData.fundingProgressStatus) {
+      case "RECRUITMENT_STATUS":
         setStatusColor("blue.300");
         setStatusBadge("진행중");
         break;
-      case "wait":
+      case "PENDING_SETTLEMENT":
         setStatusColor("gray.500");
         setStatusBadge("모집종료");
         break;
-      case "end":
+      case "SETTLED":
         setStatusColor("blue.200");
         setStatusBadge("정산완료");
         break;
     }
-  }, [isNow]);
+  }, [myIntegratedData]);
 
   return (
     <>
@@ -57,11 +59,23 @@ export default function MyInvestDetail({ isNow }: Props) {
         borderRadius={"3xl"}
         px={5}
         pb={5}
+        as={Link}
+        to={`/invest/${myIntegratedData.fundingId}`}
       >
         <Flex py={4}>
-          <Image src={TmpImg} h={100} w={65} objectFit="cover" />
+          <Image
+            src={myIntegratedData.fundingPoster}
+            h={100}
+            w={65}
+            objectFit="cover"
+          />
 
-          <Flex direction={"column"} pl={3} gap={0.5}>
+          <Flex
+            direction={"column"}
+            pl={3}
+            gap={0.5}
+            justifyContent={"space-around"}
+          >
             <Flex>
               <Box
                 backgroundColor={statusColor}
@@ -79,10 +93,7 @@ export default function MyInvestDetail({ isNow }: Props) {
               </Box>
               <Box flex={1}></Box>
             </Flex>
-            <Box fontWeight={"bold"}>
-              Fall Out Boy : 2024 Seoul sssa Concert sdfffffffffff
-              sdfffffffffffdsf dsfsfsfsfsf
-            </Box>
+            <Box fontWeight={"bold"}>{myIntegratedData.fundingTitle}</Box>
             <Flex>
               <Box
                 display={"flex"}
@@ -100,7 +111,7 @@ export default function MyInvestDetail({ isNow }: Props) {
                     "invert(19%) sepia(100%) saturate(1891%) hue-rotate(201deg) brightness(90%) contrast(99%)"
                   }
                 />
-                <Box>10 조각</Box>
+                <Box>{myIntegratedData.pieceCount} 조각</Box>
               </Box>
               <Box flex={1}></Box>
             </Flex>
@@ -109,26 +120,30 @@ export default function MyInvestDetail({ isNow }: Props) {
         <Flex>
           <Flex direction={"column"} flex={1}>
             <Box fontWeight={"bold"}>지분율</Box>
-            <Box>88.89%</Box>
+            <Box>{myIntegratedData.shareholdingRatio}%</Box>
           </Flex>
           <Flex direction={"column"} flex={1}>
             <Box fontWeight={"bold"}>1조각 평단가</Box>
-            <Box>3.5 아트</Box>
+            <Box>{myIntegratedData.pieceUnitPrice} 아트</Box>
           </Flex>
           <Flex direction={"column"} flex={1}>
             <Box fontWeight={"bold"}>정산일</Box>
-            <Box>2024.04.05(금)</Box>
+            <Box>
+              {myIntegratedData.settlementDate.split("-")[0]}.
+              {myIntegratedData.settlementDate.split("-")[1]}.
+              {myIntegratedData.settlementDate.split("-")[2]}
+            </Box>
           </Flex>
         </Flex>
-        {isNow === "end" ? (
+        {myIntegratedData.fundingProgressStatus === "SETTLED" ? (
           <Flex mt={2}>
             <Flex direction={"column"} flex={1}>
               <Box fontWeight={"bold"}>정산 코인</Box>
-              <Box>12,132 아트</Box>
+              <Box>{myIntegratedData.settlementCoin} 아트</Box>
             </Flex>
             <Flex direction={"column"} flex={1}>
               <Box fontWeight={"bold"}>최종 수익률</Box>
-              <Box>24%</Box>
+              <Box>{myIntegratedData.returnRate}%</Box>
             </Flex>
             <Flex flex={1}></Flex>
           </Flex>
