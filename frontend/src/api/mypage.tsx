@@ -20,7 +20,7 @@ export const getMyPieceDropDown = async (): Promise<GetMyPieceDropDown[]> => {
 // [개인] 나의 조각 리스트 조회
 export const getMyPieceList = async (
   params: GetMyPieceListParams
-): Promise<GetMyPieceListResponse> => {
+): Promise<GetMyPieceListResponse[]> => {
   const { fundingId, filterFlag, page, size } = params;
   const url = `/member/myTrade${makeQuerystring({
     fundingId,

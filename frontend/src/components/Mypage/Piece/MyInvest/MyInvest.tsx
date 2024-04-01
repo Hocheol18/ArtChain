@@ -34,7 +34,6 @@ export const MyInvest = () => {
 
   const getMyInvestList = async (check: string) => {
     const res = await getMyInvestmentHistory({ status: check });
-    console.log(res.myIntegratedList);
     setMyIntegratedList(res.myIntegratedList);
   };
 

@@ -17,7 +17,7 @@ export interface GetMyPieceListResponse {
   pieceCount: number;
   coinCount: number;
   tradeFlag: string;
-  createdAd: string;
+  createdAt: string;
 }
 
 export interface GetMyInvestmentHistoryResponse {
