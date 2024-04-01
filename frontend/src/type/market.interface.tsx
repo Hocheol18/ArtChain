@@ -66,6 +66,7 @@ export interface postMarketEnrollInterface {
   pieceCount: number;
   totalCoin: number;
   coinPerPiece: number;
+  transactionHash : string;
 }
 
 export interface getMarketDetailDisplayInterface {

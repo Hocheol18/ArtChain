@@ -68,8 +68,8 @@ async function getMarketMyToken() {
   return await localAxios.get('/market/registForm')
 }
 
-async function putMarketToken(marketId : number) {
-  return await localAxios.put(`/market/buy/${marketId}`)
+async function putMarketToken(marketId : number, transactionHash : string) {
+  return await localAxios.put(`/market/buy/${marketId}/${transactionHash}`)
 }
 
 export {

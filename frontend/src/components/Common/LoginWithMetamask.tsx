@@ -6,7 +6,7 @@ import { LoginInterface } from "../../type/login.interface";
 import useUserInfo from "../../store/useUserInfo";
 import { useCustomToast } from "./Toast";
 
-export const useLoginWithMetamask = (values: LoginInterface) => {
+export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean) => {
   const navigate = useNavigate();
   const { setUserInfo } = useUserInfo();
   const toastFunction = useCustomToast();
@@ -29,6 +29,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
           metamask: "",
           walletAddress: "",
           userId: "artAdmin",
+          isBusiness: false
         });
         navigate("../admin")
       }, 2000);
@@ -86,6 +87,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
                   metamask: res,
                   walletAddress: walletAddress,
                   userId: values.username,
+                  isBusiness: isBusiness
                 });
               }, 2000);
             }
@@ -109,6 +111,7 @@ export const useLoginWithMetamask = (values: LoginInterface) => {
               metamask: res,
               walletAddress: walletAddress,
               userId: values.username,
+              isBusiness: isBusiness
             });
           }, 2000);
         }

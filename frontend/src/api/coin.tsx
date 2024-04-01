@@ -7,7 +7,7 @@ import {
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios } from "./https";
 
-//코인 충전 환전
+// 코인 충전 환전
 export const PostCharge = async (
   params: PostChargePrams
 ): Promise<PostChargeResponse> => {
@@ -16,6 +16,13 @@ export const PostCharge = async (
 
   console.log(response.data);
 
+  return response.data;
+};
+
+// 코인 불러오는 함수
+export const getCoin = async () => {
+  const url = `/coin`;
+  const response = await localAxios.get(url);
   return response.data;
 };
 

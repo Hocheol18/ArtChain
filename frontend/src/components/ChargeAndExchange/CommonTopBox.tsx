@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { CommonnTopNav } from "./CommonTopNav";
 import useUserInfo from "../../store/useUserInfo";
-import { useEffect } from "react";
 import { formatNumberWithComma } from "../Common/Comma";
 
 interface Props {
