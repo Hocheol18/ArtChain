@@ -155,6 +155,14 @@ export interface FundingAllowRequest {
   allowStatus: string;
 }
 
+// 투자 컨트랙트 주소 수정 request
+export interface FundingContractAddressRequest {
+  fundingId: number;
+  param: {
+    contractAddress: string;
+  };
+}
+
 // 투자 진행 상태 수정 request
 export interface FundingStatusRequest {
   fundingId: number;

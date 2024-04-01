@@ -6,7 +6,7 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
-import { FundingPermissionList } from "../api/invest";
+import { PutFundingContractAddress } from "../api/invest";
 // import { PostSettlement } from "../api/settlement";
 // import { PutSignUpPermissionAxios } from "../api/user";
 
@@ -15,12 +15,14 @@ export default function MainPage() {
 
   const handleButtonClick = async () => {
     try {
-      // const params = {
-      //   memberId: 48,
-      //   permissionFlag: "Y",
-      // };
+      const params = {
+        fundingId: 11,
+        param: {
+          contractAddress: "0X123123",
+        },
+      };
 
-      const responseData = await FundingPermissionList(); // 수정된 formData를 전달
+      const responseData = await PutFundingContractAddress(params); // 수정된 formData를 전달
       console.log("Received Response:", responseData);
       navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
     } catch (error) {

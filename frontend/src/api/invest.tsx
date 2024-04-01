@@ -12,6 +12,7 @@ import {
   DeleteFundingNoticeRequest,
   FundingAllowRequest,
   FundingStatusRequest,
+  FundingContractAddressRequest,
 } from "../type/invest.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios, imageAxios } from "./https";
@@ -120,6 +121,19 @@ export const PutFundingAllow = async (
   const url = `/funding/${fundingId}/allow/${allowStatus}`;
 
   const response = await localAxios.put(url);
+
+  return response.data;
+};
+
+// 투자 컨트랙트 주소 수정(관리자)
+export const PutFundingContractAddress = async (
+  params: FundingContractAddressRequest
+): Promise<FundingContractAddressRequest> => {
+  const { fundingId, param } = params;
+
+  const url = `/funding/${fundingId}/contract-address`;
+
+  const response = await localAxios.put(url, param);
 
   return response.data;
 };
