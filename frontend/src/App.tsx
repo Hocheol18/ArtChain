@@ -428,7 +428,7 @@ function App() {
                   }
                 ></Route>
                 <Route
-                  path="/market/:id/enroll"
+                  path="/market/enroll"
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <MarketEnroll />

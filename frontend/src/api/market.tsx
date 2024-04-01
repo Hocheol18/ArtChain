@@ -64,11 +64,16 @@ async function getMarketChart(fundingId : number) {
   return await localAxios.get(url)
 }
 
+async function getMarketMyToken() {
+  return await localAxios.get('/market/registForm')
+}
+
 export {
   getMarketMainDisplayList,
   getMarketSellingDisplayList,
   getMarketHistoryDisplayList,
   postMarketEnroll,
   getMarketSoldDetail,
-  getMarketChart
+  getMarketChart,
+  getMarketMyToken
 };

@@ -54,7 +54,7 @@ export interface getMarketHistoryDisplayListInterface {
 }
 
 export interface postMarketEnrollInterface {
-  fundingId: number;
+  fundingId: number | undefined;
   contractAddress: string;
   pieceCount: number;
   totalCoin: number;
@@ -73,7 +73,21 @@ export interface getMarketDetailDisplayInterface {
   sellerAddress: string;
   status: string;
   totalCoin: number;
-  createdAt : string;
-  updatedAt : string;
+  createdAt: string;
+  updatedAt: string;
 }
 
+export interface getMarketMyTokenInterface {
+  id: number;
+  fundingId: number;
+  name: string;
+  pieceCount: number;
+}
+
+export interface buyMarketTokenInterface {
+  seller: string;
+  address: string;
+  price: string;
+  amount: string;
+  completed: boolean;
+}
