@@ -358,7 +358,7 @@ public class FundingController {
      * 관리자 권한 확인하는 로직 넣을것
      */
     @GetMapping("/permission")
-    public ResponseEntity<DefaultResponse<List<FundingPermissionResponseDto>>> getComPermissionList() {
+    public ResponseEntity<DefaultResponse<List<FundingPermissionResponseDto>>> getFundingPermissionList() {
         List<FundingPermissionResponseDto> fundingPermissionResponseDtoList = fundingService.getFundingPermissionList();
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_FUNDING_PERMISSION_LIST_VIEW, fundingPermissionResponseDtoList);
     }
