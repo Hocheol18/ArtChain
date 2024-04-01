@@ -15,7 +15,7 @@ export default function MainPage() {
     try {
       const params = {
         fundingId: 19,
-        allowStatus: "true",
+        progressStatus: "RECRUITMENT_STATUS",
       };
 
       const responseData = await PutFundingStatus(params); // 수정된 formData를 전달

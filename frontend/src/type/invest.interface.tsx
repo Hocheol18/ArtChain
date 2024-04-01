@@ -150,7 +150,13 @@ export interface FundingNoticeParam {
 }
 
 // 투자 승인/거절 request
-export interface FundingStatusRequest {
+export interface FundingAllowRequest {
   fundingId: number;
   allowStatus: string;
+}
+
+// 투자 진행 상태 수정 request
+export interface FundingStatusRequest {
+  fundingId: number;
+  progressStatus: string;
 }
