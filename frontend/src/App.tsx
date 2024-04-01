@@ -234,7 +234,7 @@ function App() {
 
                   {/* 기업 마이페이지 */}
                   <Route
-                    path="/businesspage/:id"
+                    path="/businesspage"
                     element={
                       <CommonPage topNavType="back" bottomNavType="my">
                         <BusinessMyPage />
@@ -477,7 +477,7 @@ function App() {
 
                 {/* 기업 마이페이지 */}
                 <Route
-                  path="/businesspage/:id"
+                  path="/businesspage"
                   element={
                     <CommonPage topNavType="back" bottomNavType="my">
                       <BusinessMyPage />

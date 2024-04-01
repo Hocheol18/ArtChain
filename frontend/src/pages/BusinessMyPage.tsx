@@ -1,8 +1,20 @@
 import { Flex, Text, Image, Box } from "@chakra-ui/react";
 import settings from "../assets/setting.svg";
 import BusinessProjectDetail from "../components/Mypage/Business/BusinessProjectDetail";
+import { BusinessMyPageAxios } from "../api/user";
+import { useEffect } from "react";
 
 export default function BusinessMyPage() {
+  const getBusinessMyList = async () => {
+    const res = await BusinessMyPageAxios();
+
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getBusinessMyList();
+  }, []);
+
   return (
     <>
       <Box mt={"1rem"} w={"85%"} ml={"1.5rem"} mr={"1.5rem"}>
