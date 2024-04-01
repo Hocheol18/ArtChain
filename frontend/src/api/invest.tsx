@@ -145,3 +145,12 @@ export const PostFunding = async (params: FormData): Promise<FormData> => {
 
   return response.data.data;
 };
+
+// 투자 승인 대기 리스트 조회(관리자)
+export const FundingPermissionList = async () => {
+  const url = `/funding/permission`;
+
+  const response = await imageAxios.get(url);
+
+  return response.data.data;
+};
