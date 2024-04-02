@@ -5,6 +5,8 @@ import React, { useState } from "react";
 interface Props {
   first: string;
   second: string;
+  third: string;
+  thirdText: string;
   check: boolean;
   onChange: (newData: any[]) => void;
   typeText: string;
@@ -14,6 +16,8 @@ interface Props {
 export default function InputComponent({
   first,
   second,
+  third,
+  thirdText,
   check,
   onChange,
   typeText,
@@ -23,12 +27,20 @@ export default function InputComponent({
 
   const type = typeText;
   const ratio = numberText;
+  const final = thirdText;
 
   //input 추가
   const addComponent = () => {
-    const newInput = { [type]: "", [ratio]: "" }; // 새로운 입력값을 초기화
-    setInputs([...inputs, newInput]);
-    onChange([...inputs, newInput]); // 변경된 데이터를 부모 컴포넌트로 전달
+    if (first === "매출 종류") {
+      const newInput = { [type]: "", [ratio]: "", [final]: "" }; // 새로운 입력값을 초기화
+      setInputs([...inputs, newInput]);
+      onChange([...inputs, newInput]); // 변경된 데이터를 부모 컴포넌트로 전달
+    } else {
+      const newInput = { [type]: "", [ratio]: "" }; // 새로운 입력값을 초기화
+      console.log(newInput);
+      setInputs([...inputs, newInput]);
+      onChange([...inputs, newInput]); // 변경된 데이터를 부모 컴포넌트로 전달
+    }
   };
 
   //input 삭제
@@ -55,8 +67,14 @@ export default function InputComponent({
       {check ? (
         <Box w={"100%"} mt={"1rem"} mb={"1.5rem"}>
           {inputs.map((input, index: number) => (
-            <Flex key={index} justifyContent={"space-between"} mt={"1rem"}>
+            <Flex
+              key={index}
+              justifyContent={"space-between"}
+              mt={"1rem"}
+              gap={3}
+            >
               <Input
+                flex={1}
                 h={"2rem"}
                 w={"45%"}
                 rounded={"0.7rem"}
@@ -67,27 +85,24 @@ export default function InputComponent({
                 value={input[type]} //type에 해당하는 값
                 onChange={(e) => handleInputChange(e, index, type)} //type필드 업데이트
               />
-              <Flex w={"45%"}>
-                <Box w={"85%"}>
-                  <Input
-                    border={"1px"}
-                    borderColor={"gray.400"}
-                    placeholder="Select Date and Time"
-                    size="sm"
-                    type="datetime-local"
-                    value={input[ratio]} // ratio 필드에 해당하는 값
-                    onChange={(e) => handleInputChange(e, index, ratio)} // ratio 필드를 업데이트하는 핸들러
-                  />
-                </Box>
-                <CloseButton
-                  w={"3%"}
-                  ml={"1rem"}
-                  size="md"
-                  onClick={() => {
-                    removeComponet(index);
-                  }}
-                />
-              </Flex>
+              <Input
+                flex={1}
+                border={"1px"}
+                borderColor={"gray.400"}
+                placeholder="Select Date and Time"
+                size="sm"
+                type="date"
+                value={input[ratio]} // ratio 필드에 해당하는 값
+                onChange={(e) => handleInputChange(e, index, ratio)} // ratio 필드를 업데이트하는 핸들러
+              />
+              <CloseButton
+                w={"3%"}
+                ml={"0.1rem"}
+                size="md"
+                onClick={() => {
+                  removeComponet(index);
+                }}
+              />
             </Flex>
           ))}
           <Box
@@ -107,8 +122,14 @@ export default function InputComponent({
       ) : (
         <Box w={"100%"} mt={"1rem"} mb={"1.5rem"}>
           {inputs.map((input, index: number) => (
-            <Flex key={index} justifyContent={"space-between"} mt={"1rem"}>
+            <Flex
+              key={index}
+              justifyContent={"space-between"}
+              mt={"1rem"}
+              gap={1}
+            >
               <Input
+                flex={1}
                 h={"2rem"}
                 w={"48%"}
                 rounded={"0.7rem"}
@@ -119,28 +140,41 @@ export default function InputComponent({
                 value={input[type]} //type에 해당하는 값
                 onChange={(e) => handleInputChange(e, index, type)} //type필드 업데이트
               />
-
-              <Flex w={"48%"}>
+              <Input
+                flex={1}
+                h={"2rem"}
+                w={"48%"}
+                rounded={"0.7rem"}
+                fontSize={"sm"}
+                border={"1px"}
+                borderColor={"gray.300"}
+                placeholder={second}
+                value={input[ratio]} //type에 해당하는 값
+                onChange={(e) => handleInputChange(e, index, ratio)} //type필드 업데이트
+              />
+              {first === "매출 종류" ? (
                 <Input
+                  flex={1}
                   h={"2rem"}
                   rounded={"0.7rem"}
                   fontSize={"sm"}
                   border={"1px"}
                   borderColor={"gray.300"}
-                  placeholder={second}
+                  placeholder={third}
                   type="number"
-                  value={input[ratio]} // ratio 필드에 해당하는 값
-                  onChange={(e) => handleInputChange(e, index, ratio)} // ratio 필드를 업데이트하는 핸들러
+                  value={input[final]} // ratio 필드에 해당하는 값
+                  onChange={(e) => handleInputChange(e, index, final)} // ratio 필드를 업데이트하는 핸들러
                 />
-                <CloseButton
-                  w={"3%"}
-                  ml={"1rem"}
-                  size="md"
-                  onClick={() => {
-                    removeComponet(index);
-                  }}
-                />
-              </Flex>
+              ) : null}
+
+              <CloseButton
+                w={"3%"}
+                ml={"0.3rem"}
+                size="md"
+                onClick={() => {
+                  removeComponet(index);
+                }}
+              />
             </Flex>
           ))}
           <Box
