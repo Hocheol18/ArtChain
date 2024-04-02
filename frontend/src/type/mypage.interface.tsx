@@ -29,6 +29,7 @@ export interface GetMyPieceListParams {
 
 export interface GetMyPieceListResponse {
   transactionType: string;
+  transactionHash: string;
   id: number;
   pieceCount: number;
   coinCount: number;
