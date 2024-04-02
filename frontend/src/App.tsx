@@ -60,6 +60,8 @@ function App() {
       "https://j10a708.p.ssafy.io/api/sse/subscribe"
     );
 
+    console.log("good")
+
     // Listen for messages
     eventSource.onmessage = async (e) => {
       const res = await e.data;
