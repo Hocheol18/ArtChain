@@ -48,6 +48,8 @@ export default function BusinessProjectDetail({ projectData }: Props) {
       navigate(`/invest/${projectData.id}`);
   };
 
+  const url = `/businessconfirm/${projectData.id}`;
+
   return (
     <>
       <Center mx={"1"} mt={"2rem"} w={"100%"} gap={3} onClick={handleUrl}>
@@ -90,8 +92,16 @@ export default function BusinessProjectDetail({ projectData }: Props) {
           </Flex>
         </Flex>
       </Center>
-      {projectData.progressStatus === "PENDING_SETTLEMENT" ? (
-        <Flex justifyContent={"center"} mt={2} mx={"1"}>
+      {projectData.progressStatus === "PENDING_SETTLEMENT" &&
+      projectData.status === "REQUEST" ? (
+        <Flex
+          justifyContent={"center"}
+          mt={2}
+          mx={"auto"}
+          w={270}
+          as={Link}
+          to={url}
+        >
           <Center
             px={"0.6rem"}
             py={"0.5rem"}

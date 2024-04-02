@@ -77,6 +77,7 @@ export interface Cost {
 export interface GetFundingResponse {
   id: number;
   entId: number;
+  entName: string;
   name: string;
   poster: string;
   category: string;
