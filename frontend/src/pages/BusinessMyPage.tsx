@@ -2,16 +2,22 @@ import { Flex, Text, Image, Box } from "@chakra-ui/react";
 import settings from "../assets/setting.svg";
 import BusinessProjectDetail from "../components/Mypage/Business/BusinessProjectDetail";
 import { BusinessMyPageAxios } from "../api/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BusinessMyPageFunding } from "../type/mypage.interface";
 
 export default function BusinessMyPage() {
   const navigate = useNavigate();
 
+  const [companyName, setCompanyName] = useState<string>("");
+  const [companyNumber, setCompanyNumber] = useState<number>(0);
+  const [companyList, setCompanyList] = useState<BusinessMyPageFunding[]>([]);
+
   const getBusinessMyList = async () => {
     const res = await BusinessMyPageAxios();
-
-    // console.log(res);
+    setCompanyList(res.fundingComShareList);
+    setCompanyName(res.memberComMypageDto.name);
+    setCompanyNumber(res.memberComMypageDto.id);
   };
 
   useEffect(() => {
@@ -23,7 +29,7 @@ export default function BusinessMyPage() {
       <Box mt={"1rem"} w={"85%"} ml={"1.5rem"} mr={"1.5rem"}>
         <Flex>
           <Text as={"b"} fontSize={"1.7rem"}>
-            스튜디오드래곤님
+            {companyName} 님
           </Text>
           <Image boxSize={"1rem"} src={settings} ml={"0.5rem"} mt={"0.8rem"} />
         </Flex>
@@ -55,9 +61,9 @@ export default function BusinessMyPage() {
           </Box>
         </Flex>
         <Box mb={"2rem"}>
-          <BusinessProjectDetail isNow="now" />
-          <BusinessProjectDetail isNow="wait" />
-          <BusinessProjectDetail isNow="" />
+          {companyList.map((item, index) => (
+            <BusinessProjectDetail projectData={item} />
+          ))}
         </Box>
       </Box>
     </>

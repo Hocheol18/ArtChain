@@ -1,12 +1,18 @@
 // 기업 마이페이지 response
 export interface BusinessMyPageResponse {
+  memberComMypageDto: BusinessNameResponse;
+  fundingComShareList: BusinessMyPageFunding[];
+}
+
+export interface BusinessNameResponse {
   id: number;
   name: string;
-  fundingList: BusinessMyPageFunding[];
 }
+
 export interface BusinessMyPageFunding {
   id: number;
   name: string;
+  progressStatus: string;
   poster: string;
   newCoinCount: number;
   goalCoinCount: number;
