@@ -9,13 +9,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsMvcConfig implements WebMvcConfigurer {
 
-  @Override
-  public void addCorsMappings(CorsRegistry corsRegistry) {
+    @Override
+    public void addCorsMappings(CorsRegistry corsRegistry) {
 
-    corsRegistry.addMapping("/**")
-            .exposedHeaders("Set-Cookie")
-            .exposedHeaders("Authorization")
-            .allowedOrigins("http://localhost:3000/")
-            .allowedOrigins("https://j10a708.p.ssafy.io/");
-  }
+        corsRegistry.addMapping("/**")
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                .allowedOrigins("https://j10a708.p.ssafy.io", "http://localhost:3000")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .exposedHeaders("Set-Cookie", "Authorization");
+    }
 }
