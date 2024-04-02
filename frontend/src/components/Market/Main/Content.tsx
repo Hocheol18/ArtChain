@@ -3,7 +3,7 @@ import ContentEnd from "./ContentEnd";
 import ContentShow from "./ContentShow";
 import { getMarketMainDisplayList } from "../../../api/market";
 import { getMarketMainDisplayListInterface } from "../../../type/market.interface";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   first: string;
@@ -11,22 +11,6 @@ interface Props {
 }
 
 export default function Content({ first, second }: Props) {
-  const target = useRef(null);
-
-  useEffect(() => {
-    observer.observe(target.current);
-  }, []);
-
-  const options = {
-    threshold: 1.0,
-  };
-
-  const callback = () => {
-    target.current.innerText += "관측되었습니다";
-  };
-
-  const observer = new IntersectionObserver(callback, options);
-
   const [contents, setContext] = useState<getMarketMainDisplayListInterface[]>(
     []
   );
