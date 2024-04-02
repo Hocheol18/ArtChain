@@ -55,31 +55,30 @@ function App() {
   };
 
   useEffect(() => {
-    // Establish the connection to the server endpoint
     const eventSource = new EventSource(
       "https://j10a708.p.ssafy.io/api/sse/subscribe"
     );
 
     eventSource.addEventListener("DUMMY", (event: MessageEvent) => {
-      // JSON.parse를 사용하지 않고, 직접 event.data를 사용
       const data: string = event.data;
 
       console.log("Received event data:", data);
     });
 
-    // Listen for messages
-    // eventSource.onmessage = async (e) => {
-    //   const res = await e.data;
-    //   console.log(res);
+    eventSource.addEventListener(
+      "fundingProgressStatusCron",
+      (event: MessageEvent) => {
+        // JSON 문자열을 객체로 변환
+        const data: SseFundingRecruitEndResultList = JSON.parse(event.data);
 
-    //   // 받아오는 data로 할 일
-    // };
+        console.log("Received event data:", data.fundingRecruitResultList);
+      }
+    );
 
-    // Clean up the connection when the component unmounts
     return () => {
       eventSource.close();
     };
-  }, ); // The empty dependency array ensures this effect runs only once on mount
+  });
 
   return (
     <>
