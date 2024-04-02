@@ -159,7 +159,7 @@ public class SettlementServiceImpl implements SettlementService {
                         .multiply(new BigDecimal(100 + settlement.getReturnRate()))
                         .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
                 memberRepository.findById(po.getMemberId()).ifPresent(owner ->
-                        pieceOwnerInfoList.add(new SseSettlementAllowResultListItemDto(owner.getWalletAddress(), resultCoinCount, po.getPieceCount()))
+                        pieceOwnerInfoList.add(new SseSettlementAllowResultListItemDto(owner.getWalletAddress(), resultCoinCount))
                 );
             });
 
