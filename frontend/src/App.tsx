@@ -61,12 +61,12 @@ function App() {
     );
 
     // Listen for messages
-    eventSource.addEventListener('DUMMY', (event: MessageEvent) => {
-      // JSON.parse를 사용하지 않고, 직접 event.data를 사용
-      const data: string = event.data;
-    
-      console.log('Received event data:', data);
-    });
+    eventSource.onmessage = async (e) => {
+      const res = await e.data;
+      console.log(res);
+
+      // 받아오는 data로 할 일
+    };
 
     eventSource.addEventListener("fundingProgressStatusCron", (event) => {
       // JSON 문자열을 객체로 변환
