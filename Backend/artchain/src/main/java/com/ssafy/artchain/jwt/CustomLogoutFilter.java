@@ -10,10 +10,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class CustomLogoutFilter extends GenericFilterBean {
 
@@ -21,11 +23,12 @@ public class CustomLogoutFilter extends GenericFilterBean {
     private final RefreshRepository refreshRepository;
 
 
-//    HttpServletRequest, HttpServletResponse 이게 필요하니까 캐스팅해서 구현하기 위해 doFilter를 두개 쓴다
+    //    HttpServletRequest, HttpServletResponse 이게 필요하니까 캐스팅해서 구현하기 위해 doFilter를 두개 쓴다
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         doFilter((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse, filterChain);
     }
+
     private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
         //path and method verify
@@ -41,7 +44,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println("로그아웃 실행");
+        log.info("로그아웃 실행");
 
         //get refresh token
         String refresh = null;
@@ -56,7 +59,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         //refresh null check
         if (refresh == null) {
-            System.out.println("refresh null");
+            log.error("refresh null");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -74,7 +77,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         // 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
         String category = jwtUtil.getCategory(refresh);
         if (!category.equals("refresh")) {
-            System.out.println("refresh 토큰 아님");
+            log.error("refresh 토큰 아님");
 
             //response status code
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -89,7 +92,6 @@ public class CustomLogoutFilter extends GenericFilterBean {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-        System.out.println("refresh 토큰 있네용 없엘게요");
 
         //로그아웃 진행
         //Refresh 토큰 DB에서 제거

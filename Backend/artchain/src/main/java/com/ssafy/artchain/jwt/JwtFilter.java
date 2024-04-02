@@ -1,20 +1,16 @@
 package com.ssafy.artchain.jwt;
 
-import com.ssafy.artchain.jwt.response.DefaultResponse;
 import com.ssafy.artchain.jwt.response.StatusCode;
 import com.ssafy.artchain.member.dto.CustomUserDetails;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.member.repository.MemberRepository;
-import com.ssafy.artchain.oauth.dto.CustomOAuth2User;
-import com.ssafy.artchain.oauth.dto.MemberDto;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -32,14 +29,13 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("JwtFilter active");
+        log.info("JwtFilter active");
         // 헤더에서 access키에 담긴 토큰을 꺼냄
         String accessToken = request.getHeader("Authorization");
-        System.out.println("access Token : " + accessToken);
 
         // 토큰이 없다면 다음 필터로 넘김
         if (accessToken == null) {
-            System.out.println("access없대");
+            log.error("access없대");
             filterChain.doFilter(request, response);
 
             return;
@@ -56,14 +52,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
             //response status code
             response.setStatus(StatusCode.FAIL_EXPIRED_ACCESS_TOKEN.getStatus());
-            return ;
+            return;
         }
 
 // 토큰이 access인지 확인 (발급시 페이로드에 명시)
         String category = jwtUtil.getCategory(accessToken);
 
         if (!category.equals("access")) {
-            System.out.println("access아니래");
+            log.error("access아니래");
 
             //response body
             PrintWriter writer = response.getWriter();
@@ -77,8 +73,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String memberId = jwtUtil.getMemberId(accessToken);
         String authority = jwtUtil.getAuthority(accessToken);
 
-        System.out.println("memberId : " + memberId);
-        System.out.println("authority : " + authority);
+        log.info("memberId : " + memberId);
+        log.info("authority : " + authority);
         Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new RuntimeException("NOT FOUND MEMBER"));
 
@@ -101,7 +97,7 @@ public class JwtFilter extends OncePerRequestFilter {
 //        //세션에 사용자 등록
 //        SecurityContextHolder.getContext().setAuthentication(authToken);
 //
-//        System.out.println("JwtFilter 끝");
+//        log.info("JwtFilter 끝");
 
         filterChain.doFilter(request, response);
     }

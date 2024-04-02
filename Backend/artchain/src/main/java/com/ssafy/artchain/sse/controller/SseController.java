@@ -20,6 +20,7 @@ public class SseController {
 
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> subscribe() {
+        log.info("!!! sse controller !!!");
         return ResponseEntity.ok(
                 sseService.subscribe()
         );

@@ -20,6 +20,8 @@ public class SseServiceImpl implements SseService {
 
     @Override
     public SseEmitter subscribe() {
+        log.info("!!! sse service !!!");
+
         String eventId = "ADMIN";
 
         SseEmitter sseEmitter = sseRepository.save(eventId, new SseEmitter(DEFAULT_TIMEOUT));
