@@ -22,3 +22,16 @@ export interface PutSettlementStatusRequest {
   settlementId: number;
   status: string;
 }
+
+export interface getSettlementDetailList {
+  id : number;
+  endId : number;
+  entName : string;
+  fundingId : string;
+  fundingTitle : string;
+  settlementPrice : number;
+  returnRate : number;
+  depositDate : string;
+  settlementFile : string;
+  status : string;
+}
