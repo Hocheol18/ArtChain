@@ -84,7 +84,7 @@ export interface GetFundingResponse {
   recruitStart: string;
   recruitEnd: string;
   settlement: string;
-  goalCoinCount: number;
+  goalCoinCount: number | undefined;
   nowCoinCount: number;
   contractAddress: string;
   totalBudget: number;
