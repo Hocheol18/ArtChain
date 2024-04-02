@@ -31,7 +31,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     );
 
 
-    @Query(value = "select new com.ssafy.artchain.member.dto.response.FundingComMypageDto(f.id, f.name, f.progressStatus, f.poster, f.goalCoinCount, f.nowCoinCount, f.recruitEnd, s.status)" +
+    @Query(value = "select new com.ssafy.artchain.member.dto.response.FundingComMypageDto(f.id, f.name, f.progressStatus, f.poster, f.goalCoinCount, f.nowCoinCount, f.recruitEnd, s.status, f.contractAddress)" +
             "from Member as m " +
             " left join Funding f on m.id = f.entId" +
             " left join Settlement s on m.id = s.entId and f.id = s.fundingId" +

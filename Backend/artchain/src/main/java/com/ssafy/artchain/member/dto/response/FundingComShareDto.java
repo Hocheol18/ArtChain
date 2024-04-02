@@ -23,6 +23,7 @@ public class FundingComShareDto {
     private LocalDate recruitEnd;
     private SettlementStatus status;
     private BigDecimal share;
+    private String contractAddress;
 
 
     public FundingComShareDto(FundingComMypageDto dto){
@@ -35,5 +36,6 @@ public class FundingComShareDto {
         this.recruitEnd = dto.getRecruitEnd();
         this.status = dto.getStatus();
         this.share = null;
+        this.contractAddress = dto.getContractAddress();
     }
 }

@@ -22,4 +22,5 @@ public class FundingComMypageDto {
     private Long nowCoinCount;
     private LocalDate recruitEnd;
     private SettlementStatus status;
+    private String contractAddress;
 }
