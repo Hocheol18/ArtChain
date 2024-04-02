@@ -3,6 +3,8 @@ import falloutboy from "../../../assets/falloutboy.png";
 import CommonNotice from "./CommonNotice";
 import { useEffect, useState } from "react";
 import { BusinessMyPageFunding } from "../../../type/mypage.interface";
+import { formatNumberWithComma } from "../../Common/Comma";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
   projectData: BusinessMyPageFunding;
@@ -10,52 +12,69 @@ interface Props {
 
 export default function BusinessProjectDetail({ projectData }: Props) {
   const [badgeText, setBadgeText] = useState<string>("");
+  const [badgeColor, setBadgeColor] = useState<string>("");
 
   useEffect(() => {
+    console.log(projectData.progressStatus);
+
     switch (projectData.progressStatus) {
       case "RECRUITMENT_STATUS":
         setBadgeText("진행중");
+        setBadgeColor("blue.300");
         break;
       case "PENDING_SETTLEMENT":
         setBadgeText("모집성공");
-
+        setBadgeColor("gray.500");
         break;
       case "RECRUITMENT_FAILED":
         setBadgeText("모집실패");
+        setBadgeColor("red");
         break;
       case "SETTLED":
         setBadgeText("정산완료");
+        setBadgeColor("blue.200");
+        break;
+      default:
+        setBadgeText("승인대기");
+        setBadgeColor("gray.400");
         break;
     }
   }, []);
 
+  const navigate = useNavigate();
+
+  const handleUrl = () => {
+    if (projectData.progressStatus !== "BEFORE_RECRUITMENT")
+      navigate(`/invest/${projectData.id}`);
+  };
+
   return (
     <>
-      <Center mx={"1"} mt={"2rem"} w={"100%"}>
-        <Image w={"30"} h={"36"} src={falloutboy} />
+      <Center mx={"1"} mt={"2rem"} w={"100%"} gap={3} onClick={handleUrl}>
+        <Image w={"24"} h={"36"} src={projectData.poster} objectFit={"cover"} />
         <Flex direction={"column"} justifyContent={"space-around"}>
-          <CommonNotice text={badgeText} isNow={projectData.progressStatus} />
+          <CommonNotice text={badgeText} color={badgeColor} />
 
           <Text ml={"0.5rem"} as={"b"} fontSize={"1rem"}>
-            Fall Out Boy :: 2024 Seoul Concert
+            {projectData.name}
           </Text>
           <Flex>
             <Text color={"blue.300"} ml={"0.5rem"} as={"b"} fontSize={"1rem"}>
-              9,000,000
+              {formatNumberWithComma(projectData.nowCoinCount)}
             </Text>
             <Text color={"blue.300"} ml={"0.3rem"} as={"b"} fontSize={"1rem"}>
               원 모집
             </Text>
             <Text ml={"0.5rem"} color={"blue.400"} as={"b"} fontSize={"1rem"}>
-              90%
+              {projectData.share}%
             </Text>
           </Flex>
           <Flex>
             <Text ml={"0.5rem"} fontSize={"0.9rem"}>
-              정산금액
+              모집금액
             </Text>
             <Text ml={"0.5rem"} fontSize={"0.9rem"}>
-              10,000,000
+              {formatNumberWithComma(projectData.goalCoinCount)}
             </Text>
             <Text ml={"0.3rem"} fontSize={"0.9rem"}>
               원
@@ -63,10 +82,10 @@ export default function BusinessProjectDetail({ projectData }: Props) {
           </Flex>
           <Flex>
             <Text ml={"0.5rem"} fontSize={"0.9rem"}>
-              정산일
+              모집완료일
             </Text>
             <Text ml={"0.5rem"} fontSize={"1rem"}>
-              2024/03/21
+              {projectData.recruitEnd}
             </Text>
           </Flex>
         </Flex>

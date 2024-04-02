@@ -14,7 +14,7 @@ export interface BusinessMyPageFunding {
   name: string;
   progressStatus: string;
   poster: string;
-  newCoinCount: number;
+  nowCoinCount: number;
   goalCoinCount: number;
   recruitEnd: string;
   status: string;
@@ -39,6 +39,7 @@ export interface GetMyPieceListResponse {
   id: number;
   pieceCount: number;
   coinCount: number;
+  status: string;
   tradeFlag: string;
   createdAt: string;
 }

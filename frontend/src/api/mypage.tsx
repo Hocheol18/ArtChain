@@ -30,6 +30,7 @@ export const getMyPieceList = async (
   })}`;
   console.log(url);
   const response = await localAxios.get(url);
+  console.log(response);
   return response.data.data;
 };
 
