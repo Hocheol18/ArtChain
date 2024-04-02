@@ -127,7 +127,8 @@ public class SecurityConfig {
 //                        얘네 ROLE_ADMIN만 가능하도록 바꿔야함
                         "/api/member/permission",
                         "/api/funding/permission",
-                        "/api/market/graph"
+                        "/api/market/graph",
+                        "/api/market/mainPageMarket"
                 ).permitAll()
                 .anyRequest().authenticated());
 //                    .anyRequest().permitAll());

@@ -2,6 +2,7 @@ package com.ssafy.artchain.market.repository;
 
 import com.ssafy.artchain.market.dto.MarketDetailResponseDto;
 import com.ssafy.artchain.market.dto.MarketGraphResponseDto;
+import com.ssafy.artchain.market.dto.MarketMainPageResponseDto;
 import com.ssafy.artchain.market.entity.Market;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,5 +66,12 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
     List<Market> findAllByFundingIdAndBuyerId(Long fundingId, Long buyerId);
 
     List<Market> findAllByFundingIdAndStatus(Long fundingId, String status);
+
+    @Query("SELECT new com.ssafy.artchain.market.dto.MarketMainPageResponseDto(f.id, f.name, f.poster, count(m.id)) " +
+            "from Funding f join Market m on f.id = m.fundingId " +
+            "where m.status = 'LISTED'" +
+            "group by f.id " +
+            "order by count(m.id) DESC")
+    List<MarketMainPageResponseDto> findAllMainPageMarketList();
 
 }
