@@ -1,11 +1,11 @@
-import { Box, Center, SimpleGrid, Text } from "@chakra-ui/react";
+import { Center, SimpleGrid, Text } from "@chakra-ui/react";
 import ContentEnd from "./ContentEnd";
 import ContentShow from "./ContentShow";
 import { getMarketMainDisplayList } from "../../../api/market";
 import { getMarketMainDisplayListInterface } from "../../../type/market.interface";
-import { useEffect, useRef, useState } from "react";
-import useIntersectionObserver from "../../Common/InfiniteScorll";
-// import useIntersectionObserver from "../../Common/InfiniteScorll";
+import { useEffect, useState } from "react";
+import Pagenation from "../../Common/Paginations";
+import { useParams } from "react-router-dom";
 
 interface Props {
   first: string;
@@ -13,26 +13,10 @@ interface Props {
 }
 
 export default function Content({ first, second }: Props) {
-  const [contents, setContext] = useState<getMarketMainDisplayListInterface[]>(
+  const [contents, setContent] = useState<getMarketMainDisplayListInterface[]>(
     []
   );
-  const target = useRef(null);
-  const [page, setPage] = useState<number>(0);
-
-  const [observe, unobserve] = useIntersectionObserver(() => {
-    console.log(page)
-    setPage((page) => page + 1);
-  });
-
-  useEffect(() => {
-    if (page === 1) observe(target.current);
-
-    const N = contents.length;
-
-    if (0 === N ) {
-      unobserve(target.current);
-    }
-  }, [contents]);
+  const id = useParams() as {id : string}
 
   switch (second) {
     case "최신순":
@@ -50,62 +34,67 @@ export default function Content({ first, second }: Props) {
     getMarketMainDisplayList({
       category: first,
       status: second,
-      page: page,
+      page: (Number(id.id)-1),
       size: 6,
     })
-      .then((res) => setContext(res.data.data))
+      .then((res) => setContent(res.data.data))
       .catch((err) => console.log(err));
-  }, [first, second, page]);
+  }, [first, second, id.id]);
 
   return (
-    <Box ref={target} height={"100%"}>
+    <>
       {contents.length >= 1 ? (
-        <SimpleGrid
-          spacing="10"
-          p="6"
-          textAlign="center"
-          rounded="lg"
-          color="gray.400"
-        >
-          {contents.map((data: getMarketMainDisplayListInterface) => {
-            const renderContent = () => {
-              if (data.status === "PENDING_SETTLEMENT") {
-                return (
-                  <ContentShow
-                    key={data.id}
-                    id={data.id}
-                    name={data.name}
-                    nowCoinCount={data.nowCoinCount}
-                    poster={data.poster}
-                    category={data.category}
-                    status={data.status}
-                    settlement={data.settlement}
-                  />
-                );
-              } else if (data.status === "SETTLED") {
-                return (
-                  <ContentEnd
-                    key={data.id}
-                    id={data.id}
-                    name={data.name}
-                    nowCoinCount={data.nowCoinCount}
-                    poster={data.poster}
-                    category={data.category}
-                    status={data.status}
-                    settlement={data.settlement}
-                  />
-                );
-              }
-            };
+        <>
+          <SimpleGrid
+            spacing="10"
+            p="6"
+            textAlign="center"
+            rounded="lg"
+            color="gray.400"
+          >
+            {contents.map((data: getMarketMainDisplayListInterface, index) => {
+              const renderContent = () => {
+                if (data.status === "PENDING_SETTLEMENT") {
+                  return (
+                    <ContentShow
+                      key={index}
+                      id={data.id}
+                      name={data.name}
+                      nowCoinCount={data.nowCoinCount}
+                      poster={data.poster}
+                      category={data.category}
+                      status={data.status}
+                      settlement={data.settlement}
+                    />
+                  );
+                } else if (data.status === "SETTLED") {
+                  return (
+                    <ContentEnd
+                      key={index}
+                      id={data.id}
+                      name={data.name}
+                      nowCoinCount={data.nowCoinCount}
+                      poster={data.poster}
+                      category={data.category}
+                      status={data.status}
+                      settlement={data.settlement}
+                    />
+                  );
+                }
+              };
 
-            return renderContent();
-          })}
-        </SimpleGrid>
+              return renderContent();
+            })}
+          </SimpleGrid>
+          <Center mb={"2rem"}>
+            <Pagenation />
+          </Center>
+        </>
       ) : (
         <Center h={"500px"}>
           <Text fontSize={"1.5rem"}>현재 판매중인 상품이 없습니다</Text>
         </Center>
       )}
-    </Box>
+    </>
   );
 }

@@ -34,7 +34,7 @@ export default function ContentShow({
         boxShadow="lg"
         rounded="xl"
         bg="white"
-        onClick={() => navigate(`/market/${id}`)}
+        onClick={() => navigate(`/market/piece/${id}`)}
       >
         <Flex>
           <Image maxW={"120px"} rounded={"2xl"} src={dummy}></Image>

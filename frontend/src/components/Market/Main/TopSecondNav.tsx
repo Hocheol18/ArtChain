@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   first: string;
@@ -19,6 +20,7 @@ export default function TopSecondNav({
   statusTopSecondNav,
   setSecondTopNav,
 }: Props) {
+  const navigate = useNavigate();
   return (
     <>
       {isCheck ? (
@@ -54,6 +56,7 @@ export default function TopSecondNav({
                 color={"gray.400"}
                 onClick={() => {
                   setSecondTopNav("최신순");
+                  navigate("../market/1");
                 }}
               >
                 {first}
@@ -89,7 +92,10 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => setSecondTopNav("높은가격순")}
+                onClick={() => {
+                  setSecondTopNav("높은가격순");
+                  navigate("../market/1");
+                }}
               >
                 {second}
               </Text>
@@ -125,7 +131,10 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => setSecondTopNav("낮은가격순")}
+                onClick={() => {
+                  setSecondTopNav("낮은가격순");
+                  navigate("../market/1");
+                }}
               >
                 {third}
               </Text>
@@ -165,6 +174,7 @@ export default function TopSecondNav({
                 color={"gray.400"}
                 onClick={() => {
                   setSecondTopNav("ALL");
+                  navigate("../market/1");
                 }}
               >
                 {first}
@@ -200,7 +210,10 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => setSecondTopNav("PENDING_SETTLEMENT")}
+                onClick={() => {
+                  setSecondTopNav("PENDING_SETTLEMENT");
+                  navigate("../market/1");
+                }}
               >
                 {second}
               </Text>
@@ -236,7 +249,10 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => setSecondTopNav("SETTLED")}
+                onClick={() => {
+                  setSecondTopNav("SETTLED");
+                  navigate("../market/1");
+                }}
               >
                 {third}
               </Text>
@@ -271,7 +287,10 @@ export default function TopSecondNav({
               <Text
                 as={"b"}
                 color={"gray.400"}
-                onClick={() => setSecondTopNav("FundSETTLED")}
+                onClick={() => {
+                  setSecondTopNav("FundSETTLED");
+                  navigate("../market/1");
+                }}
               >
                 {forth}
               </Text>

@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/layout";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   statusTopNav : string;
@@ -6,7 +7,7 @@ interface Props {
 }
 
 export default function Martet({ statusTopNav, setTopNav }: Props) {
-
+  const navigate = useNavigate();
   return (
     <>
       <Flex minW={"360px"} justifyContent={"center"} mt={"1rem"} ml={"1rem"}>
@@ -20,6 +21,7 @@ export default function Martet({ statusTopNav, setTopNav }: Props) {
             color={"gray.400"}
             onClick={() => {
               setTopNav("ALL");
+              navigate("../market/1")
             }}
           >
             전체
@@ -35,6 +37,7 @@ export default function Martet({ statusTopNav, setTopNav }: Props) {
             color={"gray.400"}
             onClick={() => {
               setTopNav("SHOW");
+              navigate("../market/1")
             }}
           >
             공연
@@ -50,6 +53,7 @@ export default function Martet({ statusTopNav, setTopNav }: Props) {
             color={"gray.400"}
             onClick={() => {
               setTopNav("EXHIBITION");
+              navigate("../market/1")
             }}
           >
             전시
@@ -65,6 +69,7 @@ export default function Martet({ statusTopNav, setTopNav }: Props) {
             color={"gray.400"}
             onClick={() => {
               setTopNav("MOVIE");
+              navigate("../market/1")
             }}
           >
             영화
