@@ -57,7 +57,7 @@ function App() {
   useEffect(() => {
     // Establish the connection to the server endpoint
     const eventSource = new EventSource(
-      "https://j10a708.p.ssafy.io:443/api/sse/subscribe"
+      "http://j10a708.p.ssafy.io:8080/api/sse/subscribe"
     );
 
     // Listen for messages
@@ -67,13 +67,6 @@ function App() {
 
       // 받아오는 data로 할 일
     };
-
-    eventSource.addEventListener("fundingProgressStatusCron", (event) => {
-      // JSON 문자열을 객체로 변환
-      const data: SseFundingRecruitEndResultList = JSON.parse(event.data);
-
-      console.log("Received event data:", data);
-    });
 
     // Clean up the connection when the component unmounts
     return () => {
