@@ -597,13 +597,13 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     public List<FundingCarouselItemDto> getCarouselList() {
-        Pageable carouselCount = PageRequest.of(0, 2);
-        return fundingRepository.findTop2ByFundingProgressStatus(FundingProgressStatus.PENDING_SETTLEMENT, carouselCount);
+        Pageable carouselCount = PageRequest.of(0, 4);
+        return fundingRepository.findTop4ByFundingProgressStatus(FundingProgressStatus.PENDING_SETTLEMENT, carouselCount);
     }
 
     @Override
     public List<FundingMainPageItemDto> getMainPageList() {
-        Pageable itemCount = PageRequest.of(0, 4);
-        return fundingRepository.findTop4ByFundingProgressStatus(FundingProgressStatus.PENDING_SETTLEMENT, itemCount);
+        Pageable itemCount = PageRequest.of(0, 2);
+        return fundingRepository.findTop2ByFundingProgressStatus(FundingProgressStatus.PENDING_SETTLEMENT, itemCount);
     }
 }

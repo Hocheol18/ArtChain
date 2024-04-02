@@ -51,7 +51,7 @@ public interface FundingRepository extends JpaRepository<Funding, Long> {
             "where fd.progressStatus = :fundingProgressStatus " +
             "order by fd.id desc"
     )
-    List<FundingCarouselItemDto> findTop2ByFundingProgressStatus(@Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus, Pageable pageable);
+    List<FundingCarouselItemDto> findTop4ByFundingProgressStatus(@Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus, Pageable pageable);
 
     @Query(value = "select " +
             "new com.ssafy.artchain.funding.dto.FundingMainPageItemDto ( " +
@@ -64,5 +64,5 @@ public interface FundingRepository extends JpaRepository<Funding, Long> {
             "where fd.progressStatus = :fundingProgressStatus " +
             "order by fd.recruitEnd asc, fd.id desc"
     )
-    List<FundingMainPageItemDto> findTop4ByFundingProgressStatus(@Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus, Pageable pageable);
+    List<FundingMainPageItemDto> findTop2ByFundingProgressStatus(@Param("fundingProgressStatus") FundingProgressStatus fundingProgressStatus, Pageable pageable);
 }
