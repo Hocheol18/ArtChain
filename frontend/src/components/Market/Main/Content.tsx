@@ -3,7 +3,9 @@ import ContentEnd from "./ContentEnd";
 import ContentShow from "./ContentShow";
 import { getMarketMainDisplayList } from "../../../api/market";
 import { getMarketMainDisplayListInterface } from "../../../type/market.interface";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useIntersectionObserver from "../../Common/InfiniteScorll";
+// import useIntersectionObserver from "../../Common/InfiniteScorll";
 
 interface Props {
   first: string;
@@ -14,6 +16,23 @@ export default function Content({ first, second }: Props) {
   const [contents, setContext] = useState<getMarketMainDisplayListInterface[]>(
     []
   );
+  const target = useRef(null);
+  const [page, setPage] = useState<number>(0);
+
+  const [observe, unobserve] = useIntersectionObserver(() => {
+    console.log(page)
+    setPage((page) => page + 1);
+  });
+
+  useEffect(() => {
+    if (page === 1) observe(target.current);
+
+    const N = contents.length;
+
+    if (0 === N ) {
+      unobserve(target.current);
+    }
+  }, [contents]);
 
   switch (second) {
     case "최신순":
@@ -31,15 +50,15 @@ export default function Content({ first, second }: Props) {
     getMarketMainDisplayList({
       category: first,
       status: second,
-      page: 0,
+      page: page,
       size: 6,
     })
       .then((res) => setContext(res.data.data))
       .catch((err) => console.log(err));
-  }, [first, second]);
+  }, [first, second, page]);
 
   return (
-    <Box>
+    <Box ref={target} height={"100%"}>
       {contents.length >= 1 ? (
         <SimpleGrid
           spacing="10"

@@ -35,3 +35,8 @@ export interface getSettlementDetailList {
   settlementFile : string;
   status : string;
 }
+
+export interface Settlement {
+  pieceOwnerWalletAddress : string;
+  settlementCoinCount : number;
+}

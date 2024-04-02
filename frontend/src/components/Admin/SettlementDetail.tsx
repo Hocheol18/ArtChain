@@ -30,17 +30,7 @@ export default function SettlementDetail() {
 
   const successSettlement = () => {
     toastFunction("처리 완료되었습니다", true);
-    const eventSource = new EventSource("/api/sse/subscribe");
-
-    eventSource.addEventListener("settlementAllow", (event: MessageEvent) => {
-      console.log(event);
-    });
-
-    navigate("../admin")
-
-    // return () => {
-    //   eventSource.close();
-    // };
+    navigate(-1);
   };
 
   useEffect(() => {

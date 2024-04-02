@@ -1,5 +1,5 @@
 import { useMediaQuery } from "react-responsive";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
@@ -34,6 +34,7 @@ import { AdminPage } from "./pages/AdminPage";
 
 import SettlementDetail from "./components/Admin/SettlementDetail";
 import ProjectConfirm from "./components/Admin/ProjectConfirm";
+import useSettlementInfo from "./store/useSettlementInfo";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -44,6 +45,21 @@ function App() {
     const isMobile = useMediaQuery({ maxWidth: 700 });
     return isMobile ? children : null;
   };
+  const {
+    setSettlementInfoData,
+    setSettlementInfoContractAddress,
+    setTotalPieceCount,
+  } = useSettlementInfo();
+
+  const eventSource = new EventSource("/api/sse/subscribe");
+  useEffect(() => {
+    eventSource.addEventListener("settlementAllow", (event: MessageEvent) => {
+      const res = JSON.parse(event.data);
+      setSettlementInfoContractAddress(res.fundingContractAddress);
+      setTotalPieceCount(res.totalPieceCount);
+      setSettlementInfoData(res.settlementAllowResultList);
+    });
+  }, [eventSource]);
 
   return (
     <>
@@ -297,6 +313,7 @@ function App() {
         </Desktop>
       </ChakraProvider>
       {/* 모바일 */}
+
       <ChakraProvider theme={Theme}>
         <Mobile>
           <div style={{ backgroundColor: "white", height: "100dvh" }}>

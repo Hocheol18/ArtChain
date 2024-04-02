@@ -1,4 +1,4 @@
-import { Button, Center, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Button, Center, Grid, GridItem } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSettlementList } from "../../type/admin.interface";
