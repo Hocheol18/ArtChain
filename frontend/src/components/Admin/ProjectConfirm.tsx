@@ -36,7 +36,7 @@ export default function ProjectConfirm() {
 
   return (
     <>
-      <Box p={"1.5rem"} mb={"3rem"}>
+      <Flex direction={"column"} p={"1.5rem"} mb={"3rem"} gap={3}>
         <Flex justifyContent={"space-between"}>
           <Box>
             <Text as={"b"} fontSize={"1.5rem"}>
@@ -82,28 +82,66 @@ export default function ProjectConfirm() {
           <Text as={"b"} fontSize={"1rem"}>
             카테고리
           </Text>
-          <Box mt={"0.5rem"}>{values?.category}</Box>
+          <Box mt={"0.5rem"}>
+            {values?.category === "SHOW"
+              ? "공연"
+              : values?.category === "MOVIE"
+              ? "영화"
+              : "전시"}
+          </Box>
         </Box>
         <Box ml={"0.2rem"} mt={"1rem"}>
           <Text as={"b"} fontSize={"1rem"}>
             목표 금액
           </Text>
           <Box mt={"0.5rem"}>
-            {formatNumberWithComma(Number(values?.goalCoinCount))}
+            {formatNumberWithComma(Number(values?.goalCoinCount))}원
           </Box>
         </Box>
+
         <Box ml={"0.2rem"} mt={"1rem"}>
           <Text as={"b"} fontSize={"1rem"}>
-            일정
+            모집시작일
+          </Text>
+          <Text mt={"0.5rem"} fontSize={"1rem"}>
+            {values?.recruitStart}
+          </Text>
+        </Box>
+
+        <Box ml={"0.2rem"} mt={"1rem"}>
+          <Text as={"b"} fontSize={"1rem"}>
+            모집종료일
+          </Text>
+          <Text mt={"0.5rem"} fontSize={"1rem"}>
+            {values?.recruitEnd}
+          </Text>
+        </Box>
+
+        <Box ml={"0.2rem"} mt={"1rem"}>
+          <Text as={"b"} fontSize={"1rem"}>
+            정산 완료일
+          </Text>
+          <Text mt={"0.5rem"} fontSize={"1rem"}>
+            {values?.settlement}
+          </Text>
+        </Box>
+
+        <Box ml={"0.2rem"} mt={"1rem"}>
+          <Text as={"b"} fontSize={"1rem"}>
+            그 외 일정
           </Text>
         </Box>
         <Flex justifyContent={"space-between"}>
-          <Box ml={"0.2rem"} mt={"0.5rem"}>
+          <Box ml={"0.2rem"} mt={"0.5rem"} w={"100%"}>
             {values?.scheduleList.map((data, index) => (
-              <Text key={index} fontSize={"1rem"}>
-                {data.scheduleDate}
-                {data.scheduleName}
-              </Text>
+              <Flex>
+                <Text flex={1} key={index} fontSize={"1rem"}>
+                  {data.scheduleDate}
+                </Text>
+                <Text flex={1} key={index} fontSize={"1rem"}>
+                  {data.scheduleName}
+                </Text>
+              </Flex>
             ))}
           </Box>
         </Flex>
@@ -124,12 +162,19 @@ export default function ProjectConfirm() {
           </Text>
         </Box>
         <Flex justifyContent={"space-between"}>
-          <Box ml={"0.2rem"} mt={"0.5rem"}>
+          <Box ml={"0.2rem"} w={"100%"}>
             {values?.saleList.map((data, index) => (
-              <Text key={index} fontSize={"1rem"}>
-                {data.mainVariety}
-                {data.subVariety}
-              </Text>
+              <Flex>
+                <Text flex={1} key={index} fontSize={"1rem"}>
+                  {data.mainVariety}
+                </Text>
+                <Text flex={1} key={index} fontSize={"1rem"}>
+                  {data.subVariety}
+                </Text>
+                <Text flex={1} key={index} fontSize={"1rem"}>
+                  {data.percentage}%
+                </Text>
+              </Flex>
             ))}
           </Box>
         </Flex>
@@ -140,11 +185,16 @@ export default function ProjectConfirm() {
           </Text>
         </Box>
         <Flex justifyContent={"space-between"}>
-          <Box ml={"0.2rem"} mt={"0.5rem"}>
+          <Box ml={"0.2rem"} w={"100%"}>
             {values?.costList.map((data, index) => (
-              <Text key={index} fontSize={"1rem"}>
-                {data.mainVariety}
-              </Text>
+              <Flex>
+                <Text flex={1} key={index} fontSize={"1rem"}>
+                  {data.mainVariety}
+                </Text>
+                <Text flex={1} key={index} fontSize={"1rem"}>
+                  {data.subVariety}
+                </Text>
+              </Flex>
             ))}
           </Box>
         </Flex>
@@ -165,7 +215,7 @@ export default function ProjectConfirm() {
           </Text>
           <Box ml={"0.2rem"} mt={"0.5rem"}>
             <Text fontSize={"1rem"}>
-              {formatNumberWithComma(Number(values?.unitPrice))}
+              {formatNumberWithComma(Number(values?.unitPrice))}원
             </Text>
           </Box>
         </Box>
@@ -184,16 +234,21 @@ export default function ProjectConfirm() {
             예상 수익률
           </Text>
           <Flex justifyContent={"space-between"}>
-            <Box ml={"0.2rem"} mt={"0.5rem"}>
+            <Box ml={"0.2rem"} mt={"0.5rem"} w={"100%"}>
               {values?.expectedReturnList.map((data, index) => (
-                <Text key={index} fontSize={"1rem"}>
-                  {data.spectatorNum}
-                </Text>
+                <Flex>
+                  <Text flex={1} key={index} fontSize={"1rem"}>
+                    {data.spectatorNum} 명 이하
+                  </Text>
+                  <Text flex={1} key={index} fontSize={"1rem"}>
+                    {data.expectedReturn}%
+                  </Text>
+                </Flex>
               ))}
             </Box>
           </Flex>
         </Box>
-      </Box>
+      </Flex>
       <BottomButtonNavbar
         text="컨펌"
         category=""
