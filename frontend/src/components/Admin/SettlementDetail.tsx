@@ -1,12 +1,13 @@
 import { Button, Flex, Select, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { GetSettlementDetail, PutSettlementStatus } from "../../api/Settlement";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getSettlementDetailList } from "../../type/settlement.interface";
 import { formatNumberWithComma } from "../Common/Comma";
 import { useCustomToast } from "../Common/Toast";
 
 export default function SettlementDetail() {
+  const navigate = useNavigate();
   const id = useParams() as { id: string };
   const [isFilled, setIsFilled] = useState<boolean>(false);
   const toastFunction = useCustomToast();
@@ -26,6 +27,22 @@ export default function SettlementDetail() {
     settlementFile: "",
     status: "",
   });
+
+  const successSettlement = () => {
+    toastFunction("처리 완료되었습니다", true);
+    const eventSource = new EventSource("/api/sse/subscribe");
+
+    eventSource.addEventListener("settlementAllow", (event: MessageEvent) => {
+      console.log(event);
+    });
+
+    navigate("../admin")
+
+    // return () => {
+    //   eventSource.close();
+    // };
+  };
+
   useEffect(() => {
     GetSettlementDetail({ settlementId: Number(id.id) }).then((res) =>
       setValues(res)
@@ -110,7 +127,7 @@ export default function SettlementDetail() {
             onClick={() => {
               PutSettlementStatus(target)
                 .then(() => {
-                  toastFunction("처리 완료되었습니다", true);
+                  successSettlement();
                 })
                 .catch((err) => console.log(err));
             }}

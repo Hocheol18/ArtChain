@@ -40,7 +40,6 @@ export const PutSettlementStatus = async (
   params: PutSettlementStatusRequest
 ): Promise<PutSettlementStatusRequest> => {
   const { settlementId, status } = params;
-  console.log(settlementId, status);
   const url = `/settlement/${settlementId}/allow/${status}`;
 
   const response = await localAxios.put(url);

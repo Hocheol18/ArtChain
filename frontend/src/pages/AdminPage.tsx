@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Text, Flex } from "@chakra-ui/react";
 import BusinessApprove from "../components/Admin/BusinessApprove";
 import ProjectApporve from "../components/Admin/ProjectApprove";

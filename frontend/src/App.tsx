@@ -1,5 +1,5 @@
 import { useMediaQuery } from "react-responsive";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
@@ -35,15 +35,6 @@ import { AdminPage } from "./pages/AdminPage";
 import SettlementDetail from "./components/Admin/SettlementDetail";
 import ProjectConfirm from "./components/Admin/ProjectConfirm";
 
-interface SseFundingRecruitEndResultListItem {
-  isRecruitSuccess: boolean;
-  fundingContractAddress: string;
-}
-
-interface SseFundingRecruitEndResultList {
-  fundingRecruitResultList: Array<SseFundingRecruitEndResultListItem>;
-}
-
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
     const isDesktop = useMediaQuery({ minWidth: 701 });
@@ -53,32 +44,6 @@ function App() {
     const isMobile = useMediaQuery({ maxWidth: 700 });
     return isMobile ? children : null;
   };
-
-  useEffect(() => {
-    const eventSource = new EventSource(
-      "https://j10a708.p.ssafy.io/api/sse/subscribe"
-    );
-
-    eventSource.addEventListener("DUMMY", (event: MessageEvent) => {
-      const data: string = event.data;
-
-      console.log("Received event data:", data);
-    });
-
-    eventSource.addEventListener(
-      "fundingProgressStatusCron",
-      (event: MessageEvent) => {
-        // JSON 문자열을 객체로 변환
-        const data: SseFundingRecruitEndResultList = JSON.parse(event.data);
-
-        console.log("Received event data:", data.fundingRecruitResultList);
-      }
-    );
-
-    return () => {
-      eventSource.close();
-    };
-  });
 
   return (
     <>

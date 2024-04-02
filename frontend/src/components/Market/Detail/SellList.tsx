@@ -28,11 +28,11 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
   const { userInfo } = useUserInfo();
   const web3 = new Web3((window as any).ethereum);
   const toastFunction = useCustomToast();
-  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [url, setUrl] = useState<string | undefined>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [value, setValue] = useState<number>(0);
+  const navigate = useNavigate()
 
   // 메타마스크 유효성 검사
   const Validation = async () => {
@@ -53,7 +53,6 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
 
   // 토큰 구매
   const buyToken = async (data: buyContractCallInterfece) => {
-    console.log(data);
     try {
       const marketplaceContract = new web3.eth.Contract(
         TokenMarketplaceABI.abi,
@@ -105,6 +104,7 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
         toastFunction("토큰 승인에 실패하였습니다 다시 시도해주세요", false);
       }
     } catch (error) {
+      navigate(-1)
       toastFunction("거래 처리 중 오류가 발생하였습니다.", false);
     }
   };
