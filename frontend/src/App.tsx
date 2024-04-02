@@ -61,18 +61,18 @@ function App() {
     );
 
     // Listen for messages
-    eventSource.addEventListener("DUMMY", (event: MessageEvent) => {
+    eventSource.addEventListener('DUMMY', (event: MessageEvent) => {
       // JSON.parse를 사용하지 않고, 직접 event.data를 사용
-      const data: SseFundingRecruitEndResultList = JSON.parse(event.data);
-
-      console.log("Received event data:", data.fundingRecruitResultList);
+      const data: string = event.data;
+    
+      console.log('Received event data:', data);
     });
 
-    eventSource.addEventListener("fundingProgressStatusCron", () => {
+    eventSource.addEventListener("fundingProgressStatusCron", (event) => {
       // JSON 문자열을 객체로 변환
       const data: SseFundingRecruitEndResultList = JSON.parse(event.data);
 
-      console.log("Received event data:");
+      console.log("Received event data:", data);
     });
 
     // Clean up the connection when the component unmounts
