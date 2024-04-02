@@ -443,4 +443,22 @@ public class FundingController {
                 new MyIntegratedListResponseDto(myIntegratedList)
         );
     }
+
+    @GetMapping("/list/carousel")
+    public ResponseEntity<DefaultResponse<FundingCarouselListResponseDto>> getCarouselList() {
+        return DefaultResponse.toResponseEntity(
+                HttpStatus.OK,
+                SUCCESS_FUNDING_LIST_VIEW,
+                new FundingCarouselListResponseDto(fundingService.getCarouselList())
+        );
+    }
+
+    @GetMapping("/list/main-page")
+    public ResponseEntity<DefaultResponse<FundingMainPageListResponseDto>> getMainPageList() {
+        return DefaultResponse.toResponseEntity(
+                HttpStatus.OK,
+                SUCCESS_FUNDING_LIST_VIEW,
+                new FundingMainPageListResponseDto(fundingService.getMainPageList())
+        );
+    }
 }
