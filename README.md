@@ -1,12 +1,18 @@
 # 🧩블록체인 기반 공연·전시·영화 조각투자 서비스, ArtChain
 
-사진 넣기
+![header](/uploads/b141ed5f565a5dffe8b5f45ed02778b8/header.jpg)
 
 <hr>
 
 ## 목차
-
-여기에 목차 넣기
+- [📌 서비스 소개](#-서비스-소개)
+- [⏱ 개발 기간](#-개발-기간)
+- [👥 팀 소개](#-팀-소개)
+- [🛠️ 기술 스택](#️-기술-스택)
+- [💡 주요 기능](#-주요-기능)
+- [🌐 포팅 매뉴얼](#-포팅-매뉴얼)
+- [💻 서비스 화면](#-서비스-화면)
+- [📄 설계 문서](#-설계-문서)
 
 ### 📌 서비스 소개
 
@@ -68,7 +74,7 @@
 <img  src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white" width="auto" height="25" />
 <img  src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white" width="auto" height="25" />
 
-#### ⚙️ Management Tools
+##### ⚙️ Management Tools
 
 <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jira&amp;logoColor=white" width="auto" height="25" />
 <img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white" width="auto" height="25" />
@@ -76,10 +82,10 @@
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white" width="auto" height="25" />
 <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" width="auto" height="25" />
 
-#### 🖥️ IDE
+##### 🖥️ IDE
 
-<img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=for-the-badge&logo=visual studio code&logoColor=white"/>
-<img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellij&logoColor=white"/>
+<img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=for-the-badge&logo=visual studio code&logoColor=white" width="auto" height="25"/>
+<img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellij&logoColor=white"  width="auto" height="25"/>
 
 ### 💡 주요 기능
 
@@ -94,7 +100,7 @@
 - 투자 시 발생하는 트랜잭션 가스비는 테스트 Ethereum으로 지불
 - 실시간 블록체인 컨트랙트 메서드 호출을 위해 Server Sent Event(SSE) 사용해 투자 성공 시 조각 배분 및 정산 시 ArtCoin 배분
 
-#### 3. 마켓에서 구매한 조각을 투자자 간 거래
+#### 3. 구매한 조각으로 마켓에서 투자자 간 거래
 
 - 투자기간 이후 정산 되기 전 투자한 "조각"을 마켓에서 ArtCoin으로 거래 가능
 - 거래 시 트랜잭션 가스비는 테스트 Ethereum으로 지불
@@ -153,7 +159,7 @@
 
 erd 사진 넣을 거임
 
-#### 2. 아키텍쳐
+#### 2. 아키텍처
 
 아키텍쳐 사진 넣을 거임
 
