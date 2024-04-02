@@ -36,9 +36,7 @@ public class MarketController {
      */
     @GetMapping
     public ResponseEntity<DefaultResponse<List<MarketMainResponseDto>>> getMarketMainList(@RequestParam String category, @RequestParam String status, @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        System.out.println("category, status : " + category + status);
         List<MarketMainResponseDto> marketMainResponseDtoList = marketService.getMarketMain(status, category, pageable);
-        System.out.println(marketMainResponseDtoList);
 
         return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MARKET_MAIN_VIEW, marketMainResponseDtoList);
     }

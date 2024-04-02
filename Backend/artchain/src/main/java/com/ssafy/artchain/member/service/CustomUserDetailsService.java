@@ -25,11 +25,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-        System.out.println("검증 로직 실행");
+        log.info("검증 로직 실행");
         Member loginMember = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new RuntimeException("NOT FOUND MEMBER"));
 
-        if(loginMember.getPermission().equals(Permission.Y)){
+        if (loginMember.getPermission().equals(Permission.Y)) {
             return new CustomUserDetails(loginMember);
         } else {
             throw new UsernameNotFoundException("아직 허가되지 않은 유저");

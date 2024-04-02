@@ -30,9 +30,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -179,7 +179,7 @@ public class MemberServiceImpl implements MemberService {
         List<FundingComMypageDto> list = Optional.ofNullable(memberRepository.comMypage(company.getId()))
                 .orElseGet(Collections::emptyList); // 결과가 null이면 빈 리스트 반환
 
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             throw new Exception("연관된 펀딩 정보가 없습니다.");
         }
 
@@ -253,7 +253,6 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new NoSuchElementException("MEMBER NOT FOUND"));
 
         memberEntity.updateWalletInfo(requestDto);
-        System.out.println(requestDto);
         memberRepository.save(memberEntity);
     }
 
@@ -272,8 +271,6 @@ public class MemberServiceImpl implements MemberService {
         Page<Market> marketPage;
         Page<MarketLog> marketLogPage;
         List<MemberMyTradeResponseDto> list = new ArrayList<>();
-
-        System.out.println("filterFlag : " + filterFlag);
 
         if (filterFlag.equals("ALL")) {
             investmentLogPage = investmentLogRepository.findAllByFundingIdAndMemberIdOrderByCreatedAt(fundingId, memberId, pageable);
@@ -297,7 +294,7 @@ public class MemberServiceImpl implements MemberService {
             }
         } else if (filterFlag.equals("거래")) {
             marketLogPage = marketLogRepository.findByMember_IdAndMarket_FundingIdOrderByCreatedAt(memberId, fundingId, pageable);
-            for(MarketLog entity: marketLogPage) {
+            for (MarketLog entity : marketLogPage) {
                 list.add(new MemberMyTradeResponseDto(entity));
             }
         } else if (filterFlag.equals("판매중")) {
@@ -306,7 +303,6 @@ public class MemberServiceImpl implements MemberService {
                 list.add(new MemberMyTradeResponseDto(entity, memberId));
             }
         } else {
-            System.out.println("예외나버림");
             throw new Exception("잘못된 filter Flag입니다.");
         }
 

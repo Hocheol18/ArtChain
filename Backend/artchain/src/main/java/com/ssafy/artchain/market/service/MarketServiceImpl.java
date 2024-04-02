@@ -44,7 +44,6 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public List<MarketMainResponseDto> getMarketMain(String status, String category, Pageable pageable) {
-        System.out.println("서비스단 도착");
         String UPPER_STATUS = "ALL";
         String UPPER_CATEGORY = "ALL";
         List<FundingProgressStatus> statusList;
