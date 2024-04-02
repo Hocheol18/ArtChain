@@ -26,6 +26,7 @@ export default function FirstMainPage() {
         setCurrentWord(words[wordIndex].substring(0, letterIndex));
       }, 150);
       return () => clearTimeout(timer);
+      
     }
   }, [letterIndex, wordIndex]);
 
