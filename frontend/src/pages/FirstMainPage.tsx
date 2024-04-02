@@ -26,17 +26,17 @@ export default function FirstMainPage() {
         setCurrentWord(words[wordIndex].substring(0, letterIndex));
       }, 150);
       return () => clearTimeout(timer);
-      
+
     }
   }, [letterIndex, wordIndex]);
 
   return (
     <Box>
-      <Text as={"b"}>내 상황에 맞는</Text>
+      <Text as={"b"}></Text>
       <Text>
         {currentTitle} {currentWord}
       </Text>
-      <Text>가장 확실한 방법</Text>
+      <Text></Text>
     </Box>
   );
 }
