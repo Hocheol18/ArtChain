@@ -28,7 +28,7 @@ const FundRaisingPage: React.FC = () => {
   ];
 
   const ReceviceArtCoinContractAddress =
-    "0x2386d3DD22A3D07D69A8BD7757161865EC3a083f";
+    "0x46684aC698a2b5aDdB44b490E45dC6EE5de149e4";
   const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
 
   useEffect(() => {
@@ -138,6 +138,40 @@ const FundRaisingPage: React.FC = () => {
       console.error("거래 처리 중 오류가 발생했습니다.", error);
     }
   };
+
+  const distribute = async () => {
+    try {
+      // 펀딩할 때 이용할 FundRaisingContract 연결!
+      // 그 속에 있는 메서드가 정의된 ABI를 이용하기 위함이다.
+      const fundingContract = new web3.eth.Contract(
+        ReceiveArtCoinContractABI.abi,
+        ReceviceArtCoinContractAddress
+      );
+      
+      const tx = fundingContract.methods.distributeFund()
+        .send({from: account});
+      console.log((await tx).transactionHash);
+    } catch (error) {
+      console.error("거래 처리 중 오류가 발생했습니다.", error);
+    }
+  };
+
+  const refund = async () => {
+    try {
+      // 펀딩할 때 이용할 FundRaisingContract 연결!
+      // 그 속에 있는 메서드가 정의된 ABI를 이용하기 위함이다.
+      const fundingContract = new web3.eth.Contract(
+        ReceiveArtCoinContractABI.abi,
+        ReceviceArtCoinContractAddress
+      );
+      
+      const tx = fundingContract.methods.refundContributors()
+        .send({from: account});
+      console.log((await tx).transactionHash);
+    } catch (error) {
+      console.error("거래 처리 중 오류가 발생했습니다.", error);
+    }
+  };
   // 가격과 토큰의 양을 정수로 변환하는 함수
   const convertToInteger = (value: string) => {
     // 부동 소수점 수로 변환
@@ -165,6 +199,8 @@ const FundRaisingPage: React.FC = () => {
         </div>
       )}
       <button onClick={settlement}>Settlement</button>
+      <button onClick={refund}>refund</button>
+      <button onClick={distribute}>distribute</button>
       <div>{status}</div>
       {transactionHash && (
         <div>
