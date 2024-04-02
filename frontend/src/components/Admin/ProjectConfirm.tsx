@@ -6,12 +6,22 @@ import { PutFundingAllow, getFundding } from "../../api/invest";
 import { useCustomToast } from "../Common/Toast";
 import { GetFundingResponse } from "../../type/invest.interface";
 import { formatNumberWithComma } from "../Common/Comma";
+import Web3 from "web3";
+import IERC20ABI from "../../Contract/IERC20.json";
+import ReceiveArtCoinContractABI from "../../Contract/ReceiveArtCoinContract.json";
+import useSettlementInfo from "../../store/useSettlementInfo";
+import { convertToInteger } from "../Common/convertToInteger";
+import useUserInfo from "../../store/useUserInfo";
 
 export default function ProjectConfirm() {
   const id = useParams() as { id: string };
+  const { settlementInfo } = useSettlementInfo();
   const navigate = useNavigate();
+  const { userInfo } = useUserInfo();
   const toastFunction = useCustomToast();
   const [values, setValues] = useState<GetFundingResponse>();
+  const web3 = new Web3((window as any).ethereum);
+
   useEffect(() => {
     getFundding({ fundingId: id.id })
       .then((res) => {
@@ -23,6 +33,30 @@ export default function ProjectConfirm() {
   const success = () => {
     toastFunction("승인 성공", true);
     navigate(-1);
+  };
+
+  const settlement = async () => {
+    const fundingContract = new web3.eth.Contract(
+      ReceiveArtCoinContractABI.abi,
+      ReceviceArtCoinContractAddress
+    );
+    const artTokenContract = new web3.eth.Contract(IERC20ABI.abi, "");
+
+    // need to props
+    for (let i = 0; i < settlementInfo.data.length; i++) {
+      await artTokenContract.methods
+        .approve(
+          settlementInfo.data[i].pieceOwnerWalletAddress,
+          convertToInteger(
+            settlementInfo.data[i].settlementCoinCount.toString()
+          )
+        )
+        .send({ from: userInfo.metamask });
+    }
+
+    await fundingContract.methods
+      .settlement(ReceviceArtCoinContractAddress, 총발행량, settlementInfo.data)
+      .send({ from: userInfo.metamask });
   };
 
   const ProjectConfirm = (allowStatus: boolean) => {
