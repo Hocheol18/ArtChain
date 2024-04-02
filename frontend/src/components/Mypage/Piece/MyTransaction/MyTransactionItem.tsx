@@ -130,8 +130,12 @@ export const MyTransactionItem = ({ transaction }: Props) => {
             </Box>
           </Flex>
           <Box fontSize={"14"}>
-            {transaction.createdAt.slice(0, 10)}{" "}
-            {transaction.createdAt.slice(11, 19)}
+            {transaction.createdAt !== null ? (
+              <>
+                {transaction.createdAt.slice(0, 10)}{" "}
+                {transaction.createdAt.slice(11, 19)}
+              </>
+            ) : null}
           </Box>
         </Flex>
       </Box>
