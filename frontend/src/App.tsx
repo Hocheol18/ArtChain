@@ -1,5 +1,5 @@
 import { useMediaQuery } from "react-responsive";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import { InvestList } from "./pages/InvestList";
@@ -44,6 +44,29 @@ function App() {
     const isMobile = useMediaQuery({ maxWidth: 700 });
     return isMobile ? children : null;
   };
+
+  useEffect(() => {
+    // Establish the connection to the server endpoint
+    const eventSource = new EventSource(
+      "https://j10a708.p.ssafy.io:8080/api/sse/subscribe"
+    );
+
+    // Listen for messages
+    eventSource.onmessage = (event) => {
+      console.log("Event received:", event);
+    };
+
+    // Listen for errors (optional)
+    eventSource.onerror = (error) => {
+      console.error("EventSource failed:", error);
+      eventSource.close();
+    };
+
+    // Clean up the connection when the component unmounts
+    return () => {
+      eventSource.close();
+    };
+  }, []); // The empty dependency array ensures this effect runs only once on mount
 
   return (
     <>
