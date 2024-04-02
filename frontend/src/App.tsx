@@ -57,7 +57,7 @@ function App() {
   useEffect(() => {
     // Establish the connection to the server endpoint
     const eventSource = new EventSource(
-      "http://j10a708.p.ssafy.io:8080/api/sse/subscribe"
+      "https://j10a708.p.ssafy.io/api/sse/subscribe"
     );
 
     // Listen for messages
