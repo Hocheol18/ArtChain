@@ -2,8 +2,46 @@ import { Box, Flex, Input, Select, Text } from "@chakra-ui/react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 import FileUploadButton from "../components/Mypage/Business/FileUploadButton";
 import InputComponent from "../components/Mypage/Business/InputComponent";
+import { useState, useEffect } from "react";
 
 export default function BusinessProjectEnroll() {
+  const [projectData, setProjectData] = useState({
+    name: "",
+    category: "",
+    recruitStart: "",
+    recruitEnd: "",
+    settlement: "",
+    goalCoinCount: 0,
+    totalBudget: 0,
+    unitPrice: 0,
+    bep: 0,
+    scheduleList: [],
+    expectedReturnList: [],
+    saleList: [],
+    costList: [],
+  });
+
+  //예상수익률 배열
+  const [expectedReturnArr, setexpectedReturnArr] = useState([
+    { spectatorNum: "", expectedReturn: "" },
+  ]);
+
+  //예상수익률 업데이트
+  const handleexpectedReturnArrChange = (
+    newexpectedReturnArr: { expectedReturn: string; spectatorNum: string }[]
+  ) => {
+    setexpectedReturnArr([
+      { ...expectedReturnArr[0] }, // 기존 데이터와 새로운 데이터를 결합하여 첫 번째 요소로 설정
+      ...newexpectedReturnArr, // 기존 매출 구성의 나머지 부분은 그대로 유지
+    ]);
+  };
+
+  const handleSubmit = () => {};
+
+  useEffect(() => {
+    console.log(expectedReturnArr);
+  }, [expectedReturnArr]);
+
   return (
     <>
       <Box p={"1.5rem"} mb={"3rem"}>
@@ -133,7 +171,7 @@ export default function BusinessProjectEnroll() {
           </Box>
         </Flex>
 
-        <InputComponent first="일정 입력(선택)" second="" check={true} />
+        {/* <InputComponent first="일정 입력(선택)" second="" check={true} /> */}
 
         <Box ml={"0.2rem"} mt={"1rem"}>
           <Text as={"b"} fontSize={"1rem"}>
@@ -171,11 +209,11 @@ export default function BusinessProjectEnroll() {
             placeholder="매출 비율을 입력하세요"
           />
         </Flex>
-        <InputComponent
+        {/* <InputComponent
           first="종류를 입력하세요"
           second="매출 비율을 입력하세요"
           check={false}
-        />
+        /> */}
 
         <Box ml={"0.2rem"} mt={"1rem"}>
           <Text as={"b"} fontSize={"1rem"}>
@@ -203,11 +241,11 @@ export default function BusinessProjectEnroll() {
             placeholder="비용 내용을 입력하세요"
           />
         </Flex>
-        <InputComponent
+        {/* <InputComponent
           first="종류를 입력하세요"
           second="비용 내용을 입력하세요"
           check={false}
-        />
+        /> */}
 
         <Box ml={"0.2rem"} mt={"1rem"}>
           <Text as={"b"} fontSize={"1rem"}>
@@ -267,6 +305,13 @@ export default function BusinessProjectEnroll() {
               border={"1px"}
               borderColor={"gray.400"}
               placeholder="관객수"
+              type="number"
+              value={expectedReturnArr[0].spectatorNum}
+              onChange={(e) =>
+                setexpectedReturnArr([
+                  { ...expectedReturnArr[0], spectatorNum: e.target.value },
+                ])
+              }
             />
 
             <Input
@@ -277,13 +322,31 @@ export default function BusinessProjectEnroll() {
               border={"1px"}
               borderColor={"gray.400"}
               placeholder="%"
+              value={expectedReturnArr[0].expectedReturn}
+              type="number"
+              onChange={(e) =>
+                setexpectedReturnArr([
+                  { ...expectedReturnArr[0], expectedReturn: e.target.value },
+                ])
+              }
             />
           </Flex>
-          <InputComponent first="관객수" second="%" check={false} />
+          <InputComponent
+            first="관객수"
+            second="%"
+            check={false}
+            onChange={handleexpectedReturnArrChange} // 매출 구성 변경 사항을 감지하고 처리
+            typeText="spectatorNum"
+            numberText="expectedReturn"
+          />
         </Box>
       </Box>
 
-      <BottomButtonNavbar text="등록하기" category="" hanldeButton={() => {}} />
+      <BottomButtonNavbar
+        text="등록하기"
+        category=""
+        hanldeButton={handleSubmit}
+      />
     </>
   );
 }
