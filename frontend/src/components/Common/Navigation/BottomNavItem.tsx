@@ -5,6 +5,8 @@ import HomeIcon from "../../../assets/home-icon.svg";
 import InvestIcon from "../../../assets/invest-icon.svg";
 import MarketIcon from "../../../assets/market-icon.svg";
 import MyIcon from "../../../assets/my-icon.svg";
+import useUserInfo from "../../../store/useUserInfo";
+import { useCustomToast } from "../Toast";
 
 interface BottomNavProps {
   text: string;
@@ -20,6 +22,10 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
   const [imgIcon, setImgIcon] = useState<string>("");
 
   const [toLink, setToLink] = useState<string>("");
+
+  const { userInfo } = useUserInfo();
+
+  const toastFunction = useCustomToast();
 
   useEffect(() => {
     if (active) {
@@ -45,14 +51,31 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
         break;
       case "마켓":
         setImgIcon(MarketIcon);
-        setToLink("/market")
+        setToLink("/market");
         break;
       case "마이":
         setImgIcon(MyIcon);
-        setToLink("/mypage");
+        console.log(userInfo.isLogin);
+        console.log(userInfo.userId);
+
+        if (userInfo.isLogin) {
+          if (userInfo.isBusiness) {
+            setToLink("/businesspage");
+          } else {
+            setToLink("/mypage");
+          }
+        } else {
+          setToLink("/login");
+        }
         break;
     }
-  }, [text]);
+  }, [text, userInfo.isLogin, userInfo.isBusiness]);
+
+  const handleToast = () => {
+    if (text === "마이" && userInfo.isLogin === false) {
+      toastFunction("로그인이 필요한 서비스입니다.", false);
+    }
+  };
 
   return (
     <Box
@@ -67,6 +90,7 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
       mx={2}
       pt={2}
       justifyContent={"center"}
+      onClick={handleToast}
     >
       <Image src={imgIcon} filter={ImgColor} />
       <Box fontSize={"12"}>{text}</Box>

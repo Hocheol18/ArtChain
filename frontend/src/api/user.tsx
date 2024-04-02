@@ -6,6 +6,7 @@ import {
   SignUpPermissionInterface,
 } from "../type/login.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
+import { BusinessMyPageResponse } from "../type/mypage.interface";
 
 // urls
 const loginurl = "/member/login";
@@ -71,9 +72,8 @@ async function EnrollMetamask(data: {
 }
 
 // 기업 마이페이지
-async function BusinessMyPageAxios() {
+async function BusinessMyPageAxios(): Promise<BusinessMyPageResponse> {
   const response = await localAxios.get(businessMyPageurl);
-
   return response.data.data;
 }
 

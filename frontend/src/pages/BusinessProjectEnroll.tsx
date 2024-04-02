@@ -1,5 +1,4 @@
 import { Box, Flex, Input, Select, Text } from "@chakra-ui/react";
-import React from "react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 import FileUploadButton from "../components/Mypage/Business/FileUploadButton";
 import InputComponent from "../components/Mypage/Business/InputComponent";
@@ -280,15 +279,11 @@ export default function BusinessProjectEnroll() {
               placeholder="%"
             />
           </Flex>
-          <InputComponent
-            first="관객수"
-            second="%"
-            check={false}
-          />
+          <InputComponent first="관객수" second="%" check={false} />
         </Box>
       </Box>
 
-      <BottomButtonNavbar text="등록하기" hanldeButton={() => {}} />
+      <BottomButtonNavbar text="등록하기" category="" hanldeButton={() => {}} />
     </>
   );
 }

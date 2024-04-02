@@ -89,7 +89,6 @@ export default function InputComponent({ first, second, check }: Props) {
               <Flex w={"48%"}>
                 <Input
                   h={"2rem"}
-                  
                   rounded={"0.7rem"}
                   fontSize={"sm"}
                   border={"1px"}

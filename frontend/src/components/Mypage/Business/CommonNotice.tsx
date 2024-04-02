@@ -1,13 +1,11 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 interface Props {
-  first : string;
-  second : string;
-  thrid : string;
+  text: string;
   isNow: string;
 }
 
-export default function CommonNotice({ first, second, thrid, isNow }: Props) {
+export default function CommonNotice({ text, isNow }: Props) {
   return isNow === "now" ? (
     <Flex>
       <Box
@@ -23,9 +21,7 @@ export default function CommonNotice({ first, second, thrid, isNow }: Props) {
         bgColor={"blue.300"}
       >
         <Flex>
-          <Text color={"white.100"}>
-            {first}
-          </Text>
+          <Text color={"white.100"}>{text}</Text>
         </Flex>
       </Box>
     </Flex>
@@ -41,12 +37,10 @@ export default function CommonNotice({ first, second, thrid, isNow }: Props) {
         border={"1px"}
         borderColor={"gray.300"}
         ml={"0.5rem"}
-        bgColor={"red"}
+        bgColor={"gray.500"}
       >
         <Flex>
-          <Text color={"white.100"}>
-            {second}
-          </Text>
+          <Text color={"white.100"}>{text}</Text>
         </Flex>
       </Box>
     </Flex>
@@ -59,15 +53,12 @@ export default function CommonNotice({ first, second, thrid, isNow }: Props) {
         rounded={"0.7rem"}
         boxShadow={"xl"}
         fontSize={"xs"}
-        border={"1px"}
         borderColor={"black.100"}
         ml={"0.5rem"}
-        bgColor={"gray.300"}
+        bgColor={"blue.200"}
       >
         <Flex>
-          <Text color={"black"}>
-            {thrid}
-          </Text>
+          <Text color={"white"}>{text}</Text>
         </Flex>
       </Box>
     </Flex>
