@@ -79,7 +79,7 @@ function App() {
     return () => {
       eventSource.close();
     };
-  }, []); // The empty dependency array ensures this effect runs only once on mount
+  }, ); // The empty dependency array ensures this effect runs only once on mount
 
   return (
     <>
