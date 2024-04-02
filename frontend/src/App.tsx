@@ -68,12 +68,12 @@ function App() {
     });
 
     // Listen for messages
-    eventSource.onmessage = async (e) => {
-      const res = await e.data;
-      console.log(res);
+    // eventSource.onmessage = async (e) => {
+    //   const res = await e.data;
+    //   console.log(res);
 
-      // 받아오는 data로 할 일
-    };
+    //   // 받아오는 data로 할 일
+    // };
 
     // Clean up the connection when the component unmounts
     return () => {
