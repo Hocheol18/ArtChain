@@ -34,8 +34,8 @@ export default function BusinessProjectDetail({ projectData }: Props) {
         setBadgeText("정산완료");
         setBadgeColor("blue.200");
         break;
-      default:
-        setBadgeText("승인대기");
+      case "BEFORE_RECRUITMENT":
+        setBadgeText("모집이전");
         setBadgeColor("gray.400");
         break;
     }
