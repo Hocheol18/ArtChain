@@ -60,7 +60,12 @@ function App() {
       "https://j10a708.p.ssafy.io/api/sse/subscribe"
     );
 
-    console.log("good")
+    eventSource.addEventListener("DUMMY", (event: MessageEvent) => {
+      // JSON.parse를 사용하지 않고, 직접 event.data를 사용
+      const data: string = event.data;
+
+      console.log("Received event data:", data);
+    });
 
     // Listen for messages
     eventSource.onmessage = async (e) => {
