@@ -5,6 +5,8 @@ import { BusinessMyPageAxios } from "../api/user";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BusinessMyPageFunding } from "../type/mypage.interface";
+import useUserInfo from "../store/useUserInfo";
+import { useCustomToast } from "../components/Common/Toast";
 
 export default function BusinessMyPage() {
   const navigate = useNavigate();
@@ -12,6 +14,9 @@ export default function BusinessMyPage() {
   const [companyName, setCompanyName] = useState<string>("");
   const [companyNumber, setCompanyNumber] = useState<number>(0);
   const [companyList, setCompanyList] = useState<BusinessMyPageFunding[]>([]);
+
+  const { userInfo } = useUserInfo();
+  const toastFunction = useCustomToast();
 
   const getBusinessMyList = async () => {
     const res = await BusinessMyPageAxios();
@@ -21,6 +26,11 @@ export default function BusinessMyPage() {
   };
 
   useEffect(() => {
+    if (userInfo.isBusiness === false) {
+      toastFunction("잘못된 접근입니다", false);
+      navigate("/main");
+    }
+
     getBusinessMyList();
   }, []);
 

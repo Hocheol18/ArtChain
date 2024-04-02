@@ -2,15 +2,19 @@ import { Box, Flex, Input, Text } from "@chakra-ui/react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 import FileUploadButton from "../components/Mypage/Business/FileUploadButton";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getFundding } from "../api/invest";
 import { PostSettlement } from "../api/Settlement";
 import { useCustomToast } from "../components/Common/Toast";
+import useUserInfo from "../store/useUserInfo";
 
 export default function FundConfirm() {
   const { id } = useParams();
 
   const toastFunction = useCustomToast();
+  const navigate = useNavigate();
+
+  const { userInfo } = useUserInfo();
 
   const [name, setName] = useState<string>();
   const [enterName, setEnterName] = useState<string>();
@@ -20,6 +24,10 @@ export default function FundConfirm() {
 
     setName(res.name);
     setEnterName(res.entName);
+    if (res.entName !== userInfo.nickname || userInfo.isBusiness === false) {
+      toastFunction("잘못된 접근입니다", false);
+      navigate("/main");
+    }
   };
 
   const [settlementPrice, setSettlementPrice] = useState<number>();
@@ -57,6 +65,7 @@ export default function FundConfirm() {
 
       // 수정된 formData를 PostSettlement 함수에 전달
       const responseData = await PostSettlement(formData);
+      console.log(responseData);
       toastFunction("정산 신청이 완료되었습니다", true);
     } catch {
       toastFunction("정산 신청에 실패했습니다. 다시 시도해주세요.", false);
@@ -126,7 +135,7 @@ export default function FundConfirm() {
           <Text as={"b"} fontSize={"1.5rem"}>
             정산 자료
           </Text>
-          <FileUploadButton />
+          <FileUploadButton handleImage={handleDataFile} />
         </Flex>
       </Box>
       <BottomButtonNavbar

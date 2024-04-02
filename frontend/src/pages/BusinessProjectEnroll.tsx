@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useCustomToast } from "../components/Common/Toast";
 import { PostFunding } from "../api/invest";
 import { useNavigate } from "react-router-dom";
+import useUserInfo from "../store/useUserInfo";
 
 export default function BusinessProjectEnroll() {
   const [projectData, setProjectData] = useState({
@@ -272,9 +273,13 @@ export default function BusinessProjectEnroll() {
     setDescription(file);
   };
 
+  const { userInfo } = useUserInfo();
   useEffect(() => {
-    console.log(category);
-  }, [category]);
+    if (userInfo.isBusiness === false) {
+      toastFunction("잘못된 접근입니다", false);
+      navigate("/main");
+    }
+  }, []);
 
   return (
     <>
