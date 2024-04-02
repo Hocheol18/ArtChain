@@ -22,4 +22,6 @@ public interface MarketService {
     int buyMarketItem(String transactionHash, Long marketId, CustomUserDetails member);
 
     List<MarketGraphResponseDto> getGraphList(Long fundingId);
+
+    List<MarketMainPageResponseDto> getMainPageMarketList();
 }

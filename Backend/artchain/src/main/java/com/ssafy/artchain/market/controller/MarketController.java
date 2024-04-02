@@ -26,6 +26,13 @@ public class MarketController {
 
     private final MarketServiceImpl marketService;
 
+    @GetMapping("/mainPageMarket")
+    public ResponseEntity<DefaultResponse<List<MarketMainPageResponseDto>>> getMainPageMarket(){
+        List<MarketMainPageResponseDto> list = marketService.getMainPageMarketList();
+
+        return DefaultResponse.toResponseEntity(HttpStatus.OK, SUCCESS_MAIN_PAGE_MARKET_VIEW, list);
+    }
+
     /**
      * 마켓 메인
      * 마켓에 들어오면 정산 대기, 정산 완료 상태인 투자 리스트들을 볼 수 있다.

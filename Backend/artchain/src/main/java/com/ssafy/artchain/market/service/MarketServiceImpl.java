@@ -271,4 +271,16 @@ public class MarketServiceImpl implements MarketService {
 
 
     }
+
+    @Override
+    public List<MarketMainPageResponseDto> getMainPageMarketList() {
+        List<MarketMainPageResponseDto> fundingList = marketRepository.findAllMainPageMarketList();
+        List<MarketMainPageResponseDto> responseDtos = new ArrayList<>();
+//        상위 4개 뽑아내기
+        for(int i=0; i<4; i++){
+            responseDtos.add(fundingList.get(i));
+        }
+
+        return responseDtos;
+    }
 }

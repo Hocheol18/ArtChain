@@ -9,6 +9,7 @@ public enum StatusCode {
 
     // 200 OK : 성공
     SUCCESS_MARKET_MAIN_VIEW(200, "마켓 메인화면 조회 성공"),
+    SUCCESS_MAIN_PAGE_MARKET_VIEW(200, "메인화면 마켓 인기 상위 4개 조회 성공"),
     SUCCESS_MARKET_SELL_LIST_VIEW(200, "마켓 판매 리스트 조회 성공"),
     SUCCESS_MARKET_PIECE_TRADE_HISTORY_VIEW(200, "마켓 조각 거래 내역 조회 성공"),
     SUCCESS_MARKET_DETAIL_VIEW(200, "마켓 판매글 상세 조회 성공"),
