@@ -20,6 +20,7 @@ public enum StatusCode {
 	SUCCESS_USER_WALLET_PUT(200,"지갑 정보 등록 성공"),
 	SUCCESS_MYTRADE_DROPDOWN_VIEW(200,"나의 거래 드롭다운 메뉴 조회 성공"),
 	SUCCESS_MYTRADE_LIST_VIEW(200,"나의 거래 리스트 조회 성공"),
+	SUCCESS_MYTRADE_DELETE(200, "성공적으로 거래를 비활성화함"),
 	// 201 CREATED : 새로운 리소스 생성
 //	SUCCESS_CREATE_USER_BOOK(201, "사용자 도서 생성 성공"),
 

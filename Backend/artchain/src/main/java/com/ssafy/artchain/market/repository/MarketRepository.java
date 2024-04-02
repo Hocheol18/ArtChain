@@ -30,6 +30,7 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
             "order by m.createdAt DESC")
     Page<Market> findAllMarketHistory(@Param("fundingId") Long fundingId, @Param("memberId") Long memberId, Pageable pageable);
     @Query("select m from Market m where m.fundingId = :fundingId and m.sellerId = :memberId and m.buyerId is null " +
+            "and m.status = 'LISTED'" +
             "order by m.createdAt DESC")
     Page<Market> findAllSelling(@Param("fundingId") Long fundingId, @Param("memberId") Long memberId, Pageable pageable);
 

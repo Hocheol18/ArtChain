@@ -314,6 +314,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Transactional
+    @Override
+    public void deleteMyTrade(Long marketId) {
+        Market market = marketRepository.findById(marketId)
+                .orElseThrow(() -> new NoSuchElementException("MARKET NOT FOUND"));
+
+        market.updateStatus("UNLISTED");
+
+    }
+
+    @Transactional
     protected void addRefreshEntity(String memberId, String refresh, Long expiredMs) {
 
         Date date = new Date(System.currentTimeMillis() + expiredMs);

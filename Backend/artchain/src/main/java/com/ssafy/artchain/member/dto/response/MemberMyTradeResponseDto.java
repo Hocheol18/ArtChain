@@ -22,6 +22,7 @@ public class MemberMyTradeResponseDto {
   private Long coinCount;
   private String tradeFlag;
   private LocalDateTime createdAt;
+  private String status;
 
   public MemberMyTradeResponseDto(InvestmentLog i) {
     this.transactionHash = i.getTransactionHash();
@@ -31,6 +32,7 @@ public class MemberMyTradeResponseDto {
     this.coinCount = i.getCoinCount();
     this.tradeFlag = "투자";
     this.createdAt = i.getCreatedAt();
+    this.status = "LISTED";
   }
 
   public MemberMyTradeResponseDto(MarketLog ml) {
@@ -48,6 +50,7 @@ public class MemberMyTradeResponseDto {
       this.tradeFlag = "취소";
     }
     this.createdAt = ml.getCreatedAt();
+    this.status = ml.getMarket().getStatus();
   }
 
   public MemberMyTradeResponseDto(Market m, Long memberId) {
@@ -62,23 +65,6 @@ public class MemberMyTradeResponseDto {
       this.tradeFlag = "구매";
     }
     this.createdAt = m.getCreatedAt();
+    this.status = m.getStatus();
   }
-
-  public MemberMyTradeResponseDto(Market m, MarketLog ml) {
-    this.transactionHash = ml.getTransactionHash();
-    this.transactionType = "마켓";
-    this.id = m.getId();
-    this.pieceCount = m.getPieceCount();
-    this.coinCount = m.getTotalCoin();
-    if (ml.getMarketFlag().equals(MarketFlag.판매)) {
-      this.tradeFlag = "판매";
-    } else if(ml.getMarketFlag().equals(MarketFlag.구매)){
-      this.tradeFlag = "구매";
-    }
-    else {
-      this.tradeFlag = "취소";
-    }
-    this.createdAt = m.getCreatedAt();
-  }
-
 }
