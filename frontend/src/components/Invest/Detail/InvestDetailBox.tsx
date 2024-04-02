@@ -45,7 +45,7 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
       case "descActive":
         setShowComponent(
           <DescriptionInvest
-            poster={fundingData.poster}
+            poster={fundingData.descriptionImg}
             scheduleList={fundingData.scheduleList}
           />
         );

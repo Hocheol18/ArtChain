@@ -11,7 +11,7 @@ export default function BusinessMyPage() {
   const getBusinessMyList = async () => {
     const res = await BusinessMyPageAxios();
 
-    console.log(res);
+    // console.log(res);
   };
 
   useEffect(() => {
