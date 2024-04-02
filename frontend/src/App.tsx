@@ -52,15 +52,19 @@ function App() {
     );
 
     // Listen for messages
-    eventSource.onmessage = (event) => {
-      console.log("Event received:", event);
-    };
+    eventSource.addEventListener('DUMMY', (event: MessageEvent) => {
+      // JSON.parse를 사용하지 않고, 직접 event.data를 사용
+      const data: string = event.data;
+    
+      console.log('Received event data:', data);
+    });
 
-    // Listen for errors (optional)
-    eventSource.onerror = (error) => {
-      console.error("EventSource failed:", error);
-      eventSource.close();
-    };
+    eventSource.addEventListener('fundingProgressStatusCron', () => {
+      // JSON 문자열을 객체로 변환
+      // const data: SseFundingRecruitEndResultList = JSON.parse(event.data);
+    
+      console.log('Received event data:');
+    });
 
     // Clean up the connection when the component unmounts
     return () => {
