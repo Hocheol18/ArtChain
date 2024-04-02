@@ -11,10 +11,6 @@ export const Charge = () => {
     setCheck(whatCheck);
   };
 
-  useEffect(() => {
-    console.log(check);
-  }, [check]);
-
   return (
     <div>
       <CommonTopBox
@@ -24,11 +20,7 @@ export const Charge = () => {
         check={check}
       />
 
-      {check === "one" ? (
-        <ArtCharge check={check} />
-      ) : (
-        <History type="charge" />
-      )}
+      {check === "one" ? <ArtCharge check={check} /> : <History type="충전" />}
     </div>
   );
 };

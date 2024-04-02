@@ -20,7 +20,7 @@ export const TopNavBar = ({ navType }: NavProp) => {
   const [isLogin, setIsLogin] = useState<boolean>(userInfo.isLogin);
 
   //유저의 코인 보유 수량
-  const userCoin = Number(userInfo.walletBalance)
+  const userCoin = Number(userInfo.walletBalance);
 
   const navigate = useNavigate();
   const handleBack = () => {
@@ -51,12 +51,11 @@ export const TopNavBar = ({ navType }: NavProp) => {
         alignItems={"center"}
         justifyContent={justifyCon}
         borderBottom={"1px"}
-        borderBottomColor="#EFF0F3"
-      >
+        borderBottomColor="#EFF0F3">
         {/* 네비바 타입이 "logo"일 때 */}
         {navType === "logo" ? (
           <>
-            <Link to="/">
+            <Link to="/main">
               <Button variant="unstyled">
                 <Image src={Logo} />
               </Button>

@@ -22,6 +22,13 @@ export interface getMarketSellingDisplayListAxiosInterface {
   size: number;
 }
 
+export interface buyContractCallInterfece {
+  seller : string;
+  tokenAddress : string;
+  tokenAmount : number;
+  price : number;
+}
+
 export interface getMarketSellingDisplayListInterface {
   id: number;
   fundingId: number;
@@ -54,11 +61,12 @@ export interface getMarketHistoryDisplayListInterface {
 }
 
 export interface postMarketEnrollInterface {
-  fundingId: number;
+  fundingId: number | undefined;
   contractAddress: string;
   pieceCount: number;
   totalCoin: number;
   coinPerPiece: number;
+  transactionHash : string;
 }
 
 export interface getMarketDetailDisplayInterface {
@@ -73,7 +81,24 @@ export interface getMarketDetailDisplayInterface {
   sellerAddress: string;
   status: string;
   totalCoin: number;
-  createdAt : string;
-  updatedAt : string;
+  createdAt: string;
+  updatedAt: string;
 }
+
+export interface getMarketMyTokenInterface {
+  id: number;
+  fundingId: number;
+  name: string;
+  pieceCount: number;
+  contractAddress : string;
+}
+
+export interface buyMarketTokenInterface {
+  seller: string;
+  address: string;
+  price: string;
+  amount: string;
+  completed: boolean;
+}
+
 

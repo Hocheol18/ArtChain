@@ -185,7 +185,7 @@ function App() {
                     }
                   ></Route>
                   <Route
-                    path="/market/:id/enroll"
+                    path="/market/enroll"
                     element={
                       <CommonPage topNavType="back" bottomNavType="">
                         <MarketEnroll />
@@ -234,7 +234,7 @@ function App() {
 
                   {/* 기업 마이페이지 */}
                   <Route
-                    path="/businesspage/:id"
+                    path="/businesspage"
                     element={
                       <CommonPage topNavType="back" bottomNavType="my">
                         <BusinessMyPage />
@@ -428,7 +428,7 @@ function App() {
                   }
                 ></Route>
                 <Route
-                  path="/market/:id/enroll"
+                  path="/market/enroll"
                   element={
                     <CommonPage topNavType="back" bottomNavType="">
                       <MarketEnroll />
@@ -477,7 +477,7 @@ function App() {
 
                 {/* 기업 마이페이지 */}
                 <Route
-                  path="/businesspage/:id"
+                  path="/businesspage"
                   element={
                     <CommonPage topNavType="back" bottomNavType="my">
                       <BusinessMyPage />

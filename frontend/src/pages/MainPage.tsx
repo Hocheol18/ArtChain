@@ -5,9 +5,16 @@ import Marketplace from "../components/Main/Marketplace";
 import justin from "../assets/poster.png";
 import uni from "../assets/universe.png";
 import { useNavigate } from "react-router-dom";
+import {
+  getMyPieceDropDown,
+  getMyPieceList,
+  getMyInvestmentHistory,
+  getMyPieceCount,
+} from "../api/mypage";
 
 export default function MainPage() {
   const navigate = useNavigate();
+
   return (
     <>
       <MainCarousel />
@@ -15,7 +22,6 @@ export default function MainPage() {
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>
           진행 중인 투자 작품
         </Text>
-        <button onClick={() => navigate("/admin")}>ADMIN</button>
       </Box>
       <Poster />
       <Poster />

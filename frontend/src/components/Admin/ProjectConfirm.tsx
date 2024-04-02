@@ -1,14 +1,50 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { BottomButtonNavbar } from "../Common/Navigation/BottomButtonNavbar";
+import { useParams } from "react-router-dom";
+import { GetSettlementDetail } from "../../api/Settlement";
+import { useEffect } from "react";
+import { PutFundingAllow } from "../../api/invest";
 
 export default function ProjectConfirm() {
+  const id = useParams() as { id: string };
+  useEffect(() => {
+    GetSettlementDetail({ settlementId: Number(id.id) })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const ProjectConfirm = (fundingId: number, allowStatus: boolean) => {
+    // 여기 fundingId 고쳐야함
+    PutFundingAllow({ fundingId: fundingId, allowStatus: allowStatus });
+  };
+
   return (
     <>
       <Box p={"1.5rem"} mb={"3rem"}>
-        <Box>
-          <Text as={"b"} fontSize={"1.5rem"}>
-            프로젝트 등록
-          </Text>
-        </Box>
+        <Flex justifyContent={"space-between"}>
+          <Box>
+            <Text as={"b"} fontSize={"1.5rem"}>
+              프로젝트 등록
+            </Text>
+          </Box>
+          <Button
+            mt={"0.1rem"}
+            width={"50px"}
+            h={"35px"}
+            bgColor={"blue.300"}
+            textColor={"white"}
+            fontSize={"sm"}
+            _hover={{ bg: "blue.400" }} // 마우스 오버 시 색상
+            _active={{ bg: "blue.500", borderColor: "blue.500" }} // 클릭 시 색상
+            _focus={{ boxShadow: "none" }} // 클릭 후 포커스 상태 제거
+            onClick={() => {
+              ProjectConfirm(1, false);
+            }}
+          >
+            반려
+          </Button>
+        </Flex>
+
         <Box ml={"0.2rem"} mt={"1rem"}>
           <Text as={"b"} fontSize={"1rem"}>
             프로젝트 이름
@@ -112,6 +148,13 @@ export default function ProjectConfirm() {
           </Flex>
         </Box>
       </Box>
+      <BottomButtonNavbar
+        text="컨펌"
+        category=""
+        hanldeButton={() => {
+          ProjectConfirm(1, true);
+        }}
+      />
     </>
   );
 }

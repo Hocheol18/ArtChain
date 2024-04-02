@@ -5,15 +5,13 @@ import { LoginInterface } from "../type/login.interface";
 import { useEffect, useState } from "react";
 import { useLoginWithMetamask } from "../components/Common/LoginWithMetamask";
 
-
 export default function LoginBusiness() {
   const navigate = useNavigate();
   const [values, setValues] = useState<LoginInterface>({
     username: "",
     password: "",
   })
-  const { LoginWithMetamask } = useLoginWithMetamask(values);
-
+  const { LoginWithMetamask } = useLoginWithMetamask(values, true);
 
   const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

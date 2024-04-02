@@ -6,7 +6,7 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 export default function MarketSell() {
   const navigate = useNavigate();
   return (
-    <Flex justifyContent={"end"} mt={"1rem"} mr={"0.7rem"}>
+    <Flex justifyContent={"end"} mr={"0.7rem"}>
       <Box
         px={"0.6rem"}
         py={"0.3rem"}
@@ -20,7 +20,7 @@ export default function MarketSell() {
       >
         <Flex
           onClick={() => {
-            navigate("./enroll");
+            navigate("../market/enroll");
           }}
         >
           <Image src={pencil} boxSize={"1rem"}></Image>

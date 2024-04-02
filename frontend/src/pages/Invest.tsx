@@ -1,30 +1,16 @@
-import {
-  Box,
-  Input,
-  Center,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  Button,
-  Image,
-  Link,
-} from "@chakra-ui/react";
+import { Box, Input, Center, useDisclosure } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { BottomButtonNavbar } from "../components/Common/Navigation/BottomButtonNavbar";
 import { InvestContent } from "../components/Invest/InvestContent";
 import { InvestArt } from "../components/Invest/InvestArt";
-import useUserInfo from "../store/useUserInfo";
+import useUserInfo, { userInfoType } from "../store/useUserInfo";
 import { PostInvest, getFundding } from "../api/invest";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetFundingResponse } from "../type/invest.interface";
 import { FundRaisingPage } from "../FundRaising";
 
-import Spinner from "../assets/spinner.gif";
-import { CheckCircleIcon } from "@chakra-ui/icons";
-import PuzzleIcon from "../assets/puzzle.svg";
 import { LoadingModal } from "../components/Common/LoadingModal";
+import MetamaskValidation from "../components/Common/MetamaskValidation";
 
 export const Invest = () => {
   const navigate = useNavigate();
@@ -36,27 +22,38 @@ export const Invest = () => {
       setIsSuccess(false);
       onOpen();
       try {
-        //transactionHash
-        const transactionHash = await FundRaisingPage({
-          // account: "0x9630b4B3d0593C02A91836b4B985f1802757eBF4",
-          account: userInfo.metamask,
-          tokenAmount: value.toString(),
-        });
-        if (transactionHash) {
-          //트랜잭션 성공 시간
-          const transactionTime = new Date().toISOString().slice(0, -5);
-          //date 받아오고
+        if (fundingData !== undefined) {
+          const res = await MetamaskValidation(userInfo.metamask);
+          if (res === "메마오류") {
+            toastFunction("처음 등록한 계정으로 연결해주세요", false);
+          } else {
+            //transactionHash
+            const transactionHash = await FundRaisingPage({
+              coinContractAddress: fundingData?.contractAddress,
+              account: userInfo.metamask,
+              tokenAmount: value.toString(),
+            });
+            if (transactionHash) {
+              //트랜잭션 성공 시간
+              const transactionTime = new Date().toISOString().slice(0, -5);
+              //date 받아오고
 
-          setUrl(`https://sepolia.etherscan.io/tx/${transactionHash}`);
+              setUrl(`https://sepolia.etherscan.io/tx/${transactionHash}`);
 
-          // 여기 axios 날릴 곳
-          handlePostInvest(transactionTime, transactionHash);
+              // 여기 axios 날릴 곳
+              handlePostInvest(transactionTime, transactionHash);
 
-          //성공하면 띄워짐
-          setIsSuccess(true);
+              setUserInfo(updateUserBalance(userInfo));
+
+              //성공하면 띄워짐
+              setIsSuccess(true);
+            } else {
+              onClose();
+              alert("조각 구매 중 에러가 발생하였습니다. 다시 시도해주세요.");
+            }
+          }
         } else {
-          onClose();
-          alert("조각 구매 중 에러가 발생하였습니다. 다시 시도해주세요.");
+          alert("투자 작품 정보가 없습니다.");
         }
       } catch (err) {
         //트랜잭션 에러
@@ -67,6 +64,15 @@ export const Invest = () => {
       // 여기 커스텀 에러
       alert("조각 개수를 입력해주세요");
     }
+  };
+
+  //코인 업데이트
+  const updateUserBalance = (prevUserInfo: userInfoType): userInfoType => {
+    // 이전 상태(prevUserInfo)를 기반으로 새로운 상태를 반환
+    return {
+      ...prevUserInfo, // 이전 상태의 모든 속성을 유지
+      walletBalance: (parseInt(prevUserInfo.walletBalance) - value).toString(), // 지갑 잔액을 업데이트
+    };
   };
 
   //투자하기 post axios
@@ -95,7 +101,7 @@ export const Invest = () => {
   //fundingData 설정
   const [fundingData, setFundingData] = useState<GetFundingResponse>();
 
-  const { userInfo } = useUserInfo();
+  const { userInfo, setUserInfo } = useUserInfo();
 
   const artNum = Number(userInfo.walletBalance);
 
@@ -205,3 +211,6 @@ export const Invest = () => {
     </>
   );
 };
+function toastFunction(arg0: string, arg1: boolean) {
+  throw new Error("Function not implemented.");
+}

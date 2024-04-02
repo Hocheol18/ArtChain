@@ -10,6 +10,7 @@ export interface userInfoType {
   metamask: string;
   walletAddress: string;
   userId: string | undefined;
+  isBusiness : boolean;
 }
 
 interface UserInfoState {
@@ -29,6 +30,7 @@ const defaultState = {
   metamask: "",
   walletAddress: "",
   userId: "",
+  isBusiness : false
 };
 
 const useUserInfo = create<UserInfoState & UserInfoActions>()(

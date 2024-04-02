@@ -7,13 +7,16 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { BottomButtonNavbar } from "../../Common/Navigation/BottomButtonNavbar";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "axios"
 import { handleMintTokens } from "../../../MintTokenComponent";
 import { PostCharge } from "../../../api/coin";
 import useUserInfo, { userInfoType } from "../../../store/useUserInfo";
+import { LoadingModal } from "../../Common/LoadingModal";
+import { useNavigate } from "react-router-dom";
 
 export const ArtCharge = () => {
   const [account, setAccount] = useState<string>("");
@@ -59,6 +62,10 @@ export const ArtCharge = () => {
     // 선택된 아이템 찾기
     const selectedItem = artCoinArr.find((item) => item.art === value);
     // 선택된 아이템의 money 값을 숫자로 변환
+    setPriceNum(
+      selectedItem ? parseInt(selectedItem.money.replace(/,/g, ""), 10) : 0
+    );
+
     const price = selectedItem
       ? parseInt(selectedItem.money.replace(/,/g, ""), 10)
       : 0;
@@ -66,6 +73,7 @@ export const ArtCharge = () => {
     //코인 업데이트
     const updateUserBalance = (prevUserInfo: userInfoType): userInfoType => {
       // 이전 상태(prevUserInfo)를 기반으로 새로운 상태를 반환합니다.
+      console.log("코인업데이트: " + price);
       return {
         ...prevUserInfo, // 이전 상태의 모든 속성을 유지합니다.
         walletBalance: (
@@ -93,6 +101,8 @@ export const ArtCharge = () => {
           // 결제 성공
           alert("결제 성공~!!!");
 
+          onOpen();
+
           // 1. 컨트랙트 실행해야함
           handleMintTokens({
             tokenAmount: price / 1000,
@@ -102,11 +112,16 @@ export const ArtCharge = () => {
               // 여기에 성공시의 로직을 추가하세요.
               coinCharge(price / 1000, transactionHash, "충전", price);
 
-              console.log(updateUserBalance(userInfo));
+              console.log(userInfo.walletBalance);
               setUserInfo(updateUserBalance(userInfo));
+              console.log(userInfo.walletBalance);
+
+              setUrl(`https://sepolia.etherscan.io/tx/${transactionHash}`);
+              setIsSuccess(true);
             },
             onMintError: (error) => {
               alert(`민트 실패 : ${error}`);
+              onClose();
               // 여기에 에러 처리 로직을 추가하세요.
             },
           });
@@ -147,8 +162,38 @@ export const ArtCharge = () => {
     },
   ];
 
+  //price: 가격
+  const [priceNum, setPriceNum] = useState<number>(0);
+
+  //모달을 위한
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  //성공여부에 따라 모달 내용 바뀜
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
+  //상세보기 url
+  const [url, setUrl] = useState<string>("");
+
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+    onClose();
+    navigate(`/charge`);
+  };
+
   return (
     <Box mb={70}>
+      {/* 모달 */}
+      <LoadingModal
+        headerText="충전 완료"
+        successNum={priceNum / 1000}
+        successText="코인"
+        isSuccess={isSuccess}
+        isOpen={isOpen}
+        onClose={onClose}
+        url={url}
+        handleGoWhere={handleGoHome}
+      />
       <Box px={8} pb={2} fontWeight={"bold"} fontSize={"14"}>
         충전하실 아트를 선택하세요
       </Box>

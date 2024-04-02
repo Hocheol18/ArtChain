@@ -123,3 +123,97 @@ export interface PostFundingRequest {
 export interface PostFundingResponse {
   id: number;
 }
+
+// 투자 공지 작성 request
+export interface PostFundingNoticeRequest {
+  fundingId: string | undefined;
+  notice: FundingNoticeParam;
+}
+
+// 투자 공지 수정 request
+export interface PutFundingNoticeRequest {
+  fundingId: string | undefined;
+  fundingNoticeId: string | undefined;
+  notice: FundingNoticeParam;
+}
+
+// 투자 공지 삭제 request
+export interface DeleteFundingNoticeRequest {
+  fundingId: string | undefined;
+  fundingNoticeId: string | undefined;
+}
+
+// 투자 공지 내용 param
+export interface FundingNoticeParam {
+  title: string;
+  content: string;
+}
+
+// 투자 승인/거절 request
+export interface FundingAllowRequest {
+  fundingId: number;
+  allowStatus: boolean;
+}
+
+// 투자 컨트랙트 주소 수정 request
+export interface FundingContractAddressRequest {
+  fundingId: number;
+  param: {
+    contractAddress: string;
+  };
+}
+
+// 투자 진행 상태 수정 request
+export interface FundingStatusRequest {
+  fundingId: number;
+  progressStatus: string;
+}
+
+// 투자 공고 등록 request
+export interface PostFundingRequest {
+  poster: File;
+  descriptionImg: File;
+  dto: PostFundingRequestParam;
+}
+
+// 투자 공고 등록 request
+export interface PostFundingRequestParam {
+  name: string;
+  category: string;
+  recruitStart: string;
+  recruitEnd: string;
+  settlement: string;
+  goalCoinCount: number;
+  totalBudget: number;
+  unitPrice: number;
+  bep: number;
+  scheduleList: ScheduleParam[];
+  expectedReturnList: ExpectedReturnParam[];
+  saleList: SaleParam[];
+  costList: CostParam[];
+}
+
+// schedule param
+export interface ScheduleParam {
+  scheduleName: string;
+  scheduleDate: string;
+}
+
+// schedule param
+export interface ExpectedReturnParam {
+  spectatorNum: number;
+  expectedReturn: number;
+}
+
+// schedule param
+export interface SaleParam {
+  mainVariety: string;
+  subVariety: string;
+  percentage: number;
+}
+
+// schedule param
+export interface CostParam {
+  mainVariety: string;
+  subVariety: string;
+}

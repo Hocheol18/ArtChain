@@ -8,7 +8,6 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
-  useDisclosure,
   Image,
 } from "@chakra-ui/react";
 import PuzzleIcon from "../../assets/puzzle.svg";
