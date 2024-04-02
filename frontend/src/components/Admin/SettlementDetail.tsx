@@ -1,20 +1,20 @@
-import {
-  AspectRatio,
-  Button,
-  Flex,
-  Select,
-  Text,
-  Image,
-} from "@chakra-ui/react";
+import { Button, Flex, Select, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { GetSettlementDetail } from "../../api/Settlement";
+import { GetSettlementDetail, PutSettlementStatus } from "../../api/Settlement";
 import { useParams } from "react-router-dom";
 import { getSettlementDetailList } from "../../type/settlement.interface";
 import { formatNumberWithComma } from "../Common/Comma";
+import { useCustomToast } from "../Common/Toast";
 
 export default function SettlementDetail() {
   const id = useParams() as { id: string };
-  const [value, setValues] = useState<getSettlementDetailList>({
+  const [isFilled, setIsFilled] = useState<boolean>(false);
+  const toastFunction = useCustomToast();
+  const [target, setTarget] = useState<{
+    settlementId: number;
+    status: string;
+  }>({ settlementId: 0, status: "" });
+  const [values, setValues] = useState<getSettlementDetailList>({
     id: 0,
     endId: 0,
     entName: "",
@@ -32,9 +32,16 @@ export default function SettlementDetail() {
     );
   }, []);
 
+  const handleButton = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setTarget({ settlementId: Number(id.id), status: value });
+  };
+
   useEffect(() => {
-    console.log(value);
-  }, [value]);
+    if (target.settlementId && target.status) {
+      setIsFilled(true);
+    }
+  }, [target]);
 
   return (
     <>
@@ -45,10 +52,10 @@ export default function SettlementDetail() {
           direction={"column"}
         >
           <Text as={"b"} fontSize={"22"} py={3}>
-            {value.entName}
+            {values.entName}
           </Text>
           <Text as={"b"} fontSize={"28"} py={3}>
-            {value.fundingTitle}
+            {values.fundingTitle}
           </Text>
         </Flex>
 
@@ -57,7 +64,7 @@ export default function SettlementDetail() {
             정산 금액
           </Text>
           <Text as={"b"} fontSize={"28"} py={5}>
-            {formatNumberWithComma(value.settlementPrice)} 원
+            {formatNumberWithComma(values.settlementPrice)} 원
           </Text>
         </Flex>
         <Flex justifyContent={"space-between"}>
@@ -65,35 +72,69 @@ export default function SettlementDetail() {
             입금 날짜
           </Text>
           <Text as={"b"} fontSize={"28"} py={5}>
-            {value.depositDate}
+            {values.depositDate}
           </Text>
         </Flex>
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <Text as={"b"} fontSize={"28"} py={5}>
             정산 자료
           </Text>
-          <AspectRatio w="100px" ratio={4 / 3}>
-            <Image src={value.settlementFile} objectFit="cover" />
-          </AspectRatio>
+          <Text>{values.settlementFile.substring(0, 20)}</Text>
         </Flex>
       </Flex>
-
-      <Flex px={6} direction={"row-reverse"}>
-        <Button
-          bgColor={"blue.300"}
-          textColor={"white"}
-          ml={4}
-          px={6}
-          _hover={{ bg: "blue.400" }} // 마우스 오버 시 색상
-          _active={{ bg: "blue.500", borderColor: "blue.500" }} // 클릭 시 색상
-          _focus={{ boxShadow: "none" }} // 클릭 후 포커스 상태 제거
+      <Flex
+        justifyContent={"space-between"}
+        mt={"1rem"}
+        ml={"1rem"}
+        mr={"1rem"}
+      >
+        <Select
+          onChange={handleButton}
+          placeholder="선택"
+          width={"40%"}
+          borderColor={"blue.400"}
         >
-          확인
-        </Button>
-        <Select placeholder="선택" width={"20"}>
-          <option value="option1">승인</option>
-          <option value="option2">반려</option>
+          <option value="ALLOW">승인</option>
+          <option value="REJECT">반려</option>
         </Select>
+
+        {isFilled ? (
+          <Button
+            bgColor={"blue.300"}
+            textColor={"white"}
+            width={"40%"}
+            ml={4}
+            px={6}
+            _hover={{ bg: "blue.400" }} // 마우스 오버 시 색상
+            _active={{ bg: "blue.500", borderColor: "blue.500" }} // 클릭 시 색상
+            onClick={() => {
+              PutSettlementStatus(target)
+                .then(() => {
+                  toastFunction("처리 완료되었습니다", true);
+                })
+                .catch((err) => console.log(err));
+            }}
+          >
+            확인
+          </Button>
+        ) : (
+          <Button
+            bgColor={"gray.300"}
+            textColor={"black"}
+            width={"40%"}
+            ml={4}
+            px={6}
+            _hover={{ bg: "gray.300" }} // 마우스 오버 시 색상
+            _active={{ bg: "gray.300", borderColor: "gray.300" }} // 클릭 시 색상
+            onClick={() => {
+              PutSettlementStatus(target)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+            }}
+          >
+            확인
+          </Button>
+        )}
       </Flex>
     </>
   );
