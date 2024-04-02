@@ -36,4 +36,8 @@ public interface FundingService {
     List<MyIntegratedListItemDto> getMyIntegratedList(String status, CustomUserDetails member);
 
     int updateContractAddress(Long fundingId, FundingContractAddressRequestDto dto, CustomUserDetails member);
+
+    List<FundingCarouselItemDto> getCarouselList();
+
+    List<FundingMainPageItemDto> getMainPageList();
 }

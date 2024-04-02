@@ -19,6 +19,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -592,5 +593,17 @@ public class FundingServiceImpl implements FundingService {
         myIntegratedList.sort((o1, o2) -> o2.getFundingId().compareTo(o1.getFundingId()));
 
         return myIntegratedList;
+    }
+
+    @Override
+    public List<FundingCarouselItemDto> getCarouselList() {
+        Pageable carouselCount = PageRequest.of(0, 2);
+        return fundingRepository.findTop2ByFundingProgressStatus(FundingProgressStatus.PENDING_SETTLEMENT, carouselCount);
+    }
+
+    @Override
+    public List<FundingMainPageItemDto> getMainPageList() {
+        Pageable itemCount = PageRequest.of(0, 4);
+        return fundingRepository.findTop4ByFundingProgressStatus(FundingProgressStatus.PENDING_SETTLEMENT, itemCount);
     }
 }

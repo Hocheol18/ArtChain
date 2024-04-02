@@ -118,6 +118,8 @@ public class SecurityConfig {
                         "/api/market/pieceHistory",
                         "/api/market/detail",
                         "/api/funding/list",
+                        "/api/funding/list/main-page",
+                        "/api/funding/list/carousel",
                         "/api/funding/{fundingId}",
                         "/api/funding/{fundingId}/notice/{fundingNoticeId}",
                         "/api/member/checkId",
