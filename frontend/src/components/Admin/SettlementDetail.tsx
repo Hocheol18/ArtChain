@@ -1,7 +1,41 @@
-import { Button, Flex, Select, Text } from "@chakra-ui/react";
-import React from "react";
+import {
+  AspectRatio,
+  Button,
+  Flex,
+  Select,
+  Text,
+  Image,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { GetSettlementDetail } from "../../api/Settlement";
+import { useParams } from "react-router-dom";
+import { getSettlementDetailList } from "../../type/settlement.interface";
+import { formatNumberWithComma } from "../Common/Comma";
 
 export default function SettlementDetail() {
+  const id = useParams() as { id: string };
+  const [value, setValues] = useState<getSettlementDetailList>({
+    id: 0,
+    endId: 0,
+    entName: "",
+    fundingId: "",
+    fundingTitle: "",
+    settlementPrice: 0,
+    returnRate: 0,
+    depositDate: "",
+    settlementFile: "",
+    status: "",
+  });
+  useEffect(() => {
+    GetSettlementDetail({ settlementId: Number(id.id) }).then((res) =>
+      setValues(res)
+    );
+  }, []);
+
+  useEffect(() => {
+    console.log(value);
+  }, [value]);
+
   return (
     <>
       <Flex direction={"column"} px={5}>
@@ -11,10 +45,10 @@ export default function SettlementDetail() {
           direction={"column"}
         >
           <Text as={"b"} fontSize={"22"} py={3}>
-            대원미디어
+            {value.entName}
           </Text>
           <Text as={"b"} fontSize={"28"} py={3}>
-            모네에서 앤디워홀까지 : 부산전
+            {value.fundingTitle}
           </Text>
         </Flex>
 
@@ -23,7 +57,7 @@ export default function SettlementDetail() {
             정산 금액
           </Text>
           <Text as={"b"} fontSize={"28"} py={5}>
-            1,000,000,000원
+            {formatNumberWithComma(value.settlementPrice)} 원
           </Text>
         </Flex>
         <Flex justifyContent={"space-between"}>
@@ -31,26 +65,16 @@ export default function SettlementDetail() {
             입금 날짜
           </Text>
           <Text as={"b"} fontSize={"28"} py={5}>
-            2024.04.01
+            {value.depositDate}
           </Text>
         </Flex>
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <Text as={"b"} fontSize={"28"} py={5}>
             정산 자료
           </Text>
-          <a href="#">
-            <Button
-              bgColor={"blue.300"}
-              textColor={"white"}
-              py={5}
-              px={6}
-              _hover={{ bg: "blue.400" }} // 마우스 오버 시 색상
-              _active={{ bg: "blue.500", borderColor: "blue.500" }} // 클릭 시 색상
-              _focus={{ boxShadow: "none" }} // 클릭 후 포커스 상태 제거
-            >
-              다운로드
-            </Button>
-          </a>
+          <AspectRatio w="100px" ratio={4 / 3}>
+            <Image src={value.settlementFile} objectFit="cover" />
+          </AspectRatio>
         </Flex>
       </Flex>
 

@@ -152,7 +152,7 @@ export interface FundingNoticeParam {
 // 투자 승인/거절 request
 export interface FundingAllowRequest {
   fundingId: number;
-  allowStatus: string;
+  allowStatus: boolean;
 }
 
 // 투자 컨트랙트 주소 수정 request
