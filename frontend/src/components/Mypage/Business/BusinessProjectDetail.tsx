@@ -92,9 +92,8 @@ export default function BusinessProjectDetail({ projectData }: Props) {
           </Flex>
         </Flex>
       </Center>
-      {/* {projectData.progressStatus === "PENDING_SETTLEMENT" ? ( */}
-      {projectData.progressStatus === "RECRUITMENT_STATUS" &&
-      projectData.status === "ALLOW" ? (
+      {projectData.progressStatus === "PENDING_SETTLEMENT" &&
+      projectData.status === "REQUEST" ? (
         <Flex
           justifyContent={"center"}
           mt={2}
