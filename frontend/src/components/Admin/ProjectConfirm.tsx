@@ -31,6 +31,7 @@ export default function ProjectConfirm() {
   }, []);
 
   const success = () => {
+    settlement()
     toastFunction("승인 성공", true);
     navigate(-1);
   };
@@ -38,7 +39,8 @@ export default function ProjectConfirm() {
   const settlement = async () => {
     const fundingContract = new web3.eth.Contract(
       ReceiveArtCoinContractABI.abi,
-      ReceviceArtCoinContractAddress
+      "0x560e7480E204d8335c9eFE44496cDf829AC3b4F0"
+      //settlementInfo.fundingContractAddress
     );
     const artTokenContract = new web3.eth.Contract(IERC20ABI.abi, "");
 
@@ -55,7 +57,7 @@ export default function ProjectConfirm() {
     }
 
     await fundingContract.methods
-      .settlement(ReceviceArtCoinContractAddress, 총발행량, settlementInfo.data)
+      .settlement("0x560e7480E204d8335c9eFE44496cDf829AC3b4F0", settlementInfo.totalPieceCount, settlementInfo.data)
       .send({ from: userInfo.metamask });
   };
 

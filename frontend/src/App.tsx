@@ -45,12 +45,19 @@ function App() {
     const isMobile = useMediaQuery({ maxWidth: 700 });
     return isMobile ? children : null;
   };
-  const { setSettlementInfo } = useSettlementInfo();
+  const {
+    setSettlementInfoData,
+    setSettlementInfoContractAddress,
+    setTotalPieceCount,
+  } = useSettlementInfo();
 
   const eventSource = new EventSource("/api/sse/subscribe");
   useEffect(() => {
     eventSource.addEventListener("settlementAllow", (event: MessageEvent) => {
-      setSettlementInfo(JSON.parse(event.data).settlementAllowResultList)
+      const res = JSON.parse(event.data);
+      setSettlementInfoContractAddress(res.fundingContractAddress);
+      setTotalPieceCount(res.totalPieceCount);
+      setSettlementInfoData(res.settlementAllowResultList);
     });
   }, [eventSource]);
 

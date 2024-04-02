@@ -22,7 +22,7 @@ interface UserInfoActions {
 const defaultState = {
   data: [],
   fundingContractAddress: "",
-  totalPieceCount: "",
+  totalPieceCount: 0,
 };
 
 const useSettlementInfo = create<UserInfoState & UserInfoActions>()(
@@ -30,9 +30,32 @@ const useSettlementInfo = create<UserInfoState & UserInfoActions>()(
     persist(
       (set) => ({
         settlementInfo: defaultState,
-        setSettlementInfoContractAddress 
         setSettlementInfo: (settlementInfo: settlementInfoType) => {
           set({ settlementInfo });
+        },
+        setSettlementInfoData: (data: Settlement[]) => {
+          set((state) => ({
+            settlementInfo: {
+              ...state.settlementInfo,
+              data,
+            },
+          }));
+        },
+        setSettlementInfoContractAddress: (fundingContractAddress: string) => {
+          set((state) => ({
+            settlementInfo: {
+              ...state.settlementInfo,
+              fundingContractAddress,
+            },
+          }));
+        },
+        setTotalPieceCount: (totalPieceCount: number) => {
+          set((state) => ({
+            settlementInfo: {
+              ...state.settlementInfo,
+              totalPieceCount,
+            },
+          }));
         },
       }),
       {
