@@ -35,6 +35,15 @@ import { AdminPage } from "./pages/AdminPage";
 import SettlementDetail from "./components/Admin/SettlementDetail";
 import ProjectConfirm from "./components/Admin/ProjectConfirm";
 
+interface SseFundingRecruitEndResultListItem {
+  isRecruitSuccess: boolean;
+  fundingContractAddress: string;
+}
+
+interface SseFundingRecruitEndResultList {
+	fundingRecruitResultList: Array<SseFundingRecruitEndResultListItem>;
+}
+
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
     const isDesktop = useMediaQuery({ minWidth: 701 });
@@ -48,7 +57,7 @@ function App() {
   useEffect(() => {
     // Establish the connection to the server endpoint
     const eventSource = new EventSource(
-      "https://j10a708.p.ssafy.io:443/api/sse/subscribe"
+      "http://j10a708.p.ssafy.io:8080/api/sse/subscribe"
     );
 
     // Listen for messages
@@ -56,12 +65,12 @@ function App() {
       // JSON.parse를 사용하지 않고, 직접 event.data를 사용
       const data: string = event.data;
     
-      console.log('Received event data:', data);
+      console.log('Received event data:', data.fundingRecruitResultList);
     });
 
     eventSource.addEventListener('fundingProgressStatusCron', () => {
       // JSON 문자열을 객체로 변환
-      // const data: SseFundingRecruitEndResultList = JSON.parse(event.data);
+      const data: SseFundingRecruitEndResultList = JSON.parse(event.data);
     
       console.log('Received event data:');
     });
