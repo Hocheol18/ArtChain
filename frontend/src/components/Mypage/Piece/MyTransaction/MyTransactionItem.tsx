@@ -1,4 +1,4 @@
-import { Flex, Box, Image, CloseButton } from "@chakra-ui/react";
+import { Flex, Box, Image, CloseButton, Link } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import MarketIcon from "../../../../assets/market-icon.svg";
 import InvestIcon from "../../../../assets/invest-icon.svg";
@@ -98,7 +98,11 @@ export const MyTransactionItem = ({ transaction }: Props) => {
                 fontSize: "15px",
               }}
             >
-              상세보기
+              <Link
+                href={`https://sepolia.etherscan.io/tx/${transaction.transactionHash}`}
+              >
+                상세보기
+              </Link>
             </button>
             {transaction.transactionType === "판매중" ? (
               <CloseButton ml={1} size={"sm"} />

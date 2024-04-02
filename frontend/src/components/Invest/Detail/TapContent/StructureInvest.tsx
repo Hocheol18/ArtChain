@@ -1,5 +1,6 @@
 import { Box, Text, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import { Cost, Sale } from "../../../../type/invest.interface";
+import { formatNumberWithComma } from "../../../Common/Comma";
 
 interface Props {
   saleList: Sale[];
@@ -112,15 +113,17 @@ export const StructureInvest = ({
         >
           <Flex justifyContent={"space-between"}>
             <Box>총 예산규모</Box>
-            <Box fontWeight={"bold"}>{totalBudget}원</Box>
+            <Box fontWeight={"bold"}>
+              {formatNumberWithComma(totalBudget)}원
+            </Box>
           </Flex>
           <Flex justifyContent={"space-between"}>
             <Box>객단가</Box>
-            <Box fontWeight={"bold"}>{unitPrice}원</Box>
+            <Box fontWeight={"bold"}>{formatNumberWithComma(unitPrice)}원</Box>
           </Flex>
           <Flex justifyContent={"space-between"}>
             <Box>추정 손익분기점</Box>
-            <Box fontWeight={"bold"}>{bep}명</Box>
+            <Box fontWeight={"bold"}>{formatNumberWithComma(bep)}명</Box>
           </Flex>
         </Flex>
       </Box>

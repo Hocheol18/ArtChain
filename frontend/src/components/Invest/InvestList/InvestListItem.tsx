@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Image, Text, Progress, Center } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { formatNumberWithComma } from "../../Common/Comma";
 
 interface Props {
   id: number;
@@ -68,6 +69,8 @@ export const InvestListItem = ({
   const diff = Math.abs(newDate.getTime() - oldDate.getTime());
   //(1000 * 60 * 60 * 24) - 1일 밀리세컨드 값 - 로 나누면 날짜 값을 구할 수 있음
   const dateDiff = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+  const totalPiece = formatNumberWithComma(goalCoinCount);
 
   //상태가 바뀔 때마다
   useEffect(() => {
@@ -194,7 +197,7 @@ export const InvestListItem = ({
               총 발행 조각
             </Text>
             <Text color={"gray.500"} fontSize={14} as={"b"}>
-              {goalCoinCount} 조각
+              {totalPiece} 조각
             </Text>
           </Box>
           <Box display={"flex"} justifyContent={"space-between"}>
@@ -209,7 +212,7 @@ export const InvestListItem = ({
               {statusBadge === "진행중"
                 ? `D-${dateDiff}`
                 : statusBadge === "모집종료"
-                ? investorNum
+                ? formatNumberWithComma(investorNum)
                 : finalReturnRate}
             </Text>
           </Box>
