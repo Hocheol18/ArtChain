@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function CommonNotice({ text, isNow }: Props) {
-  return isNow === "now" ? (
+  return isNow === "RECRUITMENT_STATUS" ? (
     <Flex>
       <Box
         mr={"0.3rem"}
@@ -25,7 +25,7 @@ export default function CommonNotice({ text, isNow }: Props) {
         </Flex>
       </Box>
     </Flex>
-  ) : isNow === "wait" ? (
+  ) : isNow === "PENDING_SETTLEMENT" ? (
     <Flex>
       <Box
         mr={"0.3rem"}
@@ -41,6 +41,24 @@ export default function CommonNotice({ text, isNow }: Props) {
       >
         <Flex>
           <Text color={"white.100"}>{text}</Text>
+        </Flex>
+      </Box>
+    </Flex>
+  ) : isNow === "RECRUITMENT_FAILED" ? (
+    <Flex>
+      <Box
+        mr={"0.3rem"}
+        px={"0.6rem"}
+        py={"0.3rem"}
+        rounded={"0.7rem"}
+        boxShadow={"xl"}
+        fontSize={"xs"}
+        borderColor={"black.100"}
+        ml={"0.5rem"}
+        bgColor={"red"}
+      >
+        <Flex>
+          <Text color={"white"}>{text}</Text>
         </Flex>
       </Box>
     </Flex>

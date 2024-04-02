@@ -29,6 +29,7 @@ export const InvestDetailTap = ({ text, active, onClick }: InvestTapProps) => {
         borderBottomColor={borderColor}
         fontWeight={fontWeight}
         onClick={onClick}
+        pb={1}
       >
         {text}
       </Box>

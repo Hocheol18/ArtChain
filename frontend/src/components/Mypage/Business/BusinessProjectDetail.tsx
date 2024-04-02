@@ -2,36 +2,39 @@ import { Center, Flex, Image, Text } from "@chakra-ui/react";
 import falloutboy from "../../../assets/falloutboy.png";
 import CommonNotice from "./CommonNotice";
 import { useEffect, useState } from "react";
+import { BusinessMyPageFunding } from "../../../type/mypage.interface";
 
 interface Props {
-  isNow: string;
+  projectData: BusinessMyPageFunding;
 }
 
-export default function BusinessProjectDetail({ isNow }: Props) {
+export default function BusinessProjectDetail({ projectData }: Props) {
   const [badgeText, setBadgeText] = useState<string>("");
 
   useEffect(() => {
-    switch (isNow) {
-      case "now":
+    switch (projectData.progressStatus) {
+      case "RECRUITMENT_STATUS":
         setBadgeText("진행중");
         break;
-      case "wait":
-        setBadgeText("정산대기");
+      case "PENDING_SETTLEMENT":
+        setBadgeText("모집성공");
 
         break;
-      case "":
+      case "RECRUITMENT_FAILED":
+        setBadgeText("모집실패");
+        break;
+      case "SETTLED":
         setBadgeText("정산완료");
-
         break;
     }
-  }, [isNow]);
+  }, []);
 
   return (
     <>
       <Center mx={"1"} mt={"2rem"} w={"100%"}>
         <Image w={"30"} h={"36"} src={falloutboy} />
         <Flex direction={"column"} justifyContent={"space-around"}>
-          <CommonNotice text={badgeText} isNow={isNow} />
+          <CommonNotice text={badgeText} isNow={projectData.progressStatus} />
 
           <Text ml={"0.5rem"} as={"b"} fontSize={"1rem"}>
             Fall Out Boy :: 2024 Seoul Concert
@@ -68,7 +71,7 @@ export default function BusinessProjectDetail({ isNow }: Props) {
           </Flex>
         </Flex>
       </Center>
-      {isNow === "wait" ? (
+      {projectData.progressStatus === "PENDING_SETTLEMENT" ? (
         <Flex justifyContent={"center"} mt={2} mx={"1"}>
           <Center
             px={"0.6rem"}

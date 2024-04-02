@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { ExpectedReturn } from "../../../../type/invest.interface";
+import { formatNumberWithComma } from "../../../Common/Comma";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -45,7 +46,9 @@ export const ExpectRateChart = ({ expectedReturnList }: Props) => {
 
   //차트 데이터
   const chartData = {
-    labels: expectedReturnList.map((item) => item.spectatorNum + "명 이상"),
+    labels: expectedReturnList.map(
+      (item) => formatNumberWithComma(item.spectatorNum) + "명 이상"
+    ),
     datasets: [
       {
         yAxisID: "y",

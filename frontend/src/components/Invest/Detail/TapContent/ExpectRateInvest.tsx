@@ -1,27 +1,13 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { ExpectRateChart } from "./ExpectRateChart";
 import { ExpectedReturn } from "../../../../type/invest.interface";
+import { formatNumberWithComma } from "../../../Common/Comma";
 
 interface Props {
   expectedReturnList: ExpectedReturn[];
 }
 
 export const ExpectRateInvest = ({ expectedReturnList }: Props) => {
-  const data = [
-    {
-      audienceNum: "6만명 미만",
-      expectRate: 7,
-    },
-    {
-      audienceNum: "8만명 미만",
-      expectRate: 10,
-    },
-    {
-      audienceNum: "8만명 이상",
-      expectRate: 15,
-    },
-  ];
-
   return (
     <Box mb={"70px"} pb={3}>
       <Box fontSize={"22"} fontWeight={"bold"} pl={6} mt={5} pb={2}>
@@ -61,9 +47,9 @@ export const ExpectRateInvest = ({ expectedReturnList }: Props) => {
           expectedReturnList.map((item, index) => (
             <Flex justifyContent={"space-between"} py={1}>
               <Box textColor={"gray.400"} key={index}>
-                {item.spectatorNum} 명 이상
+                {formatNumberWithComma(item.spectatorNum)} 명 이상
               </Box>
-              <Box>{item.expectedReturn}%</Box>
+              <Box>{formatNumberWithComma(item.expectedReturn)}%</Box>
             </Flex>
           ))}
       </Box>

@@ -86,7 +86,12 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
 
   return (
     <>
-      <Flex overflowX="auto">
+      <Flex
+        overflowX="auto"
+        position={"sticky"}
+        backgroundColor={"white"}
+        top={-1}
+      >
         <Flex
           justifyContent={"space-around"}
           mt={"1rem"}
