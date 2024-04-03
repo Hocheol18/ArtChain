@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MyInvestDetail from "./MyInvestDetail";
-import { Box, Flex, useEditable } from "@chakra-ui/react";
+import { Box, Center, Flex, useEditable } from "@chakra-ui/react";
 import { PieceCommonTap } from "../PieceCommonTap";
 import { getMyInvestmentHistory } from "../../../../api/mypage";
 import { GetMyIntegratedList } from "../../../../type/mypage.interface";
@@ -67,9 +67,13 @@ export const MyInvest = () => {
     <>
       <PieceCommonTap tapArr={tapArr} handleCheck={handleCheck} check={check} />
       <Flex mt={5} direction={"column"} gap={4}>
-        {myIntegratedList.map((item) => (
-          <MyInvestDetail myIntegratedData={item} />
-        ))}
+        {myIntegratedList.length < 1 ? (
+          <Center py={20}>투자한 작품이 없습니다.</Center>
+        ) : (
+          myIntegratedList.map((item) => (
+            <MyInvestDetail myIntegratedData={item} />
+          ))
+        )}
       </Flex>
     </>
   );

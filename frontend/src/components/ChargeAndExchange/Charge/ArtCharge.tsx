@@ -93,16 +93,13 @@ export const ArtCharge = () => {
         name: "Artchain 아트 구매",
         amount: price,
         buyer_email: "4pjttest@gmail.com",
-        buyer_name: "구매자이름",
+        buyer_name: userInfo.nickname,
         m_redirect_url: "http://j10a708.p.ssafy.io:3000/charge",
       },
       async function (rsp) {
         // callback
 
         if (rsp.success === true) {
-          // 결제 성공
-          alert("결제 성공~!!!");
-
           onOpen();
 
           // 1. 컨트랙트 실행해야함
@@ -110,7 +107,6 @@ export const ArtCharge = () => {
             tokenAmount: price / 1000,
             account: account, // 여기에 사용자의 이더리움 주소를 추가하세요.
             onMintSuccess: (transactionHash) => {
-              alert(`민트 성공, 트랜잭션 해시: ${transactionHash}`);
               // 여기에 성공시의 로직을 추가하세요.
               coinCharge(price / 1000, transactionHash, "충전", price);
 
