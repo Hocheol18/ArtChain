@@ -1,5 +1,8 @@
 package com.ssafy.artchain.settlement.service;
 
+import com.ssafy.artchain.eventLog.entity.EventLog;
+import com.ssafy.artchain.eventLog.repository.EventLogRepository;
+import com.ssafy.artchain.eventLog.service.EventLogService;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
@@ -30,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +51,8 @@ public class SettlementServiceImpl implements SettlementService {
     private final PieceOwnerRepository pieceOwnerRepository;
     private final SseRepository sseRepository;
     private final SseService sseService;
+    private final EventLogRepository eventLogRepository;
+    private final EventLogService eventLogService;
     private final S3Service s3Service;
     private final EntityManager entityManager;
     private final String ROLE_COMPANY = "ROLE_COMPANY";
@@ -163,9 +169,18 @@ public class SettlementServiceImpl implements SettlementService {
                 );
             });
 
+            String eventTypeName = "settlementAllow";
+            SseSettlementAllowResultListDto eventContent = new SseSettlementAllowResultListDto(funding.getContractAddress(), funding.getNowCoinCount(), pieceOwnerInfoList);
+
+            eventLogRepository.save(EventLog.builder()
+                    .eventDate(LocalDateTime.now())
+                    .eventType(eventTypeName)
+                    .eventContent(eventLogService.convertDtoToJson(eventContent))
+                    .build());
+
             String eventId = "ADMIN";
             sseRepository.findById(eventId)
-                    .ifPresent(sseEmitter -> sseService.send(new SseSettlementAllowResultListDto(funding.getContractAddress(), funding.getNowCoinCount(), pieceOwnerInfoList), eventId, sseEmitter, "settlementAllow"));
+                    .ifPresent(sseEmitter -> sseService.send(eventContent, eventId, sseEmitter, eventTypeName));
         }
 
         return 1;
