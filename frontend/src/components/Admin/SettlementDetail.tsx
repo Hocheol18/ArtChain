@@ -21,8 +21,8 @@ export default function SettlementDetail() {
   }>({ settlementId: 0, status: "" });
   const { settlementInfo } = useSettlementInfo();
 
-  const ArtCoin: string = "0xE5856017Db7b4023383c867Ea65bc178B7F023C1";
-  const MW: string = "0xDaBD9681C6fA9C2675f883FB67a1485038087DD3";
+  const ArtCoin: string = import.meta.env.VITE_ART_COIN_CONTRACT_ADDRESS;
+  const MW: string = import.meta.env.VITE_MAIN_WALLET_ADDRESS;
 
   const [values, setValues] = useState<getSettlementDetailList>({
     id: 0,

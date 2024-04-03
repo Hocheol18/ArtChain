@@ -159,7 +159,7 @@ export default function MarketEnroll() {
     try {
       const marketplaceContract = new web3.eth.Contract(
         TokenMarketPlaceABI.abi,
-        "0x749d167DC58e496CA017cAafD1FBc12C2c394527" // 마켓 컨트랙트 주소
+        import.meta.env.VITE_MARKET_CONTRACT_ADDRESS // 마켓 컨트랙트 주소
       );
       const { metamaskwallet, tokenAmount } = newTradePostData;
 
@@ -175,7 +175,7 @@ export default function MarketEnroll() {
       // 거래 게시글 추가 전에 사용자가 특정 양의 토큰을 스마트 계약에 대해 승인하도록 요청
       const approveTx = await tokenContract.methods
         .approve(
-          "0x749d167DC58e496CA017cAafD1FBc12C2c394527", // 마켓 컨트랙트 주소
+          import.meta.env.VITE_MARKET_CONTRACT_ADDRESS, // 마켓 컨트랙트 주소
           convertToInteger(integerTokenAmount)
         )
         .send({ from: metamaskwallet });

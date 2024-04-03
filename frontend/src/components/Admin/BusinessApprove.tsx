@@ -6,7 +6,7 @@ import useDistributeInfo from "../../store/useDistributeInfo";
 export default function BusinessApprove() {
   const web3 = new Web3((window as any).ethereum);
   const { distributeInfo } = useDistributeInfo();
-  const MW = "0xDaBD9681C6fA9C2675f883FB67a1485038087DD3";
+  const MW = import.meta.env.VITE_MAIN_WALLET_ADDRESS;
 
   const distribute = async () => {
     try {
