@@ -45,11 +45,13 @@ function App() {
     const isMobile = useMediaQuery({ maxWidth: 700 });
     return isMobile ? children : null;
   };
+
   const { setAllInOne } = useSettlementInfo();
 
-  const eventSource = new EventSource("/api/sse/subscribe");
   useEffect(() => {
-    eventSource.addEventListener("settlementAllow", (event: MessageEvent) => {
+    const eventSource = new EventSource("/api/sse/subscribe");
+
+    const handleEvent = (event: MessageEvent) => {
       const res = JSON.parse(event.data);
 
       setAllInOne({
@@ -57,8 +59,15 @@ function App() {
         data: res.settlementAllowResultList,
         fundingContractAddress: res.fundingContractAddress,
       });
-    });
-  }, [eventSource]);
+    };
+
+    eventSource.addEventListener("settlementAllow", handleEvent);
+
+    return () => {
+      eventSource.removeEventListener("settlementAllow", handleEvent);
+      eventSource.close();
+    };
+  }, []);
 
   return (
     <>
