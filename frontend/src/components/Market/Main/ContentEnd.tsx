@@ -1,6 +1,4 @@
 import { AspectRatio, Box, Flex, Image, Text } from "@chakra-ui/react";
-
-import dummy from "../../../assets/dummy.png";
 import { getMarketMainDisplayListInterface } from "../../../type/market.interface";
 import { useNavigate } from "react-router-dom";
 

@@ -30,10 +30,6 @@ export default function MarketDeatil() {
 
   const [check, setCheck] = useState("SellList");
 
-  useEffect(() => {
-    console.log(marketDetails);
-  }, [marketDetails]);
-
   return (
     <>
       {check === "SellList" ? (
@@ -108,7 +104,7 @@ export default function MarketDeatil() {
             >
               {marketDetails.map(
                 (data: getMarketSellingDisplayListInterface) => {
-                  if (data.status !== "SOLD") {
+                  if (data.status !== "SOLD" && data.status !== "UNLISTED") {
                     return (
                       <SellList
                         key={data.id}
@@ -135,7 +131,7 @@ export default function MarketDeatil() {
           )}
         </>
       ) : (
-        <SellHistory fundingId={Number(id.id)} page={0} size={6} />
+        <SellHistory fundingId={Number(id.id)} page={0} size={20} />
       )}
     </>
   );

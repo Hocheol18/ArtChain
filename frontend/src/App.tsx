@@ -49,7 +49,6 @@ function App() {
   };
 
   const { setDistributeInfo } = useDistributeInfo();
-
   const { setAllInOne } = useSettlementInfo();
 
   useEffect(() => {
@@ -77,6 +76,9 @@ function App() {
 
     eventSource.addEventListener("settlementAllow", handleEvent);
     eventSource.addEventListener("fundingProgressStatusCron", funding);
+    eventSource.onerror = (error) => {
+      console.error('EventSource failed:', error);
+    };
 
     return () => {
       eventSource.removeEventListener("settlementAllow", handleEvent);
@@ -372,8 +374,8 @@ function App() {
                 <Route
                   path="/"
                   element={
-                    <CommonPage topNavType="logo" bottomNavType="">
-                      <FirstMainPage />
+                    <CommonPage topNavType="logo" bottomNavType="home">
+                      <MainPage />
                     </CommonPage>
                   }
                 ></Route>
@@ -460,7 +462,7 @@ function App() {
 
                 {/* 마켓 */}
                 <Route
-                  path="/market/:id"
+                  path="/market"
                   element={
                     <CommonPage topNavType="logo" bottomNavType="market">
                       <Market />

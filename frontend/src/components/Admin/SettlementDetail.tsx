@@ -38,7 +38,7 @@ export default function SettlementDetail() {
   });
 
   const settlement = async () => {
-    console.log();
+    console.log("DNSLDNLKFNSLD");
     const artTokenContract = new web3.eth.Contract(IERC20ABI.abi, ArtCoin);
 
     // need to props

@@ -13,7 +13,6 @@ export default function FirstMainPage() {
   // 위에서 정의한 단어 목록을 이용하여, 0.1초마다 한 글자씩 추가하고, 1초 후 다음 단어로 변경
   useEffect(() => {
     if (letterIndex > words[wordIndex].length) {
-      
       setTimeout(() => {
         setWordIndex((prevIndex) => (prevIndex + 1) % words.length);
         setLetterIndex(0);
@@ -26,17 +25,15 @@ export default function FirstMainPage() {
         setCurrentWord(words[wordIndex].substring(0, letterIndex));
       }, 150);
       return () => clearTimeout(timer);
-
     }
   }, [letterIndex, wordIndex]);
 
   return (
-    <Box>
-      <Text as={"b"}></Text>
-      <Text>
-        {currentTitle} {currentWord}
-      </Text>
-      <Text></Text>
+    <Box ml={"1rem"} mt={"1rem"}>
+      <Text as={"b"} fontSize={"3.5rem"}>{currentTitle}</Text>
+      <Box h={"60px"}>
+        <Text color={"blue.400"} fontSize={"2.5rem"}>{currentWord}</Text>
+      </Box>
     </Box>
   );
 }
