@@ -43,7 +43,7 @@ export default function Poster({ mainFunding }: Props) {
           borderRadius={"0.5rem"}
           fontSize={"14px"}
         >
-          {mainFunding.percentage}
+          {mainFunding.percentage}%
         </Box>
         <Box
           position={"absolute"}
