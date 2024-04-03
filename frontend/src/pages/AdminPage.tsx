@@ -22,7 +22,7 @@ export const AdminPage = () => {
                 backgroundColor={"white"}
               >
                 {" "}
-                기업 승인
+                조각 분배
               </Text>
               <Text
                 as={"b"}
@@ -59,7 +59,7 @@ export const AdminPage = () => {
                 onClick={() => setIsCheck("business")}
               >
                 {" "}
-                기업 승인
+                조각 분배
               </Text>
               <Text
                 as={"b"}
@@ -96,7 +96,7 @@ export const AdminPage = () => {
                 onClick={() => setIsCheck("business")}
               >
                 {" "}
-                기업 승인
+                조각 분배
               </Text>
               <Text
                 as={"b"}

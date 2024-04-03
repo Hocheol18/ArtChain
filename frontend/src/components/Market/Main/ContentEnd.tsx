@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { AspectRatio, Box, Flex, Image, Text } from "@chakra-ui/react";
 
 import dummy from "../../../assets/dummy.png";
 import { getMarketMainDisplayListInterface } from "../../../type/market.interface";
@@ -32,16 +32,18 @@ export default function ContentEnd({
       boxShadow="lg"
       rounded="xl"
       bg="white"
-      onClick={() => navigate(`/market/${id}`)}
+      onClick={() => navigate(`/market/piece/${id}`)}
     >
       <Flex>
-        <Image
-          maxW={"120px"}
-          rounded={"2xl"}
-          src={dummy}
-          filter="blur(2px)"
-        ></Image>
-        <Flex direction={"column"} ml={"1rem"}>
+      <AspectRatio w={"120px"} ratio={4 / 3}>
+          <Image
+            rounded={"2xl"}
+            src={poster}
+            filter="blur(2px)"
+          ></Image>
+        </AspectRatio>
+
+        <Flex direction={"column"} ml={"1rem"} mb={"0.5rem"}>
           <Flex mt={"0.8rem"}>
             <Box
               px={"0.5rem"}
