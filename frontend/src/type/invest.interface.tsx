@@ -239,7 +239,7 @@ export interface MainPageFundingListResponse {
 // 메인 펀딩 리스트 param
 export interface FundingMainPage {
   id: number;
-  poster: number;
+  poster: string;
   fundingTitle: string;
   goalCoinCount: number;
   nowCoinCount: number;

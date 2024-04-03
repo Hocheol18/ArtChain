@@ -170,19 +170,21 @@ export const FundingPermissionList = async () => {
 };
 
 // 메인 캐러셀용 투자 리스트
-export const MainCarouselFundingList = async () => {
-  const url = `/funding/list/carousel`;
+export const MainCarouselFundingList =
+  async (): Promise<MainCarouselFundingListResponse> => {
+    const url = `/funding/list/carousel`;
 
-  const response = await localAxios.get(url);
+    const response = await localAxios.get(url);
 
-  return response.data.data;
-};
+    return response.data.data;
+  };
 
 // 메인 투자 리스트
-export const MainPageFundingList = async () => {
-  const url = `/funding/list/main-page`;
+export const MainPageFundingList =
+  async (): Promise<MainPageFundingListResponse> => {
+    const url = `/funding/list/main-page`;
 
-  const response = await localAxios.get(url);
+    const response = await localAxios.get(url);
 
-  return response.data.data;
-};
+    return response.data.data;
+  };

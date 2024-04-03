@@ -47,6 +47,7 @@ export const CommonPage = ({
             position={"fixed"}
             bottom={0}
             width={isDesktop ? "390px" : "100%"}
+            zIndex={2}
           >
             <BottomNavBar navType={bottomNavType} />
           </Box>

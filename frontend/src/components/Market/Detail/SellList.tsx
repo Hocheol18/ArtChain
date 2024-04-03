@@ -154,7 +154,7 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
         }}
       />
       <Center>
-        <Button
+        {/* <Button
           onClick={() => {
             unListToken({
               // TODO : 마켓 컨트랙트
@@ -166,7 +166,7 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
           }}
         >
           삭제
-        </Button>
+        </Button> */}
         <Box p={"1rem"}>
           <Box
             w={"160px"}

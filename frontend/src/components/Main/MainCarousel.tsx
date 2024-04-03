@@ -6,6 +6,8 @@ import mainimage from "../../assets/MainImage.png";
 import mo from "../../assets/Mo.jpeg";
 import oak from "../../assets/oak.jpeg";
 import bum from "../../assets/bum.jpeg";
+import { FundingCarousel } from "../../type/invest.interface";
+import { Link } from "react-router-dom";
 
 function FaRegCircleActive() {
   return (
@@ -33,38 +35,33 @@ function FaRegCircleNone() {
   );
 }
 
-export default function MainCarousel() {
-  const [slideIndex, setSlideIndex] = useState(0);
+interface Props {
+  carouselList: FundingCarousel[];
+}
 
-  const dummylist = [
-    {
-      img: mainimage,
-    },
-    { img: mo },
-    { img: oak },
-    { img: bum },
-  ];
+export default function MainCarousel({ carouselList }: Props) {
+  const [slideIndex, setSlideIndex] = useState(0);
 
   // moveBar
   const moveLeft = () => {
-    setSlideIndex(slideIndex === 0 ? dummylist.length - 1 : slideIndex - 1);
+    setSlideIndex(slideIndex === 0 ? carouselList.length - 1 : slideIndex - 1);
   };
   const moveRight = () => {
-    setSlideIndex(slideIndex === dummylist.length - 1 ? 0 : slideIndex + 1);
+    setSlideIndex(slideIndex === carouselList.length - 1 ? 0 : slideIndex + 1);
   };
 
-  if (slideIndex === dummylist.length) {
+  if (slideIndex === carouselList.length) {
     setSlideIndex(0);
   }
 
   useEffect(() => {
-    const totalSlides = dummylist.length;
+    const totalSlides = carouselList.length;
     const interval = setInterval(() => {
       setSlideIndex((currentIndex) => (currentIndex + 1) % totalSlides);
     }, 20000);
 
     return () => clearInterval(interval);
-  }, [dummylist.length]);
+  }, [carouselList.length]);
 
   return (
     <Box overflowX={"hidden"} position={"relative"} h={"30%"}>
@@ -72,18 +69,18 @@ export default function MainCarousel() {
         overflowX={"hidden"}
         wrap={"nowrap"}
         style={{
-          width: `${100 * dummylist.length}vw`,
+          width: `${100 * carouselList.length}vw`,
           transition: "all 1000ms ease-in-out",
           transitionDuration: "1s",
           transform: `translateX(${
-            -1 * ((100 / dummylist.length) * slideIndex)
+            -1 * ((100 / carouselList.length) * slideIndex)
           }%)`,
         }}
       >
-        {dummylist.map((data, index) => (
-          <Box key={index} w={"100%"}>
+        {carouselList.map((data, index) => (
+          <Box key={index} w={"100%"} as={Link} to={`/invest/${data.id}`}>
             <AspectRatio ratio={16 / 9} w={"100%"} h={"100%"}>
-              <Image src={data.img} alt="mainimage" objectFit="cover" />
+              <Image src={data.poster} alt="mainimage" objectFit="cover" />
             </AspectRatio>
           </Box>
         ))}
