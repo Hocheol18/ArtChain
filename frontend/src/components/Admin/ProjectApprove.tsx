@@ -55,8 +55,8 @@ export default function ProjectApporve() {
             justifyContent="center"
           ></GridItem>
 
-          {values.map((data) => (
-            <React.Fragment key={data.id}>
+          {values.map((data, index) => (
+            <React.Fragment key={index}>
               <GridItem
                 w="100%"
                 h="10"
