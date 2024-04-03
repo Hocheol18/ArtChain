@@ -35,11 +35,98 @@
 
 ### 👥 팀 소개
 
-| [정현아](https://github.com/JHyeon-a)                                                                                          | [박호철](https://github.com/Hocheol18)                                                    | [김영욱](https://github.com/YoungUk0126)                                                  | [허준혁](https://github.com/ComelyU)                                                      | [김승우](https://github.com/DeveloperYard)                                                | [김지은](https://github.com/KuMMii)                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| <img src="https://avatars.githubusercontent.com/u/139304856?v=4cd575a38-8fc4-4470-889b-b920862f2e30" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/74571069?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/70872187?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/31150286?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/59395755?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/128502524?v=4" width="150" height="150"> |
-| Leader, Frontend                                                                                                               | Frontend, Contract                                                                        | Backend                                                                                   | Backend, CI&CD                                                                            | Contract, CI&CD                                                                           | CI&CD, Front                                                                               |
-| 담당 기능                                                                                                                      | 담당 기능                                                                                 | 담당 기능                                                                                 | 담당 기능                                                                                 | 유저 인가.인증                                                                            | Nginx 설정, Frontend 무중단 배포, Axios 생성, 피그마 제작                                  |
+<table align="center">
+  <tr>
+    <tr align="center">
+        <td style="min-width: 250px;">
+            <a href="https://github.com/JHyeon-a">
+              <b>정현아</b>
+            </a> 
+        </td>
+        <td style="min-width: 250px;">
+            <a href="https://github.com/Hocheol18">
+              <b>박호철</b>
+            </a>
+        </td>
+        <td style="min-width: 250px;">
+            <a href="https://github.com/KuMMii">
+              <b>김지은</b>
+            </a>
+        </td>
+    </tr>
+    <tr align="center">
+        <td style="min-width: 250px;">
+              <img src="https://avatars.githubusercontent.com/u/139304856?v=4cd575a38-8fc4-4470-889b-b920862f2e30" width="100">
+        </td>
+        <td style="min-width: 250px;">
+              <img src="https://avatars.githubusercontent.com/u/74571069?v=4" width="100">
+        </td>
+        <td style="min-width: 250px;">
+              <img src="https://avatars.githubusercontent.com/u/128502524?v=4" width="100">
+        </td>
+    </tr>
+    <tr align="center">
+        <td>
+        <b>Leader, Frontend</b><br> OpenVidu, 롤링페이퍼 api 담당
+        <br/>
+        </td>
+        <td>
+        <b>Frontend, Contract</b><br>UCC 담당
+        <br/>
+        </td>
+        <td>
+        <b>CI&CD, Front</b><br> Nginx 설정, Frontend 무중단 배포, Axios 생성, 피그마 제작
+        <br/>
+        </td>
+    </tr>
+  </tr>
+  <tr>
+    <tr align="center">
+        <td style="min-width: 250px;">
+            <a href="https://github.com/YoungUk0126">
+              <b>김영욱</b>
+            </a>
+        </td>
+        <td style="min-width: 250px;">
+            <a href="https://github.com/ComelyU">
+              <b>허준혁</b>
+            </a>
+        </td>
+        <td style="min-width: 250px;">
+            <a href="https://github.com/DeveloperYard">
+              <b>김승우</b>
+            </a>
+        </td>
+    </tr>
+    <tr align="center">
+        <td style="min-width: 250px;">
+              <img src="https://avatars.githubusercontent.com/u/70872187?v=4" width="100">
+        </td>
+        <td style="min-width: 250px;">
+              <img src="https://avatars.githubusercontent.com/u/31150286?v=4" width="100">
+        </td>
+        <td style="min-width: 250px;">
+              <img src="https://avatars.githubusercontent.com/u/59395755?v=4" width="100">
+        </td>
+    </tr>
+    <tr align="center">
+        <td>
+        <b>Backend</b><br> 롤링페이퍼, 포토모자이크 담당
+        <br/>
+        </td>
+        <td>
+        <b>Backend</b><br> 펀딩/투자/조각 코인 소유자/정산 API 구현<br/>
+Scheduler & SSE 구현
+        <br/>
+        </td>
+        <td>
+        <b>Contract, CI&CD</b><br> OpenVidu 담당<br>발표 담당
+        <br/>
+        </td>
+    </tr>
+  </tr>
+
+</table>
 
 ### 🛠️ 기술 스택
 
