@@ -6,13 +6,11 @@ import { getSettlementDetailList } from "../../type/settlement.interface";
 import { formatNumberWithComma } from "../Common/Comma";
 import { useCustomToast } from "../Common/Toast";
 import Web3 from "web3";
-import ReceiveArtCoinContractABI from "../../Contract/ReceiveArtCoinContract.json";
 import IERC20ABI from "../../Contract/ArtcoinContract.json";
+import { convertToInteger } from "../Common/convertToInteger";
 import useSettlementInfo from "../../store/useSettlementInfo";
-import useUserInfo from "../../store/useUserInfo";
 
 export default function SettlementDetail() {
-  const { userInfo } = useUserInfo();
   const id = useParams() as { id: string };
   const [isFilled, setIsFilled] = useState<boolean>(false);
   const toastFunction = useCustomToast();
@@ -23,23 +21,7 @@ export default function SettlementDetail() {
   }>({ settlementId: 0, status: "" });
   const { settlementInfo } = useSettlementInfo();
 
-  interface FundInfo {
-    investor: string;
-    amount: number;
-  }
-
-  const dummylist: FundInfo[] = [
-    {
-      investor: "0xDaBD9681C6fA9C2675f883FB67a1485038087DD3",
-      amount: 55,
-    },
-    {
-      investor: "0x67F07AFaD0f1528391a0CF8C5058370114B262d6",
-      amount: 44,
-    },
-  ];
-  const CA = "0x74605e05a8f217f72B2D4FA8F534aD85C276d0CB";
-  const TP = 90;
+  const ArtCoin: string = "0xE5856017Db7b4023383c867Ea65bc178B7F023C1";
   const MW: string = "0xDaBD9681C6fA9C2675f883FB67a1485038087DD3";
 
   const [values, setValues] = useState<getSettlementDetailList>({
@@ -56,41 +38,32 @@ export default function SettlementDetail() {
   });
 
   const settlement = async () => {
-    console.log(settlementInfo);
-    settlementInfo.data.forEach((item, index) => {
-      settlementInfo.data[index].settlementCoinCount = item.settlementCoinCount;
-    });
-
-    console.log(settlementInfo.data);
-
-    const fundingContract = new web3.eth.Contract(
-      ReceiveArtCoinContractABI.abi,
-      // 펀딩 컨트랙트 주소
-      // settlementInfo.fundingContractAddress
-      CA
-    );
-    const artTokenContract = new web3.eth.Contract(
-      IERC20ABI.abi,
-      "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"
-    );
+    console.log();
+    const artTokenContract = new web3.eth.Contract(IERC20ABI.abi, ArtCoin);
 
     // need to props
-    for (let i = 0; i < dummylist.length; i++) {
+    for (let i = 0; i < settlementInfo.data.length; i++) {
       await artTokenContract.methods
         .approve(
-          dummylist[i].investor,
-          dummylist[i].amount * 10 ** 18
-
-          // settlementInfo.data[i].pieceOwnerWalletAddress,
-
-          // settlementInfo.data[i].settlementCoinCount.toString()
+          settlementInfo.data[i].pieceOwnerWalletAddress,
+          convertToInteger(
+            settlementInfo.data[i].settlementCoinCount.toString()
+          )
         )
         .send({ from: MW });
-    }
 
-    await fundingContract.methods
-      .settlement(CA, 10, dummylist)
-      .send({ from: MW });
+      const tx = await artTokenContract.methods
+        .transfer(
+          settlementInfo.data[i].pieceOwnerWalletAddress,
+
+          convertToInteger(
+            settlementInfo.data[i].settlementCoinCount.toString()
+          )
+        )
+        .send({ from: MW });
+
+      console.log(tx);
+    }
   };
 
   const successSettlement = () => {
