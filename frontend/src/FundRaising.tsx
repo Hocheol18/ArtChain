@@ -28,7 +28,7 @@ const FundRaisingPage: React.FC = () => {
   ];
 
   const ReceviceArtCoinContractAddress =
-    "0xc9b3b105371c675dA6083b993C944B861792021a";
+    "0xF08714ACeD9bE1d978973d770780843c9DfEB8cE";
   const artTokenContractAddress = "0xE5856017Db7b4023383c867Ea65bc178B7F023C1";
 
   useEffect(() => {
@@ -154,7 +154,7 @@ const FundRaisingPage: React.FC = () => {
         ReceviceArtCoinContractAddress
       );
       
-      const tx = fundingContract.methods.distributeFund()
+      const tx = fundingContract.methods.distributeFundWithoutCondition()
         .send({from: account});
       console.log((await tx).transactionHash);
     } catch (error) {
