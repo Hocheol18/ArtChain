@@ -1,10 +1,13 @@
 package com.ssafy.artchain.scheduler;
 
 import com.ssafy.artchain.connectentity.entity.InvestmentLog;
+import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
+import com.ssafy.artchain.eventLog.entity.EventLog;
+import com.ssafy.artchain.eventLog.repository.EventLogRepository;
+import com.ssafy.artchain.eventLog.service.EventLogService;
 import com.ssafy.artchain.funding.entity.Funding;
 import com.ssafy.artchain.funding.entity.FundingProgressStatus;
 import com.ssafy.artchain.funding.repository.FundingRepository;
-import com.ssafy.artchain.connectentity.repository.InvestmentLogRepository;
 import com.ssafy.artchain.member.entity.Member;
 import com.ssafy.artchain.pieceowner.entity.PieceOwner;
 import com.ssafy.artchain.pieceowner.repository.PieceOwnerRepository;
@@ -22,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +41,8 @@ public class CronTable {
     private final PieceOwnerRepository pieceOwnerRepository;
     private final SseRepository sseRepository;
     private final SseService sseService;
+    private final EventLogRepository eventLogRepository;
+    private final EventLogService eventLogService;
 
     @Value("${schedule.funding.progress-status.active}")
     private boolean fundingProgressStatusCronActive;
@@ -133,9 +139,18 @@ public class CronTable {
                     }
                 }
 
+                String eventTypeName = "fundingProgressStatusCron";
+                SseFundingRecruitEndResultListDto eventContent = new SseFundingRecruitEndResultListDto(sseFundingRecruitEndResultListItemList);
+
+                eventLogRepository.save(EventLog.builder()
+                        .eventDate(LocalDateTime.now())
+                        .eventType(eventTypeName)
+                        .eventContent(eventLogService.convertDtoToJson(eventContent))
+                        .build());
+
                 String eventId = "ADMIN";
                 sseRepository.findById(eventId)
-                        .ifPresent(sseEmitter -> sseService.send(new SseFundingRecruitEndResultListDto(sseFundingRecruitEndResultListItemList), eventId, sseEmitter, "fundingProgressStatusCron"));
+                        .ifPresent(sseEmitter -> sseService.send(eventContent, eventId, sseEmitter, eventTypeName));
             }
         } catch (Exception e) {
             log.info("* Batch 시스템이 예기치 않게 종료되었습니다. Message: {}", e.getMessage());
