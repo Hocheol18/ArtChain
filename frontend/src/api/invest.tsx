@@ -13,6 +13,7 @@ import {
   FundingAllowRequest,
   FundingStatusRequest,
   FundingContractAddressRequest,
+  MainCarouselFundingListResponse,
 } from "../type/invest.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios, imageAxios } from "./https";
@@ -165,6 +166,14 @@ export const FundingPermissionList = async () => {
   const url = `/funding/permission`;
 
   const response = await imageAxios.get(url);
+
+  return response.data.data;
+};
+
+export const MainCarouselFundingList = async () => {
+  const url = `/funding/list/carousel`;
+
+  const response = await localAxios.get(url);
 
   return response.data.data;
 };

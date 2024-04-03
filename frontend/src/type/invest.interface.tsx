@@ -218,3 +218,15 @@ export interface CostParam {
   mainVariety: string;
   subVariety: string;
 }
+
+// 메인 캐러셀 펀딩 리스트 response
+export interface MainCarouselFundingListResponse {
+  fundingCarouselList: FundingCarousel[];
+}
+
+// 메인 캐러셀 펀딩 리스트 param
+export interface FundingCarousel {
+  id: number;
+  poster: number;
+  fundingTitle: string;
+}

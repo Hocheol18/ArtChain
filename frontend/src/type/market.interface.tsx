@@ -101,6 +101,7 @@ export interface buyMarketTokenInterface {
   completed: boolean;
 }
 
+// 메인페이지 마켓 top4 response
 export interface MainPageMarketTop4ResponseInterface {
   fundingId: number;
   fundingName: string;

@@ -11,7 +11,7 @@ import {
   getMyInvestmentHistory,
   getMyPieceCount,
 } from "../api/mypage";
-import { getMainPageMarketTop4 } from "../api/market";
+import { MainCarouselFundingList } from "../api/invest";
 export default function MainPage() {
   const navigate = useNavigate();
 
@@ -22,8 +22,8 @@ export default function MainPage() {
       //   progressStatus: "RECRUITMENT_STATUS",
       // };
 
-      const responseData = await getMainPageMarketTop4(); // 수정된 formData를 전달
-      console.log("Received Response:", responseData.data.data);
+      const responseData = await MainCarouselFundingList(); // 수정된 formData를 전달
+      console.log("Received Response:", responseData);
       navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
     } catch (error) {
       console.error("Error fetching business page data:", error);
