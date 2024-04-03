@@ -18,6 +18,7 @@ public class MarketDetailResponseDto {
     private String fundingName;
     private String status;
     private String contractAddress;
+    private String transactionHash;
     private Long pieceCount;
     private Long totalCoin;
     private BigDecimal coinPerPiece;
@@ -31,6 +32,7 @@ public class MarketDetailResponseDto {
         this.id = market.getId();
         this.fundingId = market.getFundingId();
         this.contractAddress = market.getContractAddress();
+        this.transactionHash = market.getTransactionHash();
         this.pieceCount = market.getPieceCount();
         this.totalCoin = market.getTotalCoin();
         this.coinPerPiece = market.getCoinPerPiece();
