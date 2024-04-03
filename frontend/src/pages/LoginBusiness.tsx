@@ -10,7 +10,7 @@ export default function LoginBusiness() {
   const [values, setValues] = useState<LoginInterface>({
     username: "",
     password: "",
-  })
+  });
   const { LoginWithMetamask } = useLoginWithMetamask(values, true);
 
   const handleSetValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,10 +26,6 @@ export default function LoginBusiness() {
       LoginWithMetamask();
     }
   };
-
-  useEffect(() => {
-    console.log(values)
-  }, [values])
 
   return (
     <Box p={"1rem"}>
