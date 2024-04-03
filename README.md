@@ -5,6 +5,7 @@
 <hr>
 
 ## 목차
+
 - [📌 서비스 소개](#-서비스-소개)
 - [⏱ 개발 기간](#-개발-기간)
 - [👥 팀 소개](#-팀-소개)
@@ -161,7 +162,7 @@ erd 사진 넣을 거임
 
 #### 2. 아키텍처
 
-아키텍쳐 사진 넣을 거임
+![ArtChain](/uploads/ecb6bd93c6cae345a51e0f23431ce553/ArtChain.png)
 
 #### [3. Mockup](https://www.figma.com/file/mcMwnFn8rZjF5tIEO6KAAX/Artchain?type=design&node-id=103%3A224&mode=design&t=sOngQjOWEk0p3Tty-1)
 
