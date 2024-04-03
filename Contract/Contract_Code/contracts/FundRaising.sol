@@ -70,6 +70,33 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
         }
     }
 
+    // 분배 함수
+    function distributeFundWithoutCondition() external {
+        require(msg.sender == owner, "Only owner can call this function");
+        require(
+            raisedAmount >= (initialSupply * 4) / 5,
+            "Fundraising goal not reached"
+        );
+
+        // ART 토큰 컨트랙트의 인스턴스 생성
+        IERC20 artToken = IERC20(artTokenAddress);
+
+        // 컨트랙트 내의 모든 ART 토큰을 owner에게 전송
+        uint256 balance = artToken.balanceOf(address(this));
+        require(balance > 0, "No ART tokens to distribute");
+        artToken.transfer(owner, balance);
+
+        for (uint256 i = 0; i < listOfContributors.length; i++) {
+            address contributor = listOfContributors[i];
+            uint256 amount = newCoins[contributor];
+
+            if (amount > 0) {
+                newCoins[contributor] = 0;
+                _transfer(owner, contributor, amount); // 현재는 분배를 1:1로 진행
+            }
+        }
+    }
+
     // 환불 함수
     function refundContributors() external {
         require(msg.sender == owner, "Only owner can call this function");
