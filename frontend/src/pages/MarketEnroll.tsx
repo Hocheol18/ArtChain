@@ -196,6 +196,7 @@ export default function MarketEnroll() {
         .then((res) => successList(res, Number(integerTokenAmount)));
     } catch (error) {
       toastFunction("실패했습니다 다시 시도해주세요", false);
+      onClose();
     }
   };
 
