@@ -8,28 +8,9 @@ import { getEnrollList } from "../../type/admin.interface";
 import formatDate from "../Common/Datetime";
 import React from "react";
 
-export default function BusinessApprove() {
+export default function BusinessAccpet() {
   const [values, setValues] = useState<getEnrollList[]>([]);
   const [cnt, setCnt] = useState<number>(0);
-
-
-  // const refund = async () => {
-  //   try {
-  //     // 펀딩할 때 이용할 FundRaisingContract 연결!
-  //     // 그 속에 있는 메서드가 정의된 ABI를 이용하기 위함이다.
-  //     const fundingContract = new web3.eth.Contract(
-  //       ReceiveArtCoinContractABI.abi,
-  //       ReceviceArtCoinContractAddress
-  //     );
-
-  //     const tx = fundingContract.methods
-  //       .refundContributors()
-  //       .send({ from: account });
-  //     console.log((await tx).transactionHash);
-  //   } catch (error) {
-  //     console.error("거래 처리 중 오류가 발생했습니다.", error);
-  //   }
-  // };
 
   useEffect(() => {
     SignUpPermissionListAxios()

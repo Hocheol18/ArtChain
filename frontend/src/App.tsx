@@ -36,6 +36,7 @@ import SettlementDetail from "./components/Admin/SettlementDetail";
 import ProjectConfirm from "./components/Admin/ProjectConfirm";
 import useSettlementInfo from "./store/useSettlementInfo";
 import useDistributeInfo from "./store/useDistributeInfo";
+import BusinessAccpet from "./components/Admin/BusinessAccept";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -66,7 +67,7 @@ function App() {
 
     const funding = (event: MessageEvent) => {
       const res = JSON.parse(event.data);
-      console.log(res.fundingRecruitResultList[0].isRecruitSuccess)
+      console.log(res.fundingRecruitResultList[0].isRecruitSuccess);
       setDistributeInfo({
         isRecruitSuccess: res.fundingRecruitResultList[0].isRecruitSuccess,
         fundingContractAddress:
@@ -596,9 +597,17 @@ function App() {
                 ></Route>
                 {/* 관리자 페이지 */}
                 <Route
+                  path="/admin/approve"
+                  element={
+                    <CommonPage topNavType="logo" bottomNavType="">
+                      <BusinessAccpet />
+                    </CommonPage>
+                  }
+                ></Route>
+                <Route
                   path="/admin"
                   element={
-                    <CommonPage topNavType="back" bottomNavType="">
+                    <CommonPage topNavType="logo" bottomNavType="">
                       <AdminPage />
                     </CommonPage>
                   }
@@ -606,7 +615,7 @@ function App() {
                 <Route
                   path="/admin/settlement/:id"
                   element={
-                    <CommonPage topNavType="back" bottomNavType="">
+                    <CommonPage topNavType="logo" bottomNavType="">
                       <SettlementDetail />
                     </CommonPage>
                   }
@@ -614,7 +623,7 @@ function App() {
                 <Route
                   path="/admin/project/:id"
                   element={
-                    <CommonPage topNavType="back" bottomNavType="">
+                    <CommonPage topNavType="logo" bottomNavType="">
                       <ProjectConfirm />
                     </CommonPage>
                   }
