@@ -50,26 +50,30 @@ async function postMarketEnroll(data: postMarketEnrollInterface) {
   return await localAxios.post(url, data);
 }
 
-async function getMarketSoldDetail(marketId:number) {
+async function getMarketSoldDetail(marketId: number) {
   const url = `/market/detail${makeQuerystring({
-    marketId
-  })}`
-  return await localAxios.get(url)
+    marketId,
+  })}`;
+  return await localAxios.get(url);
 }
 
-async function getMarketChart(fundingId : number) {
+async function getMarketChart(fundingId: number) {
   const url = `/market/graph${makeQuerystring({
-    fundingId
-  })}`
-  return await localAxios.get(url)
+    fundingId,
+  })}`;
+  return await localAxios.get(url);
 }
 
 async function getMarketMyToken() {
-  return await localAxios.get('/market/registForm')
+  return await localAxios.get("/market/registForm");
 }
 
-async function putMarketToken(marketId : number, transactionHash : string) {
-  return await localAxios.put(`/market/buy/${marketId}/${transactionHash}`)
+async function putMarketToken(marketId: number, transactionHash: string) {
+  return await localAxios.put(`/market/buy/${marketId}/${transactionHash}`);
+}
+
+async function getMainPageMarketTop4() {
+  return await localAxios.get("/market/mainPageMarket");
 }
 
 export {
@@ -80,5 +84,6 @@ export {
   getMarketSoldDetail,
   getMarketChart,
   getMarketMyToken,
-  putMarketToken
+  putMarketToken,
+  getMainPageMarketTop4,
 };
