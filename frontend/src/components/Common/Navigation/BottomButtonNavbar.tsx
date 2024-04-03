@@ -2,7 +2,7 @@ import { Box, Center, Flex, Text, Image } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import MarketIcon from "../../../assets/market-icon.svg";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 interface Props {
   text: string;
@@ -12,6 +12,8 @@ interface Props {
 
 export const BottomButtonNavbar = ({ text, category, hanldeButton }: Props) => {
   const isDesktop = useMediaQuery({ minWidth: 701 });
+
+  const { fundingId } = useParams();
 
   const [color, setColor] = useState("blue.300");
 
@@ -68,7 +70,7 @@ export const BottomButtonNavbar = ({ text, category, hanldeButton }: Props) => {
             borderColor={"gray.200"}
             borderRadius={"lg"}
             as={Link}
-            to={"/market/1"}
+            to={`/market/${fundingId}`}
           >
             <Image src={MarketIcon} w={"20px"} />
             <Center fontSize={"15px"}>구입</Center>

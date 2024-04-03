@@ -55,8 +55,8 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
         break;
       case "마이":
         setImgIcon(MyIcon);
-        console.log(userInfo.isLogin);
-        console.log(userInfo.userId);
+        // console.log(userInfo.isLogin);
+        // console.log(userInfo.userId);
 
         if (userInfo.isLogin) {
           if (userInfo.isBusiness) {
