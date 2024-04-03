@@ -1,38 +1,33 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { menuType } from "./InvestDetailBox";
 
 interface InvestTapProps {
-  text: string;
-  active: boolean;
-  onClick: () => void;
+  items: menuType[];
+  activeID: number;
+  setActiveID: (id: number) => void;
 }
 
-export const InvestDetailTap = ({ text, active, onClick }: InvestTapProps) => {
-  //active에 따라 바뀌는 css
-  const [borderColor, setBorderColor] = useState<string>("white");
-  const [fontWeight, setfontWeight] = useState<string>("");
-
-  useEffect(() => {
-    if (active) {
-      setBorderColor("black");
-      setfontWeight("bold");
-    } else {
-      setBorderColor("white");
-      setfontWeight("");
-    }
-  }, [active]);
-
+export const InvestDetailTap = ({
+  items,
+  activeID,
+  setActiveID,
+}: InvestTapProps) => {
   return (
     <>
-      <Box
-        borderBottom={"2px"}
-        borderBottomColor={borderColor}
-        fontWeight={fontWeight}
-        onClick={onClick}
-        pb={1}
-      >
-        {text}
-      </Box>
+      {items.map((item) => (
+        <>
+          <Box
+            borderBottom={"2px"}
+            borderBottomColor={item.id === activeID ? "black" : "white"}
+            fontWeight={item.id === activeID ? "bold" : ""}
+            borderBottomWidth={item.id === activeID ? "medium" : ""}
+            onClick={() => setActiveID(item.id)}
+            pb={1}
+          >
+            {item.name}
+          </Box>
+        </>
+      ))}
     </>
   );
 };
