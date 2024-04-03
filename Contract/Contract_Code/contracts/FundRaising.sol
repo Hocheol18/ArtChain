@@ -26,7 +26,7 @@ contract FundRaisingContract is ERC20MintBurnTransferContract {
     uint256 public raisedAmount; // 총 모금 발행량 갯수
     uint256 public finishTime; // 마감 시간
     address[] public listOfContributors; // ArtCoin 넣은 사람 address
-    address public artTokenAddress = 0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB;
+    address public artTokenAddress = 0xE5856017Db7b4023383c867Ea65bc178B7F023C1;
 
     constructor(
         string memory name,

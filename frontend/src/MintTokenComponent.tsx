@@ -41,7 +41,7 @@ const TokenManagementComponent: React.FC = () => {
 
   const handleMintTokens = async () => {
     try {
-      const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
+      const artTokenContractAddress = "0xE5856017Db7b4023383c867Ea65bc178B7F023C1"; // ART 토큰의 스마트 계약 주소
       const artTokenContract = new web3.eth.Contract(
           IERC20ABI.abi,
           artTokenContractAddress
@@ -61,7 +61,7 @@ const TokenManagementComponent: React.FC = () => {
 
   const handleBurnTokens = async () => {
     try {
-      const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
+      const artTokenContractAddress = "0xE5856017Db7b4023383c867Ea65bc178B7F023C1"; // ART 토큰의 스마트 계약 주소
       const artTokenContract = new web3.eth.Contract(
           IERC20ABI.abi,
           artTokenContractAddress
