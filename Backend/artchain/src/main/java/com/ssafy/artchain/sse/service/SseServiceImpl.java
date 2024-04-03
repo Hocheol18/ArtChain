@@ -16,7 +16,7 @@ public class SseServiceImpl implements SseService {
 
     private final SseRepository sseRepository;
 
-    private final static Long DEFAULT_TIMEOUT = Long.MAX_VALUE;
+    private final static Long DEFAULT_TIMEOUT = 300_000L;
 
     @Override
     public SseEmitter subscribe() {
@@ -41,6 +41,7 @@ public class SseServiceImpl implements SseService {
     public void send(Object data, String eventId, SseEmitter sseEmitter, String eventName) {
         try {
             sseEmitter.send(SseEmitter.event()
+                    .reconnectTime(3000L)
                     .id(eventId)
                     .data(data, MediaType.APPLICATION_JSON)
                     .name(eventName));
