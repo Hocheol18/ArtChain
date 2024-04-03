@@ -11,24 +11,8 @@ import {
   getMyInvestmentHistory,
   getMyPieceCount,
 } from "../api/mypage";
-import { MainCarouselFundingList } from "../api/invest";
 export default function MainPage() {
   const navigate = useNavigate();
-
-  const handleButtonClick = async () => {
-    try {
-      // const params = {
-      //   fundingId: 19,
-      //   progressStatus: "RECRUITMENT_STATUS",
-      // };
-
-      const responseData = await MainCarouselFundingList(); // 수정된 formData를 전달
-      console.log("Received Response:", responseData);
-      navigate("/main"); // 응답을 받은 후 navigate를 실행합니다.
-    } catch (error) {
-      console.error("Error fetching business page data:", error);
-    }
-  };
 
   return (
     <>
@@ -37,7 +21,6 @@ export default function MainPage() {
         <Text as={"b"} ml={"1.5rem"} fontSize={"2rem"}>
           진행 중인 투자 작품
         </Text>
-        <button onClick={handleButtonClick}>Axios Test</button>
       </Box>
       <Poster />
       <Poster />

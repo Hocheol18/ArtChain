@@ -230,3 +230,18 @@ export interface FundingCarousel {
   poster: number;
   fundingTitle: string;
 }
+
+// 메인 펀딩 리스트 response
+export interface MainPageFundingListResponse {
+  fundingMainPageList: FundingMainPage[];
+}
+
+// 메인 펀딩 리스트 param
+export interface FundingMainPage {
+  id: number;
+  poster: number;
+  fundingTitle: string;
+  goalCoinCount: number;
+  nowCoinCount: number;
+  percentage: number;
+}

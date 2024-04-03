@@ -14,6 +14,7 @@ import {
   FundingStatusRequest,
   FundingContractAddressRequest,
   MainCarouselFundingListResponse,
+  MainPageFundingListResponse,
 } from "../type/invest.interface";
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios, imageAxios } from "./https";
@@ -170,8 +171,18 @@ export const FundingPermissionList = async () => {
   return response.data.data;
 };
 
+// 메인 캐러셀용 투자 리스트
 export const MainCarouselFundingList = async () => {
   const url = `/funding/list/carousel`;
+
+  const response = await localAxios.get(url);
+
+  return response.data.data;
+};
+
+// 메인 투자 리스트
+export const MainPageFundingList = async () => {
+  const url = `/funding/list/main-page`;
 
   const response = await localAxios.get(url);
 
