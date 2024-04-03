@@ -22,7 +22,7 @@ import MetamaskValidation from "../../Common/MetamaskValidation";
 import { useCustomToast } from "../../Common/Toast";
 import { LoadingModal } from "../../Common/LoadingModal";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SellList(params: getMarketSellingDisplayListInterface) {
   const { userInfo, setUserInfo } = useUserInfo();
@@ -43,8 +43,8 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
       onOpen();
       buyToken({
         seller: params.sellerAddress,
-        // 마켓 컨트랙트
-        tokenAddress: "0xfDe370f3358c73A99D7e91a5F633E3FE22128966",
+        // 토큰 컨트랙트
+        tokenAddress: params.contractAddress,
         tokenAmount: params.pieceCount,
         price: params.totalCoin,
       });
@@ -58,6 +58,8 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
       walletBalance: (parseInt(prevUserInfo.walletBalance) - value).toString(), // 지갑 잔액을 업데이트
     };
   };
+
+  useEffect(() => {});
 
   // 토큰 구매
   const buyToken = async (data: buyContractCallInterfece) => {
@@ -115,6 +117,7 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
       }
     } catch (error) {
       navigate(-1);
+      onClose();
       toastFunction("거래 처리 중 오류가 발생하였습니다.", false);
     }
   };

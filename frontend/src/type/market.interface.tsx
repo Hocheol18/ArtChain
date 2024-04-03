@@ -38,6 +38,7 @@ export interface getMarketSellingDisplayListInterface {
   sellerId: number;
   sellerAddress: string;
   status: string;
+  contractAddress : string;
 }
 
 export interface getMarketHistoryDisplayListAxiosInterface {
