@@ -29,7 +29,7 @@ export const getFunddingList = async (
     page,
     size,
   })}`;
-  console.log(url);
+
   const response = await localAxios.get(url);
 
   if (response.data.data && response.data.data.fundingList) {
@@ -45,8 +45,6 @@ export const getFundding = async (
 ): Promise<GetFundingResponse> => {
   const { fundingId } = params;
   const url = `/funding/${fundingId}`;
-  console.log(url);
-
   const response = await localAxios.get(url);
 
   return response.data.data;

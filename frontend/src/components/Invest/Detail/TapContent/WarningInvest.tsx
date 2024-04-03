@@ -9,7 +9,7 @@ export const WarningInvest = () => {
   ];
 
   return (
-    <Box mb={"70px"} pb={3}>
+    <Box backgroundColor={"white"} py={8} boxShadow={"lg"}>
       <Box fontSize={"22"} fontWeight={"bold"} pl={6} mt={5} pb={2}>
         투자자 유의사항
       </Box>

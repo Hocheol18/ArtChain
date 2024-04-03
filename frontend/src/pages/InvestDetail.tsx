@@ -81,8 +81,6 @@ export const InvestDetail = () => {
           `모집 종료 | ${fundingData?.nowCoinCount} 아트 (${progress}%) 모집`
         );
       }
-
-      console.log(category);
     }
   }, [category, fundingData]);
 
@@ -91,7 +89,7 @@ export const InvestDetail = () => {
   }, [fundingId]);
 
   return (
-    <div>
+    <>
       {fundingData && (
         <>
           <InvestDetailHeader fundingData={fundingData} />
@@ -105,6 +103,6 @@ export const InvestDetail = () => {
           />
         </>
       )}
-    </div>
+    </>
   );
 };

@@ -20,22 +20,22 @@ export const CommonPage = ({
   useEffect(() => {}, [topNavType, bottomNavType]);
 
   return (
-    <Box display="flex" flexDirection="column" height="100vh">
+    <Box display="flex" flexDirection="column">
       {/* 상단네비바가 없으면 없게 */}
       {topNavType === "" ? null : (
-        <Box>
+        <Box position={"fixed"} top={0} w={"100%"} zIndex={2}>
           <TopNavBar navType={topNavType} />
         </Box>
       )}
 
       {/* 하단 네비바가 없으면 없게 */}
       {bottomNavType === "" ? (
-        <Box flex={1} overflowY={"auto"}>
+        <Box flex={1} mt={50}>
           {children}
         </Box>
       ) : (
         <>
-          <Box flex={1} overflowY="auto" mb="70px">
+          <Box flex={1} mt={50} mb="70px">
             {children}
           </Box>
           <Box
