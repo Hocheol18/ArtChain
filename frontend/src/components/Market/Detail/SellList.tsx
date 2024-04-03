@@ -16,7 +16,7 @@ import { convertToInteger } from "../../Common/convertToInteger";
 import Web3 from "web3";
 import TokenMarketplaceABI from "../../../Contract/TokenMarketplace.json";
 import IERC20ABI from "../../../Contract/IERC20.json";
-import useUserInfo from "../../../store/useUserInfo";
+import useUserInfo, { userInfoType } from "../../../store/useUserInfo";
 import { putMarketToken } from "../../../api/market";
 import MetamaskValidation from "../../Common/MetamaskValidation";
 import { useCustomToast } from "../../Common/Toast";
@@ -25,14 +25,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function SellList(params: getMarketSellingDisplayListInterface) {
-  const { userInfo } = useUserInfo();
+  const { userInfo, setUserInfo } = useUserInfo();
   const web3 = new Web3((window as any).ethereum);
   const toastFunction = useCustomToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [url, setUrl] = useState<string | undefined>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [value, setValue] = useState<number>(0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // 메타마스크 유효성 검사
   const Validation = async () => {
@@ -49,6 +49,14 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
         price: params.totalCoin,
       });
     }
+  };
+
+  const updateUserBalance = (prevUserInfo: userInfoType): userInfoType => {
+    // 이전 상태(prevUserInfo)를 기반으로 새로운 상태를 반환
+    return {
+      ...prevUserInfo, // 이전 상태의 모든 속성을 유지
+      walletBalance: (parseInt(prevUserInfo.walletBalance) - value).toString(), // 지갑 잔액을 업데이트
+    };
   };
 
   // 토큰 구매
@@ -93,8 +101,10 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
                 setUrl(
                   `https://sepolia.etherscan.io/tx/${res.transactionHash}`
                 );
+
                 setValue(data.tokenAmount);
                 setIsSuccess(true);
+                setUserInfo(updateUserBalance(userInfo));
 
                 toastFunction("구매 성공", true);
               })
@@ -104,7 +114,7 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
         toastFunction("토큰 승인에 실패하였습니다 다시 시도해주세요", false);
       }
     } catch (error) {
-      navigate(-1)
+      navigate(-1);
       toastFunction("거래 처리 중 오류가 발생하였습니다.", false);
     }
   };
