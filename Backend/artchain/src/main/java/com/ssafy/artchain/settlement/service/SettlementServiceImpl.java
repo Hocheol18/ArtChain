@@ -163,7 +163,7 @@ public class SettlementServiceImpl implements SettlementService {
             pieceOwnerList.forEach(po -> {
                 BigDecimal resultCoinCount = new BigDecimal(po.getPieceCount())
                         .multiply(new BigDecimal(100 + settlement.getReturnRate()))
-                        .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal(100), 0, RoundingMode.FLOOR); // 양수값만 나오기 때문에 RoundingMode.DOWN 사용해도 무방.
                 memberRepository.findById(po.getMemberId()).ifPresent(owner ->
                         pieceOwnerInfoList.add(new SseSettlementAllowResultListItemDto(owner.getWalletAddress(), resultCoinCount))
                 );
