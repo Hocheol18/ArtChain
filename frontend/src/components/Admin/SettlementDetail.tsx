@@ -1,20 +1,47 @@
 import { Button, Flex, Select, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { GetSettlementDetail, PutSettlementStatus } from "../../api/Settlement";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getSettlementDetailList } from "../../type/settlement.interface";
 import { formatNumberWithComma } from "../Common/Comma";
 import { useCustomToast } from "../Common/Toast";
+import Web3 from "web3";
+import ReceiveArtCoinContractABI from "../../Contract/ReceiveArtCoinContract.json";
+import IERC20ABI from "../../Contract/ArtcoinContract.json";
+import useSettlementInfo from "../../store/useSettlementInfo";
+import useUserInfo from "../../store/useUserInfo";
 
 export default function SettlementDetail() {
-  const navigate = useNavigate();
+  const { userInfo } = useUserInfo();
   const id = useParams() as { id: string };
   const [isFilled, setIsFilled] = useState<boolean>(false);
   const toastFunction = useCustomToast();
+  const web3 = new Web3((window as any).ethereum);
   const [target, setTarget] = useState<{
     settlementId: number;
     status: string;
   }>({ settlementId: 0, status: "" });
+  const { settlementInfo } = useSettlementInfo();
+
+  interface FundInfo {
+    investor: string;
+    amount: number;
+  }
+
+  const dummylist: FundInfo[] = [
+    {
+      investor: "0xDaBD9681C6fA9C2675f883FB67a1485038087DD3",
+      amount: 55,
+    },
+    {
+      investor: "0x67F07AFaD0f1528391a0CF8C5058370114B262d6",
+      amount: 44,
+    },
+  ];
+  const CA = "0x74605e05a8f217f72B2D4FA8F534aD85C276d0CB";
+  const TP = 90;
+  const MW: string = "0xDaBD9681C6fA9C2675f883FB67a1485038087DD3";
+
   const [values, setValues] = useState<getSettlementDetailList>({
     id: 0,
     endId: 0,
@@ -28,9 +55,47 @@ export default function SettlementDetail() {
     status: "",
   });
 
+  const settlement = async () => {
+    console.log(settlementInfo);
+    settlementInfo.data.forEach((item, index) => {
+      settlementInfo.data[index].settlementCoinCount = item.settlementCoinCount;
+    });
+
+    console.log(settlementInfo.data);
+
+    const fundingContract = new web3.eth.Contract(
+      ReceiveArtCoinContractABI.abi,
+      // 펀딩 컨트랙트 주소
+      // settlementInfo.fundingContractAddress
+      CA
+    );
+    const artTokenContract = new web3.eth.Contract(
+      IERC20ABI.abi,
+      "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"
+    );
+
+    // need to props
+    for (let i = 0; i < dummylist.length; i++) {
+      await artTokenContract.methods
+        .approve(
+          dummylist[i].investor,
+          dummylist[i].amount * 10 ** 18
+
+          // settlementInfo.data[i].pieceOwnerWalletAddress,
+
+          // settlementInfo.data[i].settlementCoinCount.toString()
+        )
+        .send({ from: MW });
+    }
+
+    await fundingContract.methods
+      .settlement(CA, 10, dummylist)
+      .send({ from: MW });
+  };
+
   const successSettlement = () => {
     toastFunction("처리 완료되었습니다", true);
-    navigate(-1);
+    settlement();
   };
 
   useEffect(() => {

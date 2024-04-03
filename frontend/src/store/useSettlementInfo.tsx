@@ -30,9 +30,6 @@ const useSettlementInfo = create<UserInfoState & UserInfoActions>()(
     persist(
       (set) => ({
         settlementInfo: defaultState,
-        setSettlementInfo: (settlementInfo: settlementInfoType) => {
-          set({ settlementInfo });
-        },
         setSettlementInfoData: (data: Settlement[]) => {
           set((state) => ({
             settlementInfo: {
@@ -54,6 +51,20 @@ const useSettlementInfo = create<UserInfoState & UserInfoActions>()(
             settlementInfo: {
               ...state.settlementInfo,
               totalPieceCount,
+            },
+          }));
+        },
+        setAllInOne: ({
+          totalPieceCount,
+          data,
+          fundingContractAddress,
+        }: settlementInfoType) => {
+          set((state) => ({
+            settlementInfo: {
+              ...state.settlementInfo,
+              totalPieceCount,
+              data,
+              fundingContractAddress,
             },
           }));
         },
