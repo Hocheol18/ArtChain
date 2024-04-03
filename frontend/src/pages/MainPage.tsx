@@ -11,7 +11,6 @@ import {
   getMyInvestmentHistory,
   getMyPieceCount,
 } from "../api/mypage";
-
 export default function MainPage() {
   const navigate = useNavigate();
 

@@ -23,10 +23,10 @@ export interface getMarketSellingDisplayListAxiosInterface {
 }
 
 export interface buyContractCallInterfece {
-  seller : string;
-  tokenAddress : string;
-  tokenAmount : number;
-  price : number;
+  seller: string;
+  tokenAddress: string;
+  tokenAmount: number;
+  price: number;
 }
 
 export interface getMarketSellingDisplayListInterface {
@@ -66,7 +66,7 @@ export interface postMarketEnrollInterface {
   pieceCount: number;
   totalCoin: number;
   coinPerPiece: number;
-  transactionHash : string;
+  transactionHash: string;
 }
 
 export interface getMarketDetailDisplayInterface {
@@ -90,7 +90,7 @@ export interface getMarketMyTokenInterface {
   fundingId: number;
   name: string;
   pieceCount: number;
-  contractAddress : string;
+  contractAddress: string;
 }
 
 export interface buyMarketTokenInterface {
@@ -101,4 +101,10 @@ export interface buyMarketTokenInterface {
   completed: boolean;
 }
 
-
+// 메인페이지 마켓 top4 response
+export interface MainPageMarketTop4ResponseInterface {
+  fundingId: number;
+  fundingName: string;
+  fundingPoster: string;
+  marketCount: number;
+}
