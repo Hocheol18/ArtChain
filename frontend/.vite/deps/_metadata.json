@@ -1,0 +1,133 @@
+{
+  "hash": "ab348ebb",
+  "configHash": "7da29fbd",
+  "lockfileHash": "7e86a2d8",
+  "browserHash": "1975d724",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "e1c05072",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "2751c4d3",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "df03e186",
+      "needsInterop": true
+    },
+    "react-responsive": {
+      "src": "../../node_modules/react-responsive/dist/react-responsive.js",
+      "file": "react-responsive.js",
+      "fileHash": "e21c8ec7",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "ed5f81ef",
+      "needsInterop": false
+    },
+    "@chakra-ui/react": {
+      "src": "../../node_modules/@chakra-ui/react/dist/index.mjs",
+      "file": "@chakra-ui_react.js",
+      "fileHash": "508c8d10",
+      "needsInterop": false
+    },
+    "@chakra-ui/theme-utils": {
+      "src": "../../node_modules/@chakra-ui/theme-utils/dist/index.mjs",
+      "file": "@chakra-ui_theme-utils.js",
+      "fileHash": "c02826c9",
+      "needsInterop": false
+    },
+    "@chakra-ui/icons": {
+      "src": "../../node_modules/@chakra-ui/icons/dist/index.mjs",
+      "file": "@chakra-ui_icons.js",
+      "fileHash": "5dc8a4b6",
+      "needsInterop": false
+    },
+    "react-icons/fa": {
+      "src": "../../node_modules/react-icons/fa/index.mjs",
+      "file": "react-icons_fa.js",
+      "fileHash": "6de2f9c6",
+      "needsInterop": false
+    },
+    "web3": {
+      "src": "../../node_modules/web3/lib/esm/index.js",
+      "file": "web3.js",
+      "fileHash": "6141d8c3",
+      "needsInterop": false
+    },
+    "chart.js": {
+      "src": "../../node_modules/chart.js/dist/chart.js",
+      "file": "chart__js.js",
+      "fileHash": "9c104673",
+      "needsInterop": false
+    },
+    "react-chartjs-2": {
+      "src": "../../node_modules/react-chartjs-2/dist/index.js",
+      "file": "react-chartjs-2.js",
+      "fileHash": "06a5ff79",
+      "needsInterop": false
+    },
+    "@chakra-ui/layout": {
+      "src": "../../node_modules/@chakra-ui/layout/dist/index.mjs",
+      "file": "@chakra-ui_layout.js",
+      "fileHash": "0177d502",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "90b7ba16",
+      "needsInterop": false
+    },
+    "zustand/middleware": {
+      "src": "../../node_modules/zustand/esm/middleware.mjs",
+      "file": "zustand_middleware.js",
+      "fileHash": "88d61be9",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "82d1a4df",
+      "needsInterop": false
+    },
+    "chartjs-plugin-datalabels": {
+      "src": "../../node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.esm.js",
+      "file": "chartjs-plugin-datalabels.js",
+      "fileHash": "7715cc75",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-HEXXAJEK": {
+      "file": "chunk-HEXXAJEK.js"
+    },
+    "chunk-WZAL7YVT": {
+      "file": "chunk-WZAL7YVT.js"
+    },
+    "chunk-4ZSTBHIF": {
+      "file": "chunk-4ZSTBHIF.js"
+    },
+    "chunk-X32OCADL": {
+      "file": "chunk-X32OCADL.js"
+    },
+    "chunk-HAZNF34R": {
+      "file": "chunk-HAZNF34R.js"
+    },
+    "chunk-5SKHPGGK": {
+      "file": "chunk-5SKHPGGK.js"
+    },
+    "chunk-WXXH56N5": {
+      "file": "chunk-WXXH56N5.js"
+    }
+  }
+}

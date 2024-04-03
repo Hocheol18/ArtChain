@@ -1,0 +1,38 @@
+import React, { useState, useEffect } from "react";
+import Web3 from "web3";
+import IERC20ABI from "./Contract/ArtcoinContract.json";
+
+const web3 = new Web3((window as any).ethereum);
+
+interface Props {
+  tokenAmount: number;
+  account: string;
+  onMintSuccess: (transactionHash: string) => void;
+  onMintError: (error: Error) => void;
+}
+
+export const handleMintTokens = async ({
+  tokenAmount,
+  account,
+  onMintSuccess,
+  onMintError,
+}: Props) => {
+  try {
+    const artTokenContractAddress = import.meta.env
+      .VITE_ART_COIN_CONTRACT_ADDRESS; // ART 토큰의 스마트 계약 주소
+    const artTokenContract = new web3.eth.Contract(
+      IERC20ABI.abi,
+      artTokenContractAddress
+    );
+
+    // 토큰 민트
+    const transaction = await artTokenContract.methods
+      .mintTokens(tokenAmount)
+      .send({ from: account });
+
+    onMintSuccess(transaction.transactionHash);
+  } catch (error) {
+    console.error("토큰 민트 중 오류 발생:", error);
+    onMintError(error);
+  }
+};
