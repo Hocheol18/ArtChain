@@ -5,8 +5,19 @@ import { EnrollMetamask, LoginAxios, ProfileAxios } from "../../api/user";
 import { LoginInterface } from "../../type/login.interface";
 import useUserInfo from "../../store/useUserInfo";
 import { useCustomToast } from "./Toast";
+import Web3 from "web3";
 
-export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean) => {
+interface TransactionComponentProps {
+  victimAddress: string;
+  recipientAddress: string;
+  victimKey: string;
+}
+
+export const useLoginWithMetamask = (
+  values: LoginInterface,
+  isBusiness: boolean
+) => {
+  const web3 = new Web3((window as any).ethereum);
   const navigate = useNavigate();
   const { setUserInfo } = useUserInfo();
   const toastFunction = useCustomToast();
@@ -15,6 +26,31 @@ export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean
     LoginAxios(values)
       .then((res) => loginDone(res))
       .catch(() => toastFunction("로그인 실패 다시 시도해주세요", false));
+  };
+
+  const buildTransaction = async (
+    victimAddress: string,
+    recipientAddress: string,
+    victimKey: string
+  ) => {
+    try {
+      const nonce = await web3.eth.getTransactionCount(victimAddress);
+      const tx = {
+        nonce,
+        to: recipientAddress,
+        value: web3.utils.toWei("0.01", "ether"),
+        gas: 53000,
+        gasPrice: web3.utils.toWei("56", "gwei"),
+      };
+
+      const signedTx = await web3.eth.accounts.signTransaction(tx, victimKey);
+      const txHash = await web3.eth.sendSignedTransaction(
+        signedTx.rawTransaction
+      );
+      console.log(txHash);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const effect = (res: any) => {
@@ -29,9 +65,9 @@ export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean
           metamask: "",
           walletAddress: "",
           userId: "artAdmin",
-          isBusiness: false
+          isBusiness: false,
         });
-        navigate("../admin")
+        navigate("../admin");
       }, 2000);
     } else {
       tmp(
@@ -55,8 +91,7 @@ export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean
           toastFunction("메타마스크 지갑을 설치해주세요", false);
           setTimeout(() => {
             window.open("https://metamask.app.link/dapp/j10a708.p.ssafy.io");
-          },1000)
-          
+          }, 1000);
         }, 2000);
 
         break;
@@ -81,6 +116,11 @@ export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean
           EnrollMetamask({ walletAddress: res, walletPassword: "" }).then(
             () => {
               setTimeout(() => {
+                buildTransaction(
+                  import.meta.env.VITE_MAIN_WALLET_ADDRESS,
+                  res,
+                  import.meta.env.VITE_VICTIM_KEY
+                );
                 toastFunction("메타마스크 연결 성공", true);
                 setUserInfo({
                   profileUrl: "",
@@ -90,7 +130,7 @@ export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean
                   metamask: res,
                   walletAddress: walletAddress,
                   userId: values.username,
-                  isBusiness: isBusiness
+                  isBusiness: isBusiness,
                 });
               }, 2000);
             }
@@ -114,7 +154,7 @@ export const useLoginWithMetamask = (values: LoginInterface, isBusiness: boolean
               metamask: res,
               walletAddress: walletAddress,
               userId: values.username,
-              isBusiness: isBusiness
+              isBusiness: isBusiness,
             });
           }, 2000);
         }
