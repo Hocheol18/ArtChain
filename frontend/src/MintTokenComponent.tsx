@@ -18,8 +18,8 @@ export const handleMintTokens = async ({
   onMintError,
 }: Props) => {
   try {
-    const artTokenContractAddress =
-      "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
+    const artTokenContractAddress = import.meta.env
+      .VITE_ART_COIN_CONTRACT_ADDRESS; // ART 토큰의 스마트 계약 주소
     const artTokenContract = new web3.eth.Contract(
       IERC20ABI.abi,
       artTokenContractAddress
