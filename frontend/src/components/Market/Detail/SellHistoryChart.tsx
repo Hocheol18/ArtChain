@@ -10,6 +10,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getMarketChart } from "../../../api/market";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 ChartJS.register(
   LinearScale,
@@ -20,8 +21,8 @@ ChartJS.register(
 );
 
 export default function SellHistoryChart() {
+  const today = dayjs();
   const id = useParams() as { id: string };
-  const today = new Date();
   const [values, setValues] = useState<string[]>([]);
 
   useEffect(() => {
@@ -29,9 +30,10 @@ export default function SellHistoryChart() {
   }, [id]);
 
   const labels: number[] = [];
-  for (let i = 1; i <= 8; i++) {
-    labels.push(today.getDate() - 7 + i);
+  for (let i = 0; i <= 7; i++) {
+    labels.push(today.subtract(i, 'day').date());
   }
+  labels.reverse()
 
   const datas: number[] = [];
   values.forEach((res: any) => {

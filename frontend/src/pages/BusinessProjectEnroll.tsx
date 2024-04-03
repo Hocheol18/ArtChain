@@ -187,7 +187,7 @@ export default function BusinessProjectEnroll() {
 
     console.log(isReady);
 
-    if (isReady) {
+    if (isReady && goalCoinCount !== undefined) {
       try {
         const project = {
           name: name,
@@ -195,7 +195,7 @@ export default function BusinessProjectEnroll() {
           recruitStart: recruitStart,
           recruitEnd: recruitEnd,
           settlement: settlement,
-          goalCoinCount: goalCoinCount,
+          goalCoinCount: goalCoinCount/1000,
           totalBudget: totalBudget,
           unitPrice: unitPrice,
           bep: bep,

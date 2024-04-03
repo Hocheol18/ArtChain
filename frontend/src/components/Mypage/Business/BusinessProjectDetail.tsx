@@ -92,8 +92,7 @@ export default function BusinessProjectDetail({ projectData }: Props) {
           </Flex>
         </Flex>
       </Center>
-      {projectData.progressStatus === "PENDING_SETTLEMENT" &&
-      projectData.status === "REQUEST" ? (
+      {projectData.progressStatus === "PENDING_SETTLEMENT" ? (
         <Flex
           justifyContent={"center"}
           mt={2}

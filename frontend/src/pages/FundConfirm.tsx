@@ -45,13 +45,15 @@ export default function FundConfirm() {
   }, []);
 
   const handleSubmit = async () => {
+    
     try {
       const applyData = {
         fundingId: id,
-        settlementPricee: settlementPrice,
+        settlementPrice: settlementPrice,
         returnRate: returnRate,
         depositDate: depositDate,
       };
+      console.log(applyData)
 
       const formData = new FormData();
       if (dataFile) {
