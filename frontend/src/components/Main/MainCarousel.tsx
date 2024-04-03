@@ -98,7 +98,6 @@ export default function MainCarousel({ carouselList }: Props) {
         top={"50%"}
         transform={"translateY(-50%)"}
         left={"5%"}
-        zIndex={2}
       >
         <ChevronLeftIcon boxSize={7} onClick={moveLeft} />
       </Box>
@@ -108,7 +107,6 @@ export default function MainCarousel({ carouselList }: Props) {
         top={"50%"}
         transform={"translateY(-50%)"}
         right={"5%"}
-        zIndex={2}
       >
         <ChevronRightIcon boxSize={7} onClick={moveRight} />
       </Box>
