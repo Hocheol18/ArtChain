@@ -11,12 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { BottomButtonNavbar } from "../../Common/Navigation/BottomButtonNavbar";
 import { useState, useEffect } from "react";
-import axios from "axios"
+import axios from "axios";
 import { handleMintTokens } from "../../../MintTokenComponent";
 import { PostCharge } from "../../../api/coin";
 import useUserInfo, { userInfoType } from "../../../store/useUserInfo";
 import { LoadingModal } from "../../Common/LoadingModal";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 export const ArtCharge = () => {
   const [account, setAccount] = useState<string>("");
@@ -182,7 +183,7 @@ export const ArtCharge = () => {
   };
 
   return (
-    <Box mb={70}>
+    <Box mb={70} w={"390px"}>
       {/* 모달 */}
       <LoadingModal
         headerText="충전 완료"
@@ -197,47 +198,44 @@ export const ArtCharge = () => {
       <Box px={8} pb={2} fontWeight={"bold"} fontSize={"14"}>
         충전하실 아트를 선택하세요
       </Box>
-      <Center>
+      <Center w={"390px"}>
         <RadioGroup value={value} onChange={setValue}>
-          <Stack direction="column">
-            <Grid templateRows="reapeat(8, 1fr)" gap={3}>
-              <Flex
-                w={"85vw"}
-                ml={8}
-                borderTop={"1px solid"}
-                borderBottom={"1px solid"}
-                borderTopColor={"gray.200"}
-                borderBottomColor={"gray.200"}
-                px={4}
-                py={2}
+          <Grid templateRows="reapeat(8, 1fr)" gap={3}>
+            <Flex
+              w={"85vw"}
+              ml={8}
+              borderTop={"1px solid"}
+              borderBottom={"1px solid"}
+              borderTopColor={"gray.200"}
+              borderBottomColor={"gray.200"}
+              px={4}
+              py={2}
+            >
+              <Center w={"50%"} fontWeight={"bold"}>
+                아트
+              </Center>
+              <Center w={"50%"} fontWeight={"bold"}>
+                결제 금액
+              </Center>
+            </Flex>
+            {artCoinArr.map((item) => (
+              <GridItem
+                borderRadius={"3xl"}
+                backgroundColor={value === item.art ? "blue.100" : "white"}
               >
-                <Center w={"50%"} fontWeight={"bold"}>
-                  아트
-                </Center>
-                <Center w={"50%"} fontWeight={"bold"}>
-                  결제 금액
-                </Center>
-              </Flex>
-              {artCoinArr.map((item) => (
-                <GridItem
-                  w={"100%"}
-                  borderRadius={"3xl"}
-                  backgroundColor={value === item.art ? "blue.100" : "white"}
-                >
-                  <Radio px={4} py={3} value={item.art}>
-                    <Flex w={"85vw"}>
-                      <Center fontWeight={"bold"} w={"50%"}>
-                        {item.art} 코인
-                      </Center>
-                      <Center fontWeight={"bold"} w={"50%"}>
-                        {item.money} 원
-                      </Center>
-                    </Flex>
-                  </Radio>
-                </GridItem>
-              ))}
-            </Grid>
-          </Stack>
+                <Radio px={4} py={3} value={item.art}>
+                  <Flex w={"85vw"}>
+                    <Center fontWeight={"bold"} w={"50%"}>
+                      {item.art} 코인
+                    </Center>
+                    <Center fontWeight={"bold"} w={"50%"}>
+                      {item.money} 원
+                    </Center>
+                  </Flex>
+                </Radio>
+              </GridItem>
+            ))}
+          </Grid>
         </RadioGroup>
       </Center>
       <BottomButtonNavbar
