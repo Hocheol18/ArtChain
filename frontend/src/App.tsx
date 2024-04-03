@@ -168,7 +168,7 @@ function App() {
 
                   {/* 마켓 */}
                   <Route
-                    path="/market"
+                    path="/market/:id"
                     element={
                       <CommonPage topNavType="logo" bottomNavType="market">
                         <Market />
@@ -176,7 +176,7 @@ function App() {
                     }
                   ></Route>
                   <Route
-                    path="/market/:id"
+                    path="/market/piece/:id"
                     element={
                       <CommonPage topNavType="coinBack" bottomNavType="market">
                         <MarketDetail />
@@ -304,7 +304,30 @@ function App() {
                     }
                   ></Route>
                   {/* 관리자 페이지 */}
-                  <Route path="/admin" element={<AdminPage />}></Route>
+                  <Route
+                    path="/admin"
+                    element={
+                      <CommonPage topNavType="back" bottomNavType="">
+                        <AdminPage />
+                      </CommonPage>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/settlement/:id"
+                    element={
+                      <CommonPage topNavType="back" bottomNavType="">
+                        <SettlementDetail />
+                      </CommonPage>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/project/:id"
+                    element={
+                      <CommonPage topNavType="back" bottomNavType="">
+                        <ProjectConfirm />
+                      </CommonPage>
+                    }
+                  ></Route>
                 </Routes>
               </BrowserRouter>
             </div>
