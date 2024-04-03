@@ -275,8 +275,15 @@ public class MarketServiceImpl implements MarketService {
     public List<MarketMainPageResponseDto> getMainPageMarketList() {
         List<MarketMainPageResponseDto> fundingList = marketRepository.findAllMainPageMarketList();
         List<MarketMainPageResponseDto> responseDtos = new ArrayList<>();
+
+        if (fundingList == null || fundingList.isEmpty()) {
+            return responseDtos; // 빈 리스트 반환
+        }
+
+        // fundingList의 크기가 4보다 작은 경우, 실제 크기만큼만 반복
+        int loopCount = Math.min(fundingList.size(), 4);
 //        상위 4개 뽑아내기
-        for(int i=0; i<4; i++){
+        for(int i=0; i<loopCount; i++){
             responseDtos.add(fundingList.get(i));
         }
 
