@@ -11,18 +11,26 @@ import {
   Text,
 } from "@chakra-ui/react";
 import DescriptionPoster from "../../../../assets/inveset-description-tmp-img.jpg";
-import { Schedule } from "../../../../type/invest.interface";
+import {
+  GetFundingResponse,
+  Schedule,
+} from "../../../../type/invest.interface";
 
 interface Props {
-  poster: string;
-  scheduleList: Schedule[];
+  data: GetFundingResponse;
 }
 
-export const DescriptionInvest = ({ poster, scheduleList }: Props) => {
+export const DescriptionInvest = ({ data }: Props) => {
   return (
-    <Center py={3} mb={"70px"} display={"flex"} flexDirection={"column"}>
+    <Center
+      py={8}
+      display={"flex"}
+      flexDirection={"column"}
+      backgroundColor={"white"}
+      boxShadow={"lg"}
+    >
       {/* 소개 포스터 */}
-      <Image src={poster} w={"100%"} alt="설명 포스터" />
+      <Image src={data.poster} w={"100%"} alt="설명 포스터" />
 
       {/* 일정 */}
       <Center
@@ -50,13 +58,13 @@ export const DescriptionInvest = ({ poster, scheduleList }: Props) => {
         </Center>
         <Stepper
           my={10}
-          index={scheduleList.length}
+          index={data.scheduleList.length}
           orientation="vertical"
           gap="0"
           size={"lg"}
-          height={scheduleList.length * 80}
+          height={`${data.scheduleList.length * 70}px`}
         >
-          {scheduleList.map((step, index) => (
+          {data.scheduleList.map((step, index) => (
             <Step key={index}>
               <StepIndicator
                 style={{ transform: "scale(0.5)", backgroundColor: "#013878" }}

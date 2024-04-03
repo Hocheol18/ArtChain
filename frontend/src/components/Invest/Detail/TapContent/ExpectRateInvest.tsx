@@ -1,15 +1,18 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { ExpectRateChart } from "./ExpectRateChart";
-import { ExpectedReturn } from "../../../../type/invest.interface";
+import {
+  ExpectedReturn,
+  GetFundingResponse,
+} from "../../../../type/invest.interface";
 import { formatNumberWithComma } from "../../../Common/Comma";
 
 interface Props {
-  expectedReturnList: ExpectedReturn[];
+  data: GetFundingResponse;
 }
 
-export const ExpectRateInvest = ({ expectedReturnList }: Props) => {
+export const ExpectRateInvest = ({ data }: Props) => {
   return (
-    <Box mb={"70px"} pb={3}>
+    <Box backgroundColor={"white"} py={8} boxShadow={"lg"}>
       <Box fontSize={"22"} fontWeight={"bold"} pl={6} mt={5} pb={2}>
         예상수익률
       </Box>
@@ -17,7 +20,7 @@ export const ExpectRateInvest = ({ expectedReturnList }: Props) => {
         투자 상품의 예상 수익률을 확인할 수 있어요.
       </Box>
       {/* 차트 */}
-      <ExpectRateChart expectedReturnList={expectedReturnList} />
+      <ExpectRateChart expectedReturnList={data.expectedReturnList} />
 
       {/* 관람객/예상수익률 표 */}
       <Box px={6} display={"flex"} flexDirection={"column"}>
@@ -43,8 +46,8 @@ export const ExpectRateInvest = ({ expectedReturnList }: Props) => {
           </Box>
         </Flex>
 
-        {expectedReturnList &&
-          expectedReturnList.map((item, index) => (
+        {data.expectedReturnList &&
+          data.expectedReturnList.map((item, index) => (
             <Flex justifyContent={"space-between"} py={1}>
               <Box textColor={"gray.400"} key={index}>
                 {formatNumberWithComma(item.spectatorNum)} 명 이상

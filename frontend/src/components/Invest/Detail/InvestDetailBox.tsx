@@ -24,63 +24,84 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
     { id: 1, name: "투자 구조" },
     { id: 2, name: "예상 수익률" },
     { id: 3, name: "공지사항" },
-    { id: 4, name: "투자 위험 안내" },
-    { id: 5, name: "투자자 유의사항" },
+    { id: 4, name: "투자자 유의사항" },
+    { id: 5, name: "투자 위험 안내" },
   ];
 
-  const [menuID, setMenuID] = useState(0);
+  const [menuID, setMenuID] = useState<number>(0);
 
   const descriptionRef = useRef<HTMLDivElement>(null);
   const structureRef = useRef<HTMLDivElement>(null);
   const expectRateRef = useRef<HTMLDivElement>(null);
   const noticeRef = useRef<HTMLDivElement>(null);
-  const dangerRef = useRef<HTMLDivElement>(null);
   const warningRef = useRef<HTMLDivElement>(null);
-
-  const scrollTarget = useRef<number | null>(null);
-  const scrolling = useRef(false);
-
-  const offset = 92;
-
-  // 스크롤 이벤트 감지
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { capture: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const dangerRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
-    // 해당 메뉴의 위치를 나타내는 DOM 요소에 대한 참조
-    const refs: { [key: number]: React.RefObject<HTMLDivElement> } = {
-      0: descriptionRef,
-      1: structureRef,
-      2: expectRateRef,
-      3: noticeRef,
-      4: dangerRef,
-      5: warningRef,
-    };
+    console.log("어디니");
 
-    const parentElement = document.getElementById("parent-scroll-element-id");
+    const currentScrollPos = window.scrollY; // 현재 스크롤 위치
 
-    if (!parentElement) return;
+    if (
+      !descriptionRef.current ||
+      !structureRef.current ||
+      !expectRateRef.current ||
+      !noticeRef.current ||
+      !dangerRef.current ||
+      !warningRef.current
+    ) {
+      return;
+    }
 
-    const scrollTop = parentElement.scrollTop;
-    const offsetTop = refs[menuID]?.current?.offsetTop || 0;
+    // 각 섹션의 상단 위치 계산
+    const descriptionPos = descriptionRef.current.offsetTop - 60 || 0;
+    const structurePos = structureRef.current.offsetTop - 60 || 0;
+    const expectRatePos = expectRateRef.current.offsetTop - 60 || 0;
+    const noticePos = noticeRef.current.offsetTop - 60 || 0;
+    const warningPos = warningRef.current.offsetTop - 60 || 0;
+    const dangerPos = dangerRef.current.offsetTop - 60 || 0;
 
-    if (scrollTop >= offsetTop) {
-      setMenuID(menuID);
+    if (currentScrollPos >= descriptionPos && currentScrollPos < structurePos) {
+      setMenuID(0);
+    } else if (
+      currentScrollPos >= structurePos &&
+      currentScrollPos < expectRatePos
+    ) {
+      setMenuID(1);
+    } else if (
+      currentScrollPos >= expectRatePos &&
+      currentScrollPos < noticePos
+    ) {
+      setMenuID(2);
+    } else if (currentScrollPos >= noticePos && currentScrollPos < warningPos) {
+      setMenuID(3);
+    } else if (currentScrollPos >= warningPos && currentScrollPos < dangerPos) {
+      setMenuID(4);
+    } else if (currentScrollPos >= dangerPos) {
+      setMenuID(5);
     }
   };
 
   useEffect(() => {
-    const parentElement = document.getElementById("parent-scroll-element-id");
-    if (!parentElement) return;
-    parentElement.addEventListener("scroll", handleScroll);
-    return () => {
-      parentElement.removeEventListener("scroll", handleScroll);
-    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    console.log(menuID);
   }, [menuID]);
+
+  const scrollToSection = (sectionRef) => {
+    console.log(sectionRef.current);
+    if (sectionRef.current) {
+      const sectionTop = sectionRef.current.offsetTop; // 섹션의 상단 위치
+      const offsetPosition = sectionTop - 60; // 원하는 위치까지의 거리 조정 (예: 50px 위로)
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <>
@@ -88,7 +109,8 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
         overflowX="auto"
         position={"sticky"}
         backgroundColor={"white"}
-        top={-1}
+        top={49}
+        zIndex={2}
       >
         <Flex
           justifyContent={"space-around"}
@@ -102,32 +124,57 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
           <InvestDetailTap
             items={menu}
             activeID={menuID}
-            setActiveID={setMenuID}
+            setActiveID={(id) => {
+              // 메뉴 아이디에 따라 해당 섹션으로 이동
+              switch (id) {
+                case 0:
+                  console.log(id);
+                  scrollToSection(descriptionRef);
+                  break;
+                case 1:
+                  console.log(id);
+                  scrollToSection(structureRef);
+                  break;
+                case 2:
+                  scrollToSection(expectRateRef);
+                  break;
+                case 3:
+                  scrollToSection(noticeRef);
+                  break;
+                case 4:
+                  scrollToSection(warningRef);
+                  break;
+                case 5:
+                  scrollToSection(dangerRef);
+                  break;
+                default:
+                  console.log(id);
+                  break;
+              }
+            }}
           />
         </Flex>
       </Flex>
-      <div className="project-content">
-        <DescriptionInvest
-          poster={fundingData.descriptionImg}
-          scheduleList={fundingData.scheduleList}
-          ref={descriptionRef}
-        />
-        <StructureInvest
-          saleList={fundingData.saleList}
-          costList={fundingData.costList}
-          totalBudget={fundingData.totalBudget}
-          unitPrice={fundingData.unitPrice}
-          bep={fundingData.bep}
-          ref={structureRef}
-        />
-        <ExpectRateInvest
-          ref={expectRateRef}
-          expectedReturnList={fundingData.expectedReturnList}
-        />
-        <NoticeInvest ref={noticeRef} noticeList={fundingData.noticeList} />
-        <DangerInvest ref={dangerRef} />
-        <WarningInvest ref={warningRef} />
-      </div>
+      <Flex direction={"column"} gap={5} backgroundColor={"gray.300"}>
+        <div ref={descriptionRef}>
+          <DescriptionInvest data={fundingData} />
+        </div>
+        <div ref={structureRef}>
+          <StructureInvest data={fundingData} />
+        </div>
+        <div ref={expectRateRef}>
+          <ExpectRateInvest data={fundingData} />
+        </div>
+        <div ref={noticeRef}>
+          <NoticeInvest data={fundingData} />
+        </div>
+        <div ref={warningRef}>
+          <WarningInvest />
+        </div>
+        <div ref={dangerRef}>
+          <DangerInvest />
+        </div>
+      </Flex>
     </>
   );
 };

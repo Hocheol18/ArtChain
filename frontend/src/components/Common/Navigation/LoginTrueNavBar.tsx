@@ -42,7 +42,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
       metamask: "",
       walletAddress: "",
       userId: "",
-      isBusiness: false
+      isBusiness: false,
     });
     clearUserIdStorage();
     toast({
@@ -87,6 +87,7 @@ export const LoginTrueNavBar = ({ userCoin }: Prop) => {
   return (
     <Popover isLazy>
       <Box
+        backgroundColor={"white"}
         display="flex"
         alignItems={"center"}
         width={150}

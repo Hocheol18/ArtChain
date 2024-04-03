@@ -1,22 +1,15 @@
 import { Box, Text, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
-import { Cost, Sale } from "../../../../type/invest.interface";
+import {
+  Cost,
+  GetFundingResponse,
+  Sale,
+} from "../../../../type/invest.interface";
 import { formatNumberWithComma } from "../../../Common/Comma";
 
 interface Props {
-  saleList: Sale[];
-  costList: Cost[];
-  totalBudget: number;
-  unitPrice: number;
-  bep: number;
+  data: GetFundingResponse;
 }
-
-export const StructureInvest = ({
-  saleList,
-  costList,
-  totalBudget,
-  unitPrice,
-  bep,
-}: Props) => {
+export const StructureInvest = ({ data }: Props) => {
   const descstr1: string =
     "프로젝트의 손익(총 매출-총 비용)을 손익배당비율에 따라 배당합니다.";
 
@@ -24,7 +17,7 @@ export const StructureInvest = ({
   const descstr2_2: string = `매출-비용 < 0일 경우 원금 손실 발생`;
 
   return (
-    <Box mb={"70px"}>
+    <Box backgroundColor={"white"} py={8} boxShadow={"lg"}>
       <Box fontSize={"22"} fontWeight={"bold"} pl={6} mt={5} pb={5}>
         투자구조
       </Box>
@@ -52,7 +45,7 @@ export const StructureInvest = ({
             direction={"column"}
           >
             {/* 아래 이 부분 반복할 부분 */}
-            {saleList.map((sale) => (
+            {data.saleList.map((sale) => (
               <Flex
                 justifyContent={"space-between"}
                 alignItems={"center"}
@@ -85,7 +78,7 @@ export const StructureInvest = ({
             direction={"column"}
           >
             {/* 아래 이 부분 반복할 부분 */}
-            {costList.map((item) => (
+            {data.costList.map((item) => (
               <Flex
                 justifyContent={"space-between"}
                 alignItems={"center"}
@@ -114,16 +107,18 @@ export const StructureInvest = ({
           <Flex justifyContent={"space-between"}>
             <Box>총 예산규모</Box>
             <Box fontWeight={"bold"}>
-              {formatNumberWithComma(totalBudget)}원
+              {formatNumberWithComma(data.totalBudget)}원
             </Box>
           </Flex>
           <Flex justifyContent={"space-between"}>
             <Box>객단가</Box>
-            <Box fontWeight={"bold"}>{formatNumberWithComma(unitPrice)}원</Box>
+            <Box fontWeight={"bold"}>
+              {formatNumberWithComma(data.unitPrice)}원
+            </Box>
           </Flex>
           <Flex justifyContent={"space-between"}>
             <Box>추정 손익분기점</Box>
-            <Box fontWeight={"bold"}>{formatNumberWithComma(bep)}명</Box>
+            <Box fontWeight={"bold"}>{formatNumberWithComma(data.bep)}명</Box>
           </Flex>
         </Flex>
       </Box>

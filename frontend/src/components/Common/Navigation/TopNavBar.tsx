@@ -43,6 +43,8 @@ export const TopNavBar = ({ navType }: NavProp) => {
   return (
     <div>
       <Box
+        w={"100%"}
+        backgroundColor={"white"}
         height={50}
         pl={leftPadding}
         pr={rightPadding}
@@ -51,12 +53,14 @@ export const TopNavBar = ({ navType }: NavProp) => {
         alignItems={"center"}
         justifyContent={justifyCon}
         borderBottom={"1px"}
-        borderBottomColor="#EFF0F3">
+        borderBottomColor="#EFF0F3"
+        zIndex={10}
+      >
         {/* 네비바 타입이 "logo"일 때 */}
         {navType === "logo" ? (
           <>
             <Link to="/main">
-              <Button variant="unstyled">
+              <Button variant="unstyled" backgroundColor={"white"}>
                 <Image src={Logo} />
               </Button>
             </Link>
@@ -66,7 +70,7 @@ export const TopNavBar = ({ navType }: NavProp) => {
               <LoginTrueNavBar userCoin={userCoin} />
             ) : (
               <Link to="/login">
-                <Button variant={"ghost"}>
+                <Button variant={"ghost"} backgroundColor={"white"}>
                   <Box>로그인</Box>
                 </Button>
               </Link>
@@ -77,7 +81,11 @@ export const TopNavBar = ({ navType }: NavProp) => {
         {/* 네비바 타입이 "coinBack"일 때 (뒤로가기 + (코인+프로필) or 로그인 버튼)*/}
         {navType === "coinBack" ? (
           <>
-            <Button variant="unstyled" onClick={handleBack}>
+            <Button
+              variant="unstyled"
+              onClick={handleBack}
+              backgroundColor={"white"}
+            >
               <Image src={BackIcon} />
             </Button>
             {/* 로그인 유무에 따라 바뀜 */}
@@ -85,7 +93,7 @@ export const TopNavBar = ({ navType }: NavProp) => {
               <LoginTrueNavBar userCoin={userCoin} />
             ) : (
               <Link to="/login">
-                <Button variant={"ghost"}>
+                <Button variant={"ghost"} backgroundColor={"white"}>
                   <Box>로그인</Box>
                 </Button>
               </Link>
@@ -95,7 +103,11 @@ export const TopNavBar = ({ navType }: NavProp) => {
         {/* 네비바 타입이 "back"일 때 */}
         {navType === "back" ? (
           <>
-            <Button variant="unstyled" onClick={handleBack}>
+            <Button
+              variant="unstyled"
+              onClick={handleBack}
+              backgroundColor={"white"}
+            >
               <Image src={BackIcon} />
             </Button>
           </>
