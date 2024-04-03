@@ -76,6 +76,14 @@ export default function SettlementDetail() {
         </Flex>
         <Flex justifyContent={"space-between"}>
           <Text as={"b"} fontSize={"28"} py={5}>
+            최종 수익률
+          </Text>
+          <Text as={"b"} fontSize={"28"} py={5}>
+            {values.returnRate} %
+          </Text>
+        </Flex>
+        <Flex justifyContent={"space-between"}>
+          <Text as={"b"} fontSize={"28"} py={5}>
             입금 날짜
           </Text>
           <Text as={"b"} fontSize={"28"} py={5}>

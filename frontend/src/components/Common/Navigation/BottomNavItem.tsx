@@ -51,7 +51,7 @@ export const BottomNavItem = ({ text, active }: BottomNavProps) => {
         break;
       case "마켓":
         setImgIcon(MarketIcon);
-        setToLink("/market");
+        setToLink("/market/1");
         break;
       case "마이":
         setImgIcon(MyIcon);

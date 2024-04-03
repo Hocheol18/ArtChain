@@ -413,7 +413,7 @@ function App() {
 
                 {/* 마켓 */}
                 <Route
-                  path="/market"
+                  path="/market/:id"
                   element={
                     <CommonPage topNavType="logo" bottomNavType="market">
                       <Market />
@@ -421,7 +421,7 @@ function App() {
                   }
                 ></Route>
                 <Route
-                  path="/market/:id"
+                  path="/market/piece/:id"
                   element={
                     <CommonPage topNavType="coinBack" bottomNavType="market">
                       <MarketDetail />
