@@ -2,6 +2,7 @@ import { AspectRatio, Box, Center, Image, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { FundingMainPage } from "../../type/invest.interface";
 import { Link } from "react-router-dom";
+import { formatNumberWithComma } from "../Common/Comma";
 
 interface Props {
   mainFunding: FundingMainPage;
@@ -60,7 +61,7 @@ export default function Poster({ mainFunding }: Props) {
           textColor={"white"}
         >
           <Box>현재 구매된 조각</Box>
-          <Box>100,100 조각</Box>
+          <Box>{formatNumberWithComma(mainFunding.nowCoinCount)} 조각</Box>
         </Box>
       </Box>
       <Box mt={"0.8rem"} w={"80%"} mx={"auto"}>
