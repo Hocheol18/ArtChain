@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+                import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import TokenMarketplaceABI from "./Contract/TokenMarketplace.json";
 import InitializeBankContractABI from "./Contract/InitializeBankContract.json";
@@ -10,7 +10,7 @@ import Moralis from "moralis";
 const web3 = new Web3((window as any).ethereum);
 
 const TokenMarketplaceContractAddress =
-  "0x77A6C65AD9530482fBC59751545Fd9E7cabfCD75"; // TokenMarketplace 스마트 계약 주소
+  "0x538F17DB8FdB2bba76D14E420161412e9d0Bd2CA"; // TokenMarketplace 스마트 계약 주소
 let myTokens: any;
 
 const InitializeBankContractAddress =
@@ -123,7 +123,7 @@ const App: React.FC = () => {
         TokenMarketplaceContractAddress
       );
       const artTokenContractAddress =
-        "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
+        "0xE5856017Db7b4023383c867Ea65bc178B7F023C1"; // ART 토큰의 스마트 계약 주소
       const artTokenContract = new web3.eth.Contract(
         IERC20ABI.abi,
         artTokenContractAddress

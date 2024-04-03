@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import ReceiveArtCoinContractABI from "./Contract/ReceiveArtCoinContract.json"; // 스마트 계약 ABI 파일
-import IERC20ABI from "./Contract/IERC20.json";
+import IERC20ABI from "./Contract/ArtcoinContract.json";
 
 const FundRaisingPage: React.FC = () => {
   const [account, setAccount] = useState<string>("");
@@ -28,8 +28,8 @@ const FundRaisingPage: React.FC = () => {
   ];
 
   const ReceviceArtCoinContractAddress =
-    "0x46684aC698a2b5aDdB44b490E45dC6EE5de149e4";
-  const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
+    "0xc9b3b105371c675dA6083b993C944B861792021a";
+  const artTokenContractAddress = "0xE5856017Db7b4023383c867Ea65bc178B7F023C1";
 
   useEffect(() => {
     // MetaMask 계정 연결 확인
@@ -47,12 +47,13 @@ const FundRaisingPage: React.FC = () => {
         });
     }
   }, []);
+
+  const buyToken = () => {};
+
+
+
   // 정산하기 기능 구현한 함수
   const settlement = async () => {
-    const fundingContract = new web3.eth.Contract(
-      ReceiveArtCoinContractABI.abi,
-      ReceviceArtCoinContractAddress
-    );
     const artTokenContract = new web3.eth.Contract(
       IERC20ABI.abi,
       artTokenContractAddress
@@ -66,11 +67,16 @@ const FundRaisingPage: React.FC = () => {
           convertToInteger(fundInfos[i].amount.toString())
         )
         .send({ from: account });
-    }
 
-    await fundingContract.methods
-      .settlement(ReceviceArtCoinContractAddress, 10, fundInfos)
-      .send({ from: account });
+      const tx = await artTokenContract.methods
+          .transfer(
+            fundInfos[i].investor,
+            convertToInteger(fundInfos[i].amount.toString())
+          )
+          .send({from: account});
+
+      console.log(tx.transactionHash);
+    }
   };
   // MetaMask와 연결
   const connectWallet = async () => {

@@ -6,7 +6,7 @@ import "./IERC20.sol";
 contract TokenMarketplace {
     mapping(address => IERC20) public tokenContracts;
     
-    address artCoinAddress = 0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB;
+    address artCoinAddress = 0xE5856017Db7b4023383c867Ea65bc178B7F023C1;
 
     function buyToken(
         address _sellerAddress,
