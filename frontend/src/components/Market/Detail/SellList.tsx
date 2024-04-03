@@ -51,11 +51,15 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
     }
   };
 
-  const updateUserBalance = (prevUserInfo: userInfoType): userInfoType => {
-    // 이전 상태(prevUserInfo)를 기반으로 새로운 상태를 반환
+  const updateUserBalance = (
+    prevUserInfo: userInfoType,
+    tokenAmount: number
+  ): userInfoType => {
     return {
-      ...prevUserInfo, // 이전 상태의 모든 속성을 유지
-      walletBalance: (parseInt(prevUserInfo.walletBalance) - value).toString(), // 지갑 잔액을 업데이트
+      ...prevUserInfo,
+      walletBalance: (
+        parseInt(prevUserInfo.walletBalance) - tokenAmount
+      ).toString(), // 지갑 잔액을 업데이트
     };
   };
 
@@ -63,62 +67,66 @@ export default function SellList(params: getMarketSellingDisplayListInterface) {
 
   // 토큰 구매
   const buyToken = async (data: buyContractCallInterfece) => {
-    try {
-      const marketplaceContract = new web3.eth.Contract(
-        TokenMarketplaceABI.abi,
-        "0x749d167DC58e496CA017cAafD1FBc12C2c394527"
-      );
-      const artTokenContractAddress =
-        "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
-      const artTokenContract = new web3.eth.Contract(
-        IERC20ABI.abi,
-        artTokenContractAddress
-      );
+    if (Number(userInfo.walletBalance) >= data.tokenAmount) {
+      try {
+        const marketplaceContract = new web3.eth.Contract(
+          TokenMarketplaceABI.abi,
+          "0x749d167DC58e496CA017cAafD1FBc12C2c394527"
+        );
+        const artTokenContractAddress =
+          "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
+        const artTokenContract = new web3.eth.Contract(
+          IERC20ABI.abi,
+          artTokenContractAddress
+        );
 
-      // 사용자가 스마트 계약에 대해 특정 양의 토큰을 승인하도록 요청
-      const approveTx = await artTokenContract.methods
-        .approve(
-          "0x749d167DC58e496CA017cAafD1FBc12C2c394527", // 마켓 컨트랙트 주소
-          convertToInteger(data.price.toString())
-        )
-        .send({ from: userInfo.metamask });
-      const approveTxReceipt = await web3.eth.getTransactionReceipt(
-        approveTx.transactionHash
-      );
-      if (approveTxReceipt.status) {
-        toastFunction("토큰 승인에 성공했습니다", true);
-
-        // 토큰 구매 트랜잭션 보내기
-        marketplaceContract.methods
-          .buyToken(
-            data.seller,
-            data.tokenAddress,
-            data.tokenAmount,
-            data.price
+        // 사용자가 스마트 계약에 대해 특정 양의 토큰을 승인하도록 요청
+        const approveTx = await artTokenContract.methods
+          .approve(
+            "0x749d167DC58e496CA017cAafD1FBc12C2c394527", // 마켓 컨트랙트 주소
+            convertToInteger(data.price.toString())
           )
-          .send({ from: userInfo.metamask })
-          .then((res) =>
-            putMarketToken(params.id, res.transactionHash)
-              .then(() => {
-                setUrl(
-                  `https://sepolia.etherscan.io/tx/${res.transactionHash}`
-                );
+          .send({ from: userInfo.metamask });
+        const approveTxReceipt = await web3.eth.getTransactionReceipt(
+          approveTx.transactionHash
+        );
+        if (approveTxReceipt.status) {
+          toastFunction("토큰 승인에 성공했습니다", true);
 
-                setValue(data.tokenAmount);
-                setIsSuccess(true);
-                setUserInfo(updateUserBalance(userInfo));
+          // 토큰 구매 트랜잭션 보내기
+          marketplaceContract.methods
+            .buyToken(
+              data.seller,
+              data.tokenAddress,
+              data.tokenAmount,
+              data.price
+            )
+            .send({ from: userInfo.metamask })
+            .then((res) =>
+              putMarketToken(params.id, res.transactionHash)
+                .then(() => {
+                  setUrl(
+                    `https://sepolia.etherscan.io/tx/${res.transactionHash}`
+                  );
 
-                toastFunction("구매 성공", true);
-              })
-              .catch((err) => console.log(err))
-          );
-      } else {
-        toastFunction("토큰 승인에 실패하였습니다 다시 시도해주세요", false);
+                  setValue(data.tokenAmount);
+                  setIsSuccess(true);
+                  setUserInfo(updateUserBalance(userInfo, data.tokenAmount));
+
+                  toastFunction("구매 성공", true);
+                })
+                .catch((err) => console.log(err))
+            );
+        } else {
+          toastFunction("토큰 승인에 실패하였습니다 다시 시도해주세요", false);
+        }
+      } catch (error) {
+        navigate(-1);
+        onClose();
+        toastFunction("거래 처리 중 오류가 발생하였습니다.", false);
       }
-    } catch (error) {
-      navigate(-1);
-      onClose();
-      toastFunction("거래 처리 중 오류가 발생하였습니다.", false);
+    } else {
+      toastFunction("아트 잔액이 부족합니다", false), navigate("../charge");
     }
   };
 
