@@ -184,6 +184,7 @@ export default function MarketEnroll() {
       );
       if (!approveTxReceipt.status) {
         toastFunction("토큰 승인에 실패하였습니다 다시 시도해주세요", false);
+        onClose();
         return;
       } else {
         toastFunction("토큰 승인에 성공했습니다", true);
