@@ -51,7 +51,9 @@ export default function MainPage() {
 
   return (
     <>
-      {carouselList && <MainCarousel carouselList={carouselList} />}
+      {carouselList && carouselList?.length >= 1 ? (
+        <MainCarousel carouselList={carouselList} />
+      ) : null}
       <Flex mx={6} position="relative" mt={5}>
         <Text mx={2} fontWeight={"bold"} fontSize={"28"} zIndex={1}>
           모집 마감 예정 작품
@@ -68,7 +70,15 @@ export default function MainPage() {
       </Flex>
 
       {mainFundingList &&
+        mainFundingList.length >= 1 &&
         mainFundingList.map((item) => <Poster mainFunding={item} />)}
+      {!mainFundingList ||
+        (mainFundingList?.length < 1 && (
+          <Center fontSize={"20"} py={10}>
+            {" "}
+            모집 마감 예정 작품이 없습니다.
+          </Center>
+        ))}
 
       <Box
         px={"1rem"}
@@ -117,6 +127,13 @@ export default function MainPage() {
                 text={item.fundingName}
                 id={item.fundingId}
               />
+            ))}
+          {!marketFundingList ||
+            (marketFundingList?.length < 1 && (
+              <Center fontSize={"20"} py={10}>
+                {" "}
+                마켓 인기 작품이 없습니다.
+              </Center>
             ))}
         </Flex>
       </Center>
