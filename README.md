@@ -1,6 +1,6 @@
 # 🧩블록체인 기반 공연·전시·영화 조각투자 서비스, ArtChain
 
-![header](/uploads/b141ed5f565a5dffe8b5f45ed02778b8/header.jpg)
+<img src="./Assets/pic/header.jpg"/>
 
 <hr>
 
@@ -35,11 +35,11 @@
 
 ### 👥 팀 소개
 
-| [정현아](https://github.com/JHyeon-a)                                                                                          | [박호철](https://github.com/Hocheol18)                                                    | [김영욱](https://github.com/YoungUk0126)                                                  | [허준혁](https://github.com/ComelyU)                                                      | [김승우](https://github.com/DeveloperYard)                                                | [김지은](https://github.com/KuMMii)                                                       |
-| ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| <img src="https://avatars.githubusercontent.com/u/139304856?v=4cd575a38-8fc4-4470-889b-b920862f2e30" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/74571069?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/70872187?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/31150286?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/59395755?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/67823010?v=4" width="150" height="150"> |
-| Leader, Frontend                                                                                                               | Frontend, Contract                                                                        | Backend                                                                                   | Backend, CI&CD                                                                            | Contract, CI&CD                                                                           | CI&CD, Front                                                                              |
-| 담당 기능                                                                                                                      | 담당 기능                                                                                 | 담당 기능                                                                                 | 담당 기능                                                                                 | 유저 인가.인증                                                                            | 담당 기능                                                                                 |
+| [정현아](https://github.com/JHyeon-a)                                                                                          | [박호철](https://github.com/Hocheol18)                                                    | [김영욱](https://github.com/YoungUk0126)                                                  | [허준혁](https://github.com/ComelyU)                                                      | [김승우](https://github.com/DeveloperYard)                                                | [김지은](https://github.com/KuMMii)                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| <img src="https://avatars.githubusercontent.com/u/139304856?v=4cd575a38-8fc4-4470-889b-b920862f2e30" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/74571069?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/70872187?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/31150286?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/59395755?v=4" width="150" height="150"> | <img src="https://avatars.githubusercontent.com/u/128502524?v=4" width="150" height="150"> |
+| Leader, Frontend                                                                                                               | Frontend, Contract                                                                        | Backend                                                                                   | Backend, CI&CD                                                                            | Contract, CI&CD                                                                           | CI&CD, Front                                                                               |
+| 담당 기능                                                                                                                      | 담당 기능                                                                                 | 담당 기능                                                                                 | 담당 기능                                                                                 | 유저 인가.인증                                                                            | Nginx 설정, Frontend 무중단 배포, Axios 생성, 피그마 제작                                  |
 
 ### 🛠️ 기술 스택
 
@@ -158,11 +158,11 @@
 
 #### 1. ERD
 
-erd 사진 넣을 거임
+<img src="./Assets/pic/ArtChain ERD.png" width="1000px"/>
 
 #### 2. 아키텍처
 
-![ArtChain](/uploads/ecb6bd93c6cae345a51e0f23431ce553/ArtChain.png)
+<img src="./Assets/pic/ArtChain Architecture.png" width="1000px"/>
 
 #### [3. Mockup](https://www.figma.com/file/mcMwnFn8rZjF5tIEO6KAAX/Artchain?type=design&node-id=103%3A224&mode=design&t=sOngQjOWEk0p3Tty-1)
 
