@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CommonTopBox } from "../components/ChargeAndExchange/CommonTopBox";
 import { ArtExchange } from "../components/ChargeAndExchange/Exchange/ArtExchange";
 import { History } from "../components/ChargeAndExchange/History";
@@ -22,13 +22,17 @@ export const Exchange = () => {
   const [value, setValue] = useState<number>(0);
   const [url, setUrl] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const artTokenContractAddress = import.meta.env
+    .VITE_ART_COIN_CONTRACT_ADDRESS;
 
   //처음 조회 함수
-  getCoin()
-    .then((res) => {
-      updatedUserInfo(res);
-    })
-    .catch((err) => console.log(err));
+  useEffect(() => {
+    getCoin()
+      .then((res) => {
+        updatedUserInfo(res);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const updatedUserInfo = (res: any) => {
     const userinfo = userInfo;
@@ -54,8 +58,6 @@ export const Exchange = () => {
     } else {
       try {
         onOpen();
-        const artTokenContractAddress =
-          "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB"; // ART 토큰의 스마트 계약 주소
         const artTokenContract = new web3.eth.Contract(
           ArtcoinContractABI.abi,
           artTokenContractAddress
