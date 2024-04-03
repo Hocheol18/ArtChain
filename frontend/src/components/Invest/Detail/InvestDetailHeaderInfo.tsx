@@ -1,5 +1,6 @@
 import { Box, Center, SimpleGrid } from "@chakra-ui/react";
 import { GetFundingResponse } from "../../../type/invest.interface";
+import { formatNumberWithComma } from "../../Common/Comma";
 
 interface Props {
   fundingData: GetFundingResponse;
@@ -12,7 +13,10 @@ export const InvestDetailHeaderInfo = ({ fundingData }: Props) => {
         <Box fontSize={15} as="b" minW={"130px"}>
           총 발행 조각
         </Box>
-        <Box fontSize={15}>{fundingData.goalCoinCount}</Box>
+        <Box fontSize={15}>
+          {fundingData.goalCoinCount &&
+            formatNumberWithComma(fundingData.goalCoinCount)}
+        </Box>
       </Box>
       <Box display={"flex"}>
         <Box fontSize={15} as="b" minW={"130px"}>

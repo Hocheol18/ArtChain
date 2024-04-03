@@ -38,8 +38,6 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
   const dangerRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
-    console.log("어디니");
-
     const currentScrollPos = window.scrollY; // 현재 스크롤 위치
 
     if (
@@ -86,10 +84,6 @@ export const InvestDetailBox = ({ fundingData }: Props) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    console.log(menuID);
-  }, [menuID]);
 
   const scrollToSection = (sectionRef) => {
     console.log(sectionRef.current);

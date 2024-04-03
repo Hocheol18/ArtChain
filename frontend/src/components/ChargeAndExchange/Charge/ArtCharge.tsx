@@ -18,6 +18,7 @@ import useUserInfo, { userInfoType } from "../../../store/useUserInfo";
 import { LoadingModal } from "../../Common/LoadingModal";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import { useCustomToast } from "../../Common/Toast";
 
 export const ArtCharge = () => {
   const [account, setAccount] = useState<string>("");
@@ -121,18 +122,23 @@ export const ArtCharge = () => {
               setIsSuccess(true);
             },
             onMintError: (error) => {
-              alert(`민트 실패 : ${error}`);
+              toastFunction(
+                "코인 민트에 실패하였습니다. 다시 시도해주세요..",
+                false
+              );
               onClose();
               // 여기에 에러 처리 로직을 추가하세요.
             },
           });
         } else {
           //결제 실패
-          alert(`결제 실패, 에러 내용 : ${rsp.error_msg}`);
+          toastFunction("결제에 실패하였습니다. 다시 시도해주세요.", false);
         }
       }
     );
   };
+
+  const toastFunction = useCustomToast();
 
   //데이터
 
@@ -179,7 +185,7 @@ export const ArtCharge = () => {
 
   const handleGoHome = () => {
     onClose();
-    navigate(`/charge`);
+    navigate(`/main`);
   };
 
   return (

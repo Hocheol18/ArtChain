@@ -17,6 +17,7 @@ export const InvestDetailTap = ({
       {items.map((item) => (
         <>
           <Box
+            overflowX={"hidden"}
             borderBottom={"2px"}
             borderBottomColor={item.id === activeID ? "black" : "white"}
             fontWeight={item.id === activeID ? "bold" : ""}
