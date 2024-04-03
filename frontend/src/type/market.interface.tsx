@@ -84,6 +84,7 @@ export interface getMarketDetailDisplayInterface {
   totalCoin: number;
   createdAt: string;
   updatedAt: string;
+  transactionHash : string;
 }
 
 export interface getMarketMyTokenInterface {

@@ -94,7 +94,7 @@ export default function MarketTradeConfirm() {
             fontSize={"1rem"}
             onClick={() =>
               window.open(
-                `https://sepolia.etherscan.io/tx/${data?.contractAddress}`
+                `https://sepolia.etherscan.io/tx/${data?.transactionHash}`
               )
             }
           >
