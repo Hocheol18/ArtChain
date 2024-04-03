@@ -22,17 +22,13 @@ export default function MarketDeatil() {
       fundingId: Number(id.id),
       sortFlag: statusTopSecondNav,
       page: 0,
-      size: 6,
+      size: 10,
     })
       .then((res) => setMarketDetail(res.data.data))
       .catch((err) => console.log(err));
   }, [statusTopSecondNav]);
 
   const [check, setCheck] = useState("SellList");
-
-  useEffect(() => {
-    console.log(marketDetails);
-  }, [marketDetails]);
 
   return (
     <>
@@ -108,7 +104,7 @@ export default function MarketDeatil() {
             >
               {marketDetails.map(
                 (data: getMarketSellingDisplayListInterface) => {
-                  if (data.status !== "SOLD") {
+                  if (data.status !== "SOLD" && data.status !== "UNLISTED") {
                     return (
                       <SellList
                         key={data.id}
@@ -134,7 +130,7 @@ export default function MarketDeatil() {
           )}
         </>
       ) : (
-        <SellHistory fundingId={Number(id.id)} page={0} size={6} />
+        <SellHistory fundingId={Number(id.id)} page={0} size={20} />
       )}
     </>
   );

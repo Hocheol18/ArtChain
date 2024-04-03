@@ -10,7 +10,7 @@ export default function ProjectApporve() {
   const [values, setValues] = useState<getProjectList[]>([]);
 
   useEffect(() => {
-    FundingPermissionList().then((res) => setValues(res));
+    FundingPermissionList().then((res) => {if (res !== null ) {setValues(res)}})
   }, []);
 
   return (

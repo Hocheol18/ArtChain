@@ -34,8 +34,8 @@ export default function Content({ first, second }: Props) {
     getMarketMainDisplayList({
       category: first,
       status: second,
-      page: (Number(id.id)-1),
-      size: 6,
+      page: 0,
+      size: 10,
     })
       .then((res) => setContent(res.data.data))
       .catch((err) => console.log(err));
@@ -86,9 +86,6 @@ export default function Content({ first, second }: Props) {
               return renderContent();
             })}
           </SimpleGrid>
-          <Center mb={"2rem"}>
-            <Pagenation />
-          </Center>
         </>
       ) : (
         <Center h={"500px"}>

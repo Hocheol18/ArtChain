@@ -11,7 +11,7 @@ export default function SettlementApprove() {
   const [values, setValues] = useState<getSettlementList[]>([]);
   useEffect(() => {
     GetSettlementList()
-      .then((res) => setValues(res.settlementList))
+      .then((res) => {if (res !== null) {setValues(res.settlementList) }})
       .catch((err) => console.log(err));
   }, []);
 
