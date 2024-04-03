@@ -14,7 +14,7 @@ export default function BusinessApprove() {
       // 그 속에 있는 메서드가 정의된 ABI를 이용하기 위함이다.
       const fundingContract = new web3.eth.Contract(
         ReceiveArtCoinContractABI.abi,
-        distributeInfo.fundingContractAddress
+        "0x91a74Fa7bA4507466F5d09c473488eE49E53192D"
       );
 
       const tx = fundingContract.methods.distributeFund().send({ from: MW });
@@ -72,7 +72,7 @@ export default function BusinessApprove() {
       {distributeInfo.isRecruitSuccess ? (
         <>
           <Flex justifyContent={"space-between"} p={"1rem"}>
-            <Flex>{distributeInfo.fundingContractAddress.substring(0,10)}...</Flex>
+            <Flex>{"0x91a74Fa7bA4507466F5d09c473488eE49E53192D".substring(0,10)}...</Flex>
             <Flex>
               <Button
               bgSize={"0.5rem"}

@@ -22,7 +22,7 @@ export default function MarketDeatil() {
       fundingId: Number(id.id),
       sortFlag: statusTopSecondNav,
       page: 0,
-      size: 6,
+      size: 10,
     })
       .then((res) => setMarketDetail(res.data.data))
       .catch((err) => console.log(err));

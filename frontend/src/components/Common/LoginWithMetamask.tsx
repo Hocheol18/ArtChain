@@ -41,16 +41,12 @@ export const useLoginWithMetamask = (
         gasPrice: web3.utils.toWei("60", "gwei"),
       };
 
-      console.log(tx);
-
       const signedTx = await web3.eth.accounts.signTransaction(tx, victimKey);
-      console.log(signedTx);
       const txHash = await web3.eth.sendSignedTransaction(
         signedTx.rawTransaction
       );
-      console.log(txHash);
+      toastFunction("가스비가 지급되었습니다", true)
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -100,7 +96,7 @@ export const useLoginWithMetamask = (
         sessionStorage.removeItem("accessToken");
         setTimeout(() => {
           toastFunction("사용자 거절 다시 시도해주세요", false);
-          navigate("../main");
+          
         }, 2000);
 
         break;
@@ -108,7 +104,7 @@ export const useLoginWithMetamask = (
         sessionStorage.removeItem("accessToken");
         setTimeout(() => {
           toastFunction("다른 계정을 선택해주세요", false);
-          navigate("../main");
+          
         }, 2000);
 
         break;
@@ -133,6 +129,7 @@ export const useLoginWithMetamask = (
                   userId: values.username,
                   isBusiness: isBusiness,
                 });
+                navigate("../main");
               }, 2000);
             }
           );
@@ -157,9 +154,10 @@ export const useLoginWithMetamask = (
               userId: values.username,
               isBusiness: isBusiness,
             });
+            navigate("../main");
           }, 2000);
         }
-        navigate("../main");
+        
         break;
     }
   };
