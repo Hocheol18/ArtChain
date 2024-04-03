@@ -35,6 +35,7 @@ import { AdminPage } from "./pages/AdminPage";
 import SettlementDetail from "./components/Admin/SettlementDetail";
 import ProjectConfirm from "./components/Admin/ProjectConfirm";
 import useSettlementInfo from "./store/useSettlementInfo";
+import useDistributeInfo from "./store/useDistributeInfo";
 
 function App() {
   const Desktop = ({ children }: { children: ReactNode }) => {
@@ -45,6 +46,8 @@ function App() {
     const isMobile = useMediaQuery({ maxWidth: 700 });
     return isMobile ? children : null;
   };
+
+  const { setDistributeInfo } = useDistributeInfo();
 
   const { setAllInOne } = useSettlementInfo();
 
@@ -61,10 +64,22 @@ function App() {
       });
     };
 
+    const funding = (event: MessageEvent) => {
+      const res = JSON.parse(event.data);
+      console.log(res.fundingRecruitResultList[0].isRecruitSuccess)
+      setDistributeInfo({
+        isRecruitSuccess: res.fundingRecruitResultList[0].isRecruitSuccess,
+        fundingContractAddress:
+          res.fundingRecruitResultList[0].fundingContractAddress,
+      });
+    };
+
     eventSource.addEventListener("settlementAllow", handleEvent);
+    eventSource.addEventListener("fundingProgressStatusCron", funding);
 
     return () => {
       eventSource.removeEventListener("settlementAllow", handleEvent);
+      eventSource.removeEventListener("fundingProgressStatusCron", funding);
       eventSource.close();
     };
   }, []);
