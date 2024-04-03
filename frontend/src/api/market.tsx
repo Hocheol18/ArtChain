@@ -1,6 +1,7 @@
 import { makeQuerystring } from "../utils/ApiUtils";
 import { localAxios } from "./https";
 import {
+  MainPageMarketTop4ResponseInterface,
   getMarketHistoryDisplayListAxiosInterface,
   getMarketMainDisplayListParams,
   getMarketSellingDisplayListAxiosInterface,
@@ -72,9 +73,12 @@ async function putMarketToken(marketId: number, transactionHash: string) {
   return await localAxios.put(`/market/buy/${marketId}/${transactionHash}`);
 }
 
-async function getMainPageMarketTop4() {
-  return await localAxios.get("/market/mainPageMarket");
-}
+const getMainPageMarketTop4 = async (): Promise<
+  MainPageMarketTop4ResponseInterface[]
+> => {
+  const res = await localAxios.get("/market/mainPageMarket");
+  return res.data.data;
+};
 
 export {
   getMarketMainDisplayList,

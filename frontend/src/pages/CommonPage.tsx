@@ -20,10 +20,15 @@ export const CommonPage = ({
   useEffect(() => {}, [topNavType, bottomNavType]);
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" minHeight={"100dvh"}>
       {/* 상단네비바가 없으면 없게 */}
       {topNavType === "" ? null : (
-        <Box position={"fixed"} top={0} w={"100%"} zIndex={2}>
+        <Box
+          position={"fixed"}
+          top={0}
+          width={isDesktop ? "390px" : "100%"}
+          zIndex={2}
+        >
           <TopNavBar navType={topNavType} />
         </Box>
       )}
@@ -42,6 +47,7 @@ export const CommonPage = ({
             position={"fixed"}
             bottom={0}
             width={isDesktop ? "390px" : "100%"}
+            zIndex={2}
           >
             <BottomNavBar navType={bottomNavType} />
           </Box>

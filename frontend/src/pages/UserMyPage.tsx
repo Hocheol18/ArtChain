@@ -28,7 +28,7 @@ export default function UserMyPage() {
     <>
       <Flex direction={"column"} backgroundColor={"gray.100"} pb={6}>
         <Box fontSize={20} fontWeight={"bold"} mx={5} mt={5} mb={3}>
-          현재 투자 중인 작품
+          정산 대기 중인 작품
         </Box>
         <Flex alignItems={"center"}>
           <Flex justifyContent={"center"} boxSize={"35%"} mx={6}>

@@ -65,13 +65,13 @@ function App() {
       {/* 데스크탑 버전 */}
       <ChakraProvider theme={Theme}>
         <Desktop>
-          <div style={{ backgroundColor: "#001a38", height: "100dvh" }}>
+          <div style={{ backgroundColor: "#001a38", minHeight: "100dvh" }}>
             <div
               style={{
                 width: "390px",
                 margin: "0 auto",
                 backgroundColor: "white",
-                height: "100dvh",
+                minHeight: "100dvh",
               }}
             >
               <BrowserRouter>
