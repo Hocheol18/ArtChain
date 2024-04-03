@@ -156,4 +156,18 @@ public class CronTable {
             log.info("* Batch 시스템이 예기치 않게 종료되었습니다. Message: {}", e.getMessage());
         }
     }
+
+    /**
+     * SSE 연결 종료 방지를 위한 하트비트 메시지
+     */
+    @Scheduled(cron = "0/30 * * * * *")
+    public void heartbeatSSE() {
+        try {
+            String eventId = "ADMIN";
+            sseRepository.findById(eventId)
+                    .ifPresent(sseEmitter -> sseService.send("*** HEARTBEAT SSE ***", eventId, sseEmitter, "HEARTBEAT"));
+        } catch (Exception e) {
+            log.info("* Batch 시스템이 예기치 않게 종료되었습니다. Message: {}", e.getMessage());
+        }
+    }
 }
