@@ -32,7 +32,7 @@ const handleCompany = (
 
   return (
     <>
-      {values.length >= 1 ? (
+      {values ? (
         <Grid templateColumns="1.5fr 3fr 0.5fr 0.5fr" gap={3}>
         <GridItem
           w="100%"

