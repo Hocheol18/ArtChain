@@ -76,12 +76,13 @@ export const ArtCharge = () => {
     const updateUserBalance = (prevUserInfo: userInfoType): userInfoType => {
       // 이전 상태(prevUserInfo)를 기반으로 새로운 상태를 반환합니다.
       console.log("코인업데이트: " + price);
+      let defaultValue: any = prevUserInfo.walletBalance;
+      if (prevUserInfo.walletBalance === null) {
+        defaultValue = "0";
+      }
       return {
         ...prevUserInfo, // 이전 상태의 모든 속성을 유지합니다.
-        walletBalance: (
-          parseInt(prevUserInfo.walletBalance) +
-          price / 1000
-        ).toString(), // 지갑 잔액을 업데이트합니다.
+        walletBalance: (parseInt(defaultValue) + price / 1000).toString(), // 지갑 잔액을 업데이트합니다.
       };
     };
 
