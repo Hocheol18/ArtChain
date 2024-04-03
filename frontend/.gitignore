@@ -106,3 +106,5 @@ sketch
 *.njsproj
 *.sln
 *.sw?
+
+.env

@@ -18,6 +18,7 @@ import useUserInfo, { userInfoType } from "../../../store/useUserInfo";
 import { LoadingModal } from "../../Common/LoadingModal";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import { useCustomToast } from "../../Common/Toast";
 
 export const ArtCharge = () => {
   const [account, setAccount] = useState<string>("");
@@ -92,16 +93,13 @@ export const ArtCharge = () => {
         name: "Artchain 아트 구매",
         amount: price,
         buyer_email: "4pjttest@gmail.com",
-        buyer_name: "구매자이름",
+        buyer_name: userInfo.nickname,
         m_redirect_url: "http://j10a708.p.ssafy.io:3000/charge",
       },
       async function (rsp) {
         // callback
 
         if (rsp.success === true) {
-          // 결제 성공
-          alert("결제 성공~!!!");
-
           onOpen();
 
           // 1. 컨트랙트 실행해야함
@@ -109,7 +107,6 @@ export const ArtCharge = () => {
             tokenAmount: price / 1000,
             account: account, // 여기에 사용자의 이더리움 주소를 추가하세요.
             onMintSuccess: (transactionHash) => {
-              alert(`민트 성공, 트랜잭션 해시: ${transactionHash}`);
               // 여기에 성공시의 로직을 추가하세요.
               coinCharge(price / 1000, transactionHash, "충전", price);
 
@@ -121,18 +118,23 @@ export const ArtCharge = () => {
               setIsSuccess(true);
             },
             onMintError: (error) => {
-              alert(`민트 실패 : ${error}`);
+              toastFunction(
+                "코인 민트에 실패하였습니다. 다시 시도해주세요..",
+                false
+              );
               onClose();
               // 여기에 에러 처리 로직을 추가하세요.
             },
           });
         } else {
           //결제 실패
-          alert(`결제 실패, 에러 내용 : ${rsp.error_msg}`);
+          toastFunction("결제에 실패하였습니다. 다시 시도해주세요.", false);
         }
       }
     );
   };
+
+  const toastFunction = useCustomToast();
 
   //데이터
 
@@ -179,7 +181,7 @@ export const ArtCharge = () => {
 
   const handleGoHome = () => {
     onClose();
-    navigate(`/charge`);
+    navigate(`/main`);
   };
 
   return (

@@ -8,6 +8,7 @@ import oak from "../../assets/oak.jpeg";
 import bum from "../../assets/bum.jpeg";
 import { FundingCarousel } from "../../type/invest.interface";
 import { Link } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 function FaRegCircleActive() {
   return (
@@ -63,13 +64,19 @@ export default function MainCarousel({ carouselList }: Props) {
     return () => clearInterval(interval);
   }, [carouselList.length]);
 
+  const isDesktop = useMediaQuery({ minWidth: 701 });
+
   return (
     <Box overflowX={"hidden"} position={"relative"} h={"30%"}>
       <Flex
         overflowX={"hidden"}
         wrap={"nowrap"}
         style={{
-          width: `${100 * carouselList.length}vw`,
+          width: `${
+            isDesktop
+              ? `${30 * carouselList.length}vw`
+              : `${100 * carouselList.length}vw`
+          }`,
           transition: "all 1000ms ease-in-out",
           transitionDuration: "1s",
           transform: `translateX(${
@@ -91,7 +98,6 @@ export default function MainCarousel({ carouselList }: Props) {
         top={"50%"}
         transform={"translateY(-50%)"}
         left={"5%"}
-        zIndex={2}
       >
         <ChevronLeftIcon boxSize={7} onClick={moveLeft} />
       </Box>
@@ -101,7 +107,6 @@ export default function MainCarousel({ carouselList }: Props) {
         top={"50%"}
         transform={"translateY(-50%)"}
         right={"5%"}
-        zIndex={2}
       >
         <ChevronRightIcon boxSize={7} onClick={moveRight} />
       </Box>
