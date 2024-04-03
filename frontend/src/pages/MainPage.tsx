@@ -10,7 +10,6 @@ import { MainCarouselFundingList, MainPageFundingList } from "../api/invest";
 import { FundingCarousel, FundingMainPage } from "../type/invest.interface";
 import { getMainPageMarketTop4 } from "../api/market";
 import { MainPageMarketTop4ResponseInterface } from "../type/market.interface";
-import { useMediaQuery } from "react-responsive";
 
 export default function MainPage() {
   const navigate = useNavigate();

@@ -31,7 +31,7 @@ export const FundRaisingPage = async ({
   const ReceviceArtCoinContractAddress = coinContractAddress;
 
   // 아트코인의 주소(안 변함)
-  const artTokenContractAddress = "0x39af03C99f8b82602d293737dE6A0eBF5d8f48dB";
+  const artTokenContractAddress = process.env.ART_COIN_CONTRACT_ADDRESS;
 
   // 로그인 할 때 확인해야하는 부분
   // useEffect(() => {
