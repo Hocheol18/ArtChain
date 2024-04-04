@@ -117,7 +117,6 @@ export default function MarketDeatil() {
                         sellerAddress={data.sellerAddress}
                         status={data.status}
                         contractAddress={data.contractAddress}
-                        
                       />
                     );
                   }

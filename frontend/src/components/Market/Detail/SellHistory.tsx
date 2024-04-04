@@ -28,7 +28,7 @@ export default function SellHistory(
 
   return (
     <>
-      <Box position={"sticky"} left={"1px"}>
+      <Box position={"sticky"} left={"1px"} zIndex={2}>
         <Box ml={"1.5rem"} w={"90%"}>
           <SellHistoryChart />
         </Box>
@@ -38,7 +38,7 @@ export default function SellHistory(
           </Text>
         </Box>
       </Box>
-      <Box ml={"1rem"}>
+      <Box ml={"1rem"} overflowX={"auto"} mt={"1rem"}>
         <Box
           w={"800px"}
           borderBottom={"2px"}
@@ -46,7 +46,7 @@ export default function SellHistory(
           color={"gray.300"}
           mt={"1rem"}
         >
-          <Flex minW={"600px"} overflowX={"scroll"} mt={"0.1rem"} mb={"0.1rem"}>
+          <Flex minW={"600px"} mt={"0.1rem"} mb={"0.1rem"}>
             <Center w={"4rem"} ml={"4rem"}>
               <Text as={"b"} color={"black.100"}>
                 거래분류
@@ -84,7 +84,7 @@ export default function SellHistory(
             </Center>
           </Flex>
         </Box>
-        {contents.length >= 1 ?
+        {contents.length >= 1 ? (
           <>
             {contents.map((data: getMarketHistoryDisplayListInterface) => {
               if (data.status === "SOLD") {
@@ -122,10 +122,13 @@ export default function SellHistory(
                   />
                 );
               }
-            })
-            }</> : <Center h={"300px"}><Text fontSize={"1.5rem"}>거래내역이 없습니다</Text></Center>}
-
-
+            })}
+          </>
+        ) : (
+          <Center h={"300px"}>
+            <Text fontSize={"1.5rem"}>거래내역이 없습니다</Text>
+          </Center>
+        )}
       </Box>
     </>
   );
