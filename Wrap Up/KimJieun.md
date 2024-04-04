@@ -1,5 +1,175 @@
 # Wrap up
 
+## 20240404
+
+### 오늘 한 것
+
+- 발표날!
+- 시연 매뉴얼 작성 후 시연 도움
+
+## 20240403
+
+### 오늘 한 것
+
+- PPT 제작
+- `.env`파일 docker container에 추가
+
+### 어려웠던 점
+
+- `.env`를 젠킨스에서 만들고 파일까지 생성하는데, 도커에 들어가지 않았다.
+  - `.dockerignore`에 env파일이 들어있었음!!
+
+### 새로 알게 된 점
+
+- 프론트 컨테이너 들어가는 법
+
+  - `docker exec -it artchain_frontend_b /bin/sh`
+
+- `.env`파일 추가하기
+  [https://velog.io/@votogether2023/AWS-EC2-배포-시-env-파일-설정feat.젠킨스](https://velog.io/@votogether2023/AWS-EC2-%EB%B0%B0%ED%8F%AC-%EC%8B%9C-env-%ED%8C%8C%EC%9D%BC-%EC%84%A4%EC%A0%95feat.%EC%A0%A0%ED%82%A8%EC%8A%A4)
+
+  - `Dockerfile` 에서 `.env` 복사
+    - `.dockerignore` 에서 `.env` 삭제
+    - Dockerfile 내용
+    ```bash
+    FROM node:21-alpine
+    WORKDIR /app
+    COPY package*.json .
+    RUN npm install
+    COPY .env .
+    COPY . .
+    EXPOSE 3000
+    CMD [ "npm", "run", "dev" ]
+    ```
+  - 추가 부분
+
+  ```bash
+  stage('Image Build & DockerHub Push') {
+              steps {
+                  // '/frontend' 디렉토리로 이동
+                  dir('frontend') {
+                      script {
+
+                          sh '''
+                          touch .env
+                          echo 'VITE_ART_COIN_CONTRACT_ADDRESS=0xE5856017Db7b4023383c867Ea65bc178B7F023C1' >> .env
+                          echo 'VITE_MARKET_CONTRACT_ADDRESS=0x538F17DB8FdB2bba76D14E420161412e9d0Bd2CA' >> .env
+                          '''
+                          // Docker Hub에 로그인 (Docker Hub Access Token이 필요)
+                          docker.withRegistry('', registryCredential) {
+                              sh "docker buildx create --use --name mybuilder"
+                              sh "docker buildx build --platform linux/amd64,linux/arm64 -t $imageName:$BUILD_NUMBER --push ."
+                              sh "docker buildx build --platform linux/amd64,linux/arm64 -t $imageName:latest --push ."
+                          }
+
+                      }
+                  }
+              }
+          }
+  ```
+
+### 내일 할 것
+
+- PPT 만들기
+
+## 20240402
+
+### 오늘 한 것
+
+- 파비콘 추가
+- docker에서 기존의 image가 삭제 되지 않아 jenkins script에 삭제 커맨드 추가
+
+### 어려웠던 점
+
+- 기존 이미지 삭제하는 것을 처음에는 `docker rmi $(docker images -f "dangling=true" -q)` 했는데, jenkins script에서는 변수가 되지 않았다.
+
+### 새로 알게 된 점
+
+- 사용하지 않는 이미지를 삭제하기 위해서는 `docker image prune -f`을 해야한다.
+- SSE를 사용하기 위해서는 SSE 허가 설정을 NginX에서 해야한다.
+
+### 내일 할 것
+
+- PPT 만들기
+
+## 20240401
+
+### 오늘 한 것
+
+- axios 생성
+- 크롬창 너비 500보다 더 작게 만드는 방법 찾기
+
+### 어려웠던 점
+
+- 사진과 dto를 함께 첨부하는 axios가 정말 힘들었다
+
+### 새로 알게 된 점
+
+- 사진과 dto를 함께 첨부할 때 formData에 append를 해야 하는데, dto를 JSON으로 변환해서 그냥 append를 하면 안된다. blob로 변환해서 append를 해야함
+
+### 내일 할 것
+
+- 포팅메뉴얼 작성
+
+## 20240331
+
+### 오늘 한 것
+
+- axios 생성
+
+### 어려웠던 점
+
+- 사진과 dto를 함께 첨부하는 axios가 어려움ㅠ
+
+### 내일 할 것
+
+- axios 완료
+
+## 20240329
+
+### 오늘 한 것
+
+- 개인/기업 마이페이지 백 메서드 생성 후 이미 있던 거라 삭제ㅠ
+- axios 생성
+
+### 어려웠던 점
+
+- axios를 처음 하는거라 처음에는 조금 어려웠다
+
+### 내일 할 것
+
+- axios 완료
+
+## 20240328
+
+### 오늘 한 것
+
+- 메타마스크-모바일 웹 연동
+- 코인 민팅 함수 호출
+
+### 어려웠던 점
+
+- dApp이 뭔지 몰라 아주 바닥부터 시작했다ㅎㅎ
+- 그리고 connectWallet을 해야하는지 몰라서 삽질 했음
+- 연동 완료 후, 코인 민팅을 할 때 리액트와 타입스크립트를 몰라서 완성된 함수를 import하는 게 어려웠다.
+- 메타마스크- 모바일 웹 연동
+
+[https://velog.io/@rjc1704/메타마스크-지갑-연결-데스크탑-모바일](https://velog.io/@rjc1704/%EB%A9%94%ED%83%80%EB%A7%88%EC%8A%A4%ED%81%AC-%EC%A7%80%EA%B0%91-%EC%97%B0%EA%B2%B0-%EB%8D%B0%EC%8A%A4%ED%81%AC%ED%83%91-%EB%AA%A8%EB%B0%94%EC%9D%BC)
+
+- dApp이 무엇인지
+  - 블록체인 플랫폼을 뜻함
+  - https://upbitcare.com/academy/education/blockchain/239
+- connectWallet 버튼을 생성해야함
+- 연결 확인을 해야함
+- https://metamask.github.io/metamask-deeplinks/ 에서 디앱 링크 생성
+- 모바일 웹으로 그 링크로 입장
+- 메타마스크 앱이 있어야함. 앱 내 브라우저에서 우리 웹사이트 보면 됨
+
+### 내일 할 것
+
+- 포트원 끝내기
+- 더미 데이터 넣기
+
 ## 20240327
 
 ### 오늘 한 것
@@ -11,9 +181,6 @@
 
 - 타입스크립트를 하나도 모르는 상태로 포트원을 하는 게 처음에 정말 막막했다.
 - 그리고 카카오페이 결제 페이지에서 `mInfo:1 Failed to launch 'intent://kakaopay/pg?url=' because the scheme does not have a registered handler.`에러가 떠서 너무 슬펐다. 이유가 개발자 모드 자체 지원이 안된다는 말을 보고는 가슴이 찢어질 것 같았다.
-
-### 새로 알게 된 점
-
 - 인증 결제 흐름 : [https://github.com/iamport/iamport-manual/blob/master/인증결제/background.md](https://github.com/iamport/iamport-manual/blob/master/%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/background.md)
 - 포트원 결제 연동
 
@@ -125,9 +292,6 @@
 
 - IAM Identity Center 에서 만든 계정으로 S3에 Access Key와 Secret Access Key를 넣으면 없다고 오류가 남
   - 그래서 새로운 IAM 계정 만들어서 하니까 성공
-
-### 새로 알게 된 점
-
 - IAM Identity Center란
   - AWS SSO(Single Sign-On)의 후속 서비스로 한 번의 로그인으로 통합 서비스 이용 가능
   - 계정을 만들어서 로그인 → 안전한 루트 계정이라고 생각하면 됨
@@ -155,9 +319,6 @@
 - Pipeline Script의 `Groovy`와 그 안의 `sh` 문법이 초면이라 문법에서 오류가 나면 힘들었다.
 - Script에서 전역변수 설정
 - Nginx가 restart되면 내려가서 reload를 해야했는데, `nginx.service is not active, cannot reload`에러 발생
-
-### 새로 알게 된 점
-
 - 돌아가는 container의 image를 지우면 안된다.
 - 한 개의 image로 여러 container을 돌릴 수 있다.
 - 무중단 배포 순서
@@ -186,9 +347,6 @@
 
 - 자꾸 `[ERROR] WebSocket connection to ‘wss~’ `라는 에러가 뜨는데 이걸 못보고 그 밑의 hmr을 수정하라는 오류를 보고 그걸 고치느라 오래 걸림. hmr 설정을 하면 무한 새로고침이 됐다.
 - 무중단 배포 자체
-
-### 새로 알게 된 점
-
 - Nginx 웹소켓 연결
   - https://blog.naver.com/hsmang/221837039250
   - `nginx default.conf`에서 아래의 내용을 추가함
@@ -239,8 +397,6 @@
     });
 
     ```
-
-### 새로 알게 된 점
 
 - 어제 났던 `[ERROR] module not found: error: you attempted to import /app/node_modules/react-refresh/runtime.js which falls outside of the project src/ directory. relative imports outside of src/ are not supported.` 에러 해결
 
@@ -350,9 +506,6 @@ CMD [ "npm", "run", "dev" ]
   module not found: error: you attempted to import /app/node_modules/react-refresh/runtime.js which falls outside of the project src/ directory. relative imports outside of src/ are not supported. you can either move it inside src/, or add a symlink to it from project's node_modules/.
   ```
 - 한번 성공했는데 `.dockerignore`생성 후 다시 에러 발생
-
-### 새로 알게 된 점
-
 - 위에서 마지막 에러를 제외하고 오류가 났던 이유는, create-react-app으로 프로젝트를 만들면 필요한 react-scripts가 없어서 연결이 안됐음.
 
 1. `npm ERR! Missing script: "start"` 에러 발생
@@ -396,9 +549,6 @@ CMD [ "npm", "run", "dev" ]
 ### 어려웠던 점
 
 - Jenkins 컨테이너 내리고 재실행해도 화면은 뜨는데 자꾸 403이 떴다. 그리고 컨테이너와 이미지를 내리고 돌려도 초기화가 되지 않음
-
-### 새로 알게 된 점
-
 - Nginx-Jenkins 연결
   1. 처음에는 잘 몰라서 EC2내의 nginx의 기본 링크를 젠킨스페이지(8081포트)로 연결시키고, Docker내의 nginx에서는 기본 링크를 3000포트로 연결시켜서 충돌이 났던 것임.
      1. EC2내의 nginx설정을 지우고, nginx 기본 링크를 젠킨스 페이지로 연결하니 무한로딩되던 페이지가 빠르게 에러페이지 나오는 걸로 발전함
@@ -450,8 +600,6 @@ CMD [ "npm", "run", "dev" ]
 ```
 
 에서 `proxy_pass http://j10a708.p.ssafy.io:8081;`(젠킨스 경로)로 바꾸니까 연결은 잘됨; 아무튼 내일 더 해봐야겠음
-
-### 새로 알게 된 점
 
 - 리버스 프록시를 설정하면서 nginx의 역할에 대해 더 자세히 알게 됐다.
 - `vim /etc/nginx/conf.d/default.conf` 설정
