@@ -29,7 +29,6 @@ import BusinessProjectEnroll from "./pages/BusinessProjectEnroll";
 import { Invest } from "./pages/Invest";
 import { Charge } from "./pages/Charge";
 import { Exchange } from "./pages/Exchange";
-import FirstMainPage from "./pages/FirstMainPage";
 import { AdminPage } from "./pages/AdminPage";
 
 import SettlementDetail from "./components/Admin/SettlementDetail";
