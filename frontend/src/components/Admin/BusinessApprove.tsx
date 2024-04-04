@@ -1,10 +1,12 @@
 import { Button, Center, Flex } from "@chakra-ui/react";
 import Web3 from "web3";
 import ReceiveArtCoinContractABI from "../../Contract/ReceiveArtCoinContract.json";
+import useDistributeInfo from "../../store/useDistributeInfo";
 
 export default function BusinessApprove() {
   const web3 = new Web3((window as any).ethereum);
   const MW = import.meta.env.VITE_MAIN_WALLET_ADDRESS;
+  const { distributeInfo } = useDistributeInfo()
 
   const distribute = async () => {
     sessionStorage.setItem("check", "check")
@@ -13,7 +15,7 @@ export default function BusinessApprove() {
       // 그 속에 있는 메서드가 정의된 ABI를 이용하기 위함이다.
       const fundingContract = new web3.eth.Contract(
         ReceiveArtCoinContractABI.abi,
-        "0x8A171dee872BbE271E641197e7879464593ADab3"
+        distributeInfo.fundingContractAddress
       );
 
       const tx = fundingContract.methods.distributeFundWithoutCondition().send({ from: MW });
