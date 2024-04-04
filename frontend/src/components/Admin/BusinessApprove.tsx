@@ -1,11 +1,9 @@
 import { Button, Center, Flex } from "@chakra-ui/react";
 import Web3 from "web3";
 import ReceiveArtCoinContractABI from "../../Contract/ReceiveArtCoinContract.json";
-import useDistributeInfo from "../../store/useDistributeInfo";
 
 export default function BusinessApprove() {
   const web3 = new Web3((window as any).ethereum);
-  const { distributeInfo } = useDistributeInfo();
   const MW = import.meta.env.VITE_MAIN_WALLET_ADDRESS;
 
   const distribute = async () => {
@@ -18,7 +16,7 @@ export default function BusinessApprove() {
         "0x8A171dee872BbE271E641197e7879464593ADab3"
       );
 
-      const tx = fundingContract.methods.distributeFund().send({ from: MW });
+      const tx = fundingContract.methods.distributeFundWithoutCondition().send({ from: MW });
       console.log((await tx).transactionHash);
     } catch (error) {
       console.error("거래 처리 중 오류가 발생했습니다.", error);
