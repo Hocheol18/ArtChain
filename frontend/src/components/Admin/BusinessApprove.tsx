@@ -9,12 +9,13 @@ export default function BusinessApprove() {
   const MW = import.meta.env.VITE_MAIN_WALLET_ADDRESS;
 
   const distribute = async () => {
+    sessionStorage.setItem("check", "check")
     try {
       // 펀딩할 때 이용할 FundRaisingContract 연결!
       // 그 속에 있는 메서드가 정의된 ABI를 이용하기 위함이다.
       const fundingContract = new web3.eth.Contract(
         ReceiveArtCoinContractABI.abi,
-        "0x91a74Fa7bA4507466F5d09c473488eE49E53192D"
+        "0x8A171dee872BbE271E641197e7879464593ADab3"
       );
 
       const tx = fundingContract.methods.distributeFund().send({ from: MW });
@@ -69,13 +70,20 @@ export default function BusinessApprove() {
 
   return (
     <>
-      {distributeInfo.isRecruitSuccess ? (
+      {sessionStorage.getItem("check") === "check" ? (
+        <Center as="b" fontSize={"1.5rem"} h={"600px"}>
+          데이터가 없습니다
+        </Center>
+      ) : (
         <>
           <Flex justifyContent={"space-between"} p={"1rem"}>
-            <Flex>{"0x91a74Fa7bA4507466F5d09c473488eE49E53192D".substring(0,10)}...</Flex>
+            <Flex>
+              {"0x8A171dee872BbE271E641197e7879464593ADab3".substring(0, 13)}...
+            </Flex>
             <Flex>
               <Button
-              bgSize={"0.5rem"}
+                size={"sm"}
+                borderColor={"blue.400"}
                 onClick={() => {
                   distribute();
                 }}
@@ -85,10 +93,6 @@ export default function BusinessApprove() {
             </Flex>
           </Flex>
         </>
-      ) : (
-        <Center as="b" fontSize={"1.5rem"} h={"600px"}>
-          데이터가 없습니다
-        </Center>
       )}
     </>
   );
