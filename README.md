@@ -244,7 +244,7 @@ Scheduler & SSE 구현<br/>UCC 담당
 
 ##### 마켓 거래 등록
 
-<img src="./Assets/pic/마켓거래등록.gif.gif" height=500px/>
+<img src="./Assets/pic/마켓거래등록.gif" height=500px/>
 
 ##### 마켓 조각 구매
 
@@ -307,7 +307,7 @@ Scheduler & SSE 구현<br/>UCC 담당
 
 ##### 프로젝트 조각 분배 트랜잭션 내역
 
-<img src="./Assets/pic/분배 트잭 내역.PNG" width=400px/>
+<img src="./Assets/pic/분배 트잭 내역.PNG" width=800px/>
 
 ##### 프로젝트 정산
 
@@ -315,7 +315,7 @@ Scheduler & SSE 구현<br/>UCC 담당
 
 ##### 프로젝트 정산 Etherscan 기록
 
-<img src="./Assets/pic/정산 캡처.PNG" width=400px/>
+<img src="./Assets/pic/정산 캡처.PNG" width=800px/>
 
 - 기업, 프로젝트, 정산 승인
 - 프로젝트 종료 후 모집 성공/실패에 따라 조각을 분배하거나 환불
