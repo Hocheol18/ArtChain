@@ -219,7 +219,8 @@ Scheduler & SSE 구현
 ---사진 넣기---
 
 - 메타마스크와 연동해 마켓에서 조각 구매
-![마켓거래등록](/uploads/843b6657dc32aba3ff1f33d33b2a5ca8/마켓거래등록.gif)
+
+<img src="./Assets/gif/마켓거래등록.gif" width="50%" height="50%"/>
 - 로그인 시 보유 조각 판매글 등록 가능
 
 #### [코인 구매/환전 페이지]
