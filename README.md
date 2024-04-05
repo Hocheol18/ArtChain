@@ -67,15 +67,21 @@
     </tr>
     <tr align="center">
         <td>
-        <b>Leader, Frontend</b><br> OpenVidu, 롤링페이퍼 api 담당
+        <b>Leader, Frontend, PM</b><br>UI/UX 및 목업 제작<br/>
+메인/투자/충전, 환전/마이(나의 조각)/기업 페이지<br/>
+Axios 생성 및 연결
         <br/>
         </td>
         <td>
-        <b>Frontend, Contract</b><br>UCC 담당
+        <b>Frontend, Contract</b><br>메인페이지/마켓/회원가입/로그인/관리자/나의투자<br/>
+로그인 , 회원가입, 관리자 페이지<br/>
+아트코인 민팅/투자 컨트랙트<br/>
+프론트 컨트랙트 연결<br/>
+Axios 생성 및 연결
         <br/>
         </td>
         <td>
-        <b>CI&CD, Front</b><br> Nginx 설정, Frontend 무중단 배포, Axios 생성, 피그마 제작
+        <b>CI&CD, Front</b><br> Nginx 설정<br/>Frontend Blue/Green 무중단 배포<br/>카카오페이 PortOne API 연결<br/> Axios 생성<br/> 피그마 제작
         <br/>
         </td>
     </tr>
@@ -111,16 +117,17 @@
     </tr>
     <tr align="center">
         <td>
-        <b>Backend</b><br> 롤링페이퍼, 포토모자이크 담당
+        <b>Backend</b><br>마켓/멤버/환전,충전/OAuth API<br/>
+Spring Security, JWT 토큰 구현
         <br/>
         </td>
         <td>
         <b>Backend</b><br> 펀딩/투자/조각 코인 소유자/정산 API 구현<br/>
-Scheduler & SSE 구현
+Scheduler & SSE 구현<br/>UCC 담당
         <br/>
         </td>
         <td>
-        <b>Contract, CI&CD</b><br> OpenVidu 담당<br>발표 담당
+        <b>Contract, CI&CD</b><br> Docker 설정<br/> 마켓/펀딩/투자/분배/정산/아트코인 민팅 및 환전 컨트랙트 작성, frontend 컨트랙트 연결<br/>UCC 담당
         <br/>
         </td>
     </tr>
@@ -201,45 +208,117 @@ Scheduler & SSE 구현
 
 #### [메인 페이지]
 
----사진 넣기---
+<img src="./Assets/pic/메인페이지.gif" height=500px/>
 
 - 모집 기간 임박 순으로 투자 상품 정렬
 - 조각 판매글 순으로 마켓 상품 정렬
 
+#### [로그인]
+
+<img src="./Assets/pic/[일반] 로그인.gif" height=500px/>
+
 #### [투자 페이지]
 
----사진 넣기---
+##### 투자리스트 보기
+
+<img src="./Assets/pic/투자리스트.gif" height=500px/>
+
+##### 투자 상품 상세보기
+
+<img src="./Assets/pic/투자 상세보기.gif" height=500px/>
+
+##### 투자 상품 상세보기
+
+<img src="./Assets/pic/투자하기.gif" height=500px/>
 
 - 전체, 공연, 전시, 영화로 필터
 - 전체, 진행중, 모집종료, 정산완료로 필터
 - 투자 진행 중일 때 총 발행 조각에서 남은 개수만큼 구매 가능
+- 투자 완료 후 Etherscan에서 확인 가능
 
 #### [마켓 페이지]
 
----사진 넣기---
+##### 마켓리스트 조회
+
+<img src="./Assets/pic/마켓조회.gif" height=500px/>
+
+##### 마켓 거래 등록
+
+<img src="./Assets/pic/마켓거래등록.gif.gif" height=500px/>
+
+##### 마켓 조각 구매
+
+<img src="./Assets/pic/마켓조각구매.gif" height=500px/>
 
 - 메타마스크와 연동해 마켓에서 조각 구매
 - 로그인 시 보유 조각 판매글 등록 가능
 
 #### [코인 구매/환전 페이지]
 
----사진 넣기---
+##### ArtCoin 충전
+
+<img src="./Assets/pic/아트코인 충전.gif" height=500px/>
+
+##### ArtCoin 카카오페이 결제
+
+<img src="./Assets/pic/충전-카카오페이(폰).gif" height=500px/>
+
+##### ArtCoin 환전
+
+<img src="./Assets/pic/아트코인 환전.gif" height=500px/>
 
 - 카카오페이로 ArtCoin 구매
 - 메타마스크와 연동해 토큰 민팅
 
 #### [기업 페이지]
 
----사진 넣기---
+##### 기업 회원가입
+
+<img src="./Assets/pic/[기업] 회원가입.gif" height=500px/>
+
+##### 기업 로그인
+
+<img src="./Assets/pic/[기업] 로그인.gif" height=500px/>
+
+##### 기업 프로젝트 등록 신청
+
+<img src="./Assets/pic/[기업] 프로젝트 등록 신청.gif" height=500px/>
+
+##### 기업 프로젝트 정산 신청
+
+<img src="./Assets/pic/[기업] 프로젝트 정산 신청.gif" height=500px/>
 
 - 등록한 프로젝트 조회 및 등록 신청
 - 정산 완료 신청
 
 #### [관리자 페이지]
 
----사진 넣기---
+##### 기업 승인/반려
+
+<img src="./Assets/pic/기업 승인, 반려.gif" height=500px/>
+
+##### 프로젝트 승인/반려
+
+<img src="./Assets/pic/프로젝트 승인.gif" height=500px/>
+
+##### 프로젝트 조각 분배
+
+<img src="./Assets/pic/프로젝트 조각 분배.gif" height=500px/>
+
+##### 프로젝트 조각 분배 트랜잭션 내역
+
+<img src="./Assets/pic/분배 트잭 내역.PNG" width=400px/>
+
+##### 프로젝트 정산
+
+<img src="./Assets/pic/프로젝트 정산.gif" height=500px/>
+
+##### 프로젝트 정산 Etherscan 기록
+
+<img src="./Assets/pic/정산 캡처.PNG" width=400px/>
 
 - 기업, 프로젝트, 정산 승인
+- 프로젝트 종료 후 모집 성공/실패에 따라 조각을 분배하거나 환불
 
 ### 📄 설계 문서
 
