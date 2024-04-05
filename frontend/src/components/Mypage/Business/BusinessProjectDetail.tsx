@@ -65,7 +65,7 @@ export default function BusinessProjectDetail({ projectData }: Props) {
               {formatNumberWithComma(projectData.nowCoinCount)}
             </Text>
             <Text color={"blue.300"} ml={"0.3rem"} as={"b"} fontSize={"1rem"}>
-              원 모집
+              코인 모집
             </Text>
             <Text ml={"0.5rem"} color={"blue.400"} as={"b"} fontSize={"1rem"}>
               {projectData.share}%
@@ -79,7 +79,7 @@ export default function BusinessProjectDetail({ projectData }: Props) {
               {formatNumberWithComma(projectData.goalCoinCount)}
             </Text>
             <Text ml={"0.3rem"} fontSize={"0.9rem"}>
-              원
+              코인
             </Text>
           </Flex>
           <Flex>

@@ -8,7 +8,6 @@ import { useCustomToast } from "../Common/Toast";
 import Web3 from "web3";
 import IERC20ABI from "../../Contract/ArtcoinContract.json";
 import { convertToInteger } from "../Common/convertToInteger";
-import useSettlementInfo from "../../store/useSettlementInfo";
 
 export default function SettlementDetail() {
   const id = useParams() as { id: string };
@@ -19,7 +18,6 @@ export default function SettlementDetail() {
     settlementId: number;
     status: string;
   }>({ settlementId: 0, status: "" });
-  const { settlementInfo } = useSettlementInfo();
 
   const ArtCoin: string = import.meta.env.VITE_ART_COIN_CONTRACT_ADDRESS;
   const MW: string = import.meta.env.VITE_MAIN_WALLET_ADDRESS;
@@ -38,26 +36,41 @@ export default function SettlementDetail() {
   });
 
   const settlement = async () => {
-    console.log("DNSLDNLKFNSLD");
+    const settlementInfo = [
+      {
+        pieceOwnerWalletAddress: "0x8c568b58C1D07A9C02137f481a1e0DD91dcE6ae2",
+        settlementCoinCount: 100,
+      },
+      {
+        pieceOwnerWalletAddress: "0xA12ad1c5f6D5558fc5C827795aA7C5D98466C097",
+        settlementCoinCount: 150,
+      },
+      {
+        pieceOwnerWalletAddress: "0xa98152DE411B3C2ecBccAA199A7f1F855e7c8E90",
+        settlementCoinCount: 200,
+      },
+      {
+        pieceOwnerWalletAddress: "0x68658c0B0593879b2C1ed3dD429851cc8701BFB9",
+        settlementCoinCount: 250,
+      },
+    ];
     const artTokenContract = new web3.eth.Contract(IERC20ABI.abi, ArtCoin);
 
     // need to props
-    for (let i = 0; i < settlementInfo.data.length; i++) {
+    for (let i = 0; i < settlementInfo.length; i++) {
       await artTokenContract.methods
         .approve(
-          settlementInfo.data[i].pieceOwnerWalletAddress,
-          convertToInteger(
-            settlementInfo.data[i].settlementCoinCount.toString()
-          )
+          settlementInfo[i].pieceOwnerWalletAddress,
+          convertToInteger(settlementInfo[i].settlementCoinCount.toString())
         )
         .send({ from: MW });
 
       const tx = await artTokenContract.methods
         .transfer(
-          settlementInfo.data[i].pieceOwnerWalletAddress,
+          settlementInfo[i].pieceOwnerWalletAddress,
 
           convertToInteger(
-            settlementInfo.data[i].settlementCoinCount.toString()
+            settlementInfo[i].settlementCoinCount.toString()
           )
         )
         .send({ from: MW });

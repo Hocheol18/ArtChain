@@ -40,7 +40,7 @@ export const BottomButtonNavbar = ({ text, category, hanldeButton }: Props) => {
       bottom={0}
       width={isDesktop ? "390px" : "100%"}
       backgroundColor={"white"}
-      zIndex={1}
+      zIndex={2}
     >
       <Flex
         height="70"
@@ -70,7 +70,7 @@ export const BottomButtonNavbar = ({ text, category, hanldeButton }: Props) => {
             borderColor={"gray.200"}
             borderRadius={"lg"}
             as={Link}
-            to={`/market/${fundingId}`}
+            to={`/market/piece/${fundingId}`}
           >
             <Image src={MarketIcon} w={"20px"} />
             <Center fontSize={"15px"}>구입</Center>

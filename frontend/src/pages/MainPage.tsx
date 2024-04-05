@@ -156,7 +156,7 @@ export default function MainPage() {
           as="b"
           fontSize={"1.1rem"}
           onClick={() => {
-            navigate("/market/1");
+            navigate("/market");
           }}
         >
           마켓 보러 가기
