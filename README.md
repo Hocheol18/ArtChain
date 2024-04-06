@@ -127,7 +127,7 @@ Scheduler & SSE 구현<br/>UCC 담당
         <br/>
         </td>
         <td>
-        <b>Contract, CI&CD</b><br> Docker 설정<br/> 마켓/펀딩/투자/분배/정산/아트코인 민팅 및 환전 컨트랙트 작성, frontend 컨트랙트 연결<br/>UCC 담당
+        <b>Contract, CI&CD</b><br> Docker 설정<br/> 마켓/펀딩/투자/분배/정산/아트코인 민팅 및 환전 컨트랙트 작성<br/>frontend 컨트랙트 연결<br/>UCC 담당
         <br/>
         </td>
     </tr>
