@@ -343,7 +343,7 @@ Scheduler & SSE 구현<br/>UCC 담당
 <img src="./Assets/pic/ArtChain Architecture.png" width="1000px"/>
 
 #### [3. Mockup](https://www.figma.com/file/mcMwnFn8rZjF5tIEO6KAAX/Artchain?type=design&node-id=103%3A224&mode=design&t=sOngQjOWEk0p3Tty-1)
-![image.png](./image.png)
+![image-1.png](./image-1.png)
 
 
 #### [4. 요구 사항 명세서](https://trapezoidal-salsa-0b2.notion.site/0065f39dba1a43fba787cbb9b9def18f?pvs=4)
