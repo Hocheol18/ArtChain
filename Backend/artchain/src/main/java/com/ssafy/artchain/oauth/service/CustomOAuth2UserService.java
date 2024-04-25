@@ -52,7 +52,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (!existMember) {
             log.info("DB에 멤버 정보가 없습니다");
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            String pw = "ssafy123";
             String hashedPw = bCryptPasswordEncoder.encode(pw);
             Member member = Member.builder()
                     .memberId(kakaoId)
